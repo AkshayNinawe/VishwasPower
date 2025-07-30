@@ -130,7 +130,6 @@ export function ETCAdminPanel({
   const [searchTerm, setSearchTerm] = useState("")
 
   const handleCreateProject = () => {
-    console.log(newProject.description, newProject.name)
     if (newProject.name && newProject.description) {
       const project = {
         id: projects.length + 1,

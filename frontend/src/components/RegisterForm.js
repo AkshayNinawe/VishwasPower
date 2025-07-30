@@ -10,25 +10,23 @@ const RegisterForm = ({ onRegister, onSwitchToLogin }) => {
     email: "",
     password: "",
     confirmPassword: "",
-    roleAndDept: "", // Combined role and department
+    roleAndDept: "",
   })
   const [error, setError] = useState("")
   const [departments, setDepartments] = useState([])
   const [adminOptions, setAdminOptions] = useState([])
 
-  // Load departments from localStorage on component mount
   useEffect(() => {
     const savedDepartments = JSON.parse(localStorage.getItem("departments") || "[]")
     setDepartments(savedDepartments)
 
-    // Create admin options including departments
     const options = [
       { value: "main-admin", label: "🛡️ Main Admin" },
       { value: "etc-admin", label: "🏢 ETC Admin" },
       { value: "company-admin", label: "👥 Company Admin" },
+      { value: "site-engineer", label: "🔧 Site Engineer" },
     ]
 
-    // Add department options
     savedDepartments.forEach((dept) => {
       options.push({ value: `dept-${dept}`, label: `🏛️ ${dept} Department Admin` })
     })
@@ -50,17 +48,15 @@ const RegisterForm = ({ onRegister, onSwitchToLogin }) => {
       return
     }
 
-    // Extract role and department from the combined selection
     let role, department
     if (formData.roleAndDept.startsWith("dept-")) {
       role = "department-admin"
-      department = formData.roleAndDept.substring(5) // Remove "dept-" prefix
+      department = formData.roleAndDept.substring(5)
     } else {
       role = formData.roleAndDept
       department = ""
     }
 
-    // Check if user already exists
     const registeredUsers = JSON.parse(localStorage.getItem("registeredUsers") || "[]")
     const existingUser = registeredUsers.find((u) => u.email === formData.email)
 
@@ -69,7 +65,6 @@ const RegisterForm = ({ onRegister, onSwitchToLogin }) => {
       return
     }
 
-    // Register new user
     const newUser = {
       id: Date.now(),
       name: formData.name,
@@ -88,8 +83,7 @@ const RegisterForm = ({ onRegister, onSwitchToLogin }) => {
       <div className="auth-card">
         <div className="auth-header">
           <div className="logo-container">
-            {/* EASY LOGO REPLACEMENT - Just replace the src path */}
-            <img src="/logo.png" alt="Vishvas Power" className="logo-large" />
+            <div className="logo-large">⚡</div>
           </div>
           <h1>Create Account</h1>
           <p>Register as a new admin</p>

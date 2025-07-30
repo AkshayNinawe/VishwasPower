@@ -1,56 +1,92 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import axios from 'axios';
+import FormStage from "./FormStage" // Import FormStage
+import "./stage-review-styles.css"
 
 const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCompanySelect, onBackToMain }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [departments, setDepartments] = useState([])
   const [projects, setProjects] = useState([])
   const [companies, setCompanies] = useState([])
-  const [departments, setDepartments] = useState([])
+  const [submittedForms, setSubmittedForms] = useState([])
+
   const [selectedDepartment, setSelectedDepartment] = useState(null)
+  const [selectedMainProject, setSelectedMainProject] = useState(null)
+
   const [newProject, setNewProject] = useState({ name: "", description: "" })
-  const [showCreateForm, setShowCreateForm] = useState(false)
+  const [showCreateProjectForm, setShowCreateProjectForm] = useState(false)
+
   const [searchTerm, setSearchTerm] = useState("")
   const [reviewMode, setReviewMode] = useState(false)
   const [selectedCompanyForReview, setSelectedCompanyForReview] = useState(null)
-  const [submittedForms, setSubmittedForms] = useState([])
   const [currentStageReview, setCurrentStageReview] = useState(1)
   const [showSubmitterReview, setShowSubmitterReview] = useState(false)
 
-  // Initialize departments
-  useEffect(() => {
-    const defaultDepartments = [
-      {
-        id: 1,
-        name: "Auto transformer",
-        description: "Auto transformer department for power distribution systems",
-        icon: "⚡",
-        color: "#C41E3A",
-        projects: [],
-      },
-      {
-        id: 2,
-        name: "Traction transformer",
-        description: "Traction transformer department for railway systems",
-        icon: "🚊",
-        color: "#1E3A8A",
-        projects: [],
-      },
-      {
-        id: 3,
-        name: "V Connected 63 MVA transformer",
-        description: "V Connected 63 MVA transformer department for high voltage systems",
-        icon: "🔌",
-        color: "#047857",
-        projects: [],
-      },
-    ]
-    setDepartments(defaultDepartments)
-  }, [])
+  // State for showing and managing FormStage
+  const [showFormStage, setShowFormStage] = useState(false)
+  const [formStageCompany, setFormStageCompany] = useState(null)
+  const [formStageStage, setFormStageStage] = useState(1)
+
+  // Default data for initialization
+  const defaultDepartments = [
+    {
+      id: 1,
+      name: "Auto Transformer",
+      description: "Auto transformer department for power distribution systems",
+      icon: "⚡",
+      color: "#C41E3A",
+    },
+    {
+      id: 2,
+      name: "Traction Transformer",
+      description: "Traction transformer department for railway systems",
+      icon: "🚊",
+      color: "#1E3A8A",
+    },
+    {
+      id: 3,
+      name: "V Connected 63 MVA Transformer",
+      description: "V Connected 63 MVA transformer department for high voltage systems",
+      icon: "🔌",
+      color: "#047857",
+    },
+  ]
+
+  const defaultProjects = [
+    {
+      id: 101,
+      name: "Smart City Infrastructure",
+      description: "Urban development project for smart city implementation",
+      status: "active",
+      createdAt: "2024-01-15",
+      departmentId: 1,
+    },
+    {
+      id: 102,
+      name: "Railway Electrification",
+      description: "Project for electrifying railway lines",
+      status: "active",
+      createdAt: "2024-02-01",
+      departmentId: 2,
+    },
+    {
+      id: 103,
+      name: "Grid Modernization",
+      description: "Modernizing the power grid for efficiency",
+      status: "active",
+      createdAt: "2024-02-15",
+      departmentId: 3,
+    },
+  ]
+
+  const defaultCompanies = []
+  const mockSubmittedForms = []
 
   // Load data from localStorage on component mount
   useEffect(() => {
+    setDepartments(defaultDepartments)
+
     const savedProjects = localStorage.getItem("etc_projects")
     const savedCompanies = localStorage.getItem("etc_companies")
     const savedSubmittedForms = localStorage.getItem("etc_submitted_forms")
@@ -58,36 +94,6 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
     if (savedProjects) {
       setProjects(JSON.parse(savedProjects))
     } else {
-      // Initialize with default projects for each department
-      const defaultProjects = [
-        {
-          id: 1,
-          name: "Smart City Infrastructure",
-          description: "Urban development project for smart city implementation",
-          status: "active",
-          companies: 3,
-          createdAt: "2024-01-15",
-          departmentId: 1,
-        },
-        {
-          id: 2,
-          name: "Green Energy Initiative",
-          description: "Renewable energy project for sustainable development",
-          status: "active",
-          companies: 3,
-          createdAt: "2024-02-01",
-          departmentId: 2,
-        },
-        {
-          id: 3,
-          name: "High Voltage Distribution",
-          description: "High voltage power distribution project",
-          status: "active",
-          companies: 3,
-          createdAt: "2024-02-15",
-          departmentId: 3,
-        },
-      ]
       setProjects(defaultProjects)
       localStorage.setItem("etc_projects", JSON.stringify(defaultProjects))
     }
@@ -95,356 +101,82 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
     if (savedCompanies) {
       setCompanies(JSON.parse(savedCompanies))
     } else {
-      // Initialize with default companies for each project
-      const defaultCompanies = [
-        // Auto transformer department companies
-        {
-          id: 1,
-          name: "TCS (Tata Consultancy Services)",
-          projectId: 1,
-          stage: 1,
-          formsCompleted: 17,
-          totalForms: 17,
-          status: "pending-approval",
-          lastActivity: "2024-06-01",
-          stageApprovals: { 1: false, 2: false, 3: false },
-          submittedStages: { 1: true, 2: false, 3: false },
-        },
-        {
-          id: 2,
-          name: "IBM Corporation",
-          projectId: 1,
-          stage: 1,
-          formsCompleted: 8,
-          totalForms: 17,
-          status: "in-progress",
-          lastActivity: "2024-06-02",
-          stageApprovals: { 1: false, 2: false, 3: false },
-          submittedStages: { 1: false, 2: false, 3: false },
-        },
-        {
-          id: 3,
-          name: "HCL Technologies",
-          projectId: 1,
-          stage: 1,
-          formsCompleted: 12,
-          totalForms: 17,
-          status: "in-progress",
-          lastActivity: "2024-06-01",
-          stageApprovals: { 1: false, 2: false, 3: false },
-          submittedStages: { 1: false, 2: false, 3: false },
-        },
-        // Traction transformer department companies
-        {
-          id: 4,
-          name: "TCS (Tata Consultancy Services)",
-          projectId: 2,
-          stage: 2,
-          formsCompleted: 34,
-          totalForms: 34,
-          status: "pending-approval",
-          lastActivity: "2024-05-28",
-          stageApprovals: { 1: true, 2: false, 3: false },
-          submittedStages: { 1: true, 2: true, 3: false },
-        },
-        {
-          id: 5,
-          name: "IBM Corporation",
-          projectId: 2,
-          stage: 1,
-          formsCompleted: 8,
-          totalForms: 17,
-          status: "in-progress",
-          lastActivity: "2024-06-01",
-          stageApprovals: { 1: false, 2: false, 3: false },
-          submittedStages: { 1: false, 2: false, 3: false },
-        },
-        {
-          id: 6,
-          name: "HCL Technologies",
-          projectId: 2,
-          stage: 1,
-          formsCompleted: 2,
-          totalForms: 17,
-          status: "in-progress",
-          lastActivity: "2024-06-02",
-          stageApprovals: { 1: false, 2: false, 3: false },
-          submittedStages: { 1: false, 2: false, 3: false },
-        },
-        // V Connected 63 MVA transformer department companies
-        {
-          id: 7,
-          name: "TCS (Tata Consultancy Services)",
-          projectId: 3,
-          stage: 3,
-          formsCompleted: 51,
-          totalForms: 51,
-          status: "completed",
-          lastActivity: "2024-06-03",
-          stageApprovals: { 1: true, 2: true, 3: true },
-          submittedStages: { 1: true, 2: true, 3: true },
-        },
-        {
-          id: 8,
-          name: "IBM Corporation",
-          projectId: 3,
-          stage: 1,
-          formsCompleted: 7,
-          totalForms: 17,
-          status: "in-progress",
-          lastActivity: "2024-06-02",
-          stageApprovals: { 1: false, 2: false, 3: false },
-          submittedStages: { 1: false, 2: false, 3: false },
-        },
-        {
-          id: 9,
-          name: "HCL Technologies",
-          projectId: 3,
-          stage: 1,
-          formsCompleted: 11,
-          totalForms: 17,
-          status: "in-progress",
-          lastActivity: "2024-06-01",
-          stageApprovals: { 1: false, 2: false, 3: false },
-          submittedStages: { 1: false, 2: false, 3: false },
-        },
-      ]
       setCompanies(defaultCompanies)
       localStorage.setItem("etc_companies", JSON.stringify(defaultCompanies))
     }
 
-    // Load submitted forms with better persistence
     if (savedSubmittedForms) {
       setSubmittedForms(JSON.parse(savedSubmittedForms))
     } else {
-      // Initialize with mock submitted forms
-      const mockSubmittedForms = [
-        // TCS Auto Transformer - Stage 1 Forms
-        {
-          id: 1,
-          companyId: 1,
-          stage: 1,
-          formName: "Technical Specifications Form",
-          submittedAt: "2024-06-15",
-          status: "pending-review",
-          data: {
-            transformerType: "Auto Transformer",
-            capacity: "100 MVA",
-            voltage: "132/33 kV",
-            frequency: "50 Hz",
-            cooling: "ONAN/ONAF",
-            tapChanger: "On Load",
-            bushingType: "Porcelain",
-            oilType: "Mineral Oil",
-          },
-        },
-        {
-          id: 2,
-          companyId: 1,
-          stage: 1,
-          formName: "Quality Assurance Form",
-          submittedAt: "2024-06-15",
-          status: "pending-review",
-          data: {
-            testingStandard: "IEC 60076",
-            qualityGrade: "Grade A",
-            inspectionLevel: "Level 2",
-            certificationRequired: "Yes",
-            witnessTest: "Customer Witness",
-          },
-        },
-        {
-          id: 3,
-          companyId: 1,
-          stage: 1,
-          formName: "Installation Requirements Form",
-          submittedAt: "2024-06-15",
-          status: "pending-review",
-          data: {
-            installationSite: "Outdoor",
-            foundationType: "Concrete",
-            accessRequirements: "Crane Access Required",
-            environmentalConditions: "Normal",
-            specialRequirements: "Seismic Zone IV",
-          },
-        },
-        // TCS Traction Transformer - Stage 2 Forms
-        {
-          id: 4,
-          companyId: 4,
-          stage: 2,
-          formName: "Manufacturing Process Form",
-          submittedAt: "2024-06-10",
-          status: "pending-review",
-          data: {
-            manufacturingStandard: "IEC 60076-1",
-            productionTimeline: "16 weeks",
-            qualityControlProcess: "ISO 9001:2015",
-            materialSpecification: "CRGO Steel",
-            windingMaterial: "Copper",
-          },
-        },
-        {
-          id: 5,
-          companyId: 4,
-          stage: 2,
-          formName: "Testing Protocol Form",
-          submittedAt: "2024-06-10",
-          status: "pending-review",
-          data: {
-            routineTests: "All IEC Tests",
-            typeTests: "Complete Type Tests",
-            specialTests: "Seismic Tests",
-            testingFacility: "NABL Accredited",
-            witnessRequirement: "Third Party",
-          },
-        },
-        // TCS V Connected - All Stages (Completed)
-        {
-          id: 6,
-          companyId: 7,
-          stage: 1,
-          formName: "Technical Specifications Form",
-          submittedAt: "2024-05-15",
-          status: "approved",
-          reviewedAt: "2024-05-16",
-          data: {
-            transformerType: "V Connected 63 MVA",
-            capacity: "63 MVA",
-            voltage: "220/33 kV",
-            frequency: "50 Hz",
-            cooling: "ONAF",
-          },
-        },
-        {
-          id: 7,
-          companyId: 7,
-          stage: 2,
-          formName: "Manufacturing Process Form",
-          submittedAt: "2024-05-20",
-          status: "approved",
-          reviewedAt: "2024-05-21",
-          data: {
-            manufacturingStandard: "IEC 60076-1",
-            productionTimeline: "20 weeks",
-            qualityControlProcess: "ISO 9001:2015",
-          },
-        },
-        {
-          id: 8,
-          companyId: 7,
-          stage: 3,
-          formName: "Final Inspection Form",
-          submittedAt: "2024-05-25",
-          status: "approved",
-          reviewedAt: "2024-05-26",
-          data: {
-            finalInspection: "Completed",
-            deliverySchedule: "2024-06-30",
-            warrantyPeriod: "2 Years",
-          },
-        },
-      ]
       setSubmittedForms(mockSubmittedForms)
       localStorage.setItem("etc_submitted_forms", JSON.stringify(mockSubmittedForms))
     }
   }, [])
 
-  // Save to localStorage whenever data changes with unique keys
+  // Save to localStorage whenever data changes
   useEffect(() => {
-    if (projects.length > 0) {
-      localStorage.setItem("etc_projects", JSON.stringify(projects))
-    }
+    localStorage.setItem("etc_projects", JSON.stringify(projects))
   }, [projects])
 
   useEffect(() => {
-    if (companies.length > 0) {
-      localStorage.setItem("etc_companies", JSON.stringify(companies))
-    }
+    localStorage.setItem("etc_companies", JSON.stringify(companies))
   }, [companies])
 
   useEffect(() => {
-    if (submittedForms.length > 0) {
-      localStorage.setItem("etc_submitted_forms", JSON.stringify(submittedForms))
-    }
+    localStorage.setItem("etc_submitted_forms", JSON.stringify(submittedForms))
   }, [submittedForms])
 
-  const handleCreateProject = async () => {
+  const handleCreateProject = () => {
     if (newProject.name && newProject.description && selectedDepartment) {
       const projectId = Math.max(...projects.map((p) => p.id), 0) + 1
-      
+
       const project = {
         id: projectId,
         name: newProject.name,
         description: newProject.description,
         status: "active",
-        companies: 3,
         createdAt: new Date().toISOString().split("T")[0],
         departmentId: selectedDepartment.id,
       }
 
       setProjects([...projects, project])
-
-      // Automatically add TCS, IBM, HCL companies for this project
-      const newCompanies = [
-        {
-          id: Math.max(...companies.map((c) => c.id), 0) + 1,
-          name: "TCS (Tata Consultancy Services)",
-          projectId: projectId,
-          stage: 1,
-          formsCompleted: 0,
-          totalForms: 17,
-          status: "in-progress",
-          lastActivity: new Date().toISOString().split("T")[0],
-          stageApprovals: { 1: false, 2: false, 3: false },
-          submittedStages: { 1: false, 2: false, 3: false },
-        },
-        {
-          id: Math.max(...companies.map((c) => c.id), 0) + 2,
-          name: "IBM Corporation",
-          projectId: projectId,
-          stage: 1,
-          formsCompleted: 0,
-          totalForms: 17,
-          status: "in-progress",
-          lastActivity: new Date().toISOString().split("T")[0],
-          stageApprovals: { 1: false, 2: false, 3: false },
-          submittedStages: { 1: false, 2: false, 3: false },
-        },
-        {
-          id: Math.max(...companies.map((c) => c.id), 0) + 3,
-          name: "HCL Technologies",
-          projectId: projectId,
-          stage: 1,
-          formsCompleted: 0,
-          totalForms: 17,
-          status: "in-progress",
-          lastActivity: new Date().toISOString().split("T")[0],
-          stageApprovals: { 1: false, 2: false, 3: false },
-          submittedStages: { 1: false, 2: false, 3: false },
-        },
-      ]
-
-      try{
-        const response = await axios.post('http://localhost:8000/api/projects', {
-          projectName: newProject.name,
-          projectDescription: newProject.description,
-          projectCompany: newCompanies
-        });
-        const createdProject = response.data;
-
-      }catch(error){
-        console.error("Error creating project:", error);
-        alert("Failed to create project. Check console for details.");
-      }
-
-      setCompanies([...companies, ...newCompanies])
       setNewProject({ name: "", description: "" })
-      setShowCreateForm(false)
-      alert(
-        `Project "${project.name}" created successfully in ${selectedDepartment.name} with TCS, IBM, and HCL companies!`,
-      )
+      setShowCreateProjectForm(false)
+      alert(`Project "${project.name}" created successfully in ${selectedDepartment.name}!`)
     }
+  }
+
+  const handleAddCompany = (projectId) => {
+    const companyName = prompt("Enter company name:")
+    if (companyName) {
+      const newCompany = {
+        id: Math.max(...companies.map((c) => c.id), 0) + 1,
+        name: companyName,
+        projectId: projectId,
+        stage: 1,
+        formsCompleted: 0,
+        totalForms: getStageFormCount(1),
+        status: "in-progress",
+        lastActivity: new Date().toISOString().split("T")[0],
+        stageApprovals: { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false },
+        submittedStages: { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false },
+      }
+      setCompanies((prev) => [...prev, newCompany])
+      alert(`Company "${companyName}" added to this project!`)
+    }
+  }
+
+  // Helper function to get form count for each stage
+  const getStageFormCount = (stage) => {
+    const stageForms = {
+      1: 4, // Stage 1 has 4 forms
+      2: 1, // Stage 2 has 1 form
+      3: 7, // Stage 3 has 7 forms
+      4: 6, // Stage 4 has 6 forms
+      5: 1, // Stage 5 has 1 form
+      6: 1, // Stage 6 has 1 form
+    }
+    return stageForms[stage] || 1
   }
 
   const handleReviewStage = (company, stage) => {
@@ -461,7 +193,14 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
   }
 
   const handleApproveStage = (stage) => {
-    // Approve all forms in the current stage
+    if (!selectedCompanyForReview) {
+      alert("No company selected for review.")
+      return
+    }
+
+    console.log(`Approving stage ${stage} for company ${selectedCompanyForReview.name}`)
+
+    // Update submitted forms status
     setSubmittedForms((forms) =>
       forms.map((form) =>
         form.companyId === selectedCompanyForReview.id && form.stage === stage
@@ -470,31 +209,44 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
       ),
     )
 
-    // Update company stage approval
+    // Update company status and unlock next stage
     setCompanies((companies) =>
       companies.map((company) =>
         company.id === selectedCompanyForReview.id
           ? {
               ...company,
               stageApprovals: { ...company.stageApprovals, [stage]: true },
-              status: stage === 3 ? "completed" : "in-progress",
-              stage: stage === 3 ? 3 : stage + 1,
+              submittedStages: { ...company.submittedStages, [stage]: true },
+              status: stage === 6 ? "completed" : "in-progress",
+              stage: stage === 6 ? 6 : stage + 1, // Move to next stage
+              formsCompleted: 0, // Reset forms for next stage
+              totalForms: stage === 6 ? getStageFormCount(6) : getStageFormCount(stage + 1), // Update total forms for next stage
+              lastActivity: new Date().toISOString().split("T")[0],
             }
           : company,
       ),
     )
 
     alert(
-      `Stage ${stage} approved! ${stage === 3 ? "Company completed all stages." : `Stage ${stage + 1} is now available.`}`,
+      `Stage ${stage} approved for ${selectedCompanyForReview.name}! ${stage === 6 ? "Company completed all stages." : `Stage ${stage + 1} is now available.`}`,
     )
     setReviewMode(false)
+    setSelectedCompanyForReview(null)
+    setCurrentStageReview(1)
   }
 
   const handleRejectStage = (stage) => {
+    if (!selectedCompanyForReview) {
+      alert("No company selected for review.")
+      return
+    }
+
     const rejectionReason = prompt("Please provide a reason for rejecting this stage:")
     if (!rejectionReason) return
 
-    // Reject all forms in the current stage
+    console.log(`Rejecting stage ${stage} for company ${selectedCompanyForReview.name}`)
+
+    // Update submitted forms status
     setSubmittedForms((forms) =>
       forms.map((form) =>
         form.companyId === selectedCompanyForReview.id && form.stage === stage
@@ -508,7 +260,7 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
       ),
     )
 
-    // Update company status
+    // Reset company stage submission status
     setCompanies((companies) =>
       companies.map((company) =>
         company.id === selectedCompanyForReview.id
@@ -516,13 +268,19 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
               ...company,
               status: "in-progress",
               submittedStages: { ...company.submittedStages, [stage]: false },
+              stageApprovals: { ...company.stageApprovals, [stage]: false },
+              formsCompleted: 0, // Reset forms completed for this stage
+              totalForms: getStageFormCount(stage), // Reset total forms for current stage
+              lastActivity: new Date().toISOString().split("T")[0],
             }
           : company,
       ),
     )
 
-    alert(`Stage ${stage} rejected. Company needs to resubmit forms.`)
+    alert(`Stage ${stage} rejected for ${selectedCompanyForReview.name}. Company needs to resubmit forms.`)
     setReviewMode(false)
+    setSelectedCompanyForReview(null)
+    setCurrentStageReview(1)
   }
 
   const handleViewSubmittedForms = (company) => {
@@ -563,21 +321,19 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
     return "locked"
   }
 
-  const filteredProjects = selectedDepartment
-    ? projects.filter(
-        (project) =>
-          project.departmentId === selectedDepartment.id &&
-          project.name.toLowerCase().includes(searchTerm.toLowerCase()),
-      )
-    : []
-
-  const projectCompanies = selectedProject
-    ? companies.filter((company) => company.projectId === selectedProject.id)
-    : []
-
   const getDepartmentProjects = (departmentId) => {
     return projects.filter((project) => project.departmentId === departmentId)
   }
+
+  const getProjectCompanies = (projectId) => {
+    return companies.filter((company) => company.projectId === projectId)
+  }
+
+  const filteredProjects = selectedDepartment
+    ? getDepartmentProjects(selectedDepartment.id).filter((project) =>
+        project.name.toLowerCase().includes(searchTerm.toLowerCase()),
+      )
+    : []
 
   const currentStageForms = reviewMode
     ? submittedForms.filter(
@@ -589,72 +345,66 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
     ? submittedForms.filter((form) => form.companyId === selectedCompanyForReview.id)
     : []
 
-  const handleLogout = () => {
-    // Clear all ETC admin data on logout
+  const handleLogoutAndClearData = () => {
     localStorage.removeItem("etc_projects")
     localStorage.removeItem("etc_companies")
     localStorage.removeItem("etc_submitted_forms")
 
-    // Reset all states
     setProjects([])
     setCompanies([])
     setSubmittedForms([])
     setSelectedDepartment(null)
+    setSelectedMainProject(null)
     setSelectedCompanyForReview(null)
     setReviewMode(false)
     setShowSubmitterReview(false)
+    setShowFormStage(false)
 
-    // Call the parent logout function
     onLogout()
   }
 
-  const handleSimulateFormSubmission = (companyId, stage) => {
-    const newForms = [
-      {
-        id: Math.max(...submittedForms.map((f) => f.id), 0) + 1,
-        companyId: companyId,
-        stage: stage,
-        formName: `Technical Form ${stage}-1`,
-        submittedAt: new Date().toISOString().split("T")[0],
-        status: "pending-review",
-        data: {
-          field1: `Sample data for stage ${stage}`,
-          field2: `More sample data`,
-          field3: `Additional information`,
-        },
-      },
-      {
-        id: Math.max(...submittedForms.map((f) => f.id), 0) + 2,
-        companyId: companyId,
-        stage: stage,
-        formName: `Quality Form ${stage}-2`,
-        submittedAt: new Date().toISOString().split("T")[0],
-        status: "pending-review",
-        data: {
-          qualityCheck: "Passed",
-          inspector: "John Doe",
-          date: new Date().toISOString().split("T")[0],
-        },
-      },
-    ]
+  // Function to handle form submission from FormStage
+  const handleFormStageSubmit = (stage, submittedData) => {
+    console.log(`Submitting forms for stage ${stage}:`, submittedData)
 
-    setSubmittedForms((prev) => [...prev, ...newForms])
+    const newFormEntry = {
+      id: Math.max(...submittedForms.map((f) => f.id), 0) + 1,
+      companyId: formStageCompany.id,
+      stage: stage,
+      formName: `Stage ${stage} Forms`,
+      submittedAt: new Date().toISOString().split("T")[0],
+      status: "pending-review",
+      data: submittedData,
+    }
 
-    // Update company status
+    setSubmittedForms((prev) => [...prev, newFormEntry])
+
+    // Update company to show forms submitted and pending approval
     setCompanies((prev) =>
       prev.map((company) =>
-        company.id === companyId
+        company.id === formStageCompany.id
           ? {
               ...company,
               status: "pending-approval",
               submittedStages: { ...company.submittedStages, [stage]: true },
+              formsCompleted: getStageFormCount(stage),
               lastActivity: new Date().toISOString().split("T")[0],
             }
           : company,
       ),
     )
 
-    alert(`Forms submitted for Stage ${stage}!`)
+    alert(`Forms for Stage ${stage} submitted successfully! Waiting for ETC Admin approval.`)
+    setShowFormStage(false)
+    setFormStageCompany(null)
+    setFormStageStage(1)
+  }
+
+  // Function to go back from FormStage
+  const handleBackFromFormStage = () => {
+    setShowFormStage(false)
+    setFormStageCompany(null)
+    setFormStageStage(1)
   }
 
   return (
@@ -667,50 +417,50 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
                 ← Back
               </button>
             )}
-            {/* Mobile menu toggle button */}
             <button className="mobile-menu-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
               <span className="hamburger-line"></span>
               <span className="hamburger-line"></span>
               <span className="hamburger-line"></span>
             </button>
 
-            {/* EASY LOGO REPLACEMENT - Just replace the src path */}
             <img src="/logo.png" alt="Vishvas Power" className="logo" />
             <div className="header-title">
               <h1>
-                {reviewMode
-                  ? `Review Stage ${currentStageReview} - ${selectedCompanyForReview.name}`
-                  : showSubmitterReview
-                    ? `Submitted Forms - ${selectedCompanyForReview.name}`
-                    : selectedProject
-                      ? `${selectedProject.name} - Companies`
-                      : selectedDepartment
-                        ? `${selectedDepartment.name} - Projects`
-                        : "ETC Admin Panel"}
+                {showFormStage
+                  ? `Submit Forms - ${formStageCompany?.name} (Stage ${formStageStage})`
+                  : reviewMode
+                    ? `Review Stage ${currentStageReview} - ${selectedCompanyForReview?.name}`
+                    : showSubmitterReview
+                      ? `Submitted Forms - ${selectedCompanyForReview?.name}`
+                      : selectedMainProject
+                        ? `${selectedMainProject.name} - Companies`
+                        : selectedDepartment
+                          ? `${selectedDepartment.name} - Projects`
+                          : "ETC Admin Panel"}
               </h1>
               <p>
-                {reviewMode
-                  ? "Review and approve/reject stage forms"
-                  : showSubmitterReview
-                    ? "View all submitted forms by company"
-                    : selectedProject
-                      ? "Manage companies and workflows"
-                      : selectedDepartment
-                        ? "Manage projects in department"
-                        : "Manage departments, projects and companies"}
+                {showFormStage
+                  ? "Fill out and submit the required forms for this stage."
+                  : reviewMode
+                    ? "Review and approve/reject stage forms"
+                    : showSubmitterReview
+                      ? "View all submitted forms by company"
+                      : selectedMainProject
+                        ? "Manage companies and their workflows"
+                        : selectedDepartment
+                          ? "Manage projects in department"
+                          : "Manage departments, projects and companies"}
               </p>
             </div>
           </div>
 
-          {/* Desktop header right */}
           <div className="header-right desktop-only">
             <span className="user-badge">ETC Admin</span>
-            <button onClick={handleLogout} className="logout-btn">
+            <button onClick={handleLogoutAndClearData} className="logout-btn">
               🚪 Logout
             </button>
           </div>
 
-          {/* Mobile menu overlay */}
           {isMobileMenuOpen && (
             <div className="mobile-menu-overlay" onClick={() => setIsMobileMenuOpen(false)}>
               <div className="mobile-menu" onClick={(e) => e.stopPropagation()}>
@@ -724,7 +474,7 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
                   <div className="mobile-user-info">
                     <span className="user-badge">ETC Admin</span>
                   </div>
-                  <button onClick={handleLogout} className="mobile-logout-btn">
+                  <button onClick={handleLogoutAndClearData} className="mobile-logout-btn">
                     🚪 Logout
                   </button>
                 </div>
@@ -735,8 +485,14 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
       </header>
 
       <main className="etc-main">
-        {reviewMode ? (
-          // Stage Review Interface
+        {showFormStage && formStageCompany ? (
+          <FormStage
+            stage={formStageStage}
+            onFormSubmit={handleFormStageSubmit}
+            onBack={handleBackFromFormStage}
+            companyData={formStageCompany}
+          />
+        ) : reviewMode ? (
           <>
             <div className="section-header">
               <div>
@@ -752,7 +508,7 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
               <div className="stage-info-card">
                 <h3>Stage {currentStageReview} Information</h3>
                 <p>
-                  <strong>Company:</strong> {selectedCompanyForReview.name}
+                  <strong>Company:</strong> {selectedCompanyForReview?.name}
                 </p>
                 <p>
                   <strong>Total Forms:</strong> {currentStageForms.length}
@@ -808,7 +564,15 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
                           <span className="data-label">
                             {key.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())}:
                           </span>
-                          <span className="data-value">{value}</span>
+                          {typeof value === "string" && value.startsWith("data:image/") ? (
+                            <img
+                              src={value || "/placeholder.svg"}
+                              alt={`${key} signature`}
+                              style={{ maxWidth: "100px", border: "1px solid #ccc" }}
+                            />
+                          ) : (
+                            <span className="data-value">{String(value)}</span>
+                          )}
                         </div>
                       ))}
                     </div>
@@ -821,22 +585,25 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
               <button
                 onClick={() => handleApproveStage(currentStageReview)}
                 className="approve-stage-btn"
-                disabled={currentStageForms.some((form) => form.status === "pending-review")}
+                disabled={currentStageForms.length === 0}
               >
                 ✅ Approve Stage {currentStageReview}
               </button>
-              <button onClick={() => handleRejectStage(currentStageReview)} className="reject-stage-btn">
+              <button
+                onClick={() => handleRejectStage(currentStageReview)}
+                className="reject-stage-btn"
+                disabled={currentStageForms.length === 0}
+              >
                 ❌ Reject Stage {currentStageReview}
               </button>
             </div>
           </>
         ) : showSubmitterReview ? (
-          // Submitter Review Interface
           <>
             <div className="section-header">
               <div>
                 <h2>All Submitted Forms</h2>
-                <p>Review all forms submitted by {selectedCompanyForReview.name}</p>
+                <p>Review all forms submitted by {selectedCompanyForReview?.name}</p>
               </div>
               <button onClick={handleBackFromReview} className="back-btn">
                 ← Back to Companies
@@ -867,7 +634,7 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
             </div>
 
             <div className="stages-review-container">
-              {[1, 2, 3].map((stage) => {
+              {[1, 2, 3, 4, 5, 6].map((stage) => {
                 const stageForms = allCompanyForms.filter((form) => form.stage === stage)
                 if (stageForms.length === 0) return null
 
@@ -919,7 +686,15 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
                                   <span className="data-label">
                                     {key.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())}:
                                   </span>
-                                  <span className="data-value">{value}</span>
+                                  {typeof value === "string" && value.startsWith("data:image/") ? (
+                                    <img
+                                      src={value || "/placeholder.svg"}
+                                      alt={`${key} signature`}
+                                      style={{ maxWidth: "100px", border: "1px solid #ccc" }}
+                                    />
+                                  ) : (
+                                    <span className="data-value">{String(value)}</span>
+                                  )}
                                 </div>
                               ))}
                             </div>
@@ -933,12 +708,11 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
             </div>
           </>
         ) : !selectedDepartment ? (
-          // Department Selection View
           <>
             <div className="section-header">
               <div>
-                <h2>Transformer Departments</h2>
-                <p>Select a department to manage projects and companies</p>
+                <h2>Transformer Categories</h2>
+                <p>Select a category to manage projects and companies</p>
               </div>
             </div>
 
@@ -961,27 +735,32 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
                     <p>{department.description}</p>
                     <div className="department-footer">
                       <span>📁 {departmentProjects.length} projects</span>
-                      <span>🏢 {departmentProjects.length * 3} companies</span>
+                      <span>
+                        🏢{" "}
+                        {departmentProjects.reduce((acc, proj) => {
+                          return acc + getProjectCompanies(proj.id).length
+                        }, 0)}{" "}
+                        companies
+                      </span>
                     </div>
                   </div>
                 )
               })}
             </div>
           </>
-        ) : !selectedProject ? (
-          // Projects View for Selected Department
+        ) : !selectedMainProject ? (
           <>
             <div className="section-header">
               <div>
                 <h2>Projects in {selectedDepartment.name}</h2>
-                <p>Create and manage projects for this department</p>
+                <p>Create and manage projects for this category</p>
               </div>
               <div className="section-actions">
-                <button onClick={() => setShowCreateForm(true)} className="create-btn">
-                  ➕ Create Project
+                <button onClick={() => setShowCreateProjectForm(true)} className="create-btn">
+                  ➕ Create Company
                 </button>
                 <button onClick={() => setSelectedDepartment(null)} className="back-btn">
-                  ← Back to Departments
+                  ← Back to Categories
                 </button>
               </div>
             </div>
@@ -995,14 +774,14 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
               />
             </div>
 
-            {showCreateForm && (
-              <div className="modal-overlay" onClick={() => setShowCreateForm(false)}>
+            {showCreateProjectForm && (
+              <div className="modal-overlay" onClick={() => setShowCreateProjectForm(false)}>
                 <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                   <div className="modal-header">
                     <img src="/logo.png" alt="Vishvas Power" className="logo-small" />
                     <h3>Create New Project in {selectedDepartment.name}</h3>
                   </div>
-                  <p>TCS, IBM, and HCL will be automatically added to this project</p>
+                  <p>Companies will be added to this project after creation</p>
                   <div className="form-group">
                     <label>Project Name</label>
                     <input
@@ -1010,6 +789,7 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
                       placeholder="Enter project name"
                       value={newProject.name}
                       onChange={(e) => setNewProject({ ...newProject, name: e.target.value })}
+                      required
                     />
                   </div>
                   <div className="form-group">
@@ -1019,6 +799,7 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
                       value={newProject.description}
                       onChange={(e) => setNewProject({ ...newProject, description: e.target.value })}
                       rows="3"
+                      required
                     />
                   </div>
                   <div className="modal-actions">
@@ -1027,9 +808,9 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
                       className="submit-btn"
                       disabled={!newProject.name || !newProject.description}
                     >
-                      Create Project
+                      Create Company
                     </button>
-                    <button onClick={() => setShowCreateForm(false)} className="cancel-btn">
+                    <button onClick={() => setShowCreateProjectForm(false)} className="cancel-btn">
                       Cancel
                     </button>
                   </div>
@@ -1038,172 +819,194 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
             )}
 
             <div className="projects-grid">
-              {filteredProjects.map((project) => (
-                <div key={project.id} className="project-card" onClick={() => onProjectSelect(project)}>
-                  <div className="project-header">
-                    <div className="project-icon" style={{ backgroundColor: selectedDepartment.color }}>
-                      📁
+              {filteredProjects.map((project) => {
+                const projectCompanies = getProjectCompanies(project.id)
+
+                return (
+                  <div key={project.id} className="project-card">
+                    <div className="project-header">
+                      <div className="project-icon" style={{ backgroundColor: selectedDepartment.color }}>
+                        📁
+                      </div>
+                      <span className={`status-badge ${getStatusColor(project.status)}`}>{project.status}</span>
                     </div>
-                    <span className={`status-badge ${getStatusColor(project.status)}`}>{project.status}</span>
+                    <h3>{project.name}</h3>
+                    <p>{project.description}</p>
+                    <div className="project-footer">
+                      <span>🏢 {projectCompanies.length} companies</span>
+                      <span>📅 {project.createdAt}</span>
+                    </div>
+                    <div
+                      className="project-actions"
+                      style={{ marginTop: "15px", display: "flex", gap: "10px", justifyContent: "flex-end" }}
+                    >
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setSelectedMainProject(project)
+                        }}
+                        className="view-btn"
+                        style={{
+                          background: "linear-gradient(135deg, #4299e1 0%, #3182ce 100%)",
+                          color: "white",
+                          border: "none",
+                          padding: "8px 16px",
+                          borderRadius: "8px",
+                          fontSize: "0.85rem",
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          transition: "all 0.3s ease",
+                        }}
+                      >
+                        👁️ View Companies
+                      </button>
+                    </div>
                   </div>
-                  <h3>{project.name}</h3>
-                  <p>{project.description}</p>
-                  <div className="project-footer">
-                    <span>🏢 {project.companies} companies</span>
-                    <span>📅 {project.createdAt}</span>
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </>
         ) : (
-          // Companies View for Selected Project
           <>
             <div className="section-header">
               <div>
-                <h2>Companies in {selectedProject.name}</h2>
+                <h2>Companies in {selectedMainProject.name}</h2>
                 <p>Manage companies and their workflows</p>
               </div>
-              <button onClick={() => onProjectSelect(null)} className="back-btn">
-                ← Back to Projects
-              </button>
+              <div className="section-actions">
+                <button onClick={() => handleAddCompany(selectedMainProject.id)} className="create-btn">
+                  ➕ Create Project
+                </button>
+                <button onClick={() => setSelectedMainProject(null)} className="back-btn">
+                  ← Back to Projects
+                </button>
+              </div>
             </div>
 
             <div className="companies-grid">
-              {projectCompanies.map((company) => (
-                <div key={company.id} className="company-card">
-                  <div className="company-header">
-                    <div className="company-icon" style={{ backgroundColor: "#1E3A8A" }}>
-                      🏢
+              {getProjectCompanies(selectedMainProject.id).length === 0 ? (
+                <p className="no-data-message">
+                  No companies found for this project. Click "Create Project" to create one.
+                </p>
+              ) : (
+                getProjectCompanies(selectedMainProject.id).map((company) => (
+                  <div key={company.id} className="company-card">
+                    <div className="company-header">
+                      <div className="company-icon" style={{ backgroundColor: "#1E3A8A" }}>
+                        🏢
+                      </div>
+                      <span className={`status-badge ${getStatusColor(company.status)}`}>
+                        {company.status === "pending-approval" && "⏳"}
+                        {company.status === "in-progress" && "🔄"}
+                        {company.status === "completed" && "✅"}
+                        {company.status}
+                      </span>
                     </div>
-                    <span className={`status-badge ${getStatusColor(company.status)}`}>
-                      {company.status === "pending-approval" && "⏳"}
-                      {company.status === "in-progress" && "🔄"}
-                      {company.status === "completed" && "✅"}
-                      {company.status}
-                    </span>
-                  </div>
-                  <h3>{company.name}</h3>
-                  <p>
-                    Stage {company.stage} • {company.formsCompleted}/{company.totalForms} forms completed
-                  </p>
-                  <div className="progress-bar">
-                    <div
-                      className="progress-fill"
-                      style={{ width: `${(company.formsCompleted / company.totalForms) * 100}%` }}
-                    ></div>
-                  </div>
-                  <div className="company-footer">
-                    <span>📊 {Math.round((company.formsCompleted / company.totalForms) * 100)}% complete</span>
-                    <span>📅 {company.lastActivity}</span>
-                  </div>
+                    <h3>{company.name}</h3>
+                    <p>
+                      Stage {company.stage} • {company.formsCompleted}/{company.totalForms} forms completed
+                    </p>
+                    <div className="progress-bar">
+                      <div
+                        className="progress-fill"
+                        style={{ width: `${(company.formsCompleted / company.totalForms) * 100}%` }}
+                      ></div>
+                    </div>
+                    <div className="company-footer">
+                      <span>📊 {Math.round((company.formsCompleted / company.totalForms) * 100)}% complete</span>
+                      <span>📅 {company.lastActivity}</span>
+                    </div>
 
-                  {/* Stage Management */}
-                  <div className="stage-management">
-                    <h4>Stage Management:</h4>
-                    <div className="stages-row">
-                      {[1, 2, 3].map((stage) => {
-                        const stageStatus = getStageStatus(company, stage)
-                        return (
-                          <div key={stage} className={`stage-item ${stageStatus}`}>
-                            <div className="stage-number">{stage}</div>
-                            <div className="stage-status-text">
-                              {stageStatus === "approved" && "✅ Approved"}
-                              {stageStatus === "pending-approval" && "⏳ Pending"}
-                              {stageStatus === "available" && "📝 Available"}
-                              {stageStatus === "locked" && "🔒 Locked"}
+                    <div className="stage-management">
+                      <h4>Stage Management:</h4>
+                      <div className="stages-row">
+                        {[1, 2, 3, 4, 5, 6].map((stage) => {
+                          const stageStatus = getStageStatus(company, stage)
+                          return (
+                            <div key={stage} className={`stage-item ${stageStatus}`}>
+                              <div className="stage-number">{stage}</div>
+                              <div className="stage-status-text">
+                                {stageStatus === "approved" && "✅ Approved"}
+                                {stageStatus === "pending-approval" && "⏳ Pending"}
+                                {stageStatus === "available" && "📝 Available"}
+                                {stageStatus === "locked" && "🔒 Locked"}
+                              </div>
+                              {stageStatus === "pending-approval" && (
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    handleReviewStage(company, stage)
+                                  }}
+                                  className="review-stage-btn"
+                                >
+                                  Review
+                                </button>
+                              )}
                             </div>
-                            {stageStatus === "pending-approval" && (
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  handleReviewStage(company, stage)
-                                }}
-                                className="review-stage-btn"
-                              >
-                                Review
-                              </button>
-                            )}
-                          </div>
-                        )
-                      })}
+                          )
+                        })}
+                      </div>
+                    </div>
+
+                    <div className="company-actions" style={{ marginTop: "15px", display: "flex", gap: "10px" }}>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleViewSubmittedForms(company)
+                        }}
+                        className="view-forms-btn"
+                        style={{
+                          background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                          color: "white",
+                          border: "none",
+                          padding: "8px 16px",
+                          borderRadius: "8px",
+                          fontSize: "0.85rem",
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          transition: "all 0.3s ease",
+                        }}
+                      >
+                        📋 View Forms
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          const nextStage = company.stage
+                          const canSubmit = nextStage === 1 || company.stageApprovals[nextStage - 1]
+                          if (canSubmit && !company.submittedStages[nextStage]) {
+                            setFormStageCompany(company)
+                            setFormStageStage(nextStage)
+                            setShowFormStage(true)
+                          } else if (company.submittedStages[nextStage]) {
+                            alert(`Stage ${nextStage} forms already submitted!`)
+                          } else {
+                            alert(`Stage ${nextStage - 1} must be approved first!`)
+                          }
+                        }}
+                        className="submit-test-btn"
+                        style={{
+                          background: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)",
+                          color: "white",
+                          border: "none",
+                          padding: "8px 16px",
+                          borderRadius: "8px",
+                          fontSize: "0.85rem",
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          transition: "all 0.3s ease",
+                        }}
+                      >
+                        📝 Submit Stage {company.stage}
+                      </button>
                     </div>
                   </div>
-
-                  <div className="company-actions" style={{ marginTop: "15px", display: "flex", gap: "10px" }}>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        handleViewSubmittedForms(company)
-                      }}
-                      className="view-forms-btn"
-                      style={{
-                        background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
-                        color: "white",
-                        border: "none",
-                        padding: "8px 16px",
-                        borderRadius: "8px",
-                        fontSize: "0.85rem",
-                        fontWeight: "600",
-                        cursor: "pointer",
-                        transition: "all 0.3s ease",
-                      }}
-                    >
-                      📋 View Forms
-                    </button>
-                    <button
-                      onClick={() => onCompanySelect(company)}
-                      className="view-btn"
-                      style={{
-                        background: "linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%)",
-                        color: "white",
-                        border: "none",
-                        padding: "8px 16px",
-                        borderRadius: "8px",
-                        fontSize: "0.85rem",
-                        fontWeight: "600",
-                        cursor: "pointer",
-                        transition: "all 0.3s ease",
-                      }}
-                    >
-                      👁️ View Details
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        const nextStage = company.stage
-                        const canSubmit = nextStage === 1 || company.stageApprovals[nextStage - 1]
-                        if (canSubmit && !company.submittedStages[nextStage]) {
-                          handleSimulateFormSubmission(company.id, nextStage)
-                        } else if (company.submittedStages[nextStage]) {
-                          alert(`Stage ${nextStage} forms already submitted!`)
-                        } else {
-                          alert(`Stage ${nextStage - 1} must be approved first!`)
-                        }
-                      }}
-                      className="submit-test-btn"
-                      style={{
-                        background: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)",
-                        color: "white",
-                        border: "none",
-                        padding: "8px 16px",
-                        borderRadius: "8px",
-                        fontSize: "0.85rem",
-                        fontWeight: "600",
-                        cursor: "pointer",
-                        transition: "all 0.3s ease",
-                      }}
-                    >
-                      📝 Submit Stage {company.stage}
-                    </button>
-                  </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </>
         )}
 
-        {/* Company Logo Footer */}
         <div className="dashboard-footer">
           <div className="footer-logo">
             <img src="/logo.png" alt="Vishvas Power" className="logo" />
