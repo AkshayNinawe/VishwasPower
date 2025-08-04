@@ -1,6 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import axios from "axios"
+import {BACKEND_API_BASE_URL} from "./constant"
 import FormStage from "./FormStage" // Import FormStage
 import "./stage-review-styles.css"
 
@@ -126,10 +128,10 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
     localStorage.setItem("etc_submitted_forms", JSON.stringify(submittedForms))
   }, [submittedForms])
 
-  const handleCreateProject = () => {
+  const handleCreateProject = async () => {
     if (newProject.name && newProject.description && selectedDepartment) {
       const projectId = Math.max(...projects.map((p) => p.id), 0) + 1
-
+  
       const project = {
         id: projectId,
         name: newProject.name,
@@ -138,11 +140,23 @@ const ETCAdminPanel = ({ user, selectedProject, onLogout, onProjectSelect, onCom
         createdAt: new Date().toISOString().split("T")[0],
         departmentId: selectedDepartment.id,
       }
-
-      setProjects([...projects, project])
-      setNewProject({ name: "", description: "" })
-      setShowCreateProjectForm(false)
-      alert(`Project "${project.name}" created successfully in ${selectedDepartment.name}!`)
+  
+      try {
+        const response = await axios.post(`${BACKEND_API_BASE_URL}/api/company`, {
+          projectName: newProject.name,
+          projectDescription: newProject.description,
+        });
+        console.log("Project created successfully on the backend:", response.data);
+      } catch (error) {
+        console.error("Error creating project on the backend:", error);
+        alert("Failed to create project. Please try again.");
+        return;
+      }
+  
+      setProjects([...projects, project]);
+      setNewProject({ name: "", description: "" });
+      setShowCreateProjectForm(false);
+      alert(`Project "${project.name}" created successfully in ${selectedDepartment.name}!`);
     }
   }
 
