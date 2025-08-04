@@ -1,15 +1,15 @@
 import mongoose from 'mongoose';
 
 const companySchema = new mongoose.Schema({
-  projectName: {
+  companyName: {
     type: String,
     required: true,
   },
-  projectDescription: {
+  companyDescription: {
     type: String,
     required: true,
   },
-  projectCompany: {
+  companyProjects: {
     type: [Object],  
     required: true
   }

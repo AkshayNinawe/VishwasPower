@@ -183,13 +183,13 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
 
       try {
         const response = await axios.post(`${BACKEND_API_BASE_URL}/api/company`, {
-          projectName: newCompany.name,
-          projectDescription: newCompany.description,
+          companyName: newCompany.name,
+          companyDescription: newCompany.description,
         });
-        console.log("Project created successfully on the backend:", response.data);
+        console.log("company created successfully on the backend:", response.data);
       } catch (error) {
-        console.error("Error creating project on the backend:", error);
-        alert("Failed to create project. Please try again.");
+        console.error("Error creating company on the backend:", error);
+        alert("Failed to create company. Please try again.");
         return;
       }
 
@@ -200,13 +200,13 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
     }
   }
 
-  const handleAddProject = (CompanyId) => {
-    showInputDialog("Create New Project", "Enter Project name...", (ProjectName) => {
+  const handleAddProject = (CompanyName) => {
+    showInputDialog("Create New Project", "Enter Project name...", async (ProjectName) => {
       if (ProjectName.trim()) {
         const newProject = {
           id: Math.max(...companies.map((c) => c.id), 0) + 1,
           name: ProjectName,
-          CompanyId: CompanyId,
+          CompanyName: CompanyName,
           stage: 1,
           formsCompleted: 0,
           totalForms: getStageFormCount(1),
@@ -215,11 +215,28 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
           stageApprovals: { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false },
           submittedStages: { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false },
         }
-        setCompanies((prev) => [...prev, newProject])
-        showNotification(`Project "${ProjectName}" added to this Company!`, "success")
+        console.log(ProjectName, CompanyName)
+        try {
+          // --- UPDATED POST REQUEST ---
+          // We are now sending both the projectName and the CompanyId in the payload.
+          const response = await axios.post(`${BACKEND_API_BASE_URL}/api/company/addCompany`, {
+            projectName: ProjectName,
+            companyName: CompanyName, // Pass the CompanyId to the backend
+          });
+          
+          console.log("Project created successfully on the backend:", response.data);
+  
+          setCompanies((prev) => [...prev, newProject]);
+          showNotification(`Project "${ProjectName}" added to this Company!`, "success");
+        } catch (error) {
+          console.error("Error creating project on the backend:", error);
+          
+          showNotification("Failed to create project. Please try again.", "error");
+          return;
+        }
       }
     })
-  }
+  }  
 
   // Helper function to get form count for each stage
   const getStageFormCount = (stage) => {
@@ -959,7 +976,7 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
                 <p>Manage companies and their workflows</p>
               </div>
               <div className="section-actions">
-                <button onClick={() => handleAddProject(selectedMainCompany.id)} className="create-btn">
+                <button onClick={() => handleAddProject(selectedMainCompany.name)} className="create-btn">
                   ➕ Create Project
                 </button>
                 <button onClick={() => setSelectedMainCompany(null)} className="back-btn">

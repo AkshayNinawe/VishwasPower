@@ -1,38 +1,59 @@
 import express from 'express';
-import Project from '../model/Company.js';
+import Company from '../model/Company.js';
 
 const router = express.Router();
 
-// Add a new project
+// Add a new Company
 router.post('/', async (req, res) => {
   try {
-    console.log("Add new project" )
-    const { projectName, projectDescription, projectCompany } = req.body;
-    console.log("Adding project with detail", projectName, projectDescription)
-    const newProject = new Project({ projectName, projectDescription, projectCompany });
-    await newProject.save();
-    res.status(201).json(newProject);
+    console.log("Add new company" )
+    const { companyName, companyDescription, companyProject } = req.body;
+    console.log("Adding company with detail", companyName, companyDescription)
+    const newCompany = new Company({ companyName, companyDescription, companyProject });
+    await newCompany.save();
+    res.status(201).json(newCompany);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-// Get all projects
-router.get('/', async (req, res) => {
-  console.log("Get all projects")
+// Add a new project to exisiting company
+router.post('/addCompany', async (req, res) => {
   try {
-    const projects = await Project.find();
-    res.json(projects);
+    const { companyName, projectName } = req.body;
+    const updatedCompany= await Company.findOneAndUpdate(
+      { companyName: companyName },
+      { $push: { companyProjects: projectName }, updatedAt: Date.now() },
+      { new: true }
+    );
+    if (!updatedCompany) {
+        return res.status(404).json({ message: `Project with name '${projectName}' not found.` });
+    }
+    res.status(200).json({
+        message: `Project '${projectName}' added and linked to company '${companyName}'.`,
+        project: updatedCompany
+    });
+  } catch (error) {
+      res.status(500).json({ message: "An internal server error occurred." });
+  }
+});
+
+// Get all Company
+router.get('/', async (req, res) => {
+  console.log("Get all Company")
+  try {
+    const Companies = await Company.find();
+    res.json(Companies);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-// Delete a project by ID
+// Delete a Company by ID
 router.delete('/:id', async (req, res) => {
   try {
-    await Project.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Project deleted successfully' });
+    await Company.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Company deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
