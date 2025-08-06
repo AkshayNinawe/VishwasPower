@@ -1,5 +1,49 @@
 import mongoose from 'mongoose';
 
+const projectSchema = {
+  id: {
+    type: Number,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  companyName: {
+    type: String,
+    required: true,
+  },
+  stage: {
+    type: Number,
+    required: true,
+  },
+  formsCompleted: {
+    type: Number,
+    required: true,
+  },
+  totalForms: {
+    type: Number,
+    required: true,
+  },
+  status: {
+    type: String,
+    required: true,
+  },
+  lastActivity: {
+    type: Date,
+    default: Date.now,
+  },
+  stageApprovals: {
+    type: Map,
+    of: Boolean
+  },
+  submittedStages: {
+    type: Map,
+    of: Boolean
+  },
+};
+
+
 const companySchema = new mongoose.Schema({
   companyName: {
     type: String,
@@ -10,7 +54,7 @@ const companySchema = new mongoose.Schema({
     required: true,
   },
   companyProjects: {
-    type: [Object],  
+    type: [projectSchema],  
     required: true
   }
 }, { timestamps: true });

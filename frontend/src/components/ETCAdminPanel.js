@@ -240,6 +240,7 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
           const response = await axios.post(`${BACKEND_API_BASE_URL}/api/company/addCompany`, {
             projectName: ProjectName,
             companyName: CompanyName, // Pass the CompanyId to the backend
+            companyProjects : newProject
           });
           
           console.log("Project created successfully on the backend:", response.data);
@@ -1005,117 +1006,117 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
 
             <div className="companies-grid">
               {
-              // getCompanyCompanies(selectedMainCompany.companyProjects).length === 0 ? (
-              //   <p className="no-data-message">
-              //     No companies found for this Company. Click "Create Company" to create one.
-              //   </p>
-              // ) : (
-                // getCompanyCompanies(selectedMainCompany.companyProjects).map((Project) => (
-                  (selectedMainCompany.companyProjects).map((Project) => (
-                  <div key={1} className="Project-card">
-                    <div className="Project-header">
-                      <div className="Project-icon" style={{ backgroundColor: "#1E3A8A" }}>
-                        🏢
-                      </div>
-                      <span className={`status-badge ${getStatusColor("in-progress")}`}>
-                        {Project.status === "pending-approval" && "⏳"}
-                        {Project.status === "in-progress" && "🔄"}
-                        {Project.status === "completed" && "✅"}
-                        {Project.status}
-                      </span>
-                    </div>
-                    <h3>{Project}</h3>
-                    <p>
-                      Stage {Project} • {Project}/{Project} forms completed
-                    </p>
-                    <div className="progress-bar">
-                      <div
-                        className="progress-fill"
-                        style={{ width: `${(Project / Project) * 100}%` }}
-                      ></div>
-                    </div>
-                    <div className="Project-footer">
-                      <span>📊 {Math.round((Project / Project) * 100)}% complete</span>
-                      <span>📅 {Project}</span>
-                    </div>
-
-                    <div className="stage-management">
-                      <h4>Stage Management:</h4>
-                      <div className="stages-row">
-                        {[1, 2, 3, 4, 5, 6].map((stage) => {
-                          const stageStatus = "pending-approval" && "⏳ Pending"
-                          return (
-                            <div key={stage} className={`stage-item ${stageStatus}`}>
-                              <div className="stage-number">{stage}</div>
-                              <div className="stage-status-text">
-                                {stageStatus === "approved" && "✅ Approved"}
-                                {stageStatus === "pending-approval" && "⏳ Pending"}
-                                {stageStatus === "available" && "📝 Available"}
-                                {stageStatus === "locked" && "🔒 Locked"}
-                              </div>
-                              {stageStatus === "pending-approval" && (
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation()
-                                    handleReviewStage(Project, stage)
-                                  }}
-                                  className="review-stage-btn"
-                                >
-                                  Review
-                                </button>
-                              )}
-                            </div>
-                          )
-                        })}
-                      </div>
-                    </div>
-
-                    <div className="Project-actions" style={{ marginTop: "15px", display: "flex", gap: "10px" }}>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          handleViewSubmittedForms(Project)
-                        }}
-                        className="view-forms-btn"
-                        style={{
-                          background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
-                          color: "white",
-                          border: "none",
-                          padding: "8px 16px",
-                          borderRadius: "8px",
-                          fontSize: "0.85rem",
-                          fontWeight: "600",
-                          cursor: "pointer",
-                          transition: "all 0.3s ease",
-                        }}
-                      >
-                        📋 View Forms
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          handleStageSubmit(Project)
-                        }}
-                        className="submit-test-btn"
-                        style={{
-                          background: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)",
-                          color: "white",
-                          border: "none",
-                          padding: "8px 16px",
-                          borderRadius: "8px",
-                          fontSize: "0.85rem",
-                          fontWeight: "600",
-                          cursor: "pointer",
-                          transition: "all 0.3s ease",
-                        }}
-                      >
-                        📝 Submit Stage {Project}
-                      </button>
-                    </div>
-                  </div>
-                ))
-              }
+                selectedMainCompany.companyProjects.length === 0 ? (
+                  <p className="no-data-message">
+                    No companies found for this Company. Click "Create Company" to create one.
+                  </p>
+                ) : (
+                  selectedMainCompany.companyProjects.map((Project, index) => (
+                    <div key={index} className="Project-card">
+          <div className="Project-header">
+            <div className="Project-icon" style={{ backgroundColor: "#1E3A8A" }}>
+              🏢
             </div>
+            <span className={`status-badge ${getStatusColor(Project.status)}`}>
+              {Project.status === "pending-approval" && "⏳"}
+              {Project.status === "in-progress" && "🔄"}
+              {Project.status === "completed" && "✅"}
+              {Project.status}
+            </span>
+          </div>
+          <h3>{Project.name}</h3>
+          <p>
+            Stage {Project.stage} • {Project.formsCompleted}/{Project.totalForms} forms completed
+          </p>
+          <div className="progress-bar">
+            <div
+              className="progress-fill"
+              style={{ width: `${(Project.formsCompleted / Project.totalForms) * 100}%` }}
+            ></div>
+          </div>
+          <div className="Project-footer">
+            <span>📊 {Math.round((Project.formsCompleted / Project.totalForms) * 100)}% complete</span>
+            <span>📅 {Project.lastActivity}</span>
+          </div>
+
+          <div className="stage-management">
+            <h4>Stage Management:</h4>
+            <div className="stages-row">
+              {[1, 2, 3, 4, 5, 6].map((stage) => {
+                const stageStatus = Project.stage
+                return (
+                  <div key={stage} className={`stage-item ${stageStatus}`}>
+                    <div className="stage-number">{stage}</div>
+                    <div className="stage-status-text">
+                      {stageStatus === "approved" && "✅ Approved"}
+                      {stageStatus === "pending-approval" && "⏳ Pending"}
+                      {stageStatus === "available" && "📝 Available"}
+                      {stageStatus === "locked" && "🔒 Locked"}
+                    </div>
+                    {stageStatus === "pending-approval" && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleReviewStage(Project, stage)
+                        }}
+                        className="review-stage-btn"
+                      >
+                        Review
+                      </button>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
+          <div className="Project-actions" style={{ marginTop: "15px", display: "flex", gap: "10px" }}>
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                handleViewSubmittedForms(Project)
+              }}
+              className="view-forms-btn"
+              style={{
+                background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                color: "white",
+                border: "none",
+                padding: "8px 16px",
+                borderRadius: "8px",
+                fontSize: "0.85rem",
+                fontWeight: "600",
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+              }}
+            >
+              📋 View Forms
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                handleStageSubmit(Project)
+              }}
+              className="submit-test-btn"
+              style={{
+                background: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)",
+                color: "white",
+                border: "none",
+                padding: "8px 16px",
+                borderRadius: "8px",
+                fontSize: "0.85rem",
+                fontWeight: "600",
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+              }}
+            >
+              📝 Submit Stage {Project.stage}
+            </button>
+          </div>
+        </div>
+      ))
+    )
+  }
+</div>
           </>
         )}
 

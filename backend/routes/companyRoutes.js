@@ -8,7 +8,7 @@ router.post('/', async (req, res) => {
   try {
     console.log("Add new company" )
     const { companyName, companyDescription, companyProject } = req.body;
-    console.log("Adding company with detail", companyName, companyDescription)
+    console.log("Adding company with detail", companyName, companyDescription, companyProject)
     const newCompany = new Company({ companyName, companyDescription, companyProject });
     await newCompany.save();
     res.status(201).json(newCompany);
@@ -20,10 +20,10 @@ router.post('/', async (req, res) => {
 // Add a new project to exisiting company
 router.post('/addCompany', async (req, res) => {
   try {
-    const { companyName, projectName } = req.body;
+    const { companyName, projectName, companyProjects  } = req.body;
     const updatedCompany= await Company.findOneAndUpdate(
       { companyName: companyName },
-      { $push: { companyProjects: projectName }, updatedAt: Date.now() },
+      { $push: { companyProjects: companyProjects  }, updatedAt: Date.now() },
       { new: true }
     );
     if (!updatedCompany) {
@@ -34,7 +34,7 @@ router.post('/addCompany', async (req, res) => {
         project: updatedCompany
     });
   } catch (error) {
-      res.status(500).json({ message: "An internal server error occurred." });
+    res.status(500).json({ message: "An internal server error occurred." });
   }
 });
 
