@@ -1,5 +1,5 @@
 
-import Form1 from "../model/forms/Form1.js";
+import Stage1Form1 from "../model/forms/Stage1Form1.js";
 
 export const getTableData = async (req, res) => {
   console.log("Backend API for getTableData ")
@@ -10,43 +10,19 @@ export const getTableData = async (req, res) => {
 
 export const setTableData = async (req, res) => {
   console.log("Backend API for setTableData");
-
+  //  console.log(req.body)
   try {
-    const {
-      projectName,
-      companyName,
-      coreFrameObtainedValue,
-      coreFrameRemarks,
-      frameTankObtainedValue,
-      frameTankRemarks,
-      coreTankObtainedValue,
-      coreTankRemarks,
-      vpesSignature,
-      customerSignature,
-      date
-    } = req.body;
+    const { formData,  } = req.body;
+    const {tableNumber} = req.params
+    const newStage1Form1 = new Stage1Form1(formData);
 
-    // Create new form document
-    const newForm1 = new Form1({
-      projectName,
-      companyName,
-      coreFrameObtainedValue,
-      coreFrameRemarks,
-      frameTankObtainedValue,
-      frameTankRemarks,
-      coreTankObtainedValue,
-      coreTankRemarks,
-      vpesSignature,
-      customerSignature,
-      date
-    });
-
+    console.log("sdjknsfjknskjdnfl")
     // Save to MongoDB
-    await newForm1.save();
+    await newStage1Form1.save();
 
     res.status(201).json({
       message: "Form data saved successfully",
-      data: newForm1
+      data: newStage1Form1
     });
   } catch (error) {
     console.error("Error saving form data:", error);

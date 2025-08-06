@@ -2,6 +2,9 @@
 
 import { useState, useRef, useEffect, useCallback } from "react"
 import "./form-styles.css"
+import axios from "axios"
+import {BACKEND_API_BASE_URL} from "./constant"
+
 const FormStage = ({ stage, onFormSubmit, onBack, companyData }) => {
   const [currentFormIndex, setCurrentFormIndex] = useState(0)
   const [formData, setFormData] = useState({})
@@ -138,8 +141,23 @@ const FormStage = ({ stage, onFormSubmit, onBack, companyData }) => {
   const currentForm = currentForms[currentFormIndex]
   const isLastFormOfStage = currentFormIndex === currentForms.length - 1
 
-  const handleFormSubmit = (data) => {
+  const handleFormSubmit = async (data) => {
     const updatedFormData = { ...formData, [currentForm.id]: data }
+    console.log(updatedFormData , currentForm, currentFormIndex)
+    try {
+      console.log(updatedFormData)
+      const response = await axios.post(`${BACKEND_API_BASE_URL}/api/table/setTable/stage1form${currentFormIndex+1}`, {
+        formData: updatedFormData
+        // companyDescription: newCompany.description,
+      });
+    } catch (error) {
+      console.error("Error creating company on the backend:", error);
+      alert("Failed to create company. Please try again.");
+      return;
+    }
+
+    console.log(updatedFormData  )
+
     setFormData(updatedFormData)
 
     if (currentFormIndex < currentForms.length - 1) {
