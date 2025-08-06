@@ -127,46 +127,64 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
 
   // Load data from localStorage on component mount
   useEffect(() => {
-    setDepartments(defaultDepartments)
+    setDepartments(defaultDepartments);
+    var backendSavedCompanys = []
+    axios.get(`${BACKEND_API_BASE_URL}/api/company`, {
+      params: {
+          companyName: newCompany.name,
+          companyDescription: newCompany.description,
+      },
+    })
+    .then(response => {
+      backendSavedCompanys = response.data;
+        console.log("company created successfully on the backend:", response.data);
+    
+        setCompanys(backendSavedCompanys)
 
-    const savedCompanys = localStorage.getItem("etc_Companys")
-    const savedCompanies = localStorage.getItem("etc_companies")
-    const savedSubmittedForms = localStorage.getItem("etc_submitted_forms")
-
-    if (savedCompanys) {
-      setCompanys(JSON.parse(savedCompanys))
-    } else {
-      setCompanys(defaultCompanys)
-      localStorage.setItem("etc_Companys", JSON.stringify(defaultCompanys))
-    }
-
-    if (savedCompanies) {
-      setCompanies(JSON.parse(savedCompanies))
-    } else {
-      setCompanies(defaultCompanies)
-      localStorage.setItem("etc_companies", JSON.stringify(defaultCompanies))
-    }
-
-    if (savedSubmittedForms) {
-      setSubmittedForms(JSON.parse(savedSubmittedForms))
-    } else {
-      setSubmittedForms(mockSubmittedForms)
-      localStorage.setItem("etc_submitted_forms", JSON.stringify(mockSubmittedForms))
-    }
+        // const savedCompanys = localStorage.getItem("etc_Companys")
+        // const savedCompanies = localStorage.getItem("etc_companies")
+        // const savedSubmittedForms = localStorage.getItem("etc_submitted_forms")
+    
+        // if (savedCompanys) {
+        //   setCompanys(backendSavedCompanys)
+        // } else {
+        //   setCompanys(defaultCompanys)
+        //   localStorage.setItem("etc_Companys", JSON.stringify(defaultCompanys))
+        // }
+        //  console.log("companys",Companys)
+    
+        // if (savedCompanies) {
+        //   setCompanies(JSON.parse(savedCompanies))
+        // } else {
+        //   setCompanies(defaultCompanies)
+        //   localStorage.setItem("etc_companies", JSON.stringify(defaultCompanies))
+        // }
+    
+        // if (savedSubmittedForms) {
+        //   setSubmittedForms(JSON.parse(savedSubmittedForms))
+        // } else {
+        //   setSubmittedForms(mockSubmittedForms)
+        //   localStorage.setItem("etc_submitted_forms", JSON.stringify(mockSubmittedForms))
+        // }
+    })
+    .catch(error => {
+        console.error("Error creating company on the backend:", error);
+        alert("Failed to create company. Please try again.");
+    });
   }, [])
 
   // Save to localStorage whenever data changes
-  useEffect(() => {
-    localStorage.setItem("etc_Companys", JSON.stringify(Companys))
-  }, [Companys])
+  // useEffect(() => {
+  //   localStorage.setItem("etc_Companys", JSON.stringify(Companys))
+  // }, [Companys])
 
-  useEffect(() => {
-    localStorage.setItem("etc_companies", JSON.stringify(companies))
-  }, [companies])
+  // useEffect(() => {
+  //   localStorage.setItem("etc_companies", JSON.stringify(companies))
+  // }, [companies])
 
-  useEffect(() => {
-    localStorage.setItem("etc_submitted_forms", JSON.stringify(submittedForms))
-  }, [submittedForms])
+  // useEffect(() => {
+  //   localStorage.setItem("etc_submitted_forms", JSON.stringify(submittedForms))
+  // }, [submittedForms])
 
   const handleCreateCompany = async () => {
     if (newCompany.name && newCompany.description && selectedDepartment) {
@@ -889,7 +907,7 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
                     <input
                       type="text"
                       placeholder="Enter Company name"
-                      value={newCompany.name}
+                      value={newCompany.companyName}
                       onChange={(e) => setNewCompany({ ...newCompany, name: e.target.value })}
                       required
                     />
@@ -898,7 +916,7 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
                     <label>Description</label>
                     <textarea
                       placeholder="Enter Company description"
-                      value={newCompany.description}
+                      value={newCompany.companyDescription}
                       onChange={(e) => setNewCompany({ ...newCompany, description: e.target.value })}
                       rows="3"
                       required
@@ -921,19 +939,19 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
             )}
 
             <div className="Companys-grid">
-              {filteredCompanys.map((Company) => {
+              {Companys.map((Company) => {
                 const CompanyCompanies = getCompanyCompanies(Company.id)
 
                 return (
-                  <div key={Company.id} className="Company-card">
+                  <div key={Company._id} className="Company-card">
                     <div className="Company-header">
                       <div className="Company-icon" style={{ backgroundColor: selectedDepartment.color }}>
                         📁
                       </div>
                       <span className={`status-badge ${getStatusColor(Company.status)}`}>{Company.status}</span>
                     </div>
-                    <h3>{Company.name}</h3>
-                    <p>{Company.description}</p>
+                    <h3>{Company.companyName}</h3>
+                    <p>{Company.companyDescription}</p>
                     <div className="Company-footer">
                       <span>🏢 {CompanyCompanies.length} companies</span>
                       <span>📅 {Company.createdAt}</span>
@@ -972,11 +990,11 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
           <>
             <div className="section-header">
               <div>
-                <h2>Companies in {selectedMainCompany.name}</h2>
+                <h2>Companies in {selectedMainCompany.companyName}</h2>
                 <p>Manage companies and their workflows</p>
               </div>
               <div className="section-actions">
-                <button onClick={() => handleAddProject(selectedMainCompany.name)} className="create-btn">
+                <button onClick={() => handleAddProject(selectedMainCompany.companyName)} className="create-btn">
                   ➕ Create Project
                 </button>
                 <button onClick={() => setSelectedMainCompany(null)} className="back-btn">
@@ -986,44 +1004,46 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
             </div>
 
             <div className="companies-grid">
-              {getCompanyCompanies(selectedMainCompany.id).length === 0 ? (
-                <p className="no-data-message">
-                  No companies found for this Company. Click "Create Company" to create one.
-                </p>
-              ) : (
-                getCompanyCompanies(selectedMainCompany.id).map((Project) => (
-                  <div key={Project.id} className="Project-card">
+              {
+              // getCompanyCompanies(selectedMainCompany.companyProjects).length === 0 ? (
+              //   <p className="no-data-message">
+              //     No companies found for this Company. Click "Create Company" to create one.
+              //   </p>
+              // ) : (
+                // getCompanyCompanies(selectedMainCompany.companyProjects).map((Project) => (
+                  (selectedMainCompany.companyProjects).map((Project) => (
+                  <div key={1} className="Project-card">
                     <div className="Project-header">
                       <div className="Project-icon" style={{ backgroundColor: "#1E3A8A" }}>
                         🏢
                       </div>
-                      <span className={`status-badge ${getStatusColor(Project.status)}`}>
+                      <span className={`status-badge ${getStatusColor("in-progress")}`}>
                         {Project.status === "pending-approval" && "⏳"}
                         {Project.status === "in-progress" && "🔄"}
                         {Project.status === "completed" && "✅"}
                         {Project.status}
                       </span>
                     </div>
-                    <h3>{Project.name}</h3>
+                    <h3>{Project}</h3>
                     <p>
-                      Stage {Project.stage} • {Project.formsCompleted}/{Project.totalForms} forms completed
+                      Stage {Project} • {Project}/{Project} forms completed
                     </p>
                     <div className="progress-bar">
                       <div
                         className="progress-fill"
-                        style={{ width: `${(Project.formsCompleted / Project.totalForms) * 100}%` }}
+                        style={{ width: `${(Project / Project) * 100}%` }}
                       ></div>
                     </div>
                     <div className="Project-footer">
-                      <span>📊 {Math.round((Project.formsCompleted / Project.totalForms) * 100)}% complete</span>
-                      <span>📅 {Project.lastActivity}</span>
+                      <span>📊 {Math.round((Project / Project) * 100)}% complete</span>
+                      <span>📅 {Project}</span>
                     </div>
 
                     <div className="stage-management">
                       <h4>Stage Management:</h4>
                       <div className="stages-row">
                         {[1, 2, 3, 4, 5, 6].map((stage) => {
-                          const stageStatus = getStageStatus(Project, stage)
+                          const stageStatus = "pending-approval" && "⏳ Pending"
                           return (
                             <div key={stage} className={`stage-item ${stageStatus}`}>
                               <div className="stage-number">{stage}</div>
@@ -1089,12 +1109,12 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
                           transition: "all 0.3s ease",
                         }}
                       >
-                        📝 Submit Stage {Project.stage}
+                        📝 Submit Stage {Project}
                       </button>
                     </div>
                   </div>
                 ))
-              )}
+              }
             </div>
           </>
         )}
