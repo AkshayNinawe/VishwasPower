@@ -143,11 +143,10 @@ const FormStage = ({ stage, onFormSubmit, onBack, companyData }) => {
 
   const handleFormSubmit = async (data) => {
     const updatedFormData = { ...formData, [currentForm.id]: data }
-    console.log(updatedFormData , currentForm, currentFormIndex)
     try {
       console.log(updatedFormData)
       const response = await axios.post(`${BACKEND_API_BASE_URL}/api/table/setTable/stage1form${currentFormIndex+1}`, {
-        formData: updatedFormData
+        formData: data
         // companyDescription: newCompany.description,
       });
     } catch (error) {
