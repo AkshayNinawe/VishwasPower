@@ -146,6 +146,7 @@ const FormStage = ({ stage, onFormSubmit, onBack, companyData }) => {
     try {
       console.log(updatedFormData)
       const response = await axios.post(`${BACKEND_API_BASE_URL}/api/table/setTable/stage1form${currentFormIndex+1}`, {
+        
         formData: data
         // companyDescription: newCompany.description,
       });

@@ -192,8 +192,8 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
 
       const Company = {
         id: CompanyId,
-        name: newCompany.name,
-        description: newCompany.description,
+        companyName: newCompany.name,
+        companyDescription: newCompany.description,
         status: "active",
         createdAt: new Date().toISOString().split("T")[0],
         departmentId: selectedDepartment.id,
@@ -212,7 +212,7 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
       }
 
       setCompanys([...Companys, Company])
-      setNewCompany({ name: "", description: "" })
+      // setNewCompany({ name: "", description: "" })
       setShowCreateCompanyForm(false)
       showNotification(`Company "${Company.name}" created successfully in ${selectedDepartment.name}!`, "success")
     }
@@ -233,7 +233,6 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
           stageApprovals: { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false },
           submittedStages: { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false },
         }
-        console.log(ProjectName, CompanyName)
         try {
           // --- UPDATED POST REQUEST ---
           // We are now sending both the projectName and the CompanyId in the payload.
@@ -245,6 +244,7 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
           
           console.log("Project created successfully on the backend:", response.data);
   
+          selectedMainCompany.companyProjects.push(newProject)
           setCompanies((prev) => [...prev, newProject]);
           showNotification(`Project "${ProjectName}" added to this Company!`, "success");
         } catch (error) {
@@ -435,11 +435,6 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
     return companies.filter((Project) => Project.CompanyId === CompanyId)
   }
 
-  const filteredCompanys = selectedDepartment
-    ? getDepartmentCompanys(selectedDepartment.id).filter((Company) =>
-        Company.name.toLowerCase().includes(searchTerm.toLowerCase()),
-      )
-    : []
 
   const currentStageForms = reviewMode
     ? submittedForms.filter(
@@ -514,8 +509,11 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
   }
 
   const handleStageSubmit = (Project) => {
+    console.log(Project)
     const nextStage = Project.stage
     const canSubmit = nextStage === 1 || Project.stageApprovals[nextStage - 1]
+
+    //  get call to get the data of the form 1
 
     if (canSubmit && !Project.submittedStages[nextStage]) {
       setFormStageProject(Project)
