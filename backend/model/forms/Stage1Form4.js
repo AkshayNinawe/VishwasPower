@@ -1,95 +1,145 @@
 import mongoose from 'mongoose';
 
-const Stage1Form1Schema = new mongoose.Schema({
-  make: {
+const Stage1Form4Schema = new mongoose.Schema({
+  // General details
+  meterUsed: {
     type: String,
     trim: true,
     default: ''
   },
-  srNo: {
+  date: {
+    type: String, // Suggestion: Consider using Date type for date-based queries
+    trim: true,
+    default: ''
+  },
+  time: {
     type: String,
     trim: true,
     default: ''
   },
-  yearOfMfg: {
-    type: String, // Can be changed to Number if only numerical year is expected
-    trim: true,
-    default: ''
-  },
-
-  // Electrical specifications
-  currentHV: {
-    type: String, // Can be changed to Number for calculations
-    trim: true,
-    default: ''
-  },
-  currentLV: {
-    type: String, // Can be changed to Number for calculations
-    trim: true,
-    default: ''
-  },
-  hvKv: {
-    type: String, // Can be changed to Number for calculations
-    trim: true,
-    default: ''
-  },
-  lvKv: {
-    type: String, // Can be changed to Number for calculations
-    trim: true,
-    default: ''
-  },
-  mvaRating: {
-    type: String, // Can be changed to Number for calculations
-    trim: true,
-    default: ''
-  },
-  impedancePercent: {
-    type: String, // Can be changed to Number for calculations
-    trim: true,
-    default: ''
-  },
-
-  // Mechanical and physical information
-  winding: {
+  modelSrNo: {
     type: String,
     trim: true,
     default: ''
   },
-  tempRiseOil: {
-    type: String, // Can be changed to Number for calculations
+
+  // Temperature readings
+  wti: {
+    type: String, // Suggestion: Consider using Number type for calculations
     trim: true,
     default: ''
   },
-  noOfRadiators: {
-    type: String, // Can be changed to Number for calculations
-    trim: true,
-    default: ''
-  },
-  transportingWeight: {
-    type: String, // Can be changed to Number for calculations
-    trim: true,
-    default: ''
-  },
-  weightCoreWinding: {
-    type: String, // Can be changed to Number for calculations
-    trim: true,
-    default: ''
-  },
-  oilQuantityLiter: {
-    type: String, // Can be changed to Number for calculations
-    trim: true,
-    default: ''
-  },
-  totalWeight: {
-    type: String, // Can be changed to Number for calculations
+  oti: {
+    type: String, // Suggestion: Consider using Number type for calculations
     trim: true,
     default: ''
   },
 
+  // Bushing data
+  bushing11: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  bushing12: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+
+  // 0.5kV Bushing 11 Readings
+  bushing11_05kv_tanDelta: {
+    type: String, // Suggestion: Consider using Number type for calculations
+    trim: true,
+    default: ''
+  },
+  bushing11_05kv_capacitance: {
+    type: String, // Suggestion: Consider using Number type for calculations
+    trim: true,
+    default: ''
+  },
+  bushing11_05kv_excitationCurrent: {
+    type: String, // Suggestion: Consider using Number type for calculations
+    trim: true,
+    default: ''
+  },
+  bushing11_05kv_dielectricLoss: {
+    type: String, // Suggestion: Consider using Number type for calculations
+    trim: true,
+    default: ''
+  },
+
+  // 0.5kV Bushing 12 Readings
+  bushing12_05kv_tanDelta: {
+    type: String, // Suggestion: Consider using Number type for calculations
+    trim: true,
+    default: ''
+  },
+  bushing12_05kv_capacitance: {
+    type: String, // Suggestion: Consider using Number type for calculations
+    trim: true,
+    default: ''
+  },
+  bushing12_05kv_excitationCurrent: {
+    type: String, // Suggestion: Consider using Number type for calculations
+    trim: true,
+    default: ''
+  },
+  bushing12_05kv_dielectricLoss: {
+    type: String, // Suggestion: Consider using Number type for calculations
+    trim: true,
+    default: ''
+  },
+
+  // 1.0kV Bushing 11 Readings
+  bushing11_10kv_tanDelta: {
+    type: String, // Suggestion: Consider using Number type for calculations
+    trim: true,
+    default: ''
+  },
+  bushing11_10kv_capacitance: {
+    type: String, // Suggestion: Consider using Number type for calculations
+    trim: true,
+    default: ''
+  },
+  bushing11_10kv_excitationCurrent: {
+    type: String, // Suggestion: Consider using Number type for calculations
+    trim: true,
+    default: ''
+  },
+  bushing11_10kv_dielectricLoss: {
+    type: String, // Suggestion: Consider using Number type for calculations
+    trim: true,
+    default: ''
+  },
+
+  // 1.0kV Bushing 12 Readings
+  bushing12_10kv_tanDelta: {
+    type: String, // Suggestion: Consider using Number type for calculations
+    trim: true,
+    default: ''
+  },
+  bushing12_10kv_capacitance: {
+    type: String, // Suggestion: Consider using Number type for calculations
+    trim: true,
+    default: ''
+  },
+  bushing12_10kv_excitationCurrent: {
+    type: String, // Suggestion: Consider using Number type for calculations
+    trim: true,
+    default: ''
+  },
+  bushing12_10kv_dielectricLoss: {
+    type: String, // Suggestion: Consider using Number type for calculations
+    trim: true,
+    default: ''
+  },
+
+  // Photos
   photos: {
-    type: [String],
-    default: []
-  },
+    type: Object,
+    default: {}
+  }
 }, { timestamps: true });
 
-export default mongoose.model("Stage1Form1", Stage1Form1Schema);
+export default mongoose.model("Stage1Form4", Stage1Form4Schema);

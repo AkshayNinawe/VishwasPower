@@ -1,95 +1,121 @@
 import mongoose from 'mongoose';
 
-const Stage1Form1Schema = new mongoose.Schema({
-  make: {
+const Stage1Form3Schema = new mongoose.Schema({
+  // New fields from the inspection data
+  betweenCoreFrame: {
     type: String,
     trim: true,
     default: ''
   },
-  srNo: {
+  betweenCoreFrameRemarks: {
     type: String,
     trim: true,
     default: ''
   },
-  yearOfMfg: {
-    type: String, // Can be changed to Number if only numerical year is expected
-    trim: true,
-    default: ''
-  },
-
-  // Electrical specifications
-  currentHV: {
-    type: String, // Can be changed to Number for calculations
-    trim: true,
-    default: ''
-  },
-  currentLV: {
-    type: String, // Can be changed to Number for calculations
-    trim: true,
-    default: ''
-  },
-  hvKv: {
-    type: String, // Can be changed to Number for calculations
-    trim: true,
-    default: ''
-  },
-  lvKv: {
-    type: String, // Can be changed to Number for calculations
-    trim: true,
-    default: ''
-  },
-  mvaRating: {
-    type: String, // Can be changed to Number for calculations
-    trim: true,
-    default: ''
-  },
-  impedancePercent: {
-    type: String, // Can be changed to Number for calculations
-    trim: true,
-    default: ''
-  },
-
-  // Mechanical and physical information
-  winding: {
+  betweenFrameTank: {
     type: String,
     trim: true,
     default: ''
   },
-  tempRiseOil: {
-    type: String, // Can be changed to Number for calculations
+  betweenFrameTankRemarks: {
+    type: String,
     trim: true,
     default: ''
   },
-  noOfRadiators: {
-    type: String, // Can be changed to Number for calculations
+  betweenCoreTank: {
+    type: String,
     trim: true,
     default: ''
   },
-  transportingWeight: {
-    type: String, // Can be changed to Number for calculations
+  betweenCoreTankRemarks: {
+    type: String,
     trim: true,
     default: ''
   },
-  weightCoreWinding: {
-    type: String, // Can be changed to Number for calculations
+  filterMachine: {
+    type: String,
     trim: true,
     default: ''
   },
-  oilQuantityLiter: {
-    type: String, // Can be changed to Number for calculations
+  filterMachineChecked: {
+    type: Boolean,
+    default: false
+  },
+  filterCapacity: {
+    type: String,
     trim: true,
     default: ''
   },
-  totalWeight: {
-    type: String, // Can be changed to Number for calculations
+  filterCapacityChecked: {
+    type: Boolean,
+    default: false
+  },
+  vacuumPumpCapacity: {
+    type: String,
     trim: true,
     default: ''
   },
-
+  vacuumPumpCapacityChecked: {
+    type: Boolean,
+    default: false
+  },
+  reservoirAvailable: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  reservoirAvailableChecked: {
+    type: Boolean,
+    default: false
+  },
+  reservoirCapacity: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  reservoirCapacityChecked: {
+    type: Boolean,
+    default: false
+  },
+  hosePipes: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  hosePipesChecked: {
+    type: Boolean,
+    default: false
+  },
+  craneAvailable: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  craneAvailableChecked: {
+    type: Boolean,
+    default: false
+  },
+  fireExtinguisher: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  firstAidKit: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  ppeEquipment: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  
+  // Consolidated 'photos' field to be an object
   photos: {
-    type: [String],
-    default: []
-  },
+    type: Object,
+    default: {}
+  }
 }, { timestamps: true });
 
-export default mongoose.model("Stage1Form1", Stage1Form1Schema);
+export default mongoose.model("Stage1Form3", Stage1Form3Schema);

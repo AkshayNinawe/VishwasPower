@@ -1,6 +1,17 @@
 import mongoose from 'mongoose';
 
-const Stage1Form1Schema = new mongoose.Schema({
+const Stage1Form5Schema = new mongoose.Schema({
+  // General details
+  date: {
+    type: String, // Suggestion: Consider using Date type for date-based queries
+    trim: true,
+    default: ''
+  },
+  time: {
+    type: String,
+    trim: true,
+    default: ''
+  },
   make: {
     type: String,
     trim: true,
@@ -11,85 +22,66 @@ const Stage1Form1Schema = new mongoose.Schema({
     trim: true,
     default: ''
   },
-  yearOfMfg: {
-    type: String, // Can be changed to Number if only numerical year is expected
-    trim: true,
-    default: ''
-  },
 
-  // Electrical specifications
-  currentHV: {
-    type: String, // Can be changed to Number for calculations
-    trim: true,
-    default: ''
-  },
-  currentLV: {
-    type: String, // Can be changed to Number for calculations
-    trim: true,
-    default: ''
-  },
-  hvKv: {
-    type: String, // Can be changed to Number for calculations
-    trim: true,
-    default: ''
-  },
-  lvKv: {
-    type: String, // Can be changed to Number for calculations
-    trim: true,
-    default: ''
-  },
-  mvaRating: {
-    type: String, // Can be changed to Number for calculations
-    trim: true,
-    default: ''
-  },
-  impedancePercent: {
-    type: String, // Can be changed to Number for calculations
-    trim: true,
-    default: ''
-  },
-
-  // Mechanical and physical information
-  winding: {
+  // Tester and environmental details
+  insulationTesterDetails: {
     type: String,
     trim: true,
     default: ''
   },
-  tempRiseOil: {
-    type: String, // Can be changed to Number for calculations
+  ambTemp: {
+    type: String, // Suggestion: Consider using Number type for calculations
     trim: true,
     default: ''
   },
-  noOfRadiators: {
-    type: String, // Can be changed to Number for calculations
+  oilTemp: {
+    type: String, // Suggestion: Consider using Number type for calculations
     trim: true,
     default: ''
   },
-  transportingWeight: {
-    type: String, // Can be changed to Number for calculations
+  wdgTemp: {
+    type: String, // Suggestion: Consider using Number type for calculations
     trim: true,
     default: ''
   },
-  weightCoreWinding: {
-    type: String, // Can be changed to Number for calculations
+  range: {
+    type: String,
     trim: true,
     default: ''
   },
-  oilQuantityLiter: {
-    type: String, // Can be changed to Number for calculations
+  relativeHumidity: {
+    type: String,
     trim: true,
     default: ''
   },
-  totalWeight: {
-    type: String, // Can be changed to Number for calculations
+  voltageLevel: {
+    type: String,
     trim: true,
     default: ''
   },
 
-  photos: {
-    type: [String],
-    default: []
+  // Readings and ratios
+  hvEarth15Sec: {
+    type: String, // Suggestion: Consider using Number type for calculations
+    trim: true,
+    default: ''
   },
+  hvEarth60Sec: {
+    type: String, // Suggestion: Consider using Number type for calculations
+    trim: true,
+    default: ''
+  },
+  ratioIR60IR15: {
+    type: String, // Suggestion: Consider using Number type for calculations
+    trim: true,
+    default: ''
+  },
+
+  // Photos
+  photos: {
+    type: Object,
+    default: {}
+  }
 }, { timestamps: true });
 
-export default mongoose.model("Stage1Form1", Stage1Form1Schema);
+export default mongoose.model("Stage1Form5", Stage1Form5Schema);
