@@ -13,6 +13,9 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
   const [companies, setCompanies] = useState([])
   const [submittedForms, setSubmittedForms] = useState([])
 
+  const [projectName, setProjectName] = useState(null)
+  const [companyName, setCompanyName] = useState(null)
+
   const [selectedDepartment, setSelectedDepartment] = useState(null)
   const [selectedMainCompany, setSelectedMainCompany] = useState(null)
 
@@ -224,7 +227,7 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
         const newProject = {
           id: Math.max(...companies.map((c) => c.id), 0) + 1,
           name: ProjectName,
-          CompanyName: CompanyName,
+          companyName: CompanyName,
           stage: 1,
           formsCompleted: 0,
           totalForms: getStageFormCount(1),
@@ -508,12 +511,25 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
     setFormStageStage(1)
   }
 
-  const handleStageSubmit = (Project) => {
-    console.log(Project)
+  const handleStageSubmit = async (Project) => {
     const nextStage = Project.stage
     const canSubmit = nextStage === 1 || Project.stageApprovals[nextStage - 1]
-
+    setProjectName(Project.name)
+    setCompanyName(Project.companyName)
     //  get call to get the data of the form 1
+    try {
+      const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form1`, {
+        params:{
+          companyName: Project.companyName,
+          projectName: Project.name,
+        }
+      });
+      console.log("company created successfully on the backend:", response.data);
+    } catch (error) {
+      console.error("Error creating company on the backend:", error);
+      alert("Failed to create company. Please try again.");
+      return;
+    }
 
     if (canSubmit && !Project.submittedStages[nextStage]) {
       setFormStageProject(Project)
@@ -606,6 +622,8 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
       <main className="etc-main">
         {showFormStage && formStageProject ? (
           <FormStage
+            projectName = {projectName}
+            companyName = {companyName}
             stage={formStageStage}
             onFormSubmit={handleFormStageSubmit}
             onBack={handleBackFromFormStage}

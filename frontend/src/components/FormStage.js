@@ -5,7 +5,7 @@ import "./form-styles.css"
 import axios from "axios"
 import {BACKEND_API_BASE_URL} from "./constant"
 
-const FormStage = ({ stage, onFormSubmit, onBack, companyData }) => {
+const FormStage = ({ projectName, companyName, stage, onFormSubmit, onBack, companyData }) => {
   const [currentFormIndex, setCurrentFormIndex] = useState(0)
   const [formData, setFormData] = useState({})
 
@@ -146,8 +146,9 @@ const FormStage = ({ stage, onFormSubmit, onBack, companyData }) => {
     try {
       console.log(updatedFormData)
       const response = await axios.post(`${BACKEND_API_BASE_URL}/api/table/setTable/stage1form${currentFormIndex+1}`, {
-        
-        formData: data
+        projectName : projectName,
+        companyName : companyName,
+        data: data
         // companyDescription: newCompany.description,
       });
     } catch (error) {

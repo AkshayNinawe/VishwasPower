@@ -6,7 +6,7 @@ const Stage1Form1Schema = new mongoose.Schema({
     trim: true,
     required: true
   },
-  CompanyName: {
+  companyName: {
     type: String,
     trim: true,
     required: true
