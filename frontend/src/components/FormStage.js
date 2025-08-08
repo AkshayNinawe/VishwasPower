@@ -5,11 +5,40 @@ import "./form-styles.css"
 import axios from "axios"
 import {BACKEND_API_BASE_URL} from "./constant"
 
-const FormStage = ({ projectName, companyName, stage, onFormSubmit, onBack, companyData }) => {
+const FormStage = ({ projectName, companyName, stage, onFormSubmit, onBack, companyData, firstFormDataFromDB }) => {
   const [currentFormIndex, setCurrentFormIndex] = useState(0)
   const [formData, setFormData] = useState({})
 
-  // Stage 1 Forms - Based on provided images
+  const StageSchemas = {
+    'Stage1' : {
+      'stage1form1' : firstFormDataFromDB,
+      'stage1form2' : {},
+      'stage1from3' : {},
+      'stage1from4' : {},
+      'stage1from5' : {},
+    },
+    'Stage2' : {
+      'stage2form1' : firstFormDataFromDB,
+      'stage2form2' : {},
+      },
+    'Stage3' : {
+      'stage3form1' : firstFormDataFromDB,
+      'stage3form2' : {},
+      },
+    'Stage4' : {
+      'stage4form1' : firstFormDataFromDB,
+      'stage4form2' : {},
+      },
+    'Stage5' : {
+      'stage5form1' : firstFormDataFromDB,
+      'stage5form2' : {},
+      },
+  }
+
+  const stageNumber = 'Stage'+stage
+  const initialFormData = StageSchemas[stageNumber] || StageSchemas["Stage1"];
+  const [formDataFix, setFormDataFix] = useState(initialFormData)
+
   const stage1Forms = [
     {
       id: "name-plate-details",
@@ -142,24 +171,35 @@ const FormStage = ({ projectName, companyName, stage, onFormSubmit, onBack, comp
   const isLastFormOfStage = currentFormIndex === currentForms.length - 1
 
   const handleFormSubmit = async (data) => {
-    const updatedFormData = { ...formData, [currentForm.id]: data }
+    const updatedFormData = { ...formData, [currentForm.form]: data }
     try {
-      console.log(updatedFormData)
+      console.log("DataBefore: ", updatedFormData)
       const response = await axios.post(`${BACKEND_API_BASE_URL}/api/table/setTable/stage1form${currentFormIndex+1}`, {
         projectName : projectName,
         companyName : companyName,
         data: data
         // companyDescription: newCompany.description,
       });
+      console.log("Updating the data in DB")
+
+      const getResponse = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form${currentFormIndex+2}`, {
+        params:{
+          companyName: projectName,
+          projectName: companyName,
+        }
+      });
+      const nextForm = "stage" + stage + "form" + (currentFormIndex+2)
+      formDataFix.nextForm = getResponse.data
+
+      console.log(response.data)
+    
     } catch (error) {
       console.error("Error creating company on the backend:", error);
       alert("Failed to create company. Please try again.");
       return;
     }
-
-    console.log(updatedFormData  )
-
     setFormData(updatedFormData)
+    console.log("DataAfter: ", updatedFormData)
 
     if (currentFormIndex < currentForms.length - 1) {
       setCurrentFormIndex(currentFormIndex + 1)
@@ -215,6 +255,7 @@ const FormStage = ({ projectName, companyName, stage, onFormSubmit, onBack, comp
             onSubmit={handleFormSubmit}
             onPrevious={currentFormIndex > 0 ? handlePrevious : null}
             initialData={formData[currentForm.id] || {}}
+            initialDataFix = {formDataFix[currentForm.id] || {}}
             companyData={companyData}
             isLastFormOfStage={isLastFormOfStage}
           />
@@ -676,6 +717,7 @@ const SignatureBox = ({ label, nameValue, onNameChange, onSignatureChange, initi
 
 // Form 1: Name Plate Details Transformer
 function NamePlateDetailsForm({ onSubmit, onPrevious, initialData, isLastFormOfStage }) {
+  
   const [formData, setFormData] = useState({
     make: initialData.make || "",
     currentHV: initialData.currentHV || "",

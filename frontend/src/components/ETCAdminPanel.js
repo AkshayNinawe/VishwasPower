@@ -29,6 +29,7 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
   const [showSubmitterReview, setShowSubmitterReview] = useState(false)
 
   // State for showing and managing FormStage
+  const [formDataFromDB , setFormDataFromDB] = useState(false)
   const [showFormStage, setShowFormStage] = useState(false)
   const [formStageProject, setFormStageProject] = useState(null)
   const [formStageStage, setFormStageStage] = useState(1)
@@ -524,7 +525,9 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
           projectName: Project.name,
         }
       });
-      console.log("company created successfully on the backend:", response.data);
+      const formDataFromDB = response.data.data
+      setFormDataFromDB(formDataFromDB)
+      console.log("Get data of the first form", response.data);
     } catch (error) {
       console.error("Error creating company on the backend:", error);
       alert("Failed to create company. Please try again.");
@@ -622,6 +625,7 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
       <main className="etc-main">
         {showFormStage && formStageProject ? (
           <FormStage
+            firstFormDataFromDB = {formDataFromDB}
             projectName = {projectName}
             companyName = {companyName}
             stage={formStageStage}
