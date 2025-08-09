@@ -3,7 +3,7 @@ import { setCompanyData, setNewCompanyData, getAllCompanyData, deleteCompanyByID
 
 const router = express.Router();
 
-router.post('/',setCompanyData)
+router.post('/',setNewCompanyData)
 router.post('/addCompany', setCompanyData)
 router.get('/', getAllCompanyData)
 router.delete('/:id', deleteCompanyByID)

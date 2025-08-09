@@ -1010,7 +1010,7 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
 
             <div className="companies-grid">
               {
-                selectedMainCompany.companyProjects.length === 0 ? (
+                selectedMainCompany.companyProjects === undefined || selectedMainCompany.companyProjects.length === 0 ? (
                   <p className="no-data-message">
                     No companies found for this Company. Click "Create Company" to create one.
                   </p>
