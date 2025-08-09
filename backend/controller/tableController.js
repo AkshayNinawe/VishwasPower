@@ -46,90 +46,23 @@ export const setTableData = async (req, res) => {
   try {
     const {tableName} = req.params
     const { data, companyName, projectName  } = req.body;
-    if(tableName === 'stage1form1')
-      {
-        data.photos = []
-        const updatedForm = await Stage1Form1.findOneAndUpdate(
-          { projectName, companyName }, // Query to find the document
-          { data }, // Data to update or set
-          {
-            new: true, // Return the new, modified document
-            upsert: true, // Create a new document if none is found
-            runValidators: true // Run schema validators on the new or updated document
-          }
-        );
-        res.status(201).json({
-          message: "Form data saved successfully",
-          data: updatedForm
-        });
-      }
-      if(tableName === 'stage1form2')
+    if(StageSchemas[tableName]){
+      data.photos = []
+      const StageSchema = StageSchemas[tableName]
+      const updatedForm = await StageSchema.findOneAndUpdate(
+        { projectName, companyName }, // Query to find the document
+        { data }, // Data to update or set
         {
-          data.photos = []
-          const updatedForm = await Stage1Form2.findOneAndUpdate(
-            { projectName, companyName }, // Query to find the document
-            { data }, // Data to update or set
-            {
-              new: true, // Return the new, modified document
-              upsert: true, // Create a new document if none is found
-              runValidators: true // Run schema validators on the new or updated document
-            }
-          );
-          res.status(201).json({
-            message: "Form data saved successfully",
-            data: updatedForm
-          });
+          new: true, // Return the new, modified document
+          upsert: true, // Create a new document if none is found
+          runValidators: true // Run schema validators on the new or updated document
         }
-        if(tableName === 'stage1form3')
-          {
-            const updatedForm = await Stage1Form3.findOneAndUpdate(
-              { projectName, companyName }, // Query to find the document
-              { data }, // Data to update or set
-              {
-                new: true, // Return the new, modified document
-                upsert: true, // Create a new document if none is found
-                runValidators: true // Run schema validators on the new or updated document
-              }
-            );
-            res.status(201).json({
-              message: "Form data saved successfully",
-              data: updatedForm
-            });
-          }
-          if(tableName === 'stage1form4')
-            {
-              const updatedForm = await Stage1Form4.findOneAndUpdate(
-                { projectName, companyName }, // Query to find the document
-                { data }, // Data to update or set
-                {
-                  new: true, // Return the new, modified document
-                  upsert: true, // Create a new document if none is found
-                  runValidators: true // Run schema validators on the new or updated document
-                }
-              );
-              res.status(201).json({
-                message: "Form data saved successfully",
-                data: updatedForm
-              });
-            }
-            if(tableName === 'stage1form5')
-              {
-                const updatedForm = await Stage1Form5.findOneAndUpdate(
-                  { projectName, companyName }, // Query to find the document
-                  { data }, // Data to update or set
-                  {
-                    new: true, // Return the new, modified document
-                    upsert: true, // Create a new document if none is found
-                    runValidators: true // Run schema validators on the new or updated document
-                  }
-                );
-                res.status(201).json({
-                  message: "Form data saved successfully",
-                  data: updatedForm
-                });
-              }
-
-    
+      );
+      res.status(201).json({
+        message: "Form data saved successfully",
+        data: updatedForm
+      });
+    }
 
     
   } catch (error) {

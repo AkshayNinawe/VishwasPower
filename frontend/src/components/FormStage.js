@@ -35,7 +35,7 @@ const FormStage = ({ projectName, companyName, stage, onFormSubmit, onBack, comp
       },
   }
 
-  const stageNumber = 'Stage'+stage
+  const stageNumber = 'Stage' + stage
   const initialFormData = StageSchemas[stageNumber] || StageSchemas["Stage1"];
   const [formDataFix, setFormDataFix] = useState(initialFormData)
 
@@ -173,15 +173,12 @@ const FormStage = ({ projectName, companyName, stage, onFormSubmit, onBack, comp
   const handleFormSubmit = async (data) => {
     const updatedFormData = { ...formData, [currentForm.form]: data }
     try {
-      console.log("DataBefore: ", updatedFormData)
-      const response = await axios.post(`${BACKEND_API_BASE_URL}/api/table/setTable/stage1form${currentFormIndex+1}`, {
+      const response = await axios.post(`${BACKEND_API_BASE_URL}/api/table/setTable/Stage1Form${currentFormIndex+1}`, {
         projectName : projectName,
         companyName : companyName,
         data: data
-        // companyDescription: newCompany.description,
       });
-      console.log("Updating the data in DB")
-
+      
       const getResponse = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form${currentFormIndex+2}`, {
         params:{
           companyName: projectName,
@@ -189,18 +186,15 @@ const FormStage = ({ projectName, companyName, stage, onFormSubmit, onBack, comp
         }
       });
       const nextForm = "stage" + stage + "form" + (currentFormIndex+2)
-      formDataFix.nextForm = getResponse.data
 
-      console.log(response.data)
-    
+      
     } catch (error) {
       console.error("Error creating company on the backend:", error);
       alert("Failed to create company. Please try again.");
       return;
     }
     setFormData(updatedFormData)
-    console.log("DataAfter: ", updatedFormData)
-
+    
     if (currentFormIndex < currentForms.length - 1) {
       setCurrentFormIndex(currentFormIndex + 1)
     } else {
@@ -255,9 +249,12 @@ const FormStage = ({ projectName, companyName, stage, onFormSubmit, onBack, comp
             onSubmit={handleFormSubmit}
             onPrevious={currentFormIndex > 0 ? handlePrevious : null}
             initialData={formData[currentForm.id] || {}}
-            initialDataFix = {formDataFix[currentForm.id] || {}}
             companyData={companyData}
             isLastFormOfStage={isLastFormOfStage}
+            projectName={projectName}
+            companyName={companyName}
+            // Add the stage prop here
+            stage={stage}
           />
         </div>
       </div>
@@ -716,262 +713,306 @@ const SignatureBox = ({ label, nameValue, onNameChange, onSignatureChange, initi
 // Stage 1 Form Components (keeping existing ones)
 
 // Form 1: Name Plate Details Transformer
-function NamePlateDetailsForm({ onSubmit, onPrevious, initialData, isLastFormOfStage }) {
-  
-  const [formData, setFormData] = useState({
-    make: initialData.make || "",
-    currentHV: initialData.currentHV || "",
-    srNo: initialData.srNo || "",
-    currentLV: initialData.currentLV || "",
-    mvaRating: initialData.mvaRating || "",
-    tempRiseOil: initialData.tempRiseOil || "",
-    hvKv: initialData.hvKv || "",
-    winding: initialData.winding || "",
-    lvKv: initialData.lvKv || "",
-    transportingWeight: initialData.transportingWeight || "",
-    impedancePercent: initialData.impedancePercent || "",
-    noOfRadiators: initialData.noOfRadiators || "",
-    yearOfMfg: initialData.yearOfMfg || "",
-    weightCoreWinding: initialData.weightCoreWinding || "",
-    oilQuantityLiter: initialData.oilQuantityLiter || "",
-    totalWeight: initialData.totalWeight || "",
-    photos: initialData.photos || {},
-    ...initialData,
-  })
+function NamePlateDetailsForm({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyData,stage, companyName, projectName}) {
 
-  const handleSubmit = (e) => {
+const [formData, setFormData] = useState({
+    make: "",
+    currentHV:  "",
+    srNo: "",
+    currentLV: "",
+    mvaRating: "",
+    tempRiseOil:  "",
+    hvKv:  "",
+    winding:  "",
+    lvKv: "",
+    transportingWeight:  "",
+    impedancePercent: "",
+    noOfRadiators:  "",
+    yearOfMfg: "",
+    weightCoreWinding: "",
+    oilQuantityLiter: "",
+    totalWeight: "",
+    photos: {},
+    ...initialData,
+})
+
+useEffect(() => {
+  const fetchFormData = async () => {
+      try {
+          const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form1`, {
+              params: {
+                  companyName: companyName,
+                  projectName: projectName,
+              }
+          });
+          if(response.data && response.data.data){
+            console.log("Data fetched from DB for stage1Form1");
+            setFormData(response.data.data);
+          }else{
+            console.log("There is no data in DB.");
+          }
+      } catch (error) {
+          console.error("Error fetching data:", error);
+      }
+  };
+  fetchFormData();
+}, [ projectName, companyName]); 
+
+const handleSubmit = (e) => {
     e.preventDefault()
     onSubmit(formData)
-  }
+}
 
-  const handlePhotoChange = (key, file) => {
+const handlePhotoChange = (key, file) => {
     setFormData((prev) => ({
-      ...prev,
-      photos: { ...prev.photos, [key]: file },
+        ...prev,
+        photos: { ...prev.photos, [key]: file },
     }))
-  }
+}
 
-  const photoRequirements = [
+const photoRequirements = [
     { key: "transformer", label: "Transformer" },
     { key: "oilLevelGauge", label: "Oil Level Gauge" },
     { key: "wheelLocking", label: "Wheel Locking" },
     { key: "transformerFoundation", label: "Transformer Foundation Level Condition" },
-  ]
+]
 
-  return (
+return (
     <form onSubmit={handleSubmit} className="form-container">
-      <div className="company-header">
-        <h2>NAME PLATE DETAILS TRANSFORMER</h2>
-      </div>
+        <div className="company-header">
+            <h2>NAME PLATE DETAILS TRANSFORMER</h2>
+        </div>
 
-      <table className="form-table">
-        <tbody>
-          <tr>
-            <td>
-              <strong>MAKE</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.make}
-                onChange={(e) => setFormData({ ...formData, make: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>CURRENT HV (A)</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.currentHV}
-                onChange={(e) => setFormData({ ...formData, currentHV: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>SR. NO.</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.srNo}
-                onChange={(e) => setFormData({ ...formData, srNo: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>LV (A)</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.currentLV}
-                onChange={(e) => setFormData({ ...formData, currentLV: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>MVA Rating</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.mvaRating}
-                onChange={(e) => setFormData({ ...formData, mvaRating: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Temp. Rise over amb. In Oil °C</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.tempRiseOil}
-                onChange={(e) => setFormData({ ...formData, tempRiseOil: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>HV (KV)</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvKv}
-                onChange={(e) => setFormData({ ...formData, hvKv: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Winding</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.winding}
-                onChange={(e) => setFormData({ ...formData, winding: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>LV (KV)</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lvKv}
-                onChange={(e) => setFormData({ ...formData, lvKv: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Transporting weight</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.transportingWeight}
-                onChange={(e) => setFormData({ ...formData, transportingWeight: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>% Impedance</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.impedancePercent}
-                onChange={(e) => setFormData({ ...formData, impedancePercent: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>No. Of radiators</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.noOfRadiators}
-                onChange={(e) => setFormData({ ...formData, noOfRadiators: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Year of Mfg.</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.yearOfMfg}
-                onChange={(e) => setFormData({ ...formData, yearOfMfg: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Weight of Core & Winding.</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.weightCoreWinding}
-                onChange={(e) => setFormData({ ...formData, weightCoreWinding: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Oil Quantity in liter</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.oilQuantityLiter}
-                onChange={(e) => setFormData({ ...formData, oilQuantityLiter: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Total Weight</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.totalWeight}
-                onChange={(e) => setFormData({ ...formData, totalWeight: e.target.value })}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+        <table className="form-table">
+            <tbody>
+                <tr>
+                    <td>
+                        <strong>MAKE</strong>
+                    </td>
+                    <td>
+                        <input
+                            type="text"
+                            value={formData.make}
+                            onChange={(e) => setFormData({ ...formData, make: e.target.value })}
+                        />
+                    </td>
+                    <td>
+                        <strong>CURRENT HV (A)</strong>
+                    </td>
+                    <td>
+                        <input
+                            type="text"
+                            value={formData.currentHV}
+                            onChange={(e) => setFormData({ ...formData, currentHV: e.target.value })}
+                        />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>SR. NO.</strong>
+                    </td>
+                    <td>
+                        <input
+                            type="text"
+                            value={formData.srNo}
+                            onChange={(e) => setFormData({ ...formData, srNo: e.target.value })}
+                        />
+                    </td>
+                    <td>
+                        <strong>LV (A)</strong>
+                    </td>
+                    <td>
+                        <input
+                            type="text"
+                            value={formData.currentLV}
+                            onChange={(e) => setFormData({ ...formData, currentLV: e.target.value })}
+                        />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>MVA Rating</strong>
+                    </td>
+                    <td>
+                        <input
+                            type="text"
+                            value={formData.mvaRating}
+                            onChange={(e) => setFormData({ ...formData, mvaRating: e.target.value })}
+                        />
+                    </td>
+                    <td>
+                        <strong>Temp. Rise over amb. In Oil °C</strong>
+                    </td>
+                    <td>
+                        <input
+                            type="text"
+                            value={formData.tempRiseOil}
+                            onChange={(e) => setFormData({ ...formData, tempRiseOil: e.target.value })}
+                        />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>HV (KV)</strong>
+                    </td>
+                    <td>
+                        <input
+                            type="text"
+                            value={formData.hvKv}
+                            onChange={(e) => setFormData({ ...formData, hvKv: e.target.value })}
+                        />
+                    </td>
+                    <td>
+                        <strong>Winding</strong>
+                    </td>
+                    <td>
+                        <input
+                            type="text"
+                            value={formData.winding}
+                            onChange={(e) => setFormData({ ...formData, winding: e.target.value })}
+                        />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>LV (KV)</strong>
+                    </td>
+                    <td>
+                        <input
+                            type="text"
+                            value={formData.lvKv}
+                            onChange={(e) => setFormData({ ...formData, lvKv: e.target.value })}
+                        />
+                    </td>
+                    <td>
+                        <strong>Transporting weight</strong>
+                    </td>
+                    <td>
+                        <input
+                            type="text"
+                            value={formData.transportingWeight}
+                            onChange={(e) => setFormData({ ...formData, transportingWeight: e.target.value })}
+                        />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>% Impedance</strong>
+                    </td>
+                    <td>
+                        <input
+                            type="text"
+                            value={formData.impedancePercent}
+                            onChange={(e) => setFormData({ ...formData, impedancePercent: e.target.value })}
+                        />
+                    </td>
+                    <td>
+                        <strong>No. Of radiators</strong>
+                    </td>
+                    <td>
+                        <input
+                            type="text"
+                            value={formData.noOfRadiators}
+                            onChange={(e) => setFormData({ ...formData, noOfRadiators: e.target.value })}
+                        />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Year of Mfg.</strong>
+                    </td>
+                    <td>
+                        <input
+                            type="text"
+                            value={formData.yearOfMfg}
+                            onChange={(e) => setFormData({ ...formData, yearOfMfg: e.target.value })}
+                        />
+                    </td>
+                    <td>
+                        <strong>Weight of Core & Winding.</strong>
+                    </td>
+                    <td>
+                        <input
+                            type="text"
+                            value={formData.weightCoreWinding}
+                            onChange={(e) => setFormData({ ...formData, weightCoreWinding: e.target.value })}
+                        />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Oil Quantity in liter</strong>
+                    </td>
+                    <td>
+                        <input
+                            type="text"
+                            value={formData.oilQuantityLiter}
+                            onChange={(e) => setFormData({ ...formData, oilQuantityLiter: e.target.value })}
+                        />
+                    </td>
+                    <td>
+                        <strong>Total Weight</strong>
+                    </td>
+                    <td>
+                        <input
+                            type="text"
+                            value={formData.totalWeight}
+                            onChange={(e) => setFormData({ ...formData, totalWeight: e.target.value })}
+                        />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-      <PhotoUploadSection
-        title="Transformer, Oil Level gauge, Wheel Locking, Transformer Foundation Level condition"
-        photos={photoRequirements}
-        onPhotoChange={handlePhotoChange}
-      />
+        <PhotoUploadSection
+            title="Transformer, Oil Level gauge, Wheel Locking, Transformer Foundation Level condition"
+            photos={photoRequirements}
+            onPhotoChange={handlePhotoChange}
+        />
 
-      <div className="form-actions">
-        {onPrevious && (
-          <button type="button" onClick={onPrevious} className="prev-btn">
-            Previous Form
-          </button>
-        )}
-        <button type="submit" className="submit-btn">
-          Next Form
-        </button>
-      </div>
+        <div className="form-actions">
+            {onPrevious && (
+                <button type="button" onClick={onPrevious} className="prev-btn">
+                    Previous Form
+                </button>
+            )}
+            <button type="submit" className="submit-btn">
+                Next Form
+            </button>
+        </div>
     </form>
-  )
+)
 }
 
 // Form 2: Protocol for Accessories Checking
-function ProtocolAccessoriesForm({ onSubmit, onPrevious, initialData, isLastFormOfStage }) {
+function ProtocolAccessoriesForm({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
   const [formData, setFormData] = useState({
-    accessories: initialData.accessories || {},
-    photos: initialData.photos || {},
+    accessories:  {},
+    photos:  {},
     ...initialData,
   })
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+        try {
+            const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form2`, {
+                params: {
+                    companyName: companyName,
+                    projectName: projectName,
+                }
+            });
+            if(response.data && response.data.data){
+              console.log("Data fetched from DB for stage1Form2");
+              setFormData(response.data.data);
+            }else{
+              console.log("There is no data in DB.");
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+    fetchFormData();
+  }, [ projectName, companyName]); 
 
   const accessoryItems = [
     { id: 1, description: "HV bushing" },
@@ -1121,34 +1162,56 @@ function ProtocolAccessoriesForm({ onSubmit, onPrevious, initialData, isLastForm
 }
 
 // Form 3: Core Insulation Check
-function CoreInsulationCheckForm({ onSubmit, onPrevious, initialData, isLastFormOfStage }) {
+function CoreInsulationCheckForm({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
   const [formData, setFormData] = useState({
-    betweenCoreFrame: initialData.betweenCoreFrame || "",
-    betweenCoreFrameRemarks: initialData.betweenCoreFrameRemarks || "",
-    betweenFrameTank: initialData.betweenFrameTank || "",
-    betweenFrameTankRemarks: initialData.betweenFrameTankRemarks || "",
-    betweenCoreTank: initialData.betweenCoreTank || "",
-    betweenCoreTankRemarks: initialData.betweenCoreTankRemarks || "",
-    filterMachine: initialData.filterMachine || "",
-    filterMachineChecked: initialData.filterMachineChecked || "",
-    filterCapacity: initialData.filterCapacity || "",
-    filterCapacityChecked: initialData.filterCapacityChecked || "",
-    vacuumPumpCapacity: initialData.vacuumPumpCapacity || "",
-    vacuumPumpCapacityChecked: initialData.vacuumPumpCapacityChecked || "",
-    reservoirAvailable: initialData.reservoirAvailable || "",
-    reservoirAvailableChecked: initialData.reservoirAvailableChecked || "",
-    reservoirCapacity: initialData.reservoirCapacity || "",
-    reservoirCapacityChecked: initialData.reservoirCapacityChecked || "",
-    hosePipes: initialData.hosePipes || "",
-    hosePipesChecked: initialData.hosePipesChecked || "",
-    craneAvailable: initialData.craneAvailable || "",
-    craneAvailableChecked: initialData.craneAvailableChecked || "",
-    fireExtinguisher: initialData.fireExtinguisher || "",
-    firstAidKit: initialData.firstAidKit || "",
-    ppeEquipment: initialData.ppeEquipment || "",
-    photos: initialData.photos || {},
+    betweenCoreFrame: "",
+    betweenCoreFrameRemarks:  "",
+    betweenFrameTank: "",
+    betweenFrameTankRemarks:  "",
+    betweenCoreTank:  "",
+    betweenCoreTankRemarks:  "",
+    filterMachine:  "",
+    filterMachineChecked:  "",
+    filterCapacity: "",
+    filterCapacityChecked: "",
+    vacuumPumpCapacity: "",
+    vacuumPumpCapacityChecked: "",
+    reservoirAvailable: "",
+    reservoirAvailableChecked: "",
+    reservoirCapacity: "",
+    reservoirCapacityChecked: "",
+    hosePipes: "",
+    hosePipesChecked:  "",
+    craneAvailable: "",
+    craneAvailableChecked: "",
+    fireExtinguisher:  "",
+    firstAidKit:  "",
+    ppeEquipment:  "",
+    photos: {},
     ...initialData,
   })
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+        try {
+            const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form3`, {
+                params: {
+                    companyName: companyName,
+                    projectName: projectName,
+                }
+            });
+            if(response.data && response.data.data){
+              console.log("Data fetched from DB for stage1Form3");
+              setFormData(response.data.data);
+            }else{
+              console.log("There is no data in DB.");
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+    fetchFormData();
+  }, [ projectName, companyName]); 
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -1487,7 +1550,7 @@ function CoreInsulationCheckForm({ onSubmit, onPrevious, initialData, isLastForm
 }
 
 // Form 4: Pre-Erection Tan Delta and Capacitance Test on Bushing
-function PreErectionTanDeltaTestForm({ onSubmit, onPrevious, initialData, isLastFormOfStage }) {
+function PreErectionTanDeltaTestForm({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
   const [formData, setFormData] = useState({
     meterUsed: initialData.meterUsed || "",
     date: initialData.date || "",
@@ -1516,6 +1579,28 @@ function PreErectionTanDeltaTestForm({ onSubmit, onPrevious, initialData, isLast
     photos: initialData.photos || {},
     ...initialData,
   })
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+        try {
+            const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form4`, {
+                params: {
+                    companyName: companyName,
+                    projectName: projectName,
+                }
+            });
+            if(response.data && response.data.data){
+              console.log("Data fetched from DB for stage1Form4");
+              setFormData(response.data.data);
+            }else{
+              console.log("There is no data in DB.");
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+    fetchFormData();
+  }, [ projectName, companyName]); 
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -1850,7 +1935,7 @@ function PreErectionTanDeltaTestForm({ onSubmit, onPrevious, initialData, isLast
 }
 
 // Form 5: Record of Measurement of IR Values
-function RecordMeasurementIRValuesForm({ onSubmit, onPrevious, initialData, isLastFormOfStage }) {
+function RecordMeasurementIRValuesForm({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
   const [formData, setFormData] = useState({
     date: initialData.date || "",
     time: initialData.time || "",
@@ -1869,6 +1954,28 @@ function RecordMeasurementIRValuesForm({ onSubmit, onPrevious, initialData, isLa
     photos: initialData.photos || {},
     ...initialData,
   })
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+        try {
+            const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form5`, {
+                params: {
+                    companyName: companyName,
+                    projectName: projectName,
+                }
+            });
+            if(response.data && response.data.data){
+              console.log("Data fetched from DB for stage1Form5");
+              setFormData(response.data.data);
+            }else{
+              console.log("There is no data in DB.");
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+    fetchFormData();
+  }, [ projectName, companyName]); 
 
   const handleSubmit = (e) => {
     e.preventDefault()

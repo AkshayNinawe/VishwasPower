@@ -517,22 +517,6 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
     const canSubmit = nextStage === 1 || Project.stageApprovals[nextStage - 1]
     setProjectName(Project.name)
     setCompanyName(Project.companyName)
-    //  get call to get the data of the form 1
-    try {
-      const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form1`, {
-        params:{
-          companyName: Project.companyName,
-          projectName: Project.name,
-        }
-      });
-      const formDataFromDB = response.data.data
-      setFormDataFromDB(formDataFromDB)
-      console.log("Get data of the first form", response.data);
-    } catch (error) {
-      console.error("Error creating company on the backend:", error);
-      alert("Failed to create company. Please try again.");
-      return;
-    }
 
     if (canSubmit && !Project.submittedStages[nextStage]) {
       setFormStageProject(Project)
