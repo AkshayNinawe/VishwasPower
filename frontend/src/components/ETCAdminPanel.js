@@ -151,10 +151,6 @@ const ETCAdminPanel = ({
       })
       .then((response) => {
         backendSavedCompanys = response.data;
-        console.log(
-          "company created successfully on the backend:",
-          response.data
-        );
 
         setCompanys(backendSavedCompanys);
 
@@ -331,11 +327,7 @@ const ETCAdminPanel = ({
   };
 
   const handleReviewStage = (Project, stage) => {
-    const stageForms = submittedForms.filter(
-      (form) => form.ProjectId === Project.id && form.stage === stage
-    );
-
-    if (stageForms.length === 0) {
+    if (Project.status !== "pending-approval" ) {
       showNotification(`No forms submitted for Stage ${stage} yet.`, "warning");
       return;
     }
@@ -345,7 +337,27 @@ const ETCAdminPanel = ({
     setReviewMode(true);
   };
 
-  const handleApproveStage = (stage) => {
+  const handleApproveStage = async (stage) => {
+
+    try {
+      const response = await axios.post(
+        `${BACKEND_API_BASE_URL}/api/company/approveCompanyStage`,
+        {
+          companyName: selectedProjectForReview.companyName,
+          projectName: selectedProjectForReview.name,
+          stage: selectedProjectForReview.stage
+        }
+      );
+      console.log(
+        "company created successfully on the backend:",
+        response.data
+      );
+    } catch (error) {
+      console.error("Error creating company on the backend:", error);
+      alert("Failed to create company. Please try again.");
+      return;
+    }
+
     if (!selectedProjectForReview) {
       showNotification("No Project selected for review.", "error");
       return;
@@ -477,10 +489,7 @@ const ETCAdminPanel = ({
   };
 
   const handleViewSubmittedForms = (Project) => {
-    const ProjectForms = submittedForms.filter(
-      (form) => form.ProjectId === Project.id
-    );
-    if (ProjectForms.length === 0) {
+    if (Project.formsCompleted !== Project.totalForms) {
       showNotification("No forms submitted yet.", "info");
       return;
     }
@@ -509,11 +518,17 @@ const ETCAdminPanel = ({
     }
   };
 
-  const getStageStatus = (Project, stage) => {
-    if (Project.stageApprovals[stage]) return "approved";
-    if (Project.submittedStages[stage]) return "pending-approval";
-    if (stage === 1 || Project.stageApprovals[stage - 1]) return "available";
-    return "locked";
+  const getStageStatus = (project, stageNumber) => {
+    if (project.stageApprovals?.[stageNumber]) {
+      return 'approved';
+    }
+    if (project.submittedStages?.[stageNumber]) {
+      return 'pending-review';
+    }
+    if (project.stage === stageNumber) {
+      return 'available';
+    }
+    return 'locked';
   };
 
   const getDepartmentCompanys = (departmentId) => {
@@ -569,6 +584,9 @@ const ETCAdminPanel = ({
       status: "pending-review",
       data: submittedData,
     };
+
+    console.log(`Submitting forms for stagew ${stage}:`, newFormEntry);
+
 
     setSubmittedForms((prev) => [...prev, newFormEntry]);
 
@@ -759,49 +777,49 @@ const ETCAdminPanel = ({
             </div>
 
             <div className="forms-review-grid">
-              {currentStageForms.map((form) => (
+            {selectedProjectForReview ? (
                 <div
-                  key={form.id}
-                  className={`form-review-card ${form.status}`}
+                  key={selectedProjectForReview.id}
+                  className={`form-review-card ${selectedProjectForReview.status}`}
                 >
                   <div className="form-review-header">
-                    <h3>{form.formName}</h3>
+                    <h3>{selectedProjectForReview.formName}</h3>
                     <span
                       className={`status-badge ${
-                        form.status === "approved"
+                        selectedProjectForReview.status === "approved"
                           ? "status-completed"
-                          : form.status === "rejected"
+                          : selectedProjectForReview.status === "rejected"
                           ? "status-pending"
                           : "status-progress"
                       }`}
                     >
-                      {form.status === "approved" && "✅ Approved"}
-                      {form.status === "rejected" && "❌ Rejected"}
-                      {form.status === "pending-review" && "⏳ Pending Review"}
+                      {selectedProjectForReview.status === "approved" && "✅ Approved"}
+                      {selectedProjectForReview.status === "rejected" && "❌ Rejected"}
+                      {selectedProjectForReview.status === "pending-review" && "⏳ Pending Review"}
                     </span>
                   </div>
 
                   <div className="form-review-details">
                     <p>
-                      <strong>Submitted:</strong> {form.submittedAt}
+                      <strong>Submitted:</strong> {selectedProjectForReview.lastActivity}
                     </p>
-                    {form.reviewedAt && (
+                    {selectedProjectForReview.reviewedAt && (
                       <p>
-                        <strong>Reviewed:</strong> {form.reviewedAt}
+                        <strong>Reviewed:</strong> {selectedProjectForReview.lastActivity}
                       </p>
                     )}
-                    {form.rejectionReason && (
+                    {/* {selectedProjectForReview.name && (
                       <div className="rejection-reason">
                         <strong>Rejection Reason:</strong>
-                        <p>{form.rejectionReason}</p>
+                        <p>{0}</p>
                       </div>
-                    )}
+                    )} */}
                   </div>
 
                   <div className="form-data-preview">
                     <h4>Form Data:</h4>
                     <div className="data-grid">
-                      {Object.entries(form.data).map(([key, value]) => (
+                      {/* {Object.entries(selectedProjectForReview.data).map(([key, value]) => (
                         <div key={key} className="data-item">
                           <span className="data-label">
                             {key
@@ -822,26 +840,33 @@ const ETCAdminPanel = ({
                           ) : (
                             <span className="data-value">{String(value)}</span>
                           )}
-                        </div>
+                        </div> */}
+                        {Array.from({ length: selectedProjectForReview.totalForms }, (_, index) => (
+                          <div key={index} className="data-item">
+                            <span className="data-label">Data {index + 1}:</span>
+                            <span className="data-value">Data</span>
+                          </div>
                       ))}
                     </div>
                   </div>
-                </div>
-              ))}
+                </div>):(
+                  <p>No project selected for review.</p>
+                )}
+              
             </div>
 
             <div className="stage-approval-actions">
               <button
                 onClick={() => handleApproveStage(currentStageReview)}
                 className="approve-stage-btn"
-                disabled={currentStageForms.length === 0}
+                disabled={selectedProjectForReview.length === 0}
               >
                 ✅ Approve Stage {currentStageReview}
               </button>
               <button
                 onClick={() => handleRejectStage(currentStageReview)}
                 className="reject-stage-btn"
-                disabled={currentStageForms.length === 0}
+                disabled={selectedProjectForReview.length === 0}
               >
                 ❌ Reject Stage {currentStageReview}
               </button>
@@ -1277,7 +1302,7 @@ const ETCAdminPanel = ({
                       <h4>Stage Management:</h4>
                       <div className="stages-row">
                         {[1, 2, 3, 4, 5, 6].map((stage) => {
-                          const stageStatus = Project.stage;
+                          const stageStatus = getStageStatus(Project, stage); 
                           return (
                             <div
                               key={stage}
@@ -1286,12 +1311,11 @@ const ETCAdminPanel = ({
                               <div className="stage-number">{stage}</div>
                               <div className="stage-status-text">
                                 {stageStatus === "approved" && "✅ Approved"}
-                                {stageStatus === "pending-approval" &&
-                                  "⏳ Pending"}
+                                {stageStatus === "pending-review" && "⏳ Pending"}
                                 {stageStatus === "available" && "📝 Available"}
                                 {stageStatus === "locked" && "🔒 Locked"}
                               </div>
-                              {stageStatus === "pending-approval" && (
+                                {stageStatus === "pending-review" && (
                                 <button
                                   onClick={(e) => {
                                     e.stopPropagation();

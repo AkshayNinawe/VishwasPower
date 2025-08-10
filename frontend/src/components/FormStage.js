@@ -193,16 +193,29 @@ const FormStage = ({
         }
       );
 
-
-      const response2 = await axios.post(
-        `${BACKEND_API_BASE_URL}/api/company/updateFormsCompleted`,
-        {
-          projectName: projectName,
-          companyName: companyName, // Pass the CompanyId to the backend
-          formsCompleted: currentFormIndex + 1
-        }
-      );
-
+      if (isLastFormOfStage) {
+        const response2 = await axios.post(
+          `${BACKEND_API_BASE_URL}/api/company/updateFormsCompleted`,
+          {
+            projectName: projectName,
+            companyName: companyName, // Pass the CompanyId to the backend
+            formsCompleted: currentFormIndex + 1,
+            status: "pending-approval",
+            stage: stage
+          }
+        );
+        console.log("Submiting the last stage1 form and setting project status to pending-approval")
+      } else {
+        const response2 = await axios.post(
+          `${BACKEND_API_BASE_URL}/api/company/updateFormsCompleted`,
+          {
+            projectName: projectName,
+            companyName: companyName, // Pass the CompanyId to the backend
+            formsCompleted: currentFormIndex + 1,
+          }
+        );
+        console.log("Submiting the stage1 forms project is in progress")
+      }
     } catch (error) {
       console.error("Error creating company on the backend:", error);
       alert("Failed to create company. Please try again.");
