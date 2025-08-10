@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const projectSchema = {
   id: {
@@ -35,28 +35,30 @@ const projectSchema = {
   },
   stageApprovals: {
     type: Map,
-    of: Boolean
+    of: Boolean,
   },
   submittedStages: {
     type: Map,
-    of: Boolean
+    of: Boolean,
   },
 };
 
-
-const companySchema = new mongoose.Schema({
-  companyName: {
-    type: String,
-    required: true,
+const companySchema = new mongoose.Schema(
+  {
+    companyName: {
+      type: String,
+      required: true,
+    },
+    companyDescription: {
+      type: String,
+      required: true,
+    },
+    companyProjects: {
+      type: [projectSchema],
+      required: true,
+    },
   },
-  companyDescription: {
-    type: String,
-    required: true,
-  },
-  companyProjects: {
-    type: [projectSchema],  
-    required: true
-  }
-}, { timestamps: true });
+  { timestamps: true }
+);
 
-export default mongoose.model('Company', companySchema);
+export default mongoose.model("Company", companySchema);

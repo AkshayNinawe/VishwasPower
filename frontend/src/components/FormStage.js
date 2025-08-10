@@ -1,43 +1,51 @@
-"use client"
+"use client";
 
-import { useState, useRef, useEffect, useCallback } from "react"
-import "./form-styles.css"
-import axios from "axios"
-import {BACKEND_API_BASE_URL} from "./constant"
+import { useState, useRef, useEffect, useCallback } from "react";
+import "./form-styles.css";
+import axios from "axios";
+import { BACKEND_API_BASE_URL } from "./constant";
 
-const FormStage = ({ projectName, companyName, stage, onFormSubmit, onBack, companyData, firstFormDataFromDB }) => {
-  const [currentFormIndex, setCurrentFormIndex] = useState(0)
-  const [formData, setFormData] = useState({})
+const FormStage = ({
+  projectName,
+  companyName,
+  stage,
+  onFormSubmit,
+  onBack,
+  companyData,
+  firstFormDataFromDB,
+}) => {
+  const [currentFormIndex, setCurrentFormIndex] = useState(0);
+  const [formData, setFormData] = useState({});
 
   const StageSchemas = {
-    'Stage1' : {
-      'stage1form1' : firstFormDataFromDB,
-      'stage1form2' : {},
-      'stage1from3' : {},
-      'stage1from4' : {},
-      'stage1from5' : {},
+    Stage1: {
+      stage1form1: firstFormDataFromDB,
+      stage1form2: {},
+      stage1from3: {},
+      stage1from4: {},
+      stage1from5: {},
     },
-    'Stage2' : {
-      'stage2form1' : firstFormDataFromDB,
-      'stage2form2' : {},
-      },
-    'Stage3' : {
-      'stage3form1' : firstFormDataFromDB,
-      'stage3form2' : {},
-      },
-    'Stage4' : {
-      'stage4form1' : firstFormDataFromDB,
-      'stage4form2' : {},
-      },
-    'Stage5' : {
-      'stage5form1' : firstFormDataFromDB,
-      'stage5form2' : {},
-      },
-  }
+    Stage2: {
+      stage2form1: firstFormDataFromDB,
+      stage2form2: {},
+    },
+    Stage3: {
+      stage3form1: firstFormDataFromDB,
+      stage3form2: {},
+    },
+    Stage4: {
+      stage4form1: firstFormDataFromDB,
+      stage4form2: {},
+    },
+    Stage5: {
+      stage5form1: firstFormDataFromDB,
+      stage5form2: {},
+    },
+  };
 
-  const stageNumber = 'Stage' + stage
+  const stageNumber = "Stage" + stage;
   const initialFormData = StageSchemas[stageNumber] || StageSchemas["Stage1"];
-  const [formDataFix, setFormDataFix] = useState(initialFormData)
+  const [formDataFix, setFormDataFix] = useState(initialFormData);
 
   const stage1Forms = [
     {
@@ -65,7 +73,7 @@ const FormStage = ({ projectName, companyName, stage, onFormSubmit, onBack, comp
       title: "Record of Measurement of IR Values",
       component: RecordMeasurementIRValuesForm,
     },
-  ]
+  ];
 
   // Stage 2 Forms - Based on provided images
   const stage2Forms = [
@@ -79,7 +87,7 @@ const FormStage = ({ projectName, companyName, stage, onFormSubmit, onBack, comp
       title: "IR After Erection - Stage 2 End",
       component: IRAfterErectionStage2Form,
     },
-  ]
+  ];
 
   // Stage 3 Forms - Based on provided images
   const stage3Forms = [
@@ -98,7 +106,7 @@ const FormStage = ({ projectName, companyName, stage, onFormSubmit, onBack, comp
       title: "Oil Filtration of Radiator and Combine",
       component: OilFiltrationRadiatorCombineForm,
     },
-  ]
+  ];
 
   // Stage 4 Forms - Based on provided images
   const stage4Forms = [
@@ -119,10 +127,11 @@ const FormStage = ({ projectName, companyName, stage, onFormSubmit, onBack, comp
     },
     {
       id: "winding-resistance-ir-pi-test",
-      title: "Winding Resistance Test and Record of Measurement of IR & PI Values",
+      title:
+        "Winding Resistance Test and Record of Measurement of IR & PI Values",
       component: WindingResistanceIRPITestForm,
     },
-  ]
+  ];
 
   // Stage 5 Forms - Based on provided images
   const stage5Forms = [
@@ -136,7 +145,7 @@ const FormStage = ({ projectName, companyName, stage, onFormSubmit, onBack, comp
       title: "Pre-Charging Check List - Part 2",
       component: PreChargingChecklistPart2Form,
     },
-  ]
+  ];
 
   // Stage 6 Forms - Based on provided images
   const stage6Forms = [
@@ -145,68 +154,69 @@ const FormStage = ({ projectName, companyName, stage, onFormSubmit, onBack, comp
       title: "Work Completion Report",
       component: WorkCompletionReportForm,
     },
-  ]
+  ];
 
   const getFormsForStage = (stageNumber) => {
     switch (stageNumber) {
       case 1:
-        return stage1Forms
+        return stage1Forms;
       case 2:
-        return stage2Forms
+        return stage2Forms;
       case 3:
-        return stage3Forms
+        return stage3Forms;
       case 4:
-        return stage4Forms
+        return stage4Forms;
       case 5:
-        return stage5Forms
+        return stage5Forms;
       case 6:
-        return stage6Forms
+        return stage6Forms;
       default:
-        return []
+        return [];
     }
-  }
+  };
 
-  const currentForms = getFormsForStage(stage)
-  const currentForm = currentForms[currentFormIndex]
-  const isLastFormOfStage = currentFormIndex === currentForms.length - 1
+  const currentForms = getFormsForStage(stage);
+  const currentForm = currentForms[currentFormIndex];
+  const isLastFormOfStage = currentFormIndex === currentForms.length - 1;
 
   const handleFormSubmit = async (data) => {
-    const updatedFormData = { ...formData, [currentForm.form]: data }
+    const updatedFormData = { ...formData, [currentForm.form]: data };
     try {
-      const response = await axios.post(`${BACKEND_API_BASE_URL}/api/table/setTable/Stage1Form${currentFormIndex+1}`, {
-        projectName : projectName,
-        companyName : companyName,
-        data: data
-      });
-      
-      const getResponse = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form${currentFormIndex+2}`, {
-        params:{
-          companyName: projectName,
-          projectName: companyName,
+      const response = await axios.post(
+        `${BACKEND_API_BASE_URL}/api/table/setTable/Stage1Form${
+          currentFormIndex + 1
+        }`,
+        {
+          projectName: projectName,
+          companyName: companyName,
+          data: data,
         }
-      });
-      const nextForm = "stage" + stage + "form" + (currentFormIndex+2)
+      );
 
-      
+      // const response = await axios.post(`${BACKEND_API_BASE_URL}/api/table/setTable/Stage1Form${currentFormIndex+1}`, {
+      //   projectName : projectName,
+      //   companyName : companyName,
+      //   data: data
+      // });
     } catch (error) {
       console.error("Error creating company on the backend:", error);
       alert("Failed to create company. Please try again.");
       return;
     }
-    setFormData(updatedFormData)
-    
+    setFormData(updatedFormData);
+
     if (currentFormIndex < currentForms.length - 1) {
-      setCurrentFormIndex(currentFormIndex + 1)
+      setCurrentFormIndex(currentFormIndex + 1);
     } else {
-      onFormSubmit(stage, updatedFormData)
+      onFormSubmit(stage, updatedFormData);
     }
-  }
+  };
 
   const handlePrevious = () => {
     if (currentFormIndex > 0) {
-      setCurrentFormIndex(currentFormIndex - 1)
+      setCurrentFormIndex(currentFormIndex - 1);
     }
-  }
+  };
 
   if (!currentForm) {
     return (
@@ -218,10 +228,10 @@ const FormStage = ({ projectName, companyName, stage, onFormSubmit, onBack, comp
           </button>
         </div>
       </div>
-    )
+    );
   }
 
-  const FormComponent = currentForm.component
+  const FormComponent = currentForm.component;
 
   return (
     <div className="form-stage-container fade-in">
@@ -233,7 +243,11 @@ const FormStage = ({ projectName, companyName, stage, onFormSubmit, onBack, comp
           <div className="progress-bar">
             <div
               className="progress-fill"
-              style={{ width: `${((currentFormIndex + 1) / currentForms.length) * 100}%` }}
+              style={{
+                width: `${
+                  ((currentFormIndex + 1) / currentForms.length) * 100
+                }%`,
+              }}
             ></div>
           </div>
         </div>
@@ -259,191 +273,211 @@ const FormStage = ({ projectName, companyName, stage, onFormSubmit, onBack, comp
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 // Signature Canvas Hook
 const useSignatureCanvas = (initialDataUrl) => {
-  const canvasRef = useRef(null)
-  const [isDrawing, setIsDrawing] = useState(false)
-  const [signatureDataUrl, setSignatureDataUrl] = useState(initialDataUrl || "")
-  const lastX = useRef(0)
-  const lastY = useRef(0)
+  const canvasRef = useRef(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [signatureDataUrl, setSignatureDataUrl] = useState(
+    initialDataUrl || ""
+  );
+  const lastX = useRef(0);
+  const lastY = useRef(0);
 
   const clearCanvas = useCallback(() => {
-    const canvas = canvasRef.current
+    const canvas = canvasRef.current;
     if (canvas) {
-      const ctx = canvas.getContext("2d")
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-      setSignatureDataUrl("")
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      setSignatureDataUrl("");
     }
-  }, [])
+  }, []);
 
   const getSignature = useCallback(() => {
-    const canvas = canvasRef.current
+    const canvas = canvasRef.current;
     if (canvas) {
-      return canvas.toDataURL("image/png")
+      return canvas.toDataURL("image/png");
     }
-    return ""
-  }, [])
+    return "";
+  }, []);
 
   const draw = useCallback(
     (e) => {
-      if (!isDrawing) return
+      if (!isDrawing) return;
 
-      const canvas = canvasRef.current
-      if (!canvas) return
+      const canvas = canvasRef.current;
+      if (!canvas) return;
 
-      const ctx = canvas.getContext("2d")
-      const rect = canvas.getBoundingClientRect()
+      const ctx = canvas.getContext("2d");
+      const rect = canvas.getBoundingClientRect();
 
-      let clientX, clientY
+      let clientX, clientY;
       if (e.touches) {
-        clientX = e.touches[0].clientX
-        clientY = e.touches[0].clientY
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
       } else {
-        clientX = e.clientX
-        clientY = e.clientY
+        clientX = e.clientX;
+        clientY = e.clientY;
       }
 
-      const currentX = clientX - rect.left
-      const currentY = clientY - rect.top
+      const currentX = clientX - rect.left;
+      const currentY = clientY - rect.top;
 
-      ctx.beginPath()
-      ctx.moveTo(lastX.current, lastY.current)
-      ctx.lineTo(currentX, currentY)
-      ctx.stroke()
+      ctx.beginPath();
+      ctx.moveTo(lastX.current, lastY.current);
+      ctx.lineTo(currentX, currentY);
+      ctx.stroke();
 
-      lastX.current = currentX
-      lastY.current = currentY
+      lastX.current = currentX;
+      lastY.current = currentY;
     },
-    [isDrawing],
-  )
+    [isDrawing]
+  );
 
   const startDrawing = useCallback((e) => {
-    setIsDrawing(true)
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const rect = canvas.getBoundingClientRect()
+    setIsDrawing(true);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
 
-    let clientX, clientY
+    let clientX, clientY;
     if (e.touches) {
-      clientX = e.touches[0].clientX
-      clientY = e.touches[0].clientY
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
     } else {
-      clientX = e.clientX
-      clientY = e.clientY
+      clientX = e.clientX;
+      clientY = e.clientY;
     }
 
-    lastX.current = clientX - rect.left
-    lastY.current = clientY - rect.top
-    e.preventDefault()
-  }, [])
+    lastX.current = clientX - rect.left;
+    lastY.current = clientY - rect.top;
+    e.preventDefault();
+  }, []);
 
   const stopDrawing = useCallback(() => {
-    setIsDrawing(false)
-    setSignatureDataUrl(getSignature())
-  }, [getSignature])
+    setIsDrawing(false);
+    setSignatureDataUrl(getSignature());
+  }, [getSignature]);
 
   useEffect(() => {
-    const canvas = canvasRef.current
+    const canvas = canvasRef.current;
     if (canvas) {
-      const ctx = canvas.getContext("2d")
-      ctx.lineWidth = 2
-      ctx.lineCap = "round"
-      ctx.strokeStyle = "#000"
+      const ctx = canvas.getContext("2d");
+      ctx.lineWidth = 2;
+      ctx.lineCap = "round";
+      ctx.strokeStyle = "#000";
 
       if (initialDataUrl) {
-        const img = new Image()
-        img.crossOrigin = "anonymous"
-        img.src = initialDataUrl
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.src = initialDataUrl;
         img.onload = () => {
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
-        }
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        };
       }
     }
-  }, [initialDataUrl])
+  }, [initialDataUrl]);
 
-  return { canvasRef, signatureDataUrl, clearCanvas, startDrawing, draw, stopDrawing }
-}
+  return {
+    canvasRef,
+    signatureDataUrl,
+    clearCanvas,
+    startDrawing,
+    draw,
+    stopDrawing,
+  };
+};
 
 // Enhanced Photo Upload Component with Camera and Gallery Support
-const PhotoUploadSection = ({ title, photos, onPhotoChange, allowMultiple = false }) => {
-  const [cameraStream, setCameraStream] = useState(null)
-  const [showCamera, setShowCamera] = useState(false)
-  const videoRef = useRef(null)
-  const canvasRef = useRef(null)
+const PhotoUploadSection = ({
+  title,
+  photos,
+  onPhotoChange,
+  allowMultiple = false,
+}) => {
+  const [cameraStream, setCameraStream] = useState(null);
+  const [showCamera, setShowCamera] = useState(false);
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
 
   const startCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: "environment" }, // Use back camera on mobile
-      })
-      setCameraStream(stream)
-      setShowCamera(true)
+      });
+      setCameraStream(stream);
+      setShowCamera(true);
       if (videoRef.current) {
-        videoRef.current.srcObject = stream
+        videoRef.current.srcObject = stream;
       }
     } catch (error) {
-      console.error("Error accessing camera:", error)
-      alert("Unable to access camera. Please check permissions.")
+      console.error("Error accessing camera:", error);
+      alert("Unable to access camera. Please check permissions.");
     }
-  }
+  };
 
   const stopCamera = () => {
     if (cameraStream) {
-      cameraStream.getTracks().forEach((track) => track.stop())
-      setCameraStream(null)
-      setShowCamera(false)
+      cameraStream.getTracks().forEach((track) => track.stop());
+      setCameraStream(null);
+      setShowCamera(false);
     }
-  }
+  };
 
   const capturePhoto = (photoKey) => {
     if (videoRef.current && canvasRef.current) {
-      const canvas = canvasRef.current
-      const video = videoRef.current
-      const context = canvas.getContext("2d")
+      const canvas = canvasRef.current;
+      const video = videoRef.current;
+      const context = canvas.getContext("2d");
 
-      canvas.width = video.videoWidth
-      canvas.height = video.videoHeight
-      context.drawImage(video, 0, 0)
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      context.drawImage(video, 0, 0);
 
       canvas.toBlob(
         (blob) => {
           if (blob) {
-            const file = new File([blob], `camera-capture-${Date.now()}.jpg`, { type: "image/jpeg" })
-            onPhotoChange(photoKey, file)
-            stopCamera()
+            const file = new File([blob], `camera-capture-${Date.now()}.jpg`, {
+              type: "image/jpeg",
+            });
+            onPhotoChange(photoKey, file);
+            stopCamera();
           }
         },
         "image/jpeg",
-        0.8,
-      )
+        0.8
+      );
     }
-  }
+  };
 
   const handleFileSelect = (photoKey, files) => {
     if (allowMultiple && files.length > 1) {
       // Handle multiple files
       Array.from(files).forEach((file, index) => {
-        onPhotoChange(`${photoKey}_${index}`, file)
-      })
+        onPhotoChange(`${photoKey}_${index}`, file);
+      });
     } else {
       // Handle single file
-      onPhotoChange(photoKey, files[0])
+      onPhotoChange(photoKey, files[0]);
     }
-  }
+  };
 
   useEffect(() => {
     return () => {
-      stopCamera() // Cleanup on unmount
-    }
-  }, [])
+      stopCamera(); // Cleanup on unmount
+    };
+  }, []);
 
   return (
     <div className="photo-upload-section">
       <h4>Note: - Photographs to be added: -</h4>
-      <p style={{ textAlign: "center", marginBottom: "20px", fontWeight: "600" }}>{title}</p>
+      <p
+        style={{ textAlign: "center", marginBottom: "20px", fontWeight: "600" }}
+      >
+        {title}
+      </p>
 
       {showCamera && (
         <div
@@ -462,7 +496,12 @@ const PhotoUploadSection = ({ title, photos, onPhotoChange, allowMultiple = fals
             justifyContent: "center",
           }}
         >
-          <video ref={videoRef} autoPlay playsInline style={{ maxWidth: "90%", maxHeight: "70%" }} />
+          <video
+            ref={videoRef}
+            autoPlay
+            playsInline
+            style={{ maxWidth: "90%", maxHeight: "70%" }}
+          />
           <canvas ref={canvasRef} style={{ display: "none" }} />
           <div style={{ marginTop: "20px" }}>
             <button
@@ -503,7 +542,10 @@ const PhotoUploadSection = ({ title, photos, onPhotoChange, allowMultiple = fals
           <div key={index} className="photo-upload-item">
             <label>{photo.label}</label>
 
-            <div className="upload-options" style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+            <div
+              className="upload-options"
+              style={{ display: "flex", gap: "10px", marginTop: "10px" }}
+            >
               {/* Camera Button */}
               <button
                 type="button"
@@ -564,7 +606,9 @@ const PhotoUploadSection = ({ title, photos, onPhotoChange, allowMultiple = fals
                     type="file"
                     accept="image/*"
                     multiple
-                    onChange={(e) => handleFileSelect(photo.key, e.target.files)}
+                    onChange={(e) =>
+                      handleFileSelect(photo.key, e.target.files)
+                    }
                     style={{ display: "none" }}
                   />
                 </label>
@@ -582,14 +626,14 @@ const PhotoUploadSection = ({ title, photos, onPhotoChange, allowMultiple = fals
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
 // PDF Generation Utility
 const generatePDF = async (formData, stage) => {
   try {
     // Create a new window for printing
-    const printWindow = window.open("", "_blank")
+    const printWindow = window.open("", "_blank");
 
     // Generate HTML content for all forms
     let htmlContent = `
@@ -620,19 +664,23 @@ const generatePDF = async (formData, stage) => {
           <h3>Stage ${stage} - Complete Documentation</h3>
           <p>Generated on: ${new Date().toLocaleDateString()}</p>
         </div>
-    `
+    `;
 
     // Add form data to HTML
     Object.entries(formData).forEach(([formId, data]) => {
       htmlContent += `
         <div class="form-section">
-          <div class="form-title">${formId.replace(/-/g, " ").toUpperCase()}</div>
+          <div class="form-title">${formId
+            .replace(/-/g, " ")
+            .toUpperCase()}</div>
           <div class="form-content">
-            ${JSON.stringify(data, null, 2).replace(/\n/g, "<br>").replace(/ /g, "&nbsp;")}
+            ${JSON.stringify(data, null, 2)
+              .replace(/\n/g, "<br>")
+              .replace(/ /g, "&nbsp;")}
           </div>
         </div>
-      `
-    })
+      `;
+    });
 
     htmlContent += `
         <div class="no-print" style="text-align: center; margin-top: 30px;">
@@ -645,18 +693,18 @@ const generatePDF = async (formData, stage) => {
         </div>
       </body>
       </html>
-    `
+    `;
 
-    printWindow.document.write(htmlContent)
-    printWindow.document.close()
+    printWindow.document.write(htmlContent);
+    printWindow.document.close();
 
     // Auto-focus the print window
-    printWindow.focus()
+    printWindow.focus();
   } catch (error) {
-    console.error("Error generating PDF:", error)
-    alert("Error generating PDF. Please try again.")
+    console.error("Error generating PDF:", error);
+    alert("Error generating PDF. Please try again.");
   }
-}
+};
 // Digital Signature Component
 const DigitalSignatureSection = ({ signatures, onSignatureChange }) => {
   return (
@@ -667,29 +715,48 @@ const DigitalSignatureSection = ({ signatures, onSignatureChange }) => {
           label={sig.label}
           nameValue={sig.nameValue}
           onNameChange={(value) => onSignatureChange(sig.key, "name", value)}
-          onSignatureChange={(signature) => onSignatureChange(sig.key, "signature", signature)}
+          onSignatureChange={(signature) =>
+            onSignatureChange(sig.key, "signature", signature)
+          }
           initialSignature={sig.signature}
         />
       ))}
     </div>
-  )
-}
+  );
+};
 
 // Individual Signature Box Component
-const SignatureBox = ({ label, nameValue, onNameChange, onSignatureChange, initialSignature }) => {
-  const { canvasRef, signatureDataUrl, clearCanvas, startDrawing, draw, stopDrawing } =
-    useSignatureCanvas(initialSignature)
+const SignatureBox = ({
+  label,
+  nameValue,
+  onNameChange,
+  onSignatureChange,
+  initialSignature,
+}) => {
+  const {
+    canvasRef,
+    signatureDataUrl,
+    clearCanvas,
+    startDrawing,
+    draw,
+    stopDrawing,
+  } = useSignatureCanvas(initialSignature);
 
   useEffect(() => {
     if (signatureDataUrl) {
-      onSignatureChange(signatureDataUrl)
+      onSignatureChange(signatureDataUrl);
     }
-  }, [signatureDataUrl, onSignatureChange])
+  }, [signatureDataUrl, onSignatureChange]);
 
   return (
     <div className="signature-box">
       <label>{label}</label>
-      <input type="text" placeholder="Enter name" value={nameValue} onChange={(e) => onNameChange(e.target.value)} />
+      <input
+        type="text"
+        placeholder="Enter name"
+        value={nameValue}
+        onChange={(e) => onNameChange(e.target.value)}
+      />
       <canvas
         ref={canvasRef}
         width={300}
@@ -702,317 +769,383 @@ const SignatureBox = ({ label, nameValue, onNameChange, onSignatureChange, initi
         onTouchMove={draw}
         onTouchEnd={stopDrawing}
       />
-      <button type="button" onClick={clearCanvas} className="clear-signature-btn">
+      <button
+        type="button"
+        onClick={clearCanvas}
+        className="clear-signature-btn"
+      >
         Clear Signature
       </button>
       <small>Sign above</small>
     </div>
-  )
-}
+  );
+};
 
 // Stage 1 Form Components (keeping existing ones)
 
 // Form 1: Name Plate Details Transformer
-function NamePlateDetailsForm({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyData,stage, companyName, projectName}) {
-
-const [formData, setFormData] = useState({
+function NamePlateDetailsForm({
+  onSubmit,
+  onPrevious,
+  initialData,
+  isLastFormOfStage,
+  companyData,
+  stage,
+  companyName,
+  projectName,
+}) {
+  const [formData, setFormData] = useState({
     make: "",
-    currentHV:  "",
+    currentHV: "",
     srNo: "",
     currentLV: "",
     mvaRating: "",
-    tempRiseOil:  "",
-    hvKv:  "",
-    winding:  "",
+    tempRiseOil: "",
+    hvKv: "",
+    winding: "",
     lvKv: "",
-    transportingWeight:  "",
+    transportingWeight: "",
     impedancePercent: "",
-    noOfRadiators:  "",
+    noOfRadiators: "",
     yearOfMfg: "",
     weightCoreWinding: "",
     oilQuantityLiter: "",
     totalWeight: "",
     photos: {},
     ...initialData,
-})
-
-useEffect(() => {
-  const fetchFormData = async () => {
-      try {
-          const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form1`, {
-              params: {
-                  companyName: companyName,
-                  projectName: projectName,
-              }
-          });
-          if(response.data && response.data.data){
-            console.log("Data fetched from DB for stage1Form1");
-            setFormData(response.data.data);
-          }else{
-            console.log("There is no data in DB.");
-          }
-      } catch (error) {
-          console.error("Error fetching data:", error);
-      }
-  };
-  fetchFormData();
-}, [ projectName, companyName]); 
-
-const handleSubmit = (e) => {
-    e.preventDefault()
-    onSubmit(formData)
-}
-
-const handlePhotoChange = (key, file) => {
-    setFormData((prev) => ({
-        ...prev,
-        photos: { ...prev.photos, [key]: file },
-    }))
-}
-
-const photoRequirements = [
-    { key: "transformer", label: "Transformer" },
-    { key: "oilLevelGauge", label: "Oil Level Gauge" },
-    { key: "wheelLocking", label: "Wheel Locking" },
-    { key: "transformerFoundation", label: "Transformer Foundation Level Condition" },
-]
-
-return (
-    <form onSubmit={handleSubmit} className="form-container">
-        <div className="company-header">
-            <h2>NAME PLATE DETAILS TRANSFORMER</h2>
-        </div>
-
-        <table className="form-table">
-            <tbody>
-                <tr>
-                    <td>
-                        <strong>MAKE</strong>
-                    </td>
-                    <td>
-                        <input
-                            type="text"
-                            value={formData.make}
-                            onChange={(e) => setFormData({ ...formData, make: e.target.value })}
-                        />
-                    </td>
-                    <td>
-                        <strong>CURRENT HV (A)</strong>
-                    </td>
-                    <td>
-                        <input
-                            type="text"
-                            value={formData.currentHV}
-                            onChange={(e) => setFormData({ ...formData, currentHV: e.target.value })}
-                        />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <strong>SR. NO.</strong>
-                    </td>
-                    <td>
-                        <input
-                            type="text"
-                            value={formData.srNo}
-                            onChange={(e) => setFormData({ ...formData, srNo: e.target.value })}
-                        />
-                    </td>
-                    <td>
-                        <strong>LV (A)</strong>
-                    </td>
-                    <td>
-                        <input
-                            type="text"
-                            value={formData.currentLV}
-                            onChange={(e) => setFormData({ ...formData, currentLV: e.target.value })}
-                        />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <strong>MVA Rating</strong>
-                    </td>
-                    <td>
-                        <input
-                            type="text"
-                            value={formData.mvaRating}
-                            onChange={(e) => setFormData({ ...formData, mvaRating: e.target.value })}
-                        />
-                    </td>
-                    <td>
-                        <strong>Temp. Rise over amb. In Oil °C</strong>
-                    </td>
-                    <td>
-                        <input
-                            type="text"
-                            value={formData.tempRiseOil}
-                            onChange={(e) => setFormData({ ...formData, tempRiseOil: e.target.value })}
-                        />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <strong>HV (KV)</strong>
-                    </td>
-                    <td>
-                        <input
-                            type="text"
-                            value={formData.hvKv}
-                            onChange={(e) => setFormData({ ...formData, hvKv: e.target.value })}
-                        />
-                    </td>
-                    <td>
-                        <strong>Winding</strong>
-                    </td>
-                    <td>
-                        <input
-                            type="text"
-                            value={formData.winding}
-                            onChange={(e) => setFormData({ ...formData, winding: e.target.value })}
-                        />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <strong>LV (KV)</strong>
-                    </td>
-                    <td>
-                        <input
-                            type="text"
-                            value={formData.lvKv}
-                            onChange={(e) => setFormData({ ...formData, lvKv: e.target.value })}
-                        />
-                    </td>
-                    <td>
-                        <strong>Transporting weight</strong>
-                    </td>
-                    <td>
-                        <input
-                            type="text"
-                            value={formData.transportingWeight}
-                            onChange={(e) => setFormData({ ...formData, transportingWeight: e.target.value })}
-                        />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <strong>% Impedance</strong>
-                    </td>
-                    <td>
-                        <input
-                            type="text"
-                            value={formData.impedancePercent}
-                            onChange={(e) => setFormData({ ...formData, impedancePercent: e.target.value })}
-                        />
-                    </td>
-                    <td>
-                        <strong>No. Of radiators</strong>
-                    </td>
-                    <td>
-                        <input
-                            type="text"
-                            value={formData.noOfRadiators}
-                            onChange={(e) => setFormData({ ...formData, noOfRadiators: e.target.value })}
-                        />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <strong>Year of Mfg.</strong>
-                    </td>
-                    <td>
-                        <input
-                            type="text"
-                            value={formData.yearOfMfg}
-                            onChange={(e) => setFormData({ ...formData, yearOfMfg: e.target.value })}
-                        />
-                    </td>
-                    <td>
-                        <strong>Weight of Core & Winding.</strong>
-                    </td>
-                    <td>
-                        <input
-                            type="text"
-                            value={formData.weightCoreWinding}
-                            onChange={(e) => setFormData({ ...formData, weightCoreWinding: e.target.value })}
-                        />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <strong>Oil Quantity in liter</strong>
-                    </td>
-                    <td>
-                        <input
-                            type="text"
-                            value={formData.oilQuantityLiter}
-                            onChange={(e) => setFormData({ ...formData, oilQuantityLiter: e.target.value })}
-                        />
-                    </td>
-                    <td>
-                        <strong>Total Weight</strong>
-                    </td>
-                    <td>
-                        <input
-                            type="text"
-                            value={formData.totalWeight}
-                            onChange={(e) => setFormData({ ...formData, totalWeight: e.target.value })}
-                        />
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <PhotoUploadSection
-            title="Transformer, Oil Level gauge, Wheel Locking, Transformer Foundation Level condition"
-            photos={photoRequirements}
-            onPhotoChange={handlePhotoChange}
-        />
-
-        <div className="form-actions">
-            {onPrevious && (
-                <button type="button" onClick={onPrevious} className="prev-btn">
-                    Previous Form
-                </button>
-            )}
-            <button type="submit" className="submit-btn">
-                Next Form
-            </button>
-        </div>
-    </form>
-)
-}
-
-// Form 2: Protocol for Accessories Checking
-function ProtocolAccessoriesForm({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
-  const [formData, setFormData] = useState({
-    accessories:  {},
-    photos:  {},
-    ...initialData,
-  })
+  });
 
   useEffect(() => {
     const fetchFormData = async () => {
-        try {
-            const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form2`, {
-                params: {
-                    companyName: companyName,
-                    projectName: projectName,
-                }
-            });
-            if(response.data && response.data.data){
-              console.log("Data fetched from DB for stage1Form2");
-              setFormData(response.data.data);
-            }else{
-              console.log("There is no data in DB.");
-            }
-        } catch (error) {
-            console.error("Error fetching data:", error);
+      try {
+        const response = await axios.get(
+          `${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form1`,
+          {
+            params: {
+              companyName: companyName,
+              projectName: projectName,
+            },
+          }
+        );
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage1Form1");
+          setFormData(response.data.data);
+        } else {
+          console.log("There is no data in DB.");
         }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
     fetchFormData();
-  }, [ projectName, companyName]); 
+  }, [projectName, companyName]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(formData);
+  };
+
+  const handlePhotoChange = (key, file) => {
+    setFormData((prev) => ({
+      ...prev,
+      photos: { ...prev.photos, [key]: file },
+    }));
+  };
+
+  const photoRequirements = [
+    { key: "transformer", label: "Transformer" },
+    { key: "oilLevelGauge", label: "Oil Level Gauge" },
+    { key: "wheelLocking", label: "Wheel Locking" },
+    {
+      key: "transformerFoundation",
+      label: "Transformer Foundation Level Condition",
+    },
+  ];
+
+  return (
+    <form onSubmit={handleSubmit} className="form-container">
+      <div className="company-header">
+        <h2>NAME PLATE DETAILS TRANSFORMER</h2>
+      </div>
+
+      <table className="form-table">
+        <tbody>
+          <tr>
+            <td>
+              <strong>MAKE</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.make}
+                onChange={(e) =>
+                  setFormData({ ...formData, make: e.target.value })
+                }
+              />
+            </td>
+            <td>
+              <strong>CURRENT HV (A)</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.currentHV}
+                onChange={(e) =>
+                  setFormData({ ...formData, currentHV: e.target.value })
+                }
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>SR. NO.</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.srNo}
+                onChange={(e) =>
+                  setFormData({ ...formData, srNo: e.target.value })
+                }
+              />
+            </td>
+            <td>
+              <strong>LV (A)</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.currentLV}
+                onChange={(e) =>
+                  setFormData({ ...formData, currentLV: e.target.value })
+                }
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>MVA Rating</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.mvaRating}
+                onChange={(e) =>
+                  setFormData({ ...formData, mvaRating: e.target.value })
+                }
+              />
+            </td>
+            <td>
+              <strong>Temp. Rise over amb. In Oil °C</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.tempRiseOil}
+                onChange={(e) =>
+                  setFormData({ ...formData, tempRiseOil: e.target.value })
+                }
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>HV (KV)</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.hvKv}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvKv: e.target.value })
+                }
+              />
+            </td>
+            <td>
+              <strong>Winding</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.winding}
+                onChange={(e) =>
+                  setFormData({ ...formData, winding: e.target.value })
+                }
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>LV (KV)</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.lvKv}
+                onChange={(e) =>
+                  setFormData({ ...formData, lvKv: e.target.value })
+                }
+              />
+            </td>
+            <td>
+              <strong>Transporting weight</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.transportingWeight}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    transportingWeight: e.target.value,
+                  })
+                }
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>% Impedance</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.impedancePercent}
+                onChange={(e) =>
+                  setFormData({ ...formData, impedancePercent: e.target.value })
+                }
+              />
+            </td>
+            <td>
+              <strong>No. Of radiators</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.noOfRadiators}
+                onChange={(e) =>
+                  setFormData({ ...formData, noOfRadiators: e.target.value })
+                }
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Year of Mfg.</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.yearOfMfg}
+                onChange={(e) =>
+                  setFormData({ ...formData, yearOfMfg: e.target.value })
+                }
+              />
+            </td>
+            <td>
+              <strong>Weight of Core & Winding.</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.weightCoreWinding}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    weightCoreWinding: e.target.value,
+                  })
+                }
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Oil Quantity in liter</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.oilQuantityLiter}
+                onChange={(e) =>
+                  setFormData({ ...formData, oilQuantityLiter: e.target.value })
+                }
+              />
+            </td>
+            <td>
+              <strong>Total Weight</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.totalWeight}
+                onChange={(e) =>
+                  setFormData({ ...formData, totalWeight: e.target.value })
+                }
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <PhotoUploadSection
+        title="Transformer, Oil Level gauge, Wheel Locking, Transformer Foundation Level condition"
+        photos={photoRequirements}
+        onPhotoChange={handlePhotoChange}
+      />
+
+      <div className="form-actions">
+        {onPrevious && (
+          <button type="button" onClick={onPrevious} className="prev-btn">
+            Previous Form
+          </button>
+        )}
+        <button type="submit" className="submit-btn">
+          Next Form
+        </button>
+      </div>
+    </form>
+  );
+}
+
+// Form 2: Protocol for Accessories Checking
+function ProtocolAccessoriesForm({
+  onSubmit,
+  onPrevious,
+  initialData,
+  isLastFormOfStage,
+  companyName,
+  projectName,
+}) {
+  const [formData, setFormData] = useState({
+    accessories: {},
+    photos: {},
+    ...initialData,
+  });
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.get(
+          `${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form2`,
+          {
+            params: {
+              companyName: companyName,
+              projectName: projectName,
+            },
+          }
+        );
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage1Form2");
+          setFormData(response.data.data);
+        } else {
+          console.log("There is no data in DB.");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchFormData();
+  }, [projectName, companyName]);
 
   const accessoryItems = [
     { id: 1, description: "HV bushing" },
@@ -1024,7 +1157,7 @@ function ProtocolAccessoriesForm({ onSubmit, onPrevious, initialData, isLastForm
     { id: 7, description: "Breather" },
     { id: 8, description: "Bushing Connector" },
     { id: 9, description: "Radiators" },
-  ]
+  ];
 
   const handleAccessoryChange = (id, field, value) => {
     setFormData((prev) => ({
@@ -1036,22 +1169,24 @@ function ProtocolAccessoriesForm({ onSubmit, onPrevious, initialData, isLastForm
           [field]: value,
         },
       },
-    }))
-  }
+    }));
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    onSubmit(formData)
-  }
+    e.preventDefault();
+    onSubmit(formData);
+  };
 
   const handlePhotoChange = (key, file) => {
     setFormData((prev) => ({
       ...prev,
       photos: { ...prev.photos, [key]: file },
-    }))
-  }
+    }));
+  };
 
-  const photoRequirements = [{ key: "transformerAccessories", label: "Transformer Accessories" }]
+  const photoRequirements = [
+    { key: "transformerAccessories", label: "Transformer Accessories" },
+  ];
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
@@ -1079,7 +1214,13 @@ function ProtocolAccessoriesForm({ onSubmit, onPrevious, initialData, isLastForm
                 <input
                   type="text"
                   value={formData.accessories[item.id]?.packingCase || ""}
-                  onChange={(e) => handleAccessoryChange(item.id, "packingCase", e.target.value)}
+                  onChange={(e) =>
+                    handleAccessoryChange(
+                      item.id,
+                      "packingCase",
+                      e.target.value
+                    )
+                  }
                 />
               </td>
               <td>
@@ -1089,28 +1230,40 @@ function ProtocolAccessoriesForm({ onSubmit, onPrevious, initialData, isLastForm
                 <input
                   type="text"
                   value={formData.accessories[item.id]?.qtyPerPL || ""}
-                  onChange={(e) => handleAccessoryChange(item.id, "qtyPerPL", e.target.value)}
+                  onChange={(e) =>
+                    handleAccessoryChange(item.id, "qtyPerPL", e.target.value)
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={formData.accessories[item.id]?.qtyReceived || ""}
-                  onChange={(e) => handleAccessoryChange(item.id, "qtyReceived", e.target.value)}
+                  onChange={(e) =>
+                    handleAccessoryChange(
+                      item.id,
+                      "qtyReceived",
+                      e.target.value
+                    )
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={formData.accessories[item.id]?.shortQty || ""}
-                  onChange={(e) => handleAccessoryChange(item.id, "shortQty", e.target.value)}
+                  onChange={(e) =>
+                    handleAccessoryChange(item.id, "shortQty", e.target.value)
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={formData.accessories[item.id]?.damagedQty || ""}
-                  onChange={(e) => handleAccessoryChange(item.id, "damagedQty", e.target.value)}
+                  onChange={(e) =>
+                    handleAccessoryChange(item.id, "damagedQty", e.target.value)
+                  }
                 />
               </td>
             </tr>
@@ -1158,20 +1311,27 @@ function ProtocolAccessoriesForm({ onSubmit, onPrevious, initialData, isLastForm
         </button>
       </div>
     </form>
-  )
+  );
 }
 
 // Form 3: Core Insulation Check
-function CoreInsulationCheckForm({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
+function CoreInsulationCheckForm({
+  onSubmit,
+  onPrevious,
+  initialData,
+  isLastFormOfStage,
+  companyName,
+  projectName,
+}) {
   const [formData, setFormData] = useState({
     betweenCoreFrame: "",
-    betweenCoreFrameRemarks:  "",
+    betweenCoreFrameRemarks: "",
     betweenFrameTank: "",
-    betweenFrameTankRemarks:  "",
-    betweenCoreTank:  "",
-    betweenCoreTankRemarks:  "",
-    filterMachine:  "",
-    filterMachineChecked:  "",
+    betweenFrameTankRemarks: "",
+    betweenCoreTank: "",
+    betweenCoreTankRemarks: "",
+    filterMachine: "",
+    filterMachineChecked: "",
     filterCapacity: "",
     filterCapacityChecked: "",
     vacuumPumpCapacity: "",
@@ -1181,51 +1341,56 @@ function CoreInsulationCheckForm({ onSubmit, onPrevious, initialData, isLastForm
     reservoirCapacity: "",
     reservoirCapacityChecked: "",
     hosePipes: "",
-    hosePipesChecked:  "",
+    hosePipesChecked: "",
     craneAvailable: "",
     craneAvailableChecked: "",
-    fireExtinguisher:  "",
-    firstAidKit:  "",
-    ppeEquipment:  "",
+    fireExtinguisher: "",
+    firstAidKit: "",
+    ppeEquipment: "",
     photos: {},
     ...initialData,
-  })
+  });
 
   useEffect(() => {
     const fetchFormData = async () => {
-        try {
-            const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form3`, {
-                params: {
-                    companyName: companyName,
-                    projectName: projectName,
-                }
-            });
-            if(response.data && response.data.data){
-              console.log("Data fetched from DB for stage1Form3");
-              setFormData(response.data.data);
-            }else{
-              console.log("There is no data in DB.");
-            }
-        } catch (error) {
-            console.error("Error fetching data:", error);
+      try {
+        const response = await axios.get(
+          `${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form3`,
+          {
+            params: {
+              companyName: companyName,
+              projectName: projectName,
+            },
+          }
+        );
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage1Form3");
+          setFormData(response.data.data);
+        } else {
+          console.log("There is no data in DB.");
         }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
     fetchFormData();
-  }, [ projectName, companyName]); 
+  }, [projectName, companyName]);
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    onSubmit(formData)
-  }
+    e.preventDefault();
+    onSubmit(formData);
+  };
 
   const handlePhotoChange = (key, file) => {
     setFormData((prev) => ({
       ...prev,
       photos: { ...prev.photos, [key]: file },
-    }))
-  }
+    }));
+  };
 
-  const photoRequirements = [{ key: "aboveMentionedPoints", label: "Above-mentioned point" }]
+  const photoRequirements = [
+    { key: "aboveMentionedPoints", label: "Above-mentioned point" },
+  ];
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
@@ -1250,14 +1415,21 @@ function CoreInsulationCheckForm({ onSubmit, onPrevious, initialData, isLastForm
               <input
                 type="text"
                 value={formData.betweenCoreFrame}
-                onChange={(e) => setFormData({ ...formData, betweenCoreFrame: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, betweenCoreFrame: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.betweenCoreFrameRemarks}
-                onChange={(e) => setFormData({ ...formData, betweenCoreFrameRemarks: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    betweenCoreFrameRemarks: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
@@ -1269,14 +1441,21 @@ function CoreInsulationCheckForm({ onSubmit, onPrevious, initialData, isLastForm
               <input
                 type="text"
                 value={formData.betweenFrameTank}
-                onChange={(e) => setFormData({ ...formData, betweenFrameTank: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, betweenFrameTank: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.betweenFrameTankRemarks}
-                onChange={(e) => setFormData({ ...formData, betweenFrameTankRemarks: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    betweenFrameTankRemarks: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
@@ -1288,14 +1467,21 @@ function CoreInsulationCheckForm({ onSubmit, onPrevious, initialData, isLastForm
               <input
                 type="text"
                 value={formData.betweenCoreTank}
-                onChange={(e) => setFormData({ ...formData, betweenCoreTank: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, betweenCoreTank: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.betweenCoreTankRemarks}
-                onChange={(e) => setFormData({ ...formData, betweenCoreTankRemarks: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    betweenCoreTankRemarks: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
@@ -1327,7 +1513,9 @@ function CoreInsulationCheckForm({ onSubmit, onPrevious, initialData, isLastForm
               <input
                 type="text"
                 value={formData.filterMachine}
-                onChange={(e) => setFormData({ ...formData, filterMachine: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, filterMachine: e.target.value })
+                }
                 placeholder="(Yes/No)"
               />
             </td>
@@ -1335,7 +1523,12 @@ function CoreInsulationCheckForm({ onSubmit, onPrevious, initialData, isLastForm
               <input
                 type="text"
                 value={formData.filterMachineChecked}
-                onChange={(e) => setFormData({ ...formData, filterMachineChecked: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    filterMachineChecked: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
@@ -1350,14 +1543,21 @@ function CoreInsulationCheckForm({ onSubmit, onPrevious, initialData, isLastForm
               <input
                 type="text"
                 value={formData.filterCapacity}
-                onChange={(e) => setFormData({ ...formData, filterCapacity: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, filterCapacity: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.filterCapacityChecked}
-                onChange={(e) => setFormData({ ...formData, filterCapacityChecked: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    filterCapacityChecked: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
@@ -1372,14 +1572,24 @@ function CoreInsulationCheckForm({ onSubmit, onPrevious, initialData, isLastForm
               <input
                 type="text"
                 value={formData.vacuumPumpCapacity}
-                onChange={(e) => setFormData({ ...formData, vacuumPumpCapacity: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    vacuumPumpCapacity: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.vacuumPumpCapacityChecked}
-                onChange={(e) => setFormData({ ...formData, vacuumPumpCapacityChecked: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    vacuumPumpCapacityChecked: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
@@ -1388,20 +1598,32 @@ function CoreInsulationCheckForm({ onSubmit, onPrevious, initialData, isLastForm
               <strong>5.</strong>
             </td>
             <td>
-              <strong>Whether the Reservoir is Available with valves and a breather.</strong>
+              <strong>
+                Whether the Reservoir is Available with valves and a breather.
+              </strong>
             </td>
             <td>
               <input
                 type="text"
                 value={formData.reservoirAvailable}
-                onChange={(e) => setFormData({ ...formData, reservoirAvailable: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    reservoirAvailable: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.reservoirAvailableChecked}
-                onChange={(e) => setFormData({ ...formData, reservoirAvailableChecked: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    reservoirAvailableChecked: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
@@ -1416,14 +1638,24 @@ function CoreInsulationCheckForm({ onSubmit, onPrevious, initialData, isLastForm
               <input
                 type="text"
                 value={formData.reservoirCapacity}
-                onChange={(e) => setFormData({ ...formData, reservoirCapacity: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    reservoirCapacity: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.reservoirCapacityChecked}
-                onChange={(e) => setFormData({ ...formData, reservoirCapacityChecked: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    reservoirCapacityChecked: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
@@ -1438,7 +1670,9 @@ function CoreInsulationCheckForm({ onSubmit, onPrevious, initialData, isLastForm
               <input
                 type="text"
                 value={formData.hosePipes}
-                onChange={(e) => setFormData({ ...formData, hosePipes: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, hosePipes: e.target.value })
+                }
                 placeholder="(Yes/No)"
               />
             </td>
@@ -1446,7 +1680,9 @@ function CoreInsulationCheckForm({ onSubmit, onPrevious, initialData, isLastForm
               <input
                 type="text"
                 value={formData.hosePipesChecked}
-                onChange={(e) => setFormData({ ...formData, hosePipesChecked: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, hosePipesChecked: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -1461,21 +1697,30 @@ function CoreInsulationCheckForm({ onSubmit, onPrevious, initialData, isLastForm
               <input
                 type="text"
                 value={formData.craneAvailable}
-                onChange={(e) => setFormData({ ...formData, craneAvailable: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, craneAvailable: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.craneAvailableChecked}
-                onChange={(e) => setFormData({ ...formData, craneAvailableChecked: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    craneAvailableChecked: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style={{ marginTop: "30px", textAlign: "center" }}>SAFETY EQUIPMENT</h4>
+      <h4 style={{ marginTop: "30px", textAlign: "center" }}>
+        SAFETY EQUIPMENT
+      </h4>
 
       <table className="form-table">
         <thead>
@@ -1492,7 +1737,9 @@ function CoreInsulationCheckForm({ onSubmit, onPrevious, initialData, isLastForm
             <td>
               <select
                 value={formData.fireExtinguisher}
-                onChange={(e) => setFormData({ ...formData, fireExtinguisher: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, fireExtinguisher: e.target.value })
+                }
               >
                 <option value="">(Yes/No)</option>
                 <option value="Yes">Yes</option>
@@ -1507,7 +1754,9 @@ function CoreInsulationCheckForm({ onSubmit, onPrevious, initialData, isLastForm
             <td>
               <select
                 value={formData.firstAidKit}
-                onChange={(e) => setFormData({ ...formData, firstAidKit: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, firstAidKit: e.target.value })
+                }
               >
                 <option value="">(Yes/No)</option>
                 <option value="Yes">Yes</option>
@@ -1517,12 +1766,17 @@ function CoreInsulationCheckForm({ onSubmit, onPrevious, initialData, isLastForm
           </tr>
           <tr>
             <td>
-              <strong>PPE for the working team of ETC agency, like- Safety shoes, Helmet, etc...</strong>
+              <strong>
+                PPE for the working team of ETC agency, like- Safety shoes,
+                Helmet, etc...
+              </strong>
             </td>
             <td>
               <select
                 value={formData.ppeEquipment}
-                onChange={(e) => setFormData({ ...formData, ppeEquipment: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, ppeEquipment: e.target.value })
+                }
               >
                 <option value="">(Yes/No)</option>
                 <option value="Yes">Yes</option>
@@ -1533,7 +1787,11 @@ function CoreInsulationCheckForm({ onSubmit, onPrevious, initialData, isLastForm
         </tbody>
       </table>
 
-      <PhotoUploadSection title="Above-mentioned point" photos={photoRequirements} onPhotoChange={handlePhotoChange} />
+      <PhotoUploadSection
+        title="Above-mentioned point"
+        photos={photoRequirements}
+        onPhotoChange={handlePhotoChange}
+      />
 
       <div className="form-actions">
         {onPrevious && (
@@ -1546,11 +1804,18 @@ function CoreInsulationCheckForm({ onSubmit, onPrevious, initialData, isLastForm
         </button>
       </div>
     </form>
-  )
+  );
 }
 
 // Form 4: Pre-Erection Tan Delta and Capacitance Test on Bushing
-function PreErectionTanDeltaTestForm({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
+function PreErectionTanDeltaTestForm({
+  onSubmit,
+  onPrevious,
+  initialData,
+  isLastFormOfStage,
+  companyName,
+  projectName,
+}) {
   const [formData, setFormData] = useState({
     meterUsed: initialData.meterUsed || "",
     date: initialData.date || "",
@@ -1562,63 +1827,77 @@ function PreErectionTanDeltaTestForm({ onSubmit, onPrevious, initialData, isLast
     bushing12: initialData.bushing12 || "",
     bushing11_05kv_tanDelta: initialData.bushing11_05kv_tanDelta || "",
     bushing11_05kv_capacitance: initialData.bushing11_05kv_capacitance || "",
-    bushing11_05kv_excitationCurrent: initialData.bushing11_05kv_excitationCurrent || "",
-    bushing11_05kv_dielectricLoss: initialData.bushing11_05kv_dielectricLoss || "",
+    bushing11_05kv_excitationCurrent:
+      initialData.bushing11_05kv_excitationCurrent || "",
+    bushing11_05kv_dielectricLoss:
+      initialData.bushing11_05kv_dielectricLoss || "",
     bushing12_05kv_tanDelta: initialData.bushing12_05kv_tanDelta || "",
     bushing12_05kv_capacitance: initialData.bushing12_05kv_capacitance || "",
-    bushing12_05kv_excitationCurrent: initialData.bushing12_05kv_excitationCurrent || "",
-    bushing12_05kv_dielectricLoss: initialData.bushing12_05kv_dielectricLoss || "",
+    bushing12_05kv_excitationCurrent:
+      initialData.bushing12_05kv_excitationCurrent || "",
+    bushing12_05kv_dielectricLoss:
+      initialData.bushing12_05kv_dielectricLoss || "",
     bushing11_10kv_tanDelta: initialData.bushing11_10kv_tanDelta || "",
     bushing11_10kv_capacitance: initialData.bushing11_10kv_capacitance || "",
-    bushing11_10kv_excitationCurrent: initialData.bushing11_10kv_excitationCurrent || "",
-    bushing11_10kv_dielectricLoss: initialData.bushing11_10kv_dielectricLoss || "",
+    bushing11_10kv_excitationCurrent:
+      initialData.bushing11_10kv_excitationCurrent || "",
+    bushing11_10kv_dielectricLoss:
+      initialData.bushing11_10kv_dielectricLoss || "",
     bushing12_10kv_tanDelta: initialData.bushing12_10kv_tanDelta || "",
     bushing12_10kv_capacitance: initialData.bushing12_10kv_capacitance || "",
-    bushing12_10kv_excitationCurrent: initialData.bushing12_10kv_excitationCurrent || "",
-    bushing12_10kv_dielectricLoss: initialData.bushing12_10kv_dielectricLoss || "",
+    bushing12_10kv_excitationCurrent:
+      initialData.bushing12_10kv_excitationCurrent || "",
+    bushing12_10kv_dielectricLoss:
+      initialData.bushing12_10kv_dielectricLoss || "",
     photos: initialData.photos || {},
     ...initialData,
-  })
+  });
 
   useEffect(() => {
     const fetchFormData = async () => {
-        try {
-            const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form4`, {
-                params: {
-                    companyName: companyName,
-                    projectName: projectName,
-                }
-            });
-            if(response.data && response.data.data){
-              console.log("Data fetched from DB for stage1Form4");
-              setFormData(response.data.data);
-            }else{
-              console.log("There is no data in DB.");
-            }
-        } catch (error) {
-            console.error("Error fetching data:", error);
+      try {
+        const response = await axios.get(
+          `${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form4`,
+          {
+            params: {
+              companyName: companyName,
+              projectName: projectName,
+            },
+          }
+        );
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage1Form4");
+          setFormData(response.data.data);
+        } else {
+          console.log("There is no data in DB.");
         }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
     fetchFormData();
-  }, [ projectName, companyName]); 
+  }, [projectName, companyName]);
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    onSubmit(formData)
-  }
+    e.preventDefault();
+    onSubmit(formData);
+  };
 
   const handlePhotoChange = (key, file) => {
     setFormData((prev) => ({
       ...prev,
       photos: { ...prev.photos, [key]: file },
-    }))
-  }
+    }));
+  };
 
   const photoRequirements = [
     { key: "tenDeltaKit", label: "Ten delta kit" },
     { key: "calibrationReport", label: "Calibration report" },
-    { key: "duringTenDeltaBushing", label: "During ten delta of bushing photo" },
-  ]
+    {
+      key: "duringTenDeltaBushing",
+      label: "During ten delta of bushing photo",
+    },
+  ];
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
@@ -1636,7 +1915,9 @@ function PreErectionTanDeltaTestForm({ onSubmit, onPrevious, initialData, isLast
               <input
                 type="text"
                 value={formData.meterUsed}
-                onChange={(e) => setFormData({ ...formData, meterUsed: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, meterUsed: e.target.value })
+                }
               />
             </td>
             <td>
@@ -1646,7 +1927,9 @@ function PreErectionTanDeltaTestForm({ onSubmit, onPrevious, initialData, isLast
               <input
                 type="date"
                 value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, date: e.target.value })
+                }
               />
             </td>
             <td>
@@ -1656,7 +1939,9 @@ function PreErectionTanDeltaTestForm({ onSubmit, onPrevious, initialData, isLast
               <input
                 type="time"
                 value={formData.time}
-                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, time: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -1668,7 +1953,9 @@ function PreErectionTanDeltaTestForm({ onSubmit, onPrevious, initialData, isLast
               <input
                 type="text"
                 value={formData.modelSrNo}
-                onChange={(e) => setFormData({ ...formData, modelSrNo: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, modelSrNo: e.target.value })
+                }
               />
             </td>
             <td>
@@ -1678,7 +1965,9 @@ function PreErectionTanDeltaTestForm({ onSubmit, onPrevious, initialData, isLast
               <input
                 type="text"
                 value={formData.wti}
-                onChange={(e) => setFormData({ ...formData, wti: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, wti: e.target.value })
+                }
               />
             </td>
             <td>
@@ -1688,7 +1977,9 @@ function PreErectionTanDeltaTestForm({ onSubmit, onPrevious, initialData, isLast
               <input
                 type="text"
                 value={formData.oti}
-                onChange={(e) => setFormData({ ...formData, oti: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, oti: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -1710,14 +2001,18 @@ function PreErectionTanDeltaTestForm({ onSubmit, onPrevious, initialData, isLast
               <input
                 type="text"
                 value={formData.bushing11}
-                onChange={(e) => setFormData({ ...formData, bushing11: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, bushing11: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing12}
-                onChange={(e) => setFormData({ ...formData, bushing12: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, bushing12: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -1744,35 +2039,60 @@ function PreErectionTanDeltaTestForm({ onSubmit, onPrevious, initialData, isLast
               <input
                 type="text"
                 value={formData.bushing11_05kv_tanDelta}
-                onChange={(e) => setFormData({ ...formData, bushing11_05kv_tanDelta: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_05kv_tanDelta: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing11_05kv_capacitance}
-                onChange={(e) => setFormData({ ...formData, bushing11_05kv_capacitance: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_05kv_capacitance: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing11_05kv_excitationCurrent}
-                onChange={(e) => setFormData({ ...formData, bushing11_05kv_excitationCurrent: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_05kv_excitationCurrent: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing11_05kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, bushing11_05kv_dielectricLoss: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_05kv_dielectricLoss: e.target.value,
+                  })
+                }
               />
             </td>
-             <td>
+            <td>
               <input
                 type="text"
                 value={formData.bushing11_10kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, bushing11_10kv_dielectricLoss: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_10kv_dielectricLoss: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
@@ -1784,35 +2104,60 @@ function PreErectionTanDeltaTestForm({ onSubmit, onPrevious, initialData, isLast
               <input
                 type="text"
                 value={formData.bushing12_05kv_tanDelta}
-                onChange={(e) => setFormData({ ...formData, bushing12_05kv_tanDelta: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing12_05kv_tanDelta: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing12_05kv_capacitance}
-                onChange={(e) => setFormData({ ...formData, bushing12_05kv_capacitance: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing12_05kv_capacitance: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing12_05kv_excitationCurrent}
-                onChange={(e) => setFormData({ ...formData, bushing12_05kv_excitationCurrent: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing12_05kv_excitationCurrent: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing12_05kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, bushing12_05kv_dielectricLoss: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing12_05kv_dielectricLoss: e.target.value,
+                  })
+                }
               />
             </td>
-             <td>
+            <td>
               <input
                 type="text"
                 value={formData.bushing11_10kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, bushing11_10kv_dielectricLoss: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_10kv_dielectricLoss: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
@@ -1839,35 +2184,60 @@ function PreErectionTanDeltaTestForm({ onSubmit, onPrevious, initialData, isLast
               <input
                 type="text"
                 value={formData.bushing11_10kv_tanDelta}
-                onChange={(e) => setFormData({ ...formData, bushing11_10kv_tanDelta: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_10kv_tanDelta: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing11_10kv_capacitance}
-                onChange={(e) => setFormData({ ...formData, bushing11_10kv_capacitance: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_10kv_capacitance: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing11_10kv_excitationCurrent}
-                onChange={(e) => setFormData({ ...formData, bushing11_10kv_excitationCurrent: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_10kv_excitationCurrent: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing11_10kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, bushing11_10kv_dielectricLoss: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_10kv_dielectricLoss: e.target.value,
+                  })
+                }
               />
             </td>
-             <td>
+            <td>
               <input
                 type="text"
                 value={formData.bushing11_10kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, bushing11_10kv_dielectricLoss: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_10kv_dielectricLoss: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
@@ -1879,35 +2249,60 @@ function PreErectionTanDeltaTestForm({ onSubmit, onPrevious, initialData, isLast
               <input
                 type="text"
                 value={formData.bushing12_10kv_tanDelta}
-                onChange={(e) => setFormData({ ...formData, bushing12_10kv_tanDelta: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing12_10kv_tanDelta: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing12_10kv_capacitance}
-                onChange={(e) => setFormData({ ...formData, bushing12_10kv_capacitance: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing12_10kv_capacitance: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing12_10kv_excitationCurrent}
-                onChange={(e) => setFormData({ ...formData, bushing12_10kv_excitationCurrent: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing12_10kv_excitationCurrent: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing12_10kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, bushing12_10kv_dielectricLoss: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing12_10kv_dielectricLoss: e.target.value,
+                  })
+                }
               />
             </td>
-             <td>
+            <td>
               <input
                 type="text"
                 value={formData.bushing11_10kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, bushing11_10kv_dielectricLoss: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_10kv_dielectricLoss: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
@@ -1931,11 +2326,18 @@ function PreErectionTanDeltaTestForm({ onSubmit, onPrevious, initialData, isLast
         </button>
       </div>
     </form>
-  )
+  );
 }
 
 // Form 5: Record of Measurement of IR Values
-function RecordMeasurementIRValuesForm({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
+function RecordMeasurementIRValuesForm({
+  onSubmit,
+  onPrevious,
+  initialData,
+  isLastFormOfStage,
+  companyName,
+  projectName,
+}) {
   const [formData, setFormData] = useState({
     date: initialData.date || "",
     time: initialData.time || "",
@@ -1953,47 +2355,50 @@ function RecordMeasurementIRValuesForm({ onSubmit, onPrevious, initialData, isLa
     ratioIR60IR15: initialData.ratioIR60IR15 || "",
     photos: initialData.photos || {},
     ...initialData,
-  })
+  });
 
   useEffect(() => {
     const fetchFormData = async () => {
-        try {
-            const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form5`, {
-                params: {
-                    companyName: companyName,
-                    projectName: projectName,
-                }
-            });
-            if(response.data && response.data.data){
-              console.log("Data fetched from DB for stage1Form5");
-              setFormData(response.data.data);
-            }else{
-              console.log("There is no data in DB.");
-            }
-        } catch (error) {
-            console.error("Error fetching data:", error);
+      try {
+        const response = await axios.get(
+          `${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form5`,
+          {
+            params: {
+              companyName: companyName,
+              projectName: projectName,
+            },
+          }
+        );
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage1Form5");
+          setFormData(response.data.data);
+        } else {
+          console.log("There is no data in DB.");
         }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
     fetchFormData();
-  }, [ projectName, companyName]); 
+  }, [projectName, companyName]);
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    onSubmit(formData)
-  }
+    e.preventDefault();
+    onSubmit(formData);
+  };
 
   const handlePhotoChange = (key, file) => {
     setFormData((prev) => ({
       ...prev,
       photos: { ...prev.photos, [key]: file },
-    }))
-  }
+    }));
+  };
 
   const photoRequirements = [
     { key: "irTester", label: "IR tester" },
     { key: "calibrationReport", label: "Calibration report" },
     { key: "60secIRValue", label: "60 sec IR value" },
-  ]
+  ];
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
@@ -2011,7 +2416,9 @@ function RecordMeasurementIRValuesForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="date"
                 value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, date: e.target.value })
+                }
               />
             </td>
             <td>
@@ -2021,7 +2428,9 @@ function RecordMeasurementIRValuesForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="time"
                 value={formData.time}
-                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, time: e.target.value })
+                }
               />
             </td>
             <td>
@@ -2043,7 +2452,9 @@ function RecordMeasurementIRValuesForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.ambTemp}
-                onChange={(e) => setFormData({ ...formData, ambTemp: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, ambTemp: e.target.value })
+                }
               />
             </td>
             <td>
@@ -2053,7 +2464,9 @@ function RecordMeasurementIRValuesForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.make}
-                onChange={(e) => setFormData({ ...formData, make: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, make: e.target.value })
+                }
               />
             </td>
             <td rowSpan="4"></td>
@@ -2067,7 +2480,9 @@ function RecordMeasurementIRValuesForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.oilTemp}
-                onChange={(e) => setFormData({ ...formData, oilTemp: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, oilTemp: e.target.value })
+                }
               />
             </td>
             <td>
@@ -2077,7 +2492,9 @@ function RecordMeasurementIRValuesForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.srNo}
-                onChange={(e) => setFormData({ ...formData, srNo: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, srNo: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -2089,7 +2506,9 @@ function RecordMeasurementIRValuesForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.wdgTemp}
-                onChange={(e) => setFormData({ ...formData, wdgTemp: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, wdgTemp: e.target.value })
+                }
               />
             </td>
             <td>
@@ -2099,7 +2518,9 @@ function RecordMeasurementIRValuesForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.range}
-                onChange={(e) => setFormData({ ...formData, range: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, range: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -2111,7 +2532,9 @@ function RecordMeasurementIRValuesForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.relativeHumidity}
-                onChange={(e) => setFormData({ ...formData, relativeHumidity: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, relativeHumidity: e.target.value })
+                }
               />
             </td>
             <td>
@@ -2121,7 +2544,9 @@ function RecordMeasurementIRValuesForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.voltageLevel}
-                onChange={(e) => setFormData({ ...formData, voltageLevel: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, voltageLevel: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -2148,21 +2573,27 @@ function RecordMeasurementIRValuesForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.hvEarth15Sec}
-                onChange={(e) => setFormData({ ...formData, hvEarth15Sec: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth15Sec: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.hvEarth60Sec}
-                onChange={(e) => setFormData({ ...formData, hvEarth60Sec: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth60Sec: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.ratioIR60IR15}
-                onChange={(e) => setFormData({ ...formData, ratioIR60IR15: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, ratioIR60IR15: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -2186,13 +2617,18 @@ function RecordMeasurementIRValuesForm({ onSubmit, onPrevious, initialData, isLa
         </button>
       </div>
     </form>
-  )
+  );
 }
 
 // Stage 2 Form Components
 
 // Form 1: Record of Oil Handling
-function RecordOilHandlingForm({ onSubmit, onPrevious, initialData, isLastFormOfStage }) {
+function RecordOilHandlingForm({
+  onSubmit,
+  onPrevious,
+  initialData,
+  isLastFormOfStage,
+}) {
   const [formData, setFormData] = useState({
     tank1NoOfBarrels: initialData.tank1NoOfBarrels || "",
     tank1StartedDateTime: initialData.tank1StartedDateTime || "",
@@ -2213,33 +2649,39 @@ function RecordOilHandlingForm({ onSubmit, onPrevious, initialData, isLastFormOf
         })),
     photos: initialData.photos || {},
     ...initialData,
-  })
+  });
 
   const handleFiltrationRecordChange = (index, field, value) => {
-    const updatedRecords = [...formData.filtrationRecords]
-    updatedRecords[index] = { ...updatedRecords[index], [field]: value }
-    setFormData({ ...formData, filtrationRecords: updatedRecords })
-  }
+    const updatedRecords = [...formData.filtrationRecords];
+    updatedRecords[index] = { ...updatedRecords[index], [field]: value };
+    setFormData({ ...formData, filtrationRecords: updatedRecords });
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    onSubmit(formData)
-  }
+    e.preventDefault();
+    onSubmit(formData);
+  };
 
   const handlePhotoChange = (key, file) => {
     setFormData((prev) => ({
       ...prev,
       photos: { ...prev.photos, [key]: file },
-    }))
-  }
+    }));
+  };
 
   const photoRequirements = [
-    { key: "internalConditionReservoir", label: "Internal condition of reservoir tank" },
-    { key: "calibrationReportBDV", label: "Calibration report of BDV & PPM kit" },
+    {
+      key: "internalConditionReservoir",
+      label: "Internal condition of reservoir tank",
+    },
+    {
+      key: "calibrationReportBDV",
+      label: "Calibration report of BDV & PPM kit",
+    },
     { key: "oilBarrelsChecking", label: "Oil barrels checking by water pest" },
     { key: "ppmPhoto", label: "PPM Photo" },
     { key: "readingBDVValue", label: "Reading of BDV value" },
-  ]
+  ];
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
@@ -2270,42 +2712,63 @@ function RecordOilHandlingForm({ onSubmit, onPrevious, initialData, isLastFormOf
               <input
                 type="text"
                 value={formData.tank1NoOfBarrels}
-                onChange={(e) => setFormData({ ...formData, tank1NoOfBarrels: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, tank1NoOfBarrels: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="datetime-local"
                 value={formData.tank1StartedDateTime}
-                onChange={(e) => setFormData({ ...formData, tank1StartedDateTime: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    tank1StartedDateTime: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="datetime-local"
                 value={formData.tank1CompletedDateTime}
-                onChange={(e) => setFormData({ ...formData, tank1CompletedDateTime: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    tank1CompletedDateTime: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.tank1BDV}
-                onChange={(e) => setFormData({ ...formData, tank1BDV: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, tank1BDV: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.tank1MoistureContent}
-                onChange={(e) => setFormData({ ...formData, tank1MoistureContent: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    tank1MoistureContent: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style={{ marginTop: "40px" }}>RECORD FOR OIL FILTRATION IN RESERVOIR TANK</h4>
+      <h4 style={{ marginTop: "40px" }}>
+        RECORD FOR OIL FILTRATION IN RESERVOIR TANK
+      </h4>
 
       <table className="form-table">
         <thead>
@@ -2325,42 +2788,70 @@ function RecordOilHandlingForm({ onSubmit, onPrevious, initialData, isLastFormOf
                 <input
                   type="date"
                   value={record.date}
-                  onChange={(e) => handleFiltrationRecordChange(index, "date", e.target.value)}
+                  onChange={(e) =>
+                    handleFiltrationRecordChange(index, "date", e.target.value)
+                  }
                 />
               </td>
               <td>
                 <input
                   type="time"
                   value={record.time}
-                  onChange={(e) => handleFiltrationRecordChange(index, "time", e.target.value)}
+                  onChange={(e) =>
+                    handleFiltrationRecordChange(index, "time", e.target.value)
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={record.vacuumLevel}
-                  onChange={(e) => handleFiltrationRecordChange(index, "vacuumLevel", e.target.value)}
+                  onChange={(e) =>
+                    handleFiltrationRecordChange(
+                      index,
+                      "vacuumLevel",
+                      e.target.value
+                    )
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={record.inletTemp}
-                  onChange={(e) => handleFiltrationRecordChange(index, "inletTemp", e.target.value)}
+                  onChange={(e) =>
+                    handleFiltrationRecordChange(
+                      index,
+                      "inletTemp",
+                      e.target.value
+                    )
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={record.outletTemp}
-                  onChange={(e) => handleFiltrationRecordChange(index, "outletTemp", e.target.value)}
+                  onChange={(e) =>
+                    handleFiltrationRecordChange(
+                      index,
+                      "outletTemp",
+                      e.target.value
+                    )
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={record.remark}
-                  onChange={(e) => handleFiltrationRecordChange(index, "remark", e.target.value)}
+                  onChange={(e) =>
+                    handleFiltrationRecordChange(
+                      index,
+                      "remark",
+                      e.target.value
+                    )
+                  }
                 />
               </td>
             </tr>
@@ -2385,11 +2876,16 @@ function RecordOilHandlingForm({ onSubmit, onPrevious, initialData, isLastFormOf
         </button>
       </div>
     </form>
-  )
+  );
 }
 
 // Form 2: IR After Erection - Stage 2 End
-function IRAfterErectionStage2Form({ onSubmit, onPrevious, initialData, isLastFormOfStage }) {
+function IRAfterErectionStage2Form({
+  onSubmit,
+  onPrevious,
+  initialData,
+  isLastFormOfStage,
+}) {
   const [formData, setFormData] = useState({
     tempOTI: initialData.tempOTI || "",
     tempWTI: initialData.tempWTI || "",
@@ -2402,34 +2898,40 @@ function IRAfterErectionStage2Form({ onSubmit, onPrevious, initialData, isLastFo
     neutralWithRespectToEarth: initialData.neutralWithRespectToEarth || "",
     photos: initialData.photos || {},
     ...initialData,
-  })
+  });
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    onSubmit(formData)
-  }
+    e.preventDefault();
+    onSubmit(formData);
+  };
 
   const handlePhotoChange = (key, file) => {
     setFormData((prev) => ({
       ...prev,
       photos: { ...prev.photos, [key]: file },
-    }))
-  }
+    }));
+  };
 
   const photoRequirements = [
     { key: "leadClearances", label: "Lead clearances" },
-    { key: "anabondBushingThimble", label: "Anabond on both bushing's thimble" },
+    {
+      key: "anabondBushingThimble",
+      label: "Anabond on both bushing's thimble",
+    },
     { key: "radiatorsFlashing", label: "Radiators flashing" },
-    { key: "conservatorInternalInspection", label: "Conservator internal inspection" },
+    {
+      key: "conservatorInternalInspection",
+      label: "Conservator internal inspection",
+    },
     { key: "fullTransformerPhoto", label: "Full transformer photo" },
-  ]
+  ];
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
       <div className="company-header">
         <h2>
-          IR after erection Temp OTI ........°C WTI............°C, AMB........°C &nbsp;&nbsp;&nbsp;&nbsp; RANGE ONLY 1
-          KV
+          IR after erection Temp OTI ........°C WTI............°C, AMB........°C
+          &nbsp;&nbsp;&nbsp;&nbsp; RANGE ONLY 1 KV
         </h2>
       </div>
 
@@ -2439,7 +2941,9 @@ function IRAfterErectionStage2Form({ onSubmit, onPrevious, initialData, isLastFo
           <input
             type="text"
             value={formData.tempOTI}
-            onChange={(e) => setFormData({ ...formData, tempOTI: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, tempOTI: e.target.value })
+            }
           />
         </div>
         <div className="form-group">
@@ -2447,7 +2951,9 @@ function IRAfterErectionStage2Form({ onSubmit, onPrevious, initialData, isLastFo
           <input
             type="text"
             value={formData.tempWTI}
-            onChange={(e) => setFormData({ ...formData, tempWTI: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, tempWTI: e.target.value })
+            }
           />
         </div>
         <div className="form-group">
@@ -2455,7 +2961,9 @@ function IRAfterErectionStage2Form({ onSubmit, onPrevious, initialData, isLastFo
           <input
             type="text"
             value={formData.tempAMB}
-            onChange={(e) => setFormData({ ...formData, tempAMB: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, tempAMB: e.target.value })
+            }
           />
         </div>
       </div>
@@ -2478,21 +2986,27 @@ function IRAfterErectionStage2Form({ onSubmit, onPrevious, initialData, isLastFo
               <input
                 type="text"
                 value={formData.hvEarth15Sec}
-                onChange={(e) => setFormData({ ...formData, hvEarth15Sec: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth15Sec: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.hvEarth60Sec}
-                onChange={(e) => setFormData({ ...formData, hvEarth60Sec: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth60Sec: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.ratioIR60IR15}
-                onChange={(e) => setFormData({ ...formData, ratioIR60IR15: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, ratioIR60IR15: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -2511,7 +3025,12 @@ function IRAfterErectionStage2Form({ onSubmit, onPrevious, initialData, isLastFo
               <input
                 type="text"
                 value={formData.hvWithRespectToEarth}
-                onChange={(e) => setFormData({ ...formData, hvWithRespectToEarth: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    hvWithRespectToEarth: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
@@ -2523,7 +3042,12 @@ function IRAfterErectionStage2Form({ onSubmit, onPrevious, initialData, isLastFo
               <input
                 type="text"
                 value={formData.lvWithRespectToEarth}
-                onChange={(e) => setFormData({ ...formData, lvWithRespectToEarth: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    lvWithRespectToEarth: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
@@ -2535,7 +3059,12 @@ function IRAfterErectionStage2Form({ onSubmit, onPrevious, initialData, isLastFo
               <input
                 type="text"
                 value={formData.neutralWithRespectToEarth}
-                onChange={(e) => setFormData({ ...formData, neutralWithRespectToEarth: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    neutralWithRespectToEarth: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
@@ -2575,13 +3104,18 @@ function IRAfterErectionStage2Form({ onSubmit, onPrevious, initialData, isLastFo
         </button>
       </div>
     </form>
-  )
+  );
 }
 
 // Stage 3 Form Components
 
 // Form 1: Before Oil Filling and Pressure Test Report
-function BeforeOilFillingPressureTestForm({ onSubmit, onPrevious, initialData, isLastFormOfStage }) {
+function BeforeOilFillingPressureTestForm({
+  onSubmit,
+  onPrevious,
+  initialData,
+  isLastFormOfStage,
+}) {
   const [formData, setFormData] = useState({
     bdvKV: initialData.bdvKV || "",
     waterContentPPM: initialData.waterContentPPM || "",
@@ -2605,18 +3139,18 @@ function BeforeOilFillingPressureTestForm({ onSubmit, onPrevious, initialData, i
           tempWTI: "",
         })),
     ...initialData,
-  })
+  });
 
   const handlePressureTestRecordChange = (index, field, value) => {
-    const updatedRecords = [...formData.pressureTestRecords]
-    updatedRecords[index] = { ...updatedRecords[index], [field]: value }
-    setFormData({ ...formData, pressureTestRecords: updatedRecords })
-  }
+    const updatedRecords = [...formData.pressureTestRecords];
+    updatedRecords[index] = { ...updatedRecords[index], [field]: value };
+    setFormData({ ...formData, pressureTestRecords: updatedRecords });
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    onSubmit(formData)
-  }
+    e.preventDefault();
+    onSubmit(formData);
+  };
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
@@ -2632,7 +3166,9 @@ function BeforeOilFillingPressureTestForm({ onSubmit, onPrevious, initialData, i
           <input
             type="text"
             value={formData.bdvKV}
-            onChange={(e) => setFormData({ ...formData, bdvKV: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, bdvKV: e.target.value })
+            }
             placeholder="Enter BDV value"
           />
         </div>
@@ -2643,14 +3179,17 @@ function BeforeOilFillingPressureTestForm({ onSubmit, onPrevious, initialData, i
           <input
             type="text"
             value={formData.waterContentPPM}
-            onChange={(e) => setFormData({ ...formData, waterContentPPM: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, waterContentPPM: e.target.value })
+            }
             placeholder="Enter water content"
           />
         </div>
       </div>
 
       <h4 style={{ marginTop: "40px" }}>
-        IR After oil Toping up to conservator Temp OTI ........°C WTI....°C, AMB..........°C, RANGE ONLY 1 KV
+        IR After oil Toping up to conservator Temp OTI ........°C WTI....°C,
+        AMB..........°C, RANGE ONLY 1 KV
       </h4>
 
       <div className="form-grid" style={{ marginBottom: "20px" }}>
@@ -2659,7 +3198,9 @@ function BeforeOilFillingPressureTestForm({ onSubmit, onPrevious, initialData, i
           <input
             type="text"
             value={formData.tempOTI}
-            onChange={(e) => setFormData({ ...formData, tempOTI: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, tempOTI: e.target.value })
+            }
           />
         </div>
         <div className="form-group">
@@ -2667,7 +3208,9 @@ function BeforeOilFillingPressureTestForm({ onSubmit, onPrevious, initialData, i
           <input
             type="text"
             value={formData.tempWTI}
-            onChange={(e) => setFormData({ ...formData, tempWTI: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, tempWTI: e.target.value })
+            }
           />
         </div>
         <div className="form-group">
@@ -2675,7 +3218,9 @@ function BeforeOilFillingPressureTestForm({ onSubmit, onPrevious, initialData, i
           <input
             type="text"
             value={formData.tempAMB}
-            onChange={(e) => setFormData({ ...formData, tempAMB: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, tempAMB: e.target.value })
+            }
           />
         </div>
       </div>
@@ -2698,28 +3243,41 @@ function BeforeOilFillingPressureTestForm({ onSubmit, onPrevious, initialData, i
               <input
                 type="text"
                 value={formData.hvEarth15Sec}
-                onChange={(e) => setFormData({ ...formData, hvEarth15Sec: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth15Sec: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.hvEarth60Sec}
-                onChange={(e) => setFormData({ ...formData, hvEarth60Sec: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth60Sec: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.ratioIR60IR15}
-                onChange={(e) => setFormData({ ...formData, ratioIR60IR15: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, ratioIR60IR15: e.target.value })
+                }
               />
             </td>
           </tr>
         </tbody>
       </table>
 
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "40px 0 20px 0" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          margin: "40px 0 20px 0",
+        }}
+      >
         <h4>PRESSURE TEST REPORT</h4>
         <div className="form-group" style={{ margin: 0 }}>
           <label>
@@ -2728,7 +3286,9 @@ function BeforeOilFillingPressureTestForm({ onSubmit, onPrevious, initialData, i
           <input
             type="date"
             value={formData.pressureTestDate}
-            onChange={(e) => setFormData({ ...formData, pressureTestDate: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, pressureTestDate: e.target.value })
+            }
           />
         </div>
       </div>
@@ -2760,35 +3320,65 @@ function BeforeOilFillingPressureTestForm({ onSubmit, onPrevious, initialData, i
                 <input
                   type="time"
                   value={record.timeStarted}
-                  onChange={(e) => handlePressureTestRecordChange(index, "timeStarted", e.target.value)}
+                  onChange={(e) =>
+                    handlePressureTestRecordChange(
+                      index,
+                      "timeStarted",
+                      e.target.value
+                    )
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={record.pressureKgCm2}
-                  onChange={(e) => handlePressureTestRecordChange(index, "pressureKgCm2", e.target.value)}
+                  onChange={(e) =>
+                    handlePressureTestRecordChange(
+                      index,
+                      "pressureKgCm2",
+                      e.target.value
+                    )
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={record.tempAmb}
-                  onChange={(e) => handlePressureTestRecordChange(index, "tempAmb", e.target.value)}
+                  onChange={(e) =>
+                    handlePressureTestRecordChange(
+                      index,
+                      "tempAmb",
+                      e.target.value
+                    )
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={record.tempOTI}
-                  onChange={(e) => handlePressureTestRecordChange(index, "tempOTI", e.target.value)}
+                  onChange={(e) =>
+                    handlePressureTestRecordChange(
+                      index,
+                      "tempOTI",
+                      e.target.value
+                    )
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={record.tempWTI}
-                  onChange={(e) => handlePressureTestRecordChange(index, "tempWTI", e.target.value)}
+                  onChange={(e) =>
+                    handlePressureTestRecordChange(
+                      index,
+                      "tempWTI",
+                      e.target.value
+                    )
+                  }
                 />
               </td>
             </tr>
@@ -2807,11 +3397,16 @@ function BeforeOilFillingPressureTestForm({ onSubmit, onPrevious, initialData, i
         </button>
       </div>
     </form>
-  )
+  );
 }
 
 // Form 2: Record for Oil Filtration - Main Tank
-function RecordOilFiltrationMainTankForm({ onSubmit, onPrevious, initialData, isLastFormOfStage }) {
+function RecordOilFiltrationMainTankForm({
+  onSubmit,
+  onPrevious,
+  initialData,
+  isLastFormOfStage,
+}) {
   const [formData, setFormData] = useState({
     filtrationRecords:
       initialData.filtrationRecords ||
@@ -2833,18 +3428,18 @@ function RecordOilFiltrationMainTankForm({ onSubmit, onPrevious, initialData, is
     hvEarth60Sec: initialData.hvEarth60Sec || "",
     ratioIR60IR15: initialData.ratioIR60IR15 || "",
     ...initialData,
-  })
+  });
 
   const handleFiltrationRecordChange = (index, field, value) => {
-    const updatedRecords = [...formData.filtrationRecords]
-    updatedRecords[index] = { ...updatedRecords[index], [field]: value }
-    setFormData({ ...formData, filtrationRecords: updatedRecords })
-  }
+    const updatedRecords = [...formData.filtrationRecords];
+    updatedRecords[index] = { ...updatedRecords[index], [field]: value };
+    setFormData({ ...formData, filtrationRecords: updatedRecords });
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    onSubmit(formData)
-  }
+    e.preventDefault();
+    onSubmit(formData);
+  };
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
@@ -2872,49 +3467,83 @@ function RecordOilFiltrationMainTankForm({ onSubmit, onPrevious, initialData, is
                 <input
                   type="date"
                   value={record.date}
-                  onChange={(e) => handleFiltrationRecordChange(index, "date", e.target.value)}
+                  onChange={(e) =>
+                    handleFiltrationRecordChange(index, "date", e.target.value)
+                  }
                 />
               </td>
               <td>
                 <input
                   type="time"
                   value={record.time}
-                  onChange={(e) => handleFiltrationRecordChange(index, "time", e.target.value)}
+                  onChange={(e) =>
+                    handleFiltrationRecordChange(index, "time", e.target.value)
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={record.vacuumLevel}
-                  onChange={(e) => handleFiltrationRecordChange(index, "vacuumLevel", e.target.value)}
+                  onChange={(e) =>
+                    handleFiltrationRecordChange(
+                      index,
+                      "vacuumLevel",
+                      e.target.value
+                    )
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={record.mcOutletTemp}
-                  onChange={(e) => handleFiltrationRecordChange(index, "mcOutletTemp", e.target.value)}
+                  onChange={(e) =>
+                    handleFiltrationRecordChange(
+                      index,
+                      "mcOutletTemp",
+                      e.target.value
+                    )
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={record.otiTemp}
-                  onChange={(e) => handleFiltrationRecordChange(index, "otiTemp", e.target.value)}
+                  onChange={(e) =>
+                    handleFiltrationRecordChange(
+                      index,
+                      "otiTemp",
+                      e.target.value
+                    )
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={record.wtiTemp}
-                  onChange={(e) => handleFiltrationRecordChange(index, "wtiTemp", e.target.value)}
+                  onChange={(e) =>
+                    handleFiltrationRecordChange(
+                      index,
+                      "wtiTemp",
+                      e.target.value
+                    )
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={record.remark}
-                  onChange={(e) => handleFiltrationRecordChange(index, "remark", e.target.value)}
+                  onChange={(e) =>
+                    handleFiltrationRecordChange(
+                      index,
+                      "remark",
+                      e.target.value
+                    )
+                  }
                 />
               </td>
             </tr>
@@ -2923,8 +3552,8 @@ function RecordOilFiltrationMainTankForm({ onSubmit, onPrevious, initialData, is
       </table>
 
       <h4 style={{ marginTop: "40px" }}>
-        IR Value before radiators/combine filtration , Temp OTI ........°C WTI............°C, AMB........°C RANGE ONLY 1
-        KV
+        IR Value before radiators/combine filtration , Temp OTI ........°C
+        WTI............°C, AMB........°C RANGE ONLY 1 KV
       </h4>
 
       <div className="form-grid" style={{ marginBottom: "20px" }}>
@@ -2933,7 +3562,9 @@ function RecordOilFiltrationMainTankForm({ onSubmit, onPrevious, initialData, is
           <input
             type="text"
             value={formData.tempOTI}
-            onChange={(e) => setFormData({ ...formData, tempOTI: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, tempOTI: e.target.value })
+            }
           />
         </div>
         <div className="form-group">
@@ -2941,7 +3572,9 @@ function RecordOilFiltrationMainTankForm({ onSubmit, onPrevious, initialData, is
           <input
             type="text"
             value={formData.tempWTI}
-            onChange={(e) => setFormData({ ...formData, tempWTI: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, tempWTI: e.target.value })
+            }
           />
         </div>
         <div className="form-group">
@@ -2949,7 +3582,9 @@ function RecordOilFiltrationMainTankForm({ onSubmit, onPrevious, initialData, is
           <input
             type="text"
             value={formData.tempAMB}
-            onChange={(e) => setFormData({ ...formData, tempAMB: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, tempAMB: e.target.value })
+            }
           />
         </div>
       </div>
@@ -2972,21 +3607,27 @@ function RecordOilFiltrationMainTankForm({ onSubmit, onPrevious, initialData, is
               <input
                 type="text"
                 value={formData.hvEarth15Sec}
-                onChange={(e) => setFormData({ ...formData, hvEarth15Sec: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth15Sec: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.hvEarth60Sec}
-                onChange={(e) => setFormData({ ...formData, hvEarth60Sec: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth60Sec: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.ratioIR60IR15}
-                onChange={(e) => setFormData({ ...formData, ratioIR60IR15: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, ratioIR60IR15: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -3004,11 +3645,16 @@ function RecordOilFiltrationMainTankForm({ onSubmit, onPrevious, initialData, is
         </button>
       </div>
     </form>
-  )
+  );
 }
 
 // Form 3: Oil Filtration of Radiator and Combine
-function OilFiltrationRadiatorCombineForm({ onSubmit, onPrevious, initialData, isLastFormOfStage }) {
+function OilFiltrationRadiatorCombineForm({
+  onSubmit,
+  onPrevious,
+  initialData,
+  isLastFormOfStage,
+}) {
   const [formData, setFormData] = useState({
     // Oil filtration of Radiator records
     radiatorRecords:
@@ -3051,31 +3697,31 @@ function OilFiltrationRadiatorCombineForm({ onSubmit, onPrevious, initialData, i
     hvEarth60600Sec: initialData.hvEarth60600Sec || "",
     photos: initialData.photos || {},
     ...initialData,
-  })
+  });
 
   const handleRadiatorRecordChange = (index, field, value) => {
-    const updatedRecords = [...formData.radiatorRecords]
-    updatedRecords[index] = { ...updatedRecords[index], [field]: value }
-    setFormData({ ...formData, radiatorRecords: updatedRecords })
-  }
+    const updatedRecords = [...formData.radiatorRecords];
+    updatedRecords[index] = { ...updatedRecords[index], [field]: value };
+    setFormData({ ...formData, radiatorRecords: updatedRecords });
+  };
 
   const handleCombineRecordChange = (index, field, value) => {
-    const updatedRecords = [...formData.combineRecords]
-    updatedRecords[index] = { ...updatedRecords[index], [field]: value }
-    setFormData({ ...formData, combineRecords: updatedRecords })
-  }
+    const updatedRecords = [...formData.combineRecords];
+    updatedRecords[index] = { ...updatedRecords[index], [field]: value };
+    setFormData({ ...formData, combineRecords: updatedRecords });
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    onSubmit(formData)
-  }
+    e.preventDefault();
+    onSubmit(formData);
+  };
 
   const handlePhotoChange = (key, file) => {
     setFormData((prev) => ({
       ...prev,
       photos: { ...prev.photos, [key]: file },
-    }))
-  }
+    }));
+  };
 
   const photoRequirements = [
     { key: "ppmPhoto", label: "PPM Photo" },
@@ -3083,7 +3729,7 @@ function OilFiltrationRadiatorCombineForm({ onSubmit, onPrevious, initialData, i
     { key: "airCell", label: "Air cell" },
     { key: "mog", label: "Mog" },
     { key: "pog", label: "Pog" },
-  ]
+  ];
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
@@ -3110,49 +3756,71 @@ function OilFiltrationRadiatorCombineForm({ onSubmit, onPrevious, initialData, i
                 <input
                   type="date"
                   value={record.date}
-                  onChange={(e) => handleRadiatorRecordChange(index, "date", e.target.value)}
+                  onChange={(e) =>
+                    handleRadiatorRecordChange(index, "date", e.target.value)
+                  }
                 />
               </td>
               <td>
                 <input
                   type="time"
                   value={record.time}
-                  onChange={(e) => handleRadiatorRecordChange(index, "time", e.target.value)}
+                  onChange={(e) =>
+                    handleRadiatorRecordChange(index, "time", e.target.value)
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={record.vacuumLevel}
-                  onChange={(e) => handleRadiatorRecordChange(index, "vacuumLevel", e.target.value)}
+                  onChange={(e) =>
+                    handleRadiatorRecordChange(
+                      index,
+                      "vacuumLevel",
+                      e.target.value
+                    )
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={record.mcOutletTemp}
-                  onChange={(e) => handleRadiatorRecordChange(index, "mcOutletTemp", e.target.value)}
+                  onChange={(e) =>
+                    handleRadiatorRecordChange(
+                      index,
+                      "mcOutletTemp",
+                      e.target.value
+                    )
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={record.otiTemp}
-                  onChange={(e) => handleRadiatorRecordChange(index, "otiTemp", e.target.value)}
+                  onChange={(e) =>
+                    handleRadiatorRecordChange(index, "otiTemp", e.target.value)
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={record.wtiTemp}
-                  onChange={(e) => handleRadiatorRecordChange(index, "wtiTemp", e.target.value)}
+                  onChange={(e) =>
+                    handleRadiatorRecordChange(index, "wtiTemp", e.target.value)
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={record.remark}
-                  onChange={(e) => handleRadiatorRecordChange(index, "remark", e.target.value)}
+                  onChange={(e) =>
+                    handleRadiatorRecordChange(index, "remark", e.target.value)
+                  }
                 />
               </td>
             </tr>
@@ -3160,7 +3828,9 @@ function OilFiltrationRadiatorCombineForm({ onSubmit, onPrevious, initialData, i
         </tbody>
       </table>
 
-      <h4 style={{ marginTop: "40px" }}>Oil filtration of Combine (Main Tank + Cooler bank)</h4>
+      <h4 style={{ marginTop: "40px" }}>
+        Oil filtration of Combine (Main Tank + Cooler bank)
+      </h4>
 
       <table className="form-table">
         <thead>
@@ -3181,49 +3851,71 @@ function OilFiltrationRadiatorCombineForm({ onSubmit, onPrevious, initialData, i
                 <input
                   type="date"
                   value={record.date}
-                  onChange={(e) => handleCombineRecordChange(index, "date", e.target.value)}
+                  onChange={(e) =>
+                    handleCombineRecordChange(index, "date", e.target.value)
+                  }
                 />
               </td>
               <td>
                 <input
                   type="time"
                   value={record.time}
-                  onChange={(e) => handleCombineRecordChange(index, "time", e.target.value)}
+                  onChange={(e) =>
+                    handleCombineRecordChange(index, "time", e.target.value)
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={record.vacuumLevel}
-                  onChange={(e) => handleCombineRecordChange(index, "vacuumLevel", e.target.value)}
+                  onChange={(e) =>
+                    handleCombineRecordChange(
+                      index,
+                      "vacuumLevel",
+                      e.target.value
+                    )
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={record.mcOutletTemp}
-                  onChange={(e) => handleCombineRecordChange(index, "mcOutletTemp", e.target.value)}
+                  onChange={(e) =>
+                    handleCombineRecordChange(
+                      index,
+                      "mcOutletTemp",
+                      e.target.value
+                    )
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={record.otiTemp}
-                  onChange={(e) => handleCombineRecordChange(index, "otiTemp", e.target.value)}
+                  onChange={(e) =>
+                    handleCombineRecordChange(index, "otiTemp", e.target.value)
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={record.wtiTemp}
-                  onChange={(e) => handleCombineRecordChange(index, "wtiTemp", e.target.value)}
+                  onChange={(e) =>
+                    handleCombineRecordChange(index, "wtiTemp", e.target.value)
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={record.remark}
-                  onChange={(e) => handleCombineRecordChange(index, "remark", e.target.value)}
+                  onChange={(e) =>
+                    handleCombineRecordChange(index, "remark", e.target.value)
+                  }
                 />
               </td>
             </tr>
@@ -3241,7 +3933,9 @@ function OilFiltrationRadiatorCombineForm({ onSubmit, onPrevious, initialData, i
           <input
             type="text"
             value={formData.bdvKV}
-            onChange={(e) => setFormData({ ...formData, bdvKV: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, bdvKV: e.target.value })
+            }
           />
         </div>
         <div className="form-group">
@@ -3251,13 +3945,16 @@ function OilFiltrationRadiatorCombineForm({ onSubmit, onPrevious, initialData, i
           <input
             type="text"
             value={formData.waterContentPPM}
-            onChange={(e) => setFormData({ ...formData, waterContentPPM: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, waterContentPPM: e.target.value })
+            }
           />
         </div>
       </div>
 
       <h4 style={{ marginTop: "40px" }}>
-        PI Value after filteration, Temp OTI ........°C WTI............°C, AMB........°C RANGE ONLY 5 KV
+        PI Value after filteration, Temp OTI ........°C WTI............°C,
+        AMB........°C RANGE ONLY 5 KV
       </h4>
 
       <div className="form-grid" style={{ marginBottom: "20px" }}>
@@ -3266,7 +3963,9 @@ function OilFiltrationRadiatorCombineForm({ onSubmit, onPrevious, initialData, i
           <input
             type="text"
             value={formData.tempOTI}
-            onChange={(e) => setFormData({ ...formData, tempOTI: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, tempOTI: e.target.value })
+            }
           />
         </div>
         <div className="form-group">
@@ -3274,7 +3973,9 @@ function OilFiltrationRadiatorCombineForm({ onSubmit, onPrevious, initialData, i
           <input
             type="text"
             value={formData.tempWTI}
-            onChange={(e) => setFormData({ ...formData, tempWTI: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, tempWTI: e.target.value })
+            }
           />
         </div>
         <div className="form-group">
@@ -3282,7 +3983,9 @@ function OilFiltrationRadiatorCombineForm({ onSubmit, onPrevious, initialData, i
           <input
             type="text"
             value={formData.tempAMB}
-            onChange={(e) => setFormData({ ...formData, tempAMB: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, tempAMB: e.target.value })
+            }
           />
         </div>
       </div>
@@ -3306,28 +4009,36 @@ function OilFiltrationRadiatorCombineForm({ onSubmit, onPrevious, initialData, i
               <input
                 type="text"
                 value={formData.hvEarth15Sec}
-                onChange={(e) => setFormData({ ...formData, hvEarth15Sec: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth15Sec: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.hvEarth60Sec}
-                onChange={(e) => setFormData({ ...formData, hvEarth60Sec: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth60Sec: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.hvEarth600Sec}
-                onChange={(e) => setFormData({ ...formData, hvEarth600Sec: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth600Sec: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.hvEarth60600Sec}
-                onChange={(e) => setFormData({ ...formData, hvEarth60600Sec: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth60600Sec: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -3351,13 +4062,18 @@ function OilFiltrationRadiatorCombineForm({ onSubmit, onPrevious, initialData, i
         </button>
       </div>
     </form>
-  )
+  );
 }
 
 // Stage 4 Form Components - Based on provided images
 
 // Form 1: SFRA Test Record
-function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfStage }) {
+function SFRATestRecordForm({
+  onSubmit,
+  onPrevious,
+  initialData,
+  isLastFormOfStage,
+}) {
   const [formData, setFormData] = useState({
     makeOfMeter: initialData.makeOfMeter || "",
     date: initialData.date || "",
@@ -3377,21 +4093,29 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
     // AT 05 KV PHASE
     bushing11_05kv_tanDelta: initialData.bushing11_05kv_tanDelta || "",
     bushing11_05kv_capacitance: initialData.bushing11_05kv_capacitance || "",
-    bushing11_05kv_excitationCurrent: initialData.bushing11_05kv_excitationCurrent || "",
-    bushing11_05kv_dielectricLoss: initialData.bushing11_05kv_dielectricLoss || "",
+    bushing11_05kv_excitationCurrent:
+      initialData.bushing11_05kv_excitationCurrent || "",
+    bushing11_05kv_dielectricLoss:
+      initialData.bushing11_05kv_dielectricLoss || "",
     bushing12_05kv_tanDelta: initialData.bushing12_05kv_tanDelta || "",
     bushing12_05kv_capacitance: initialData.bushing12_05kv_capacitance || "",
-    bushing12_05kv_excitationCurrent: initialData.bushing12_05kv_excitationCurrent || "",
-    bushing12_05kv_dielectricLoss: initialData.bushing12_05kv_dielectricLoss || "",
+    bushing12_05kv_excitationCurrent:
+      initialData.bushing12_05kv_excitationCurrent || "",
+    bushing12_05kv_dielectricLoss:
+      initialData.bushing12_05kv_dielectricLoss || "",
     // AT 10 KV PHASE
     bushing11_10kv_tanDelta: initialData.bushing11_10kv_tanDelta || "",
     bushing11_10kv_capacitance: initialData.bushing11_10kv_capacitance || "",
-    bushing11_10kv_excitationCurrent: initialData.bushing11_10kv_excitationCurrent || "",
-    bushing11_10kv_dielectricLoss: initialData.bushing11_10kv_dielectricLoss || "",
+    bushing11_10kv_excitationCurrent:
+      initialData.bushing11_10kv_excitationCurrent || "",
+    bushing11_10kv_dielectricLoss:
+      initialData.bushing11_10kv_dielectricLoss || "",
     bushing12_10kv_tanDelta: initialData.bushing12_10kv_tanDelta || "",
     bushing12_10kv_capacitance: initialData.bushing12_10kv_capacitance || "",
-    bushing12_10kv_excitationCurrent: initialData.bushing12_10kv_excitationCurrent || "",
-    bushing12_10kv_dielectricLoss: initialData.bushing12_10kv_dielectricLoss || "",
+    bushing12_10kv_excitationCurrent:
+      initialData.bushing12_10kv_excitationCurrent || "",
+    bushing12_10kv_dielectricLoss:
+      initialData.bushing12_10kv_dielectricLoss || "",
     // Tan delta and capacitance test on winding
     meterUsedWinding: initialData.meterUsedWinding || "",
     dateWinding: initialData.dateWinding || "",
@@ -3410,12 +4134,12 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
     hvg_10kv_excitationCurrent: initialData.hvg_10kv_excitationCurrent || "",
     hvg_10kv_dielectricLoss: initialData.hvg_10kv_dielectricLoss || "",
     ...initialData,
-  })
+  });
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    onSubmit(formData)
-  }
+    e.preventDefault();
+    onSubmit(formData);
+  };
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
@@ -3433,7 +4157,9 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="text"
                 value={formData.makeOfMeter}
-                onChange={(e) => setFormData({ ...formData, makeOfMeter: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, makeOfMeter: e.target.value })
+                }
               />
             </td>
             <td>
@@ -3443,7 +4169,9 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="date"
                 value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, date: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -3455,7 +4183,9 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="text"
                 value={formData.modelSrNo}
-                onChange={(e) => setFormData({ ...formData, modelSrNo: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, modelSrNo: e.target.value })
+                }
               />
             </td>
             <td>
@@ -3465,7 +4195,9 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="text"
                 value={formData.ambient}
-                onChange={(e) => setFormData({ ...formData, ambient: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, ambient: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -3477,7 +4209,9 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="text"
                 value={formData.oti}
-                onChange={(e) => setFormData({ ...formData, oti: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, oti: e.target.value })
+                }
                 placeholder="°C"
               />
             </td>
@@ -3488,7 +4222,9 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="text"
                 value={formData.wti}
-                onChange={(e) => setFormData({ ...formData, wti: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, wti: e.target.value })
+                }
                 placeholder="°C"
               />
             </td>
@@ -3501,7 +4237,12 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="text"
                 value={formData.testReportReviewed}
-                onChange={(e) => setFormData({ ...formData, testReportReviewed: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    testReportReviewed: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
@@ -3510,7 +4251,9 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
             <td>
               <select
                 value={formData.acceptanceOfTest}
-                onChange={(e) => setFormData({ ...formData, acceptanceOfTest: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, acceptanceOfTest: e.target.value })
+                }
               >
                 <option value="">Yes / No</option>
                 <option value="Yes">Yes</option>
@@ -3521,7 +4264,9 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
         </tbody>
       </table>
 
-      <h4 style={{ marginTop: "40px", textAlign: "center" }}>Tan delta and capacitance test on bushing</h4>
+      <h4 style={{ marginTop: "40px", textAlign: "center" }}>
+        Tan delta and capacitance test on bushing
+      </h4>
 
       <table className="form-table">
         <tbody>
@@ -3533,7 +4278,9 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="text"
                 value={formData.meterUsedBushing}
-                onChange={(e) => setFormData({ ...formData, meterUsedBushing: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, meterUsedBushing: e.target.value })
+                }
               />
             </td>
             <td>
@@ -3543,7 +4290,9 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="date"
                 value={formData.dateBushing}
-                onChange={(e) => setFormData({ ...formData, dateBushing: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, dateBushing: e.target.value })
+                }
               />
             </td>
             <td>
@@ -3553,7 +4302,9 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="time"
                 value={formData.timeBushing}
-                onChange={(e) => setFormData({ ...formData, timeBushing: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, timeBushing: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -3565,7 +4316,9 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="text"
                 value={formData.modelSrNoBushing}
-                onChange={(e) => setFormData({ ...formData, modelSrNoBushing: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, modelSrNoBushing: e.target.value })
+                }
               />
             </td>
             <td>
@@ -3575,7 +4328,9 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="text"
                 value={formData.wtiBushing}
-                onChange={(e) => setFormData({ ...formData, wtiBushing: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, wtiBushing: e.target.value })
+                }
               />
             </td>
             <td>
@@ -3585,7 +4340,9 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="text"
                 value={formData.otiBushing}
-                onChange={(e) => setFormData({ ...formData, otiBushing: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, otiBushing: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -3612,35 +4369,60 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="text"
                 value={formData.bushing11_05kv_tanDelta}
-                onChange={(e) => setFormData({ ...formData, bushing11_05kv_tanDelta: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_05kv_tanDelta: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing11_05kv_capacitance}
-                onChange={(e) => setFormData({ ...formData, bushing11_05kv_capacitance: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_05kv_capacitance: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing11_05kv_excitationCurrent}
-                onChange={(e) => setFormData({ ...formData, bushing11_05kv_excitationCurrent: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_05kv_excitationCurrent: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing11_05kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, bushing11_05kv_dielectricLoss: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_05kv_dielectricLoss: e.target.value,
+                  })
+                }
               />
             </td>
-             <td>
+            <td>
               <input
                 type="text"
                 value={formData.bushing11_10kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, bushing11_10kv_dielectricLoss: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_10kv_dielectricLoss: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
@@ -3652,35 +4434,60 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="text"
                 value={formData.bushing12_05kv_tanDelta}
-                onChange={(e) => setFormData({ ...formData, bushing12_05kv_tanDelta: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing12_05kv_tanDelta: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing12_05kv_capacitance}
-                onChange={(e) => setFormData({ ...formData, bushing12_05kv_capacitance: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing12_05kv_capacitance: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing12_05kv_excitationCurrent}
-                onChange={(e) => setFormData({ ...formData, bushing12_05kv_excitationCurrent: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing12_05kv_excitationCurrent: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing12_05kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, bushing12_05kv_dielectricLoss: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing12_05kv_dielectricLoss: e.target.value,
+                  })
+                }
               />
             </td>
-             <td>
+            <td>
               <input
                 type="text"
                 value={formData.bushing11_10kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, bushing11_10kv_dielectricLoss: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_10kv_dielectricLoss: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
@@ -3707,42 +4514,72 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="text"
                 value={formData.bushing11_10kv_tanDelta}
-                onChange={(e) => setFormData({ ...formData, bushing11_10kv_tanDelta: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_10kv_tanDelta: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing11_10kv_capacitance}
-                onChange={(e) => setFormData({ ...formData, bushing11_10kv_capacitance: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_10kv_capacitance: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing11_10kv_excitationCurrent}
-                onChange={(e) => setFormData({ ...formData, bushing11_10kv_excitationCurrent: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_10kv_excitationCurrent: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing11_10kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, bushing11_10kv_dielectricLoss: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_10kv_dielectricLoss: e.target.value,
+                  })
+                }
               />
             </td>
-             <td>
+            <td>
               <input
                 type="text"
                 value={formData.bushing11_10kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, bushing11_10kv_dielectricLoss: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_10kv_dielectricLoss: e.target.value,
+                  })
+                }
               />
             </td>
-             <td>
+            <td>
               <input
                 type="text"
                 value={formData.bushing11_10kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, bushing11_10kv_dielectricLoss: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_10kv_dielectricLoss: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
@@ -3754,49 +4591,81 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="text"
                 value={formData.bushing12_10kv_tanDelta}
-                onChange={(e) => setFormData({ ...formData, bushing12_10kv_tanDelta: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing12_10kv_tanDelta: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing12_10kv_capacitance}
-                onChange={(e) => setFormData({ ...formData, bushing12_10kv_capacitance: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing12_10kv_capacitance: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing12_10kv_excitationCurrent}
-                onChange={(e) => setFormData({ ...formData, bushing12_10kv_excitationCurrent: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing12_10kv_excitationCurrent: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushing12_10kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, bushing12_10kv_dielectricLoss: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing12_10kv_dielectricLoss: e.target.value,
+                  })
+                }
               />
             </td>
-             <td>
+            <td>
               <input
                 type="text"
                 value={formData.bushing11_10kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, bushing11_10kv_dielectricLoss: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_10kv_dielectricLoss: e.target.value,
+                  })
+                }
               />
             </td>
-             <td>
+            <td>
               <input
                 type="text"
                 value={formData.bushing11_10kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, bushing11_10kv_dielectricLoss: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_10kv_dielectricLoss: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style={{ marginTop: "40px", textAlign: "center" }}>Tan delta and capacitance test on winding</h4>
+      <h4 style={{ marginTop: "40px", textAlign: "center" }}>
+        Tan delta and capacitance test on winding
+      </h4>
 
       <table className="form-table">
         <tbody>
@@ -3808,7 +4677,9 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="text"
                 value={formData.meterUsedWinding}
-                onChange={(e) => setFormData({ ...formData, meterUsedWinding: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, meterUsedWinding: e.target.value })
+                }
               />
             </td>
             <td>
@@ -3818,7 +4689,9 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="date"
                 value={formData.dateWinding}
-                onChange={(e) => setFormData({ ...formData, dateWinding: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, dateWinding: e.target.value })
+                }
               />
             </td>
             <td>
@@ -3828,7 +4701,9 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="time"
                 value={formData.timeWinding}
-                onChange={(e) => setFormData({ ...formData, timeWinding: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, timeWinding: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -3840,7 +4715,9 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="text"
                 value={formData.makeSrNoWinding}
-                onChange={(e) => setFormData({ ...formData, makeSrNoWinding: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, makeSrNoWinding: e.target.value })
+                }
               />
             </td>
             <td>
@@ -3850,7 +4727,12 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="text"
                 value={formData.ambientTempWinding}
-                onChange={(e) => setFormData({ ...formData, ambientTempWinding: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    ambientTempWinding: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
@@ -3860,7 +4742,9 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="text"
                 value={formData.oilTempWinding}
-                onChange={(e) => setFormData({ ...formData, oilTempWinding: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, oilTempWinding: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -3887,35 +4771,60 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="text"
                 value={formData.hvg_05kv_tanDelta}
-                onChange={(e) => setFormData({ ...formData, hvg_05kv_tanDelta: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    hvg_05kv_tanDelta: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.hvg_05kv_capacitance}
-                onChange={(e) => setFormData({ ...formData, hvg_05kv_capacitance: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    hvg_05kv_capacitance: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.hvg_05kv_excitationCurrent}
-                onChange={(e) => setFormData({ ...formData, hvg_05kv_excitationCurrent: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    hvg_05kv_excitationCurrent: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.hvg_05kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, hvg_05kv_dielectricLoss: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    hvg_05kv_dielectricLoss: e.target.value,
+                  })
+                }
               />
             </td>
-             <td>
+            <td>
               <input
                 type="text"
                 value={formData.bushing11_10kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, bushing11_10kv_dielectricLoss: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_10kv_dielectricLoss: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
@@ -3942,35 +4851,60 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
               <input
                 type="text"
                 value={formData.hvg_10kv_tanDelta}
-                onChange={(e) => setFormData({ ...formData, hvg_10kv_tanDelta: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    hvg_10kv_tanDelta: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.hvg_10kv_capacitance}
-                onChange={(e) => setFormData({ ...formData, hvg_10kv_capacitance: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    hvg_10kv_capacitance: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.hvg_10kv_excitationCurrent}
-                onChange={(e) => setFormData({ ...formData, hvg_10kv_excitationCurrent: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    hvg_10kv_excitationCurrent: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.hvg_10kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, hvg_10kv_dielectricLoss: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    hvg_10kv_dielectricLoss: e.target.value,
+                  })
+                }
               />
             </td>
-             <td>
+            <td>
               <input
                 type="text"
                 value={formData.bushing11_10kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, bushing11_10kv_dielectricLoss: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_10kv_dielectricLoss: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
@@ -3988,11 +4922,16 @@ function SFRATestRecordForm({ onSubmit, onPrevious, initialData, isLastFormOfSta
         </button>
       </div>
     </form>
-  )
+  );
 }
 
 // Form 2: Record of Measurement of IR Values & Voltage Ratio Test
-function IRVoltageRatioMagnetisingTestForm({ onSubmit, onPrevious, initialData, isLastFormOfStage }) {
+function IRVoltageRatioMagnetisingTestForm({
+  onSubmit,
+  onPrevious,
+  initialData,
+  isLastFormOfStage,
+}) {
   const [formData, setFormData] = useState({
     // IR Values section
     date: initialData.date || "",
@@ -4011,9 +4950,21 @@ function IRVoltageRatioMagnetisingTestForm({ onSubmit, onPrevious, initialData, 
     ratioIR60IR10: initialData.ratioIR60IR10 || "",
     // Voltage Ratio Test
     voltageRatioTests: initialData.voltageRatioTests || [
-      { appliedVoltage: "1.1 – 1.2", measuredVoltage11_21: "", measuredVoltage12_21: "" },
-      { appliedVoltage: "1.1 – 2.1", measuredVoltage11_12: "", measuredVoltage12_21: "" },
-      { appliedVoltage: "2.1 – 1.2", measuredVoltage11_12: "", measuredVoltage11_21: "" },
+      {
+        appliedVoltage: "1.1 – 1.2",
+        measuredVoltage11_21: "",
+        measuredVoltage12_21: "",
+      },
+      {
+        appliedVoltage: "1.1 – 2.1",
+        measuredVoltage11_12: "",
+        measuredVoltage12_21: "",
+      },
+      {
+        appliedVoltage: "2.1 – 1.2",
+        measuredVoltage11_12: "",
+        measuredVoltage11_21: "",
+      },
     ],
     // Magnetising Current Test
     appliedVoltageMag: initialData.appliedVoltageMag || "",
@@ -4026,24 +4977,24 @@ function IRVoltageRatioMagnetisingTestForm({ onSubmit, onPrevious, initialData, 
       { appliedVoltage: "2.1 – 1.2", measuredCurrent: "2.1 – 1.2" },
     ],
     ...initialData,
-  })
+  });
 
   const handleVoltageRatioTestChange = (index, field, value) => {
-    const updatedTests = [...formData.voltageRatioTests]
-    updatedTests[index] = { ...updatedTests[index], [field]: value }
-    setFormData({ ...formData, voltageRatioTests: updatedTests })
-  }
+    const updatedTests = [...formData.voltageRatioTests];
+    updatedTests[index] = { ...updatedTests[index], [field]: value };
+    setFormData({ ...formData, voltageRatioTests: updatedTests });
+  };
 
   const handleMagnetisingTestChange = (index, field, value) => {
-    const updatedTests = [...formData.magnetisingTests]
-    updatedTests[index] = { ...updatedTests[index], [field]: value }
-    setFormData({ ...formData, magnetisingTests: updatedTests })
-  }
+    const updatedTests = [...formData.magnetisingTests];
+    updatedTests[index] = { ...updatedTests[index], [field]: value };
+    setFormData({ ...formData, magnetisingTests: updatedTests });
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    onSubmit(formData)
-  }
+    e.preventDefault();
+    onSubmit(formData);
+  };
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
@@ -4061,7 +5012,9 @@ function IRVoltageRatioMagnetisingTestForm({ onSubmit, onPrevious, initialData, 
               <input
                 type="date"
                 value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, date: e.target.value })
+                }
               />
             </td>
             <td>
@@ -4071,7 +5024,9 @@ function IRVoltageRatioMagnetisingTestForm({ onSubmit, onPrevious, initialData, 
               <input
                 type="time"
                 value={formData.time}
-                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, time: e.target.value })
+                }
               />
             </td>
             <td>
@@ -4093,7 +5048,9 @@ function IRVoltageRatioMagnetisingTestForm({ onSubmit, onPrevious, initialData, 
               <input
                 type="text"
                 value={formData.ambTemp}
-                onChange={(e) => setFormData({ ...formData, ambTemp: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, ambTemp: e.target.value })
+                }
               />
             </td>
             <td>
@@ -4103,7 +5060,9 @@ function IRVoltageRatioMagnetisingTestForm({ onSubmit, onPrevious, initialData, 
               <input
                 type="text"
                 value={formData.make}
-                onChange={(e) => setFormData({ ...formData, make: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, make: e.target.value })
+                }
               />
             </td>
             <td rowSpan="4"></td>
@@ -4117,7 +5076,9 @@ function IRVoltageRatioMagnetisingTestForm({ onSubmit, onPrevious, initialData, 
               <input
                 type="text"
                 value={formData.oilTemp}
-                onChange={(e) => setFormData({ ...formData, oilTemp: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, oilTemp: e.target.value })
+                }
               />
             </td>
             <td>
@@ -4127,7 +5088,9 @@ function IRVoltageRatioMagnetisingTestForm({ onSubmit, onPrevious, initialData, 
               <input
                 type="text"
                 value={formData.srNo}
-                onChange={(e) => setFormData({ ...formData, srNo: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, srNo: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -4139,7 +5102,9 @@ function IRVoltageRatioMagnetisingTestForm({ onSubmit, onPrevious, initialData, 
               <input
                 type="text"
                 value={formData.wdgTemp}
-                onChange={(e) => setFormData({ ...formData, wdgTemp: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, wdgTemp: e.target.value })
+                }
               />
             </td>
             <td>
@@ -4149,7 +5114,9 @@ function IRVoltageRatioMagnetisingTestForm({ onSubmit, onPrevious, initialData, 
               <input
                 type="text"
                 value={formData.range}
-                onChange={(e) => setFormData({ ...formData, range: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, range: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -4161,7 +5128,9 @@ function IRVoltageRatioMagnetisingTestForm({ onSubmit, onPrevious, initialData, 
               <input
                 type="text"
                 value={formData.relativeHumidity}
-                onChange={(e) => setFormData({ ...formData, relativeHumidity: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, relativeHumidity: e.target.value })
+                }
               />
             </td>
             <td>
@@ -4171,7 +5140,9 @@ function IRVoltageRatioMagnetisingTestForm({ onSubmit, onPrevious, initialData, 
               <input
                 type="text"
                 value={formData.voltageLevel}
-                onChange={(e) => setFormData({ ...formData, voltageLevel: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, voltageLevel: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -4196,28 +5167,36 @@ function IRVoltageRatioMagnetisingTestForm({ onSubmit, onPrevious, initialData, 
               <input
                 type="text"
                 value={formData.hvEarth10Sec}
-                onChange={(e) => setFormData({ ...formData, hvEarth10Sec: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth10Sec: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.hvEarth60Sec}
-                onChange={(e) => setFormData({ ...formData, hvEarth60Sec: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth60Sec: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.ratioIR60IR10}
-                onChange={(e) => setFormData({ ...formData, ratioIR60IR10: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, ratioIR60IR10: e.target.value })
+                }
               />
             </td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style={{ marginTop: "40px", textAlign: "center" }}>TYPE OF TEST – VOLTAGE RATIO TEST</h4>
+      <h4 style={{ marginTop: "40px", textAlign: "center" }}>
+        TYPE OF TEST – VOLTAGE RATIO TEST
+      </h4>
 
       <table className="form-table">
         <thead>
@@ -4241,14 +5220,26 @@ function IRVoltageRatioMagnetisingTestForm({ onSubmit, onPrevious, initialData, 
                 <input
                   type="text"
                   value={test.measuredVoltage11_21}
-                  onChange={(e) => handleVoltageRatioTestChange(index, "measuredVoltage11_21", e.target.value)}
+                  onChange={(e) =>
+                    handleVoltageRatioTestChange(
+                      index,
+                      "measuredVoltage11_21",
+                      e.target.value
+                    )
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={test.measuredVoltage12_21}
-                  onChange={(e) => handleVoltageRatioTestChange(index, "measuredVoltage12_21", e.target.value)}
+                  onChange={(e) =>
+                    handleVoltageRatioTestChange(
+                      index,
+                      "measuredVoltage12_21",
+                      e.target.value
+                    )
+                  }
                 />
               </td>
             </tr>
@@ -4256,7 +5247,9 @@ function IRVoltageRatioMagnetisingTestForm({ onSubmit, onPrevious, initialData, 
         </tbody>
       </table>
 
-      <h4 style={{ marginTop: "40px", textAlign: "center" }}>TYPE OF TEST – MAGNETISING CURRENT TEST</h4>
+      <h4 style={{ marginTop: "40px", textAlign: "center" }}>
+        TYPE OF TEST – MAGNETISING CURRENT TEST
+      </h4>
 
       <table className="form-table">
         <tbody>
@@ -4268,7 +5261,12 @@ function IRVoltageRatioMagnetisingTestForm({ onSubmit, onPrevious, initialData, 
               <input
                 type="text"
                 value={formData.appliedVoltageMag}
-                onChange={(e) => setFormData({ ...formData, appliedVoltageMag: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    appliedVoltageMag: e.target.value,
+                  })
+                }
                 placeholder="VOLTS"
               />
             </td>
@@ -4279,7 +5277,9 @@ function IRVoltageRatioMagnetisingTestForm({ onSubmit, onPrevious, initialData, 
               <input
                 type="date"
                 value={formData.dateMag}
-                onChange={(e) => setFormData({ ...formData, dateMag: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, dateMag: e.target.value })
+                }
               />
             </td>
             <td>
@@ -4289,7 +5289,9 @@ function IRVoltageRatioMagnetisingTestForm({ onSubmit, onPrevious, initialData, 
               <input
                 type="time"
                 value={formData.timeMag}
-                onChange={(e) => setFormData({ ...formData, timeMag: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, timeMag: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -4301,7 +5303,9 @@ function IRVoltageRatioMagnetisingTestForm({ onSubmit, onPrevious, initialData, 
               <input
                 type="text"
                 value={formData.meterMakeSrNoMag}
-                onChange={(e) => setFormData({ ...formData, meterMakeSrNoMag: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, meterMakeSrNoMag: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -4325,7 +5329,13 @@ function IRVoltageRatioMagnetisingTestForm({ onSubmit, onPrevious, initialData, 
                 <input
                   type="text"
                   value={test.measuredCurrent}
-                  onChange={(e) => handleMagnetisingTestChange(index, "measuredCurrent", e.target.value)}
+                  onChange={(e) =>
+                    handleMagnetisingTestChange(
+                      index,
+                      "measuredCurrent",
+                      e.target.value
+                    )
+                  }
                 />
               </td>
             </tr>
@@ -4344,11 +5354,16 @@ function IRVoltageRatioMagnetisingTestForm({ onSubmit, onPrevious, initialData, 
         </button>
       </div>
     </form>
-  )
+  );
 }
 
 // Form 3: Short Circuit Test
-function ShortCircuitTestForm({ onSubmit, onPrevious, initialData, isLastFormOfStage }) {
+function ShortCircuitTestForm({
+  onSubmit,
+  onPrevious,
+  initialData,
+  isLastFormOfStage,
+}) {
   const [formData, setFormData] = useState({
     appliedVoltage: initialData.appliedVoltage || "",
     date: initialData.date || "",
@@ -4356,9 +5371,11 @@ function ShortCircuitTestForm({ onSubmit, onPrevious, initialData, isLastFormOfS
     meterMakeSrNo: initialData.meterMakeSrNo || "",
     // Short circuit test measurements
     test11_12_measuredCurrent11: initialData.test11_12_measuredCurrent11 || "",
-    test11_12_measuredCurrent12_21: initialData.test11_12_measuredCurrent12_21 || "",
+    test11_12_measuredCurrent12_21:
+      initialData.test11_12_measuredCurrent12_21 || "",
     test12_21_measuredCurrent12: initialData.test12_21_measuredCurrent12 || "",
-    test12_21_measuredCurrent11_21: initialData.test12_21_measuredCurrent11_21 || "",
+    test12_21_measuredCurrent11_21:
+      initialData.test12_21_measuredCurrent11_21 || "",
     // Impedance calculation
     appliedVoltageHV: initialData.appliedVoltageHV || "",
     ratedCurrentLV: initialData.ratedCurrentLV || "",
@@ -4366,12 +5383,12 @@ function ShortCircuitTestForm({ onSubmit, onPrevious, initialData, isLastFormOfS
     ratedVoltageHV: initialData.ratedVoltageHV || "",
     measuredCurrentLV: initialData.measuredCurrentLV || "",
     ...initialData,
-  })
+  });
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    onSubmit(formData)
-  }
+    e.preventDefault();
+    onSubmit(formData);
+  };
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
@@ -4389,7 +5406,9 @@ function ShortCircuitTestForm({ onSubmit, onPrevious, initialData, isLastFormOfS
               <input
                 type="text"
                 value={formData.appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, appliedVoltage: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, appliedVoltage: e.target.value })
+                }
                 placeholder="VOLTS"
               />
             </td>
@@ -4400,7 +5419,9 @@ function ShortCircuitTestForm({ onSubmit, onPrevious, initialData, isLastFormOfS
               <input
                 type="date"
                 value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, date: e.target.value })
+                }
               />
             </td>
             <td>
@@ -4410,7 +5431,9 @@ function ShortCircuitTestForm({ onSubmit, onPrevious, initialData, isLastFormOfS
               <input
                 type="time"
                 value={formData.time}
-                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, time: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -4422,7 +5445,9 @@ function ShortCircuitTestForm({ onSubmit, onPrevious, initialData, isLastFormOfS
               <input
                 type="text"
                 value={formData.meterMakeSrNo}
-                onChange={(e) => setFormData({ ...formData, meterMakeSrNo: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, meterMakeSrNo: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -4454,14 +5479,24 @@ function ShortCircuitTestForm({ onSubmit, onPrevious, initialData, isLastFormOfS
               <input
                 type="text"
                 value={formData.test11_12_measuredCurrent11}
-                onChange={(e) => setFormData({ ...formData, test11_12_measuredCurrent11: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    test11_12_measuredCurrent11: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.test11_12_measuredCurrent12_21}
-                onChange={(e) => setFormData({ ...formData, test11_12_measuredCurrent12_21: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    test11_12_measuredCurrent12_21: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
@@ -4482,14 +5517,24 @@ function ShortCircuitTestForm({ onSubmit, onPrevious, initialData, isLastFormOfS
               <input
                 type="text"
                 value={formData.test12_21_measuredCurrent12}
-                onChange={(e) => setFormData({ ...formData, test12_21_measuredCurrent12: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    test12_21_measuredCurrent12: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.test12_21_measuredCurrent11_21}
-                onChange={(e) => setFormData({ ...formData, test12_21_measuredCurrent11_21: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    test12_21_measuredCurrent11_21: e.target.value,
+                  })
+                }
               />
             </td>
           </tr>
@@ -4514,14 +5559,18 @@ function ShortCircuitTestForm({ onSubmit, onPrevious, initialData, isLastFormOfS
               <input
                 type="text"
                 value={formData.appliedVoltageHV}
-                onChange={(e) => setFormData({ ...formData, appliedVoltageHV: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, appliedVoltageHV: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.ratedCurrentLV}
-                onChange={(e) => setFormData({ ...formData, ratedCurrentLV: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, ratedCurrentLV: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -4533,11 +5582,15 @@ function ShortCircuitTestForm({ onSubmit, onPrevious, initialData, isLastFormOfS
           </tr>
           <tr>
             <td>
-              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
+              >
                 <input
                   type="text"
                   value={formData.percentZ}
-                  onChange={(e) => setFormData({ ...formData, percentZ: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, percentZ: e.target.value })
+                  }
                   placeholder="%Z ="
                   style={{ width: "80px" }}
                 />
@@ -4547,7 +5600,9 @@ function ShortCircuitTestForm({ onSubmit, onPrevious, initialData, isLastFormOfS
                 <input
                   type="text"
                   value={formData.ratedVoltageHV}
-                  onChange={(e) => setFormData({ ...formData, ratedVoltageHV: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, ratedVoltageHV: e.target.value })
+                  }
                   style={{ width: "120px" }}
                 />
                 <span>
@@ -4556,7 +5611,12 @@ function ShortCircuitTestForm({ onSubmit, onPrevious, initialData, isLastFormOfS
                 <input
                   type="text"
                   value={formData.measuredCurrentLV}
-                  onChange={(e) => setFormData({ ...formData, measuredCurrentLV: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      measuredCurrentLV: e.target.value,
+                    })
+                  }
                   style={{ width: "120px" }}
                 />
               </div>
@@ -4577,11 +5637,16 @@ function ShortCircuitTestForm({ onSubmit, onPrevious, initialData, isLastFormOfS
         </button>
       </div>
     </form>
-  )
+  );
 }
 
 // Form 4: Winding Resistance Test and Record of Measurement of IR & PI Values
-function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLastFormOfStage }) {
+function WindingResistanceIRPITestForm({
+  onSubmit,
+  onPrevious,
+  initialData,
+  isLastFormOfStage,
+}) {
   const [formData, setFormData] = useState({
     // Winding Resistance Test
     meterUsed: initialData.meterUsed || "",
@@ -4622,7 +5687,7 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
     },
     photos: initialData.photos || {},
     ...initialData,
-  })
+  });
 
   const handleSignatureChange = (key, type, value) => {
     setFormData((prev) => ({
@@ -4631,20 +5696,20 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
         ...prev.signatures,
         [`${key}${type === "name" ? "Name" : "Signature"}`]: value,
       },
-    }))
-  }
+    }));
+  };
 
   const handlePhotoChange = (key, file) => {
     setFormData((prev) => ({
       ...prev,
       photos: { ...prev.photos, [key]: file },
-    }))
-  }
+    }));
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    onSubmit(formData)
-  }
+    e.preventDefault();
+    onSubmit(formData);
+  };
 
   const photoRequirements = [
     { key: "sfraKit", label: "SFRA kit calibration" },
@@ -4653,12 +5718,12 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
     { key: "megger", label: "Megger" },
     { key: "windingResistanceKit", label: "Winding resistance kit" },
     { key: "clampMeter", label: "Clamp meter" },
-  ]
+  ];
 
   const signatureRequirements = [
     { key: "vpes", label: "Checked by VPES:" },
     { key: "customer", label: "Witnessed By Customer:" },
-  ]
+  ];
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
@@ -4676,7 +5741,9 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.meterUsed}
-                onChange={(e) => setFormData({ ...formData, meterUsed: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, meterUsed: e.target.value })
+                }
               />
             </td>
             <td>
@@ -4686,7 +5753,9 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="date"
                 value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, date: e.target.value })
+                }
               />
             </td>
             <td>
@@ -4696,7 +5765,9 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="time"
                 value={formData.time}
-                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, time: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -4708,7 +5779,9 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.meterMakeSrNo}
-                onChange={(e) => setFormData({ ...formData, meterMakeSrNo: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, meterMakeSrNo: e.target.value })
+                }
               />
             </td>
             <td>
@@ -4718,7 +5791,9 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.wti}
-                onChange={(e) => setFormData({ ...formData, wti: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, wti: e.target.value })
+                }
               />
             </td>
             <td>
@@ -4728,7 +5803,9 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.oti}
-                onChange={(e) => setFormData({ ...formData, oti: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, oti: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -4740,7 +5817,9 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.range}
-                onChange={(e) => setFormData({ ...formData, range: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, range: e.target.value })
+                }
               />
             </td>
             <td>
@@ -4750,14 +5829,18 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.ambient}
-                onChange={(e) => setFormData({ ...formData, ambient: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, ambient: e.target.value })
+                }
               />
             </td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style={{ marginTop: "30px", textAlign: "center" }}>ALL MEASUREMENT IN OHMS / MILI OHMS</h4>
+      <h4 style={{ marginTop: "30px", textAlign: "center" }}>
+        ALL MEASUREMENT IN OHMS / MILI OHMS
+      </h4>
 
       <table className="form-table">
         <tbody>
@@ -4769,14 +5852,18 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.winding11_12}
-                onChange={(e) => setFormData({ ...formData, winding11_12: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, winding11_12: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.winding11_12}
-                onChange={(e) => setFormData({ ...formData, winding11_12: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, winding11_12: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -4788,14 +5875,18 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.winding11_21}
-                onChange={(e) => setFormData({ ...formData, winding11_21: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, winding11_21: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.winding11_21}
-                onChange={(e) => setFormData({ ...formData, winding11_21: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, winding11_21: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -4807,21 +5898,27 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.winding21_12}
-                onChange={(e) => setFormData({ ...formData, winding21_12: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, winding21_12: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.winding21_12}
-                onChange={(e) => setFormData({ ...formData, winding21_12: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, winding21_12: e.target.value })
+                }
               />
             </td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style={{ marginTop: "40px", textAlign: "center" }}>RECORD OF MEASUREMENT OF IR & PI VALUES</h4>
+      <h4 style={{ marginTop: "40px", textAlign: "center" }}>
+        RECORD OF MEASUREMENT OF IR & PI VALUES
+      </h4>
 
       <table className="form-table">
         <tbody>
@@ -4833,7 +5930,9 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="date"
                 value={formData.dateIR}
-                onChange={(e) => setFormData({ ...formData, dateIR: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, dateIR: e.target.value })
+                }
               />
             </td>
             <td>
@@ -4843,7 +5942,9 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="time"
                 value={formData.timeIR}
-                onChange={(e) => setFormData({ ...formData, timeIR: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, timeIR: e.target.value })
+                }
               />
             </td>
             <td>
@@ -4865,7 +5966,9 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.ambTempIR}
-                onChange={(e) => setFormData({ ...formData, ambTempIR: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, ambTempIR: e.target.value })
+                }
               />
             </td>
             <td>
@@ -4875,7 +5978,9 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.makeIR}
-                onChange={(e) => setFormData({ ...formData, makeIR: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, makeIR: e.target.value })
+                }
               />
             </td>
             <td rowSpan="4"></td>
@@ -4889,7 +5994,9 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.oilTempIR}
-                onChange={(e) => setFormData({ ...formData, oilTempIR: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, oilTempIR: e.target.value })
+                }
               />
             </td>
             <td>
@@ -4899,7 +6006,9 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.srNoIR}
-                onChange={(e) => setFormData({ ...formData, srNoIR: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, srNoIR: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -4911,7 +6020,9 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.wdgTempIR}
-                onChange={(e) => setFormData({ ...formData, wdgTempIR: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, wdgTempIR: e.target.value })
+                }
               />
             </td>
             <td>
@@ -4921,7 +6032,9 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.rangeIR}
-                onChange={(e) => setFormData({ ...formData, rangeIR: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, rangeIR: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -4933,7 +6046,12 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.relativeHumidityIR}
-                onChange={(e) => setFormData({ ...formData, relativeHumidityIR: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    relativeHumidityIR: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
@@ -4943,7 +6061,9 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.voltageLevelIR}
-                onChange={(e) => setFormData({ ...formData, voltageLevelIR: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, voltageLevelIR: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -4970,35 +6090,45 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.hvEarth10Sec}
-                onChange={(e) => setFormData({ ...formData, hvEarth10Sec: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth10Sec: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.hvEarth60Sec}
-                onChange={(e) => setFormData({ ...formData, hvEarth60Sec: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth60Sec: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.hvEarth600Sec}
-                onChange={(e) => setFormData({ ...formData, hvEarth600Sec: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth600Sec: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.ratioIR60IR10}
-                onChange={(e) => setFormData({ ...formData, ratioIR60IR10: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, ratioIR60IR10: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.ratioIR600IR60}
-                onChange={(e) => setFormData({ ...formData, ratioIR600IR60: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, ratioIR600IR60: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -5031,13 +6161,18 @@ function WindingResistanceIRPITestForm({ onSubmit, onPrevious, initialData, isLa
         </button>
       </div>
     </form>
-  )
+  );
 }
 
 // Stage 5 Form Components - Based on provided images
 
 // Form 1: Pre-Charging Check List
-function PreChargingChecklistForm({ onSubmit, onPrevious, initialData, isLastFormOfStage }) {
+function PreChargingChecklistForm({
+  onSubmit,
+  onPrevious,
+  initialData,
+  isLastFormOfStage,
+}) {
   const [formData, setFormData] = useState({
     // Valve Status
     valveStatus: initialData.valveStatus || {},
@@ -5048,7 +6183,7 @@ function PreChargingChecklistForm({ onSubmit, onPrevious, initialData, isLastFor
     // Bushing Test Tap
     bushingTestTap: initialData.bushingTestTap || {},
     ...initialData,
-  })
+  });
 
   const valveStatusItems = [
     { id: "A", description: "Bucholz to Conservator" },
@@ -5058,7 +6193,7 @@ function PreChargingChecklistForm({ onSubmit, onPrevious, initialData, isLastFor
     { id: "E", description: "Top Filter Valve" },
     { id: "F", description: "Bottom Filter Valve" },
     { id: "G", description: "Drain Valve" },
-  ]
+  ];
 
   const airVentingItems = [
     { id: "1", description: "Main Tank" },
@@ -5067,7 +6202,7 @@ function PreChargingChecklistForm({ onSubmit, onPrevious, initialData, isLastFor
     { id: "4", description: "LV Bushing" },
     { id: "5", description: "Neutral Bushing" },
     { id: "6", description: "Radiator – Top" },
-  ]
+  ];
 
   const protectionTrailsItems = [
     { id: "1", description: "Buchholz checked by oil draining", type: "ALARM" },
@@ -5078,7 +6213,7 @@ function PreChargingChecklistForm({ onSubmit, onPrevious, initialData, isLastFor
     { id: "4b", description: "OTI", type: "TRIP" },
     { id: "5", description: "WTI", type: "ALARM" },
     { id: "5b", description: "WTI", type: "TRIP" },
-  ]
+  ];
 
   const handleValveStatusChange = (id, field, value) => {
     setFormData((prev) => ({
@@ -5090,8 +6225,8 @@ function PreChargingChecklistForm({ onSubmit, onPrevious, initialData, isLastFor
           [field]: value,
         },
       },
-    }))
-  }
+    }));
+  };
 
   const handleAirVentingChange = (id, field, value) => {
     setFormData((prev) => ({
@@ -5103,8 +6238,8 @@ function PreChargingChecklistForm({ onSubmit, onPrevious, initialData, isLastFor
           [field]: value,
         },
       },
-    }))
-  }
+    }));
+  };
 
   const handleProtectionTrailsChange = (id, field, value) => {
     setFormData((prev) => ({
@@ -5116,8 +6251,8 @@ function PreChargingChecklistForm({ onSubmit, onPrevious, initialData, isLastFor
           [field]: value,
         },
       },
-    }))
-  }
+    }));
+  };
 
   const handleBushingTestTapChange = (field, value) => {
     setFormData((prev) => ({
@@ -5126,13 +6261,13 @@ function PreChargingChecklistForm({ onSubmit, onPrevious, initialData, isLastFor
         ...prev.bushingTestTap,
         [field]: value,
       },
-    }))
-  }
+    }));
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    onSubmit(formData)
-  }
+    e.preventDefault();
+    onSubmit(formData);
+  };
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
@@ -5174,14 +6309,18 @@ function PreChargingChecklistForm({ onSubmit, onPrevious, initialData, isLastFor
                 <input
                   type="text"
                   value={formData.valveStatus[item.id]?.qty || ""}
-                  onChange={(e) => handleValveStatusChange(item.id, "qty", e.target.value)}
+                  onChange={(e) =>
+                    handleValveStatusChange(item.id, "qty", e.target.value)
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={formData.valveStatus[item.id]?.status || ""}
-                  onChange={(e) => handleValveStatusChange(item.id, "status", e.target.value)}
+                  onChange={(e) =>
+                    handleValveStatusChange(item.id, "status", e.target.value)
+                  }
                 />
               </td>
               <td></td>
@@ -5210,14 +6349,18 @@ function PreChargingChecklistForm({ onSubmit, onPrevious, initialData, isLastFor
                 <input
                   type="text"
                   value={formData.airVenting[item.id]?.qty || ""}
-                  onChange={(e) => handleAirVentingChange(item.id, "qty", e.target.value)}
+                  onChange={(e) =>
+                    handleAirVentingChange(item.id, "qty", e.target.value)
+                  }
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={formData.airVenting[item.id]?.status || ""}
-                  onChange={(e) => handleAirVentingChange(item.id, "status", e.target.value)}
+                  onChange={(e) =>
+                    handleAirVentingChange(item.id, "status", e.target.value)
+                  }
                 />
               </td>
               <td></td>
@@ -5250,8 +6393,17 @@ function PreChargingChecklistForm({ onSubmit, onPrevious, initialData, isLastFor
               <td>
                 <input
                   type="text"
-                  value={formData.protectionTrails[`${item.id}-${item.type}`]?.checked || ""}
-                  onChange={(e) => handleProtectionTrailsChange(`${item.id}-${item.type}`, "checked", e.target.value)}
+                  value={
+                    formData.protectionTrails[`${item.id}-${item.type}`]
+                      ?.checked || ""
+                  }
+                  onChange={(e) =>
+                    handleProtectionTrailsChange(
+                      `${item.id}-${item.type}`,
+                      "checked",
+                      e.target.value
+                    )
+                  }
                 />
               </td>
               <td></td>
@@ -5293,14 +6445,18 @@ function PreChargingChecklistForm({ onSubmit, onPrevious, initialData, isLastFor
               <input
                 type="text"
                 value={formData.bushingTestTap.hvTestCapEarthed || ""}
-                onChange={(e) => handleBushingTestTapChange("hvTestCapEarthed", e.target.value)}
+                onChange={(e) =>
+                  handleBushingTestTapChange("hvTestCapEarthed", e.target.value)
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.bushingTestTap.lvTestCapEarthed || ""}
-                onChange={(e) => handleBushingTestTapChange("lvTestCapEarthed", e.target.value)}
+                onChange={(e) =>
+                  handleBushingTestTapChange("lvTestCapEarthed", e.target.value)
+                }
               />
             </td>
           </tr>
@@ -5318,11 +6474,16 @@ function PreChargingChecklistForm({ onSubmit, onPrevious, initialData, isLastFor
         </button>
       </div>
     </form>
-  )
+  );
 }
 
 // Form 2: Pre-Charging Check List - Part 2
-function PreChargingChecklistPart2Form({ onSubmit, onPrevious, initialData, isLastFormOfStage }) {
+function PreChargingChecklistPart2Form({
+  onSubmit,
+  onPrevious,
+  initialData,
+  isLastFormOfStage,
+}) {
   const [formData, setFormData] = useState({
     // Oil Values
     bdvKV: initialData.bdvKV || "",
@@ -5366,29 +6527,31 @@ function PreChargingChecklistPart2Form({ onSubmit, onPrevious, initialData, isLa
     },
     photos: initialData.photos || {},
     ...initialData,
-  })
+  });
 
   const handleSignatureChange = (key, type, value) => {
     setFormData((prev) => ({
       ...prev,
       signatures: {
         ...prev.signatures,
-        [`${key}${type === "name" ? "Name" : type === "date" ? "Date" : "Signature"}`]: value,
+        [`${key}${
+          type === "name" ? "Name" : type === "date" ? "Date" : "Signature"
+        }`]: value,
       },
-    }))
-  }
+    }));
+  };
 
   const handlePhotoChange = (key, file) => {
     setFormData((prev) => ({
       ...prev,
       photos: { ...prev.photos, [key]: file },
-    }))
-  }
+    }));
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    onSubmit(formData)
-  }
+    e.preventDefault();
+    onSubmit(formData);
+  };
 
   const photoRequirements = [
     { key: "earthingMainTank", label: "Earthing's of main tank & bushing" },
@@ -5396,12 +6559,12 @@ function PreChargingChecklistPart2Form({ onSubmit, onPrevious, initialData, isLa
     { key: "bushingTestTap", label: "Bushing test tap & thimble" },
     { key: "buchholzTerminalPlate", label: "Buchholz terminal plate, etc...." },
     { key: "fullPhotoTransformer", label: "Full Photo of transformer" },
-  ]
+  ];
 
   const signatureRequirements = [
     { key: "vpes", label: "Checked by VPES:" },
     { key: "customer", label: "Witnessed By Customer:" },
-  ]
+  ];
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
@@ -5430,7 +6593,9 @@ function PreChargingChecklistPart2Form({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.bdvKV}
-                onChange={(e) => setFormData({ ...formData, bdvKV: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, bdvKV: e.target.value })
+                }
               />
             </td>
             <td>
@@ -5448,7 +6613,12 @@ function PreChargingChecklistPart2Form({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.moistureContentPPM}
-                onChange={(e) => setFormData({ ...formData, moistureContentPPM: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    moistureContentPPM: e.target.value,
+                  })
+                }
               />
             </td>
             <td>
@@ -5480,21 +6650,27 @@ function PreChargingChecklistPart2Form({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.hvEarth15Sec}
-                onChange={(e) => setFormData({ ...formData, hvEarth15Sec: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth15Sec: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.hvEarth60Sec}
-                onChange={(e) => setFormData({ ...formData, hvEarth60Sec: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth60Sec: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
                 value={formData.hvEarth600Sec}
-                onChange={(e) => setFormData({ ...formData, hvEarth600Sec: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth600Sec: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -5514,7 +6690,12 @@ function PreChargingChecklistPart2Form({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.oilLevelConservator}
-                onChange={(e) => setFormData({ ...formData, oilLevelConservator: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    oilLevelConservator: e.target.value,
+                  })
+                }
               />
             </td>
             <td></td>
@@ -5529,7 +6710,12 @@ function PreChargingChecklistPart2Form({ onSubmit, onPrevious, initialData, isLa
             <td>
               <select
                 value={formData.hvJumpersConnected}
-                onChange={(e) => setFormData({ ...formData, hvJumpersConnected: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    hvJumpersConnected: e.target.value,
+                  })
+                }
               >
                 <option value="">Yes /No</option>
                 <option value="Yes">Yes</option>
@@ -5548,7 +6734,12 @@ function PreChargingChecklistPart2Form({ onSubmit, onPrevious, initialData, isLa
             <td>
               <select
                 value={formData.lvJumpersConnected}
-                onChange={(e) => setFormData({ ...formData, lvJumpersConnected: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    lvJumpersConnected: e.target.value,
+                  })
+                }
               >
                 <option value="">Yes /No</option>
                 <option value="Yes">Yes</option>
@@ -5568,7 +6759,12 @@ function PreChargingChecklistPart2Form({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.incomingLACounter}
-                onChange={(e) => setFormData({ ...formData, incomingLACounter: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    incomingLACounter: e.target.value,
+                  })
+                }
               />
             </td>
             <td></td>
@@ -5584,7 +6780,12 @@ function PreChargingChecklistPart2Form({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.outgoingLACounter}
-                onChange={(e) => setFormData({ ...formData, outgoingLACounter: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    outgoingLACounter: e.target.value,
+                  })
+                }
               />
             </td>
             <td></td>
@@ -5600,7 +6801,12 @@ function PreChargingChecklistPart2Form({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.allCTCableTerminated}
-                onChange={(e) => setFormData({ ...formData, allCTCableTerminated: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    allCTCableTerminated: e.target.value,
+                  })
+                }
               />
             </td>
             <td></td>
@@ -5610,13 +6816,20 @@ function PreChargingChecklistPart2Form({ onSubmit, onPrevious, initialData, isLa
               <strong>XIII</strong>
             </td>
             <td>
-              <strong>Protection relays checked through breaker tripping</strong>
+              <strong>
+                Protection relays checked through breaker tripping
+              </strong>
             </td>
             <td>
               <input
                 type="text"
                 value={formData.protectionRelaysChecked}
-                onChange={(e) => setFormData({ ...formData, protectionRelaysChecked: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    protectionRelaysChecked: e.target.value,
+                  })
+                }
               />
             </td>
             <td></td>
@@ -5632,7 +6845,12 @@ function PreChargingChecklistPart2Form({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.anabondAppliedHVBushings}
-                onChange={(e) => setFormData({ ...formData, anabondAppliedHVBushings: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    anabondAppliedHVBushings: e.target.value,
+                  })
+                }
               />
             </td>
             <td></td>
@@ -5648,7 +6866,9 @@ function PreChargingChecklistPart2Form({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.allJointsSealed}
-                onChange={(e) => setFormData({ ...formData, allJointsSealed: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, allJointsSealed: e.target.value })
+                }
               />
             </td>
             <td></td>
@@ -5664,7 +6884,12 @@ function PreChargingChecklistPart2Form({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.allForeignMaterialCleared}
-                onChange={(e) => setFormData({ ...formData, allForeignMaterialCleared: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    allForeignMaterialCleared: e.target.value,
+                  })
+                }
               />
             </td>
             <td></td>
@@ -5688,7 +6913,9 @@ function PreChargingChecklistPart2Form({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.temperatureWTI}
-                onChange={(e) => setFormData({ ...formData, temperatureWTI: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, temperatureWTI: e.target.value })
+                }
               />
             </td>
             <td>
@@ -5698,7 +6925,9 @@ function PreChargingChecklistPart2Form({ onSubmit, onPrevious, initialData, isLa
               <input
                 type="text"
                 value={formData.temperatureOTI}
-                onChange={(e) => setFormData({ ...formData, temperatureOTI: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, temperatureOTI: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -5708,15 +6937,18 @@ function PreChargingChecklistPart2Form({ onSubmit, onPrevious, initialData, isLa
       <div className="form-group" style={{ marginTop: "30px" }}>
         <label>
           <strong>
-            Remarks: The Transformer as mentioned above has been jointly cleared for charging as on _____. All the
-            necessary pre-commissioning checks and protection trials have been found satisfactory. Transformer has been
-            cleared from all foreign material and is ready for charging.
+            Remarks: The Transformer as mentioned above has been jointly cleared
+            for charging as on _____. All the necessary pre-commissioning checks
+            and protection trials have been found satisfactory. Transformer has
+            been cleared from all foreign material and is ready for charging.
           </strong>
         </label>
         <textarea
           rows="4"
           value={formData.remarks}
-          onChange={(e) => setFormData({ ...formData, remarks: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, remarks: e.target.value })
+          }
           placeholder="Enter any additional remarks..."
         />
       </div>
@@ -5734,19 +6966,25 @@ function PreChargingChecklistPart2Form({ onSubmit, onPrevious, initialData, isLa
             type="text"
             placeholder="Name"
             value={formData.signatures.vpesName}
-            onChange={(e) => handleSignatureChange("vpes", "name", e.target.value)}
+            onChange={(e) =>
+              handleSignatureChange("vpes", "name", e.target.value)
+            }
           />
           <SignatureBox
             label=""
             nameValue=""
             onNameChange={() => {}}
-            onSignatureChange={(signature) => handleSignatureChange("vpes", "signature", signature)}
+            onSignatureChange={(signature) =>
+              handleSignatureChange("vpes", "signature", signature)
+            }
             initialSignature={formData.signatures.vpesSignature}
           />
           <input
             type="date"
             value={formData.signatures.vpesDate}
-            onChange={(e) => handleSignatureChange("vpes", "date", e.target.value)}
+            onChange={(e) =>
+              handleSignatureChange("vpes", "date", e.target.value)
+            }
           />
         </div>
 
@@ -5756,19 +6994,25 @@ function PreChargingChecklistPart2Form({ onSubmit, onPrevious, initialData, isLa
             type="text"
             placeholder="Name"
             value={formData.signatures.customerName}
-            onChange={(e) => handleSignatureChange("customer", "name", e.target.value)}
+            onChange={(e) =>
+              handleSignatureChange("customer", "name", e.target.value)
+            }
           />
           <SignatureBox
             label=""
             nameValue=""
             onNameChange={() => {}}
-            onSignatureChange={(signature) => handleSignatureChange("customer", "signature", signature)}
+            onSignatureChange={(signature) =>
+              handleSignatureChange("customer", "signature", signature)
+            }
             initialSignature={formData.signatures.customerSignature}
           />
           <input
             type="date"
             value={formData.signatures.customerDate}
-            onChange={(e) => handleSignatureChange("customer", "date", e.target.value)}
+            onChange={(e) =>
+              handleSignatureChange("customer", "date", e.target.value)
+            }
           />
         </div>
       </div>
@@ -5784,13 +7028,18 @@ function PreChargingChecklistPart2Form({ onSubmit, onPrevious, initialData, isLa
         </button>
       </div>
     </form>
-  )
+  );
 }
 
 // Stage 6 Form Components - Based on provided images
 
 // Form 1: Work Completion Report
-function WorkCompletionReportForm({ onSubmit, onPrevious, initialData, isLastFormOfStage }) {
+function WorkCompletionReportForm({
+  onSubmit,
+  onPrevious,
+  initialData,
+  isLastFormOfStage,
+}) {
   const [formData, setFormData] = useState({
     // Project Information
     customerName: initialData.customerName || "",
@@ -5818,7 +7067,7 @@ function WorkCompletionReportForm({ onSubmit, onPrevious, initialData, isLastFor
       customerDate: "",
     },
     ...initialData,
-  })
+  });
 
   const handleSignatureChange = (key, type, value) => {
     setFormData((prev) => ({
@@ -5827,18 +7076,23 @@ function WorkCompletionReportForm({ onSubmit, onPrevious, initialData, isLastFor
         ...prev.signatures,
         [`${key}${type.charAt(0).toUpperCase() + type.slice(1)}`]: value,
       },
-    }))
-  }
+    }));
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    onSubmit(formData)
-  }
+    e.preventDefault();
+    onSubmit(formData);
+  };
 
   return (
     <div
       className="form-container"
-      style={{ background: "white", padding: "40px", maxWidth: "800px", margin: "0 auto" }}
+      style={{
+        background: "white",
+        padding: "40px",
+        maxWidth: "800px",
+        margin: "0 auto",
+      }}
     >
       {/* Header with logo and certifications */}
       <div
@@ -5852,10 +7106,26 @@ function WorkCompletionReportForm({ onSubmit, onPrevious, initialData, isLastFor
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
-          <div style={{ fontSize: "2rem", fontWeight: "bold", color: "#C41E3A" }}>V</div>
+          <div
+            style={{ fontSize: "2rem", fontWeight: "bold", color: "#C41E3A" }}
+          >
+            V
+          </div>
           <div>
-            <div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#333" }}>VISHVAS</div>
-            <div style={{ fontSize: "1.2rem", color: "#666", letterSpacing: "2px" }}>POWER</div>
+            <div
+              style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#333" }}
+            >
+              VISHVAS
+            </div>
+            <div
+              style={{
+                fontSize: "1.2rem",
+                color: "#666",
+                letterSpacing: "2px",
+              }}
+            >
+              POWER
+            </div>
             <div style={{ fontSize: "0.8rem", color: "#666" }}>
               (A unit of M/s Vishvas Power Engineering Services Pvt Ltd)
             </div>
@@ -5914,12 +7184,21 @@ function WorkCompletionReportForm({ onSubmit, onPrevious, initialData, isLastFor
           clipPath: "polygon(0 0, 100% 0, 95% 100%, 0% 100%)",
         }}
       >
-        <div style={{ fontSize: "1.1rem", fontWeight: "600" }}>Transformers upto 220 kV 250 MVA</div>
+        <div style={{ fontSize: "1.1rem", fontWeight: "600" }}>
+          Transformers upto 220 kV 250 MVA
+        </div>
       </div>
 
       <form onSubmit={handleSubmit}>
         <div style={{ textAlign: "center", marginBottom: "30px" }}>
-          <h1 style={{ fontSize: "1.8rem", fontWeight: "bold", textDecoration: "underline", margin: "0 0 10px 0" }}>
+          <h1
+            style={{
+              fontSize: "1.8rem",
+              fontWeight: "bold",
+              textDecoration: "underline",
+              margin: "0 0 10px 0",
+            }}
+          >
             Work completion report
           </h1>
           <div style={{ textAlign: "right", fontSize: "1rem" }}>
@@ -5927,22 +7206,44 @@ function WorkCompletionReportForm({ onSubmit, onPrevious, initialData, isLastFor
             <input
               type="date"
               value={formData.completionDate}
-              onChange={(e) => setFormData({ ...formData, completionDate: e.target.value })}
-              style={{ marginLeft: "10px", border: "none", borderBottom: "1px solid #333", background: "transparent" }}
+              onChange={(e) =>
+                setFormData({ ...formData, completionDate: e.target.value })
+              }
+              style={{
+                marginLeft: "10px",
+                border: "none",
+                borderBottom: "1px solid #333",
+                background: "transparent",
+              }}
             />
           </div>
         </div>
 
         <div style={{ marginBottom: "30px" }}>
-          <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "15px" }}>Project Information</h3>
+          <h3
+            style={{
+              fontSize: "1.2rem",
+              fontWeight: "bold",
+              marginBottom: "15px",
+            }}
+          >
+            Project Information
+          </h3>
 
           <div style={{ marginBottom: "15px" }}>
             <strong>Customer Name: </strong>
             <input
               type="text"
               value={formData.customerName}
-              onChange={(e) => setFormData({ ...formData, customerName: e.target.value })}
-              style={{ border: "none", borderBottom: "1px solid #333", background: "transparent", width: "300px" }}
+              onChange={(e) =>
+                setFormData({ ...formData, customerName: e.target.value })
+              }
+              style={{
+                border: "none",
+                borderBottom: "1px solid #333",
+                background: "transparent",
+                width: "300px",
+              }}
             />
           </div>
 
@@ -5951,8 +7252,15 @@ function WorkCompletionReportForm({ onSubmit, onPrevious, initialData, isLastFor
             <input
               type="text"
               value={formData.orderNumber}
-              onChange={(e) => setFormData({ ...formData, orderNumber: e.target.value })}
-              style={{ border: "none", borderBottom: "1px solid #333", background: "transparent", width: "300px" }}
+              onChange={(e) =>
+                setFormData({ ...formData, orderNumber: e.target.value })
+              }
+              style={{
+                border: "none",
+                borderBottom: "1px solid #333",
+                background: "transparent",
+                width: "300px",
+              }}
             />
           </div>
 
@@ -5961,15 +7269,30 @@ function WorkCompletionReportForm({ onSubmit, onPrevious, initialData, isLastFor
             <input
               type="text"
               value={formData.location}
-              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-              style={{ border: "none", borderBottom: "1px solid #333", background: "transparent", width: "200px" }}
+              onChange={(e) =>
+                setFormData({ ...formData, location: e.target.value })
+              }
+              style={{
+                border: "none",
+                borderBottom: "1px solid #333",
+                background: "transparent",
+                width: "200px",
+              }}
             />
             <strong style={{ marginLeft: "20px" }}>SP/SSP</strong>
           </div>
         </div>
 
         <div style={{ marginBottom: "30px" }}>
-          <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "15px" }}>Transformer Details</h3>
+          <h3
+            style={{
+              fontSize: "1.2rem",
+              fontWeight: "bold",
+              marginBottom: "15px",
+            }}
+          >
+            Transformer Details
+          </h3>
 
           <div style={{ marginBottom: "10px" }}>
             <strong>Type: – auto Transformer</strong>
@@ -5980,8 +7303,15 @@ function WorkCompletionReportForm({ onSubmit, onPrevious, initialData, isLastFor
             <input
               type="text"
               value={formData.capacity}
-              onChange={(e) => setFormData({ ...formData, capacity: e.target.value })}
-              style={{ border: "none", borderBottom: "1px solid #333", background: "transparent", width: "100px" }}
+              onChange={(e) =>
+                setFormData({ ...formData, capacity: e.target.value })
+              }
+              style={{
+                border: "none",
+                borderBottom: "1px solid #333",
+                background: "transparent",
+                width: "100px",
+              }}
             />
             <strong>MVA</strong>
           </div>
@@ -5991,8 +7321,15 @@ function WorkCompletionReportForm({ onSubmit, onPrevious, initialData, isLastFor
             <input
               type="text"
               value={formData.voltageRating}
-              onChange={(e) => setFormData({ ...formData, voltageRating: e.target.value })}
-              style={{ border: "none", borderBottom: "1px solid #333", background: "transparent", width: "100px" }}
+              onChange={(e) =>
+                setFormData({ ...formData, voltageRating: e.target.value })
+              }
+              style={{
+                border: "none",
+                borderBottom: "1px solid #333",
+                background: "transparent",
+                width: "100px",
+              }}
             />
             <strong>kV</strong>
           </div>
@@ -6002,8 +7339,15 @@ function WorkCompletionReportForm({ onSubmit, onPrevious, initialData, isLastFor
             <input
               type="text"
               value={formData.make}
-              onChange={(e) => setFormData({ ...formData, make: e.target.value })}
-              style={{ border: "none", borderBottom: "1px solid #333", background: "transparent", width: "200px" }}
+              onChange={(e) =>
+                setFormData({ ...formData, make: e.target.value })
+              }
+              style={{
+                border: "none",
+                borderBottom: "1px solid #333",
+                background: "transparent",
+                width: "200px",
+              }}
             />
           </div>
 
@@ -6012,57 +7356,112 @@ function WorkCompletionReportForm({ onSubmit, onPrevious, initialData, isLastFor
             <input
               type="text"
               value={formData.serialNumber}
-              onChange={(e) => setFormData({ ...formData, serialNumber: e.target.value })}
-              style={{ border: "none", borderBottom: "1px solid #333", background: "transparent", width: "200px" }}
+              onChange={(e) =>
+                setFormData({ ...formData, serialNumber: e.target.value })
+              }
+              style={{
+                border: "none",
+                borderBottom: "1px solid #333",
+                background: "transparent",
+                width: "200px",
+              }}
             />
           </div>
         </div>
 
         <div style={{ marginBottom: "30px" }}>
-          <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "15px", textDecoration: "underline" }}>
-            Subject: <em>Completion of Transformer Erection, Testing and Commissioning Work</em>
+          <h3
+            style={{
+              fontSize: "1.2rem",
+              fontWeight: "bold",
+              marginBottom: "15px",
+              textDecoration: "underline",
+            }}
+          >
+            Subject:{" "}
+            <em>
+              Completion of Transformer Erection, Testing and Commissioning Work
+            </em>
           </h3>
 
           <p style={{ lineHeight: "1.6", marginBottom: "15px" }}>
-            This is to certify that the erection, Testing and commissioning of the above-mentioned transformer have been
-            completed in accordance with the terms and conditions of the referenced order.
+            This is to certify that the erection, Testing and commissioning of
+            the above-mentioned transformer have been completed in accordance
+            with the terms and conditions of the referenced order.
           </p>
 
           <p style={{ lineHeight: "1.6", marginBottom: "15px" }}>
-            The installation work has been jointly inspected and found satisfactory by the undersigned representatives.
-            The transformer was successfully charged/commissioned on no-load at
+            The installation work has been jointly inspected and found
+            satisfactory by the undersigned representatives. The transformer was
+            successfully charged/commissioned on no-load at
             <input
               type="time"
               value={formData.chargingDate}
-              onChange={(e) => setFormData({ ...formData, chargingDate: e.target.value })}
-              style={{ border: "none", borderBottom: "1px solid #333", background: "transparent", margin: "0 5px" }}
+              onChange={(e) =>
+                setFormData({ ...formData, chargingDate: e.target.value })
+              }
+              style={{
+                border: "none",
+                borderBottom: "1px solid #333",
+                background: "transparent",
+                margin: "0 5px",
+              }}
             />
             hrs on
             <input
               type="date"
               value={formData.commissioningDate}
-              onChange={(e) => setFormData({ ...formData, commissioningDate: e.target.value })}
-              style={{ border: "none", borderBottom: "1px solid #333", background: "transparent", margin: "0 5px" }}
+              onChange={(e) =>
+                setFormData({ ...formData, commissioningDate: e.target.value })
+              }
+              style={{
+                border: "none",
+                borderBottom: "1px solid #333",
+                background: "transparent",
+                margin: "0 5px",
+              }}
             />
             (date).
           </p>
 
           <p style={{ lineHeight: "1.6", marginBottom: "30px" }}>
-            All works under the scope of the order have been completed, and no pending activities remain.
+            All works under the scope of the order have been completed, and no
+            pending activities remain.
           </p>
         </div>
 
-        <div style={{ display: "flex", justifyContent: "space-between", marginTop: "50px" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: "50px",
+          }}
+        >
           <div style={{ width: "45%" }}>
-            <h4 style={{ fontSize: "1.1rem", fontWeight: "bold", marginBottom: "20px" }}>For VPES, Nagpur</h4>
+            <h4
+              style={{
+                fontSize: "1.1rem",
+                fontWeight: "bold",
+                marginBottom: "20px",
+              }}
+            >
+              For VPES, Nagpur
+            </h4>
 
             <div style={{ marginBottom: "15px" }}>
               <strong>Name: </strong>
               <input
                 type="text"
                 value={formData.signatures.vpesName}
-                onChange={(e) => handleSignatureChange("vpes", "name", e.target.value)}
-                style={{ border: "none", borderBottom: "1px solid #333", background: "transparent", width: "150px" }}
+                onChange={(e) =>
+                  handleSignatureChange("vpes", "name", e.target.value)
+                }
+                style={{
+                  border: "none",
+                  borderBottom: "1px solid #333",
+                  background: "transparent",
+                  width: "150px",
+                }}
               />
             </div>
 
@@ -6071,8 +7470,15 @@ function WorkCompletionReportForm({ onSubmit, onPrevious, initialData, isLastFor
               <input
                 type="text"
                 value={formData.signatures.vpesDesignation}
-                onChange={(e) => handleSignatureChange("vpes", "designation", e.target.value)}
-                style={{ border: "none", borderBottom: "1px solid #333", background: "transparent", width: "120px" }}
+                onChange={(e) =>
+                  handleSignatureChange("vpes", "designation", e.target.value)
+                }
+                style={{
+                  border: "none",
+                  borderBottom: "1px solid #333",
+                  background: "transparent",
+                  width: "120px",
+                }}
               />
             </div>
 
@@ -6082,7 +7488,9 @@ function WorkCompletionReportForm({ onSubmit, onPrevious, initialData, isLastFor
                 label=""
                 nameValue=""
                 onNameChange={() => {}}
-                onSignatureChange={(signature) => handleSignatureChange("vpes", "signature", signature)}
+                onSignatureChange={(signature) =>
+                  handleSignatureChange("vpes", "signature", signature)
+                }
                 initialSignature={formData.signatures.vpesSignature}
               />
             </div>
@@ -6092,22 +7500,44 @@ function WorkCompletionReportForm({ onSubmit, onPrevious, initialData, isLastFor
               <input
                 type="date"
                 value={formData.signatures.vpesDate}
-                onChange={(e) => handleSignatureChange("vpes", "date", e.target.value)}
-                style={{ border: "none", borderBottom: "1px solid #333", background: "transparent", width: "150px" }}
+                onChange={(e) =>
+                  handleSignatureChange("vpes", "date", e.target.value)
+                }
+                style={{
+                  border: "none",
+                  borderBottom: "1px solid #333",
+                  background: "transparent",
+                  width: "150px",
+                }}
               />
             </div>
           </div>
 
           <div style={{ width: "45%" }}>
-            <h4 style={{ fontSize: "1.1rem", fontWeight: "bold", marginBottom: "20px" }}>For Customer</h4>
+            <h4
+              style={{
+                fontSize: "1.1rem",
+                fontWeight: "bold",
+                marginBottom: "20px",
+              }}
+            >
+              For Customer
+            </h4>
 
             <div style={{ marginBottom: "15px" }}>
               <strong>Name: </strong>
               <input
                 type="text"
                 value={formData.signatures.customerName}
-                onChange={(e) => handleSignatureChange("customer", "name", e.target.value)}
-                style={{ border: "none", borderBottom: "1px solid #333", background: "transparent", width: "150px" }}
+                onChange={(e) =>
+                  handleSignatureChange("customer", "name", e.target.value)
+                }
+                style={{
+                  border: "none",
+                  borderBottom: "1px solid #333",
+                  background: "transparent",
+                  width: "150px",
+                }}
               />
             </div>
 
@@ -6116,30 +7546,49 @@ function WorkCompletionReportForm({ onSubmit, onPrevious, initialData, isLastFor
               <input
                 type="text"
                 value={formData.signatures.customerDesignation}
-                onChange={(e) => handleSignatureChange("customer", "designation", e.target.value)}
-                style={{ border: "none", borderBottom: "1px solid #333", background: "transparent", width: "120px" }}
+                onChange={(e) =>
+                  handleSignatureChange(
+                    "customer",
+                    "designation",
+                    e.target.value
+                  )
+                }
+                style={{
+                  border: "none",
+                  borderBottom: "1px solid #333",
+                  background: "transparent",
+                  width: "120px",
+                }}
               />
             </div>
-        
+
             <div style={{ marginBottom: "15px" }}>
               <strong>Signature: </strong>
               <SignatureBox
                 label=""
                 nameValue=""
                 onNameChange={() => {}}
-                onSignatureChange={(signature) => handleSignatureChange("customer", "signature", signature)}
+                onSignatureChange={(signature) =>
+                  handleSignatureChange("customer", "signature", signature)
+                }
                 initialSignature={formData.signatures.customerSignature}
               />
             </div>
-
 
             <div style={{ marginBottom: "15px" }}>
               <strong>Date: </strong>
               <input
                 type="date"
                 value={formData.signatures.customerDate}
-                onChange={(e) => handleSignatureChange("customer", "date", e.target.value)}
-                style={{ border: "none", borderBottom: "1px solid #333", background: "transparent", width: "150px" }}
+                onChange={(e) =>
+                  handleSignatureChange("customer", "date", e.target.value)
+                }
+                style={{
+                  border: "none",
+                  borderBottom: "1px solid #333",
+                  background: "transparent",
+                  width: "150px",
+                }}
               />
             </div>
           </div>
@@ -6157,7 +7606,7 @@ function WorkCompletionReportForm({ onSubmit, onPrevious, initialData, isLastFor
         </div>
       </form>
     </div>
-  )
+  );
 }
 
-export default FormStage
+export default FormStage;
