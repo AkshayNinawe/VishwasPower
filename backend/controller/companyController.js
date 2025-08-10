@@ -64,4 +64,49 @@ export const deleteCompanyByID = async (req, res) => {
   }
 };
 
+export const setFormsCompleted = async (req, res) => {
+  try {
+    const { companyName, projectName, formsCompleted } = req.body;
+
+    console.log(companyName, projectName, formsCompleted)
+
+    // Find the company and the specific project within its array
+    const updatedCompany = await Company.findOneAndUpdate(
+      {
+        companyName: companyName,
+        "companyProjects.name": projectName,
+      },
+      {
+        // Use $max to update formsCompleted to the maximum of its current value or the new value
+        $max: { "companyProjects.$.formsCompleted": formsCompleted },
+        // Also update the lastActivity date for the modified project
+        $set: { "companyProjects.$.lastActivity": new Date() },
+      },
+      {
+        new: true, // Return the updated document
+      }
+    );
+
+    // If no company or project was found, return an error
+    if (!updatedCompany) {
+      return res.status(404).json({
+        message: `Company with name '${companyName}' or project with name '${projectName}' not found.`,
+      });
+    }
+
+    res.status(200).json({
+      message: `Forms completed for project '${projectName}' successfully updated.`,
+      project: updatedCompany.companyProjects.find(
+        (proj) => proj.name === projectName
+      ),
+    });
+  } catch (error) {
+    console.error("Error updating forms completed:", error);
+    res.status(500).json({
+      message: "An internal server error occurred.",
+      error: error.message,
+    });
+  }
+};
+
 export default router;

@@ -293,8 +293,11 @@ const ETCAdminPanel = ({
               response.data
             );
 
-            selectedMainCompany.companyProjects = [];
+
+            selectedMainCompany.companyProjects = selectedMainCompany.companyProjects ?? [];
             selectedMainCompany.companyProjects.push(newProject);
+
+            
             setCompanies((prev) => [...prev, newProject]);
             showNotification(
               `Project "${ProjectName}" added to this Company!`,
@@ -317,7 +320,7 @@ const ETCAdminPanel = ({
   // Helper function to get form count for each stage
   const getStageFormCount = (stage) => {
     const stageForms = {
-      1: 4, // Stage 1 has 4 forms
+      1: 5, // Stage 1 has 4 forms
       2: 1, // Stage 2 has 1 form
       3: 7, // Stage 3 has 7 forms
       4: 6, // Stage 4 has 6 forms

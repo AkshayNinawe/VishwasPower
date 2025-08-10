@@ -193,11 +193,16 @@ const FormStage = ({
         }
       );
 
-      // const response = await axios.post(`${BACKEND_API_BASE_URL}/api/table/setTable/Stage1Form${currentFormIndex+1}`, {
-      //   projectName : projectName,
-      //   companyName : companyName,
-      //   data: data
-      // });
+
+      const response2 = await axios.post(
+        `${BACKEND_API_BASE_URL}/api/company/updateFormsCompleted`,
+        {
+          projectName: projectName,
+          companyName: companyName, // Pass the CompanyId to the backend
+          formsCompleted: currentFormIndex + 1
+        }
+      );
+
     } catch (error) {
       console.error("Error creating company on the backend:", error);
       alert("Failed to create company. Please try again.");
