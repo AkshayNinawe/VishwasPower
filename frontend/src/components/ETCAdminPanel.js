@@ -238,7 +238,7 @@ const ETCAdminPanel = ({
       // setNewCompany({ name: "", description: "" })
       setShowCreateCompanyForm(false);
       showNotification(
-        `Company "${Company.name}" created successfully in ${selectedDepartment.name}!`,
+        `Company "${Company.companyName}" created successfully in ${selectedDepartment.name}!`,
         "success"
       );
     }
@@ -293,6 +293,7 @@ const ETCAdminPanel = ({
               response.data
             );
 
+            selectedMainCompany.companyProjects = [];
             selectedMainCompany.companyProjects.push(newProject);
             setCompanies((prev) => [...prev, newProject]);
             showNotification(

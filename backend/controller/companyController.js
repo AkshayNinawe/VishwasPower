@@ -7,17 +7,11 @@ const router = express.Router();
 export const setNewCompanyData = async (req, res) => {
   try {
     console.log("Add new company");
-    const { companyName, companyDescription, companyProject } = req.body;
-    console.log(
-      "Adding company with detail",
-      companyName,
-      companyDescription,
-      companyProject
-    );
+    const { companyName, companyDescription } = req.body;
+    console.log("Adding company with detail", companyName, companyDescription);
     const newCompany = new Company({
       companyName,
       companyDescription,
-      companyProject,
     });
     await newCompany.save();
     res.status(201).json(newCompany);
