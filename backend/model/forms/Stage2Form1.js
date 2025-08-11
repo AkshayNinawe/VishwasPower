@@ -1,5 +1,39 @@
 import mongoose from "mongoose";
 
+// Sub-schema for filtration records
+const FiltrationRecordSchema = new mongoose.Schema({
+  date: {
+    type: String, // You could also use Date type if you prefer, but string matches your sample data
+    trim: true,
+    default: "",
+  },
+  time: {
+    type: String,
+    trim: true,
+    default: "",
+  },
+  vacuumLevel: {
+    type: String,
+    trim: true,
+    default: "",
+  },
+  inletTemp: {
+    type: String,
+    trim: true,
+    default: "",
+  },
+  outletTemp: {
+    type: String,
+    trim: true,
+    default: "",
+  },
+  remark: {
+    type: String,
+    trim: true,
+    default: "",
+  },
+});
+
 const Stage2Form1Schema = new mongoose.Schema(
   {
     projectName: {
@@ -13,88 +47,36 @@ const Stage2Form1Schema = new mongoose.Schema(
       required: true,
     },
     data: {
-      make: {
+      tank1NoOfBarrels: {
         type: String,
         trim: true,
         default: "",
       },
-      srNo: {
+      tank1StartedDateTime: {
+        type: String, // Consider using Date for better date/time management
+        trim: true,
+        default: "",
+      },
+      tank1CompletedDateTime: {
+        type: String, // Consider using Date for better date/time management
+        trim: true,
+        default: "",
+      },
+      tank1BDV: {
         type: String,
         trim: true,
         default: "",
       },
-      yearOfMfg: {
-        type: String, // Can be changed to Number if only numerical year is expected
-        trim: true,
-        default: "",
-      },
-      // Electrical specifications
-      currentHV: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      currentLV: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      hvKv: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      lvKv: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      mvaRating: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      impedancePercent: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      // Mechanical and physical information
-      winding: {
+      tank1MoistureContent: {
         type: String,
         trim: true,
         default: "",
       },
-      tempRiseOil: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      noOfRadiators: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      transportingWeight: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      weightCoreWinding: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      oilQuantityLiter: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      totalWeight: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
+      // Array of objects for filtration records
+      filtrationRecords: [FiltrationRecordSchema],
+      // The sample data showed photos as an empty object,
+      // but keeping it as an array of strings is more common for storing URLs.
+      // You can adjust this to a different schema if needed.
       photos: {
         type: [String],
         default: [],

@@ -1,5 +1,39 @@
 import mongoose from "mongoose";
 
+// Sub-schema for pressure test records
+const PressureTestRecordSchema = new mongoose.Schema({
+  srNo: {
+    type: String,
+    trim: true,
+    default: "",
+  },
+  timeStarted: {
+    type: String,
+    trim: true,
+    default: "",
+  },
+  pressureKgCm2: {
+    type: String,
+    trim: true,
+    default: "",
+  },
+  tempAmb: {
+    type: String,
+    trim: true,
+    default: "",
+  },
+  tempOTI: {
+    type: String,
+    trim: true,
+    default: "",
+  },
+  tempWTI: {
+    type: String,
+    trim: true,
+    default: "",
+  },
+});
+
 const Stage3Form1Schema = new mongoose.Schema(
   {
     projectName: {
@@ -13,92 +47,53 @@ const Stage3Form1Schema = new mongoose.Schema(
       required: true,
     },
     data: {
-      make: {
+      bdvKV: {
         type: String,
         trim: true,
         default: "",
       },
-      srNo: {
+      waterContentPPM: {
         type: String,
         trim: true,
         default: "",
       },
-      yearOfMfg: {
-        type: String, // Can be changed to Number if only numerical year is expected
-        trim: true,
-        default: "",
-      },
-      // Electrical specifications
-      currentHV: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      currentLV: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      hvKv: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      lvKv: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      mvaRating: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      impedancePercent: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      // Mechanical and physical information
-      winding: {
+      tempOTI: {
         type: String,
         trim: true,
         default: "",
       },
-      tempRiseOil: {
-        type: String, // Can be changed to Number for calculations
+      tempWTI: {
+        type: String,
         trim: true,
         default: "",
       },
-      noOfRadiators: {
-        type: String, // Can be changed to Number for calculations
+      tempAMB: {
+        type: String,
         trim: true,
         default: "",
       },
-      transportingWeight: {
-        type: String, // Can be changed to Number for calculations
+      hvEarth15Sec: {
+        type: String,
         trim: true,
         default: "",
       },
-      weightCoreWinding: {
-        type: String, // Can be changed to Number for calculations
+      hvEarth60Sec: {
+        type: String,
         trim: true,
         default: "",
       },
-      oilQuantityLiter: {
-        type: String, // Can be changed to Number for calculations
+      ratioIR60IR15: {
+        type: String,
         trim: true,
         default: "",
       },
-      totalWeight: {
-        type: String, // Can be changed to Number for calculations
+      pressureTestDate: {
+        type: String,
         trim: true,
         default: "",
       },
-      photos: {
-        type: [String],
-        default: [],
-      },
+      // Array of objects for pressure test records
+      pressureTestRecords: [PressureTestRecordSchema],
     },
   },
   { timestamps: true }

@@ -1,5 +1,24 @@
 import mongoose from "mongoose";
 
+const signatureSchema = new mongoose.Schema({
+  vpesName: {
+    type: String,
+    trim: true,
+  },
+  vpesSignature: {
+    type: String, // Storing base64 image data as a string
+    trim: true,
+  },
+  customerName: {
+    type: String,
+    trim: true,
+  },
+  customerSignature: {
+    type: String, // Storing base64 image data as a string
+    trim: true,
+  },
+});
+
 const Stage4Form4Schema = new mongoose.Schema(
   {
     projectName: {
@@ -13,91 +32,40 @@ const Stage4Form4Schema = new mongoose.Schema(
       required: true,
     },
     data: {
-      make: {
-        type: String,
-        trim: true,
-        default: "",
-      },
-      srNo: {
-        type: String,
-        trim: true,
-        default: "",
-      },
-      yearOfMfg: {
-        type: String, // Can be changed to Number if only numerical year is expected
-        trim: true,
-        default: "",
-      },
-      // Electrical specifications
-      currentHV: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      currentLV: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      hvKv: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      lvKv: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      mvaRating: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      impedancePercent: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      // Mechanical and physical information
-      winding: {
-        type: String,
-        trim: true,
-        default: "",
-      },
-      tempRiseOil: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      noOfRadiators: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      transportingWeight: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      weightCoreWinding: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      oilQuantityLiter: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      totalWeight: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
+      meterUsed: { type: String, trim: true, default: "" },
+      date: { type: String, trim: true, default: "" },
+      time: { type: String, trim: true, default: "" },
+      meterMakeSrNo: { type: String, trim: true, default: "" },
+      wti: { type: String, trim: true, default: "" },
+      oti: { type: String, trim: true, default: "" },
+      range: { type: String, trim: true, default: "" },
+      ambient: { type: String, trim: true, default: "" },
+      winding11_12: { type: String, trim: true, default: "" },
+      winding11_21: { type: String, trim: true, default: "" },
+      winding21_12: { type: String, trim: true, default: "" },
+      dateIR: { type: String, trim: true, default: "" },
+      timeIR: { type: String, trim: true, default: "" },
+      insulationTesterDetails: { type: String, trim: true, default: "" },
+      ambTempIR: { type: String, trim: true, default: "" },
+      makeIR: { type: String, trim: true, default: "" },
+      oilTempIR: { type: String, trim: true, default: "" },
+      srNoIR: { type: String, trim: true, default: "" },
+      wdgTempIR: { type: String, trim: true, default: "" },
+      rangeIR: { type: String, trim: true, default: "" },
+      relativeHumidityIR: { type: String, trim: true, default: "" },
+      voltageLevelIR: { type: String, trim: true, default: "" },
+      hvEarth10Sec: { type: String, trim: true, default: "" },
+      hvEarth60Sec: { type: String, trim: true, default: "" },
+      hvEarth600Sec: { type: String, trim: true, default: "" },
+      ratioIR60IR10: { type: String, trim: true, default: "" },
+      ratioIR600IR60: { type: String, trim: true, default: "" },
+      signatures: {
+        type: signatureSchema,
+        default: {},
       },
       photos: {
-        type: [String],
-        default: [],
+        type: Object, // Using Object to allow for dynamic key-value pairs of photos
+        default: {},
       },
     },
   },

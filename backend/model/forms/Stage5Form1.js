@@ -1,5 +1,31 @@
 import mongoose from "mongoose";
 
+// Sub-schema for valve status and air venting
+const statusQtySchema = new mongoose.Schema(
+  {
+    qty: { type: String, trim: true, default: "" },
+    status: { type: String, trim: true, default: "" },
+  },
+  { _id: false } // Prevent Mongoose from creating an _id for sub-documents
+);
+
+// Sub-schema for protection trails
+const protectionTrailsSchema = new mongoose.Schema(
+  {
+    checked: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+// Sub-schema for bushing test tap
+const bushingTestTapSchema = new mongoose.Schema(
+  {
+    hvTestCapEarthed: { type: String, trim: true, default: "" },
+    lvTestCapEarthed: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
 const Stage5Form1Schema = new mongoose.Schema(
   {
     projectName: {
@@ -13,91 +39,24 @@ const Stage5Form1Schema = new mongoose.Schema(
       required: true,
     },
     data: {
-      make: {
-        type: String,
-        trim: true,
-        default: "",
+      valveStatus: {
+        type: Object, // Using Object to handle dynamic keys (A, B, C, etc.)
+        of: statusQtySchema,
+        default: {},
       },
-      srNo: {
-        type: String,
-        trim: true,
-        default: "",
+      airVenting: {
+        type: Object, // Using Object to handle dynamic keys (1, 2, 3, etc.)
+        of: statusQtySchema,
+        default: {},
       },
-      yearOfMfg: {
-        type: String, // Can be changed to Number if only numerical year is expected
-        trim: true,
-        default: "",
+      protectionTrails: {
+        type: Object, // Using Object to handle dynamic keys (1-ALARM, 1b-TRIP, etc.)
+        of: protectionTrailsSchema,
+        default: {},
       },
-      // Electrical specifications
-      currentHV: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      currentLV: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      hvKv: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      lvKv: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      mvaRating: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      impedancePercent: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      // Mechanical and physical information
-      winding: {
-        type: String,
-        trim: true,
-        default: "",
-      },
-      tempRiseOil: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      noOfRadiators: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      transportingWeight: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      weightCoreWinding: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      oilQuantityLiter: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      totalWeight: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      photos: {
-        type: [String],
-        default: [],
+      bushingTestTap: {
+        type: bushingTestTapSchema,
+        default: {},
       },
     },
   },

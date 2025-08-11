@@ -1,5 +1,48 @@
 import mongoose from "mongoose";
 
+// Sub-schema for records that have the same structure
+// This is used for both radiatorRecords and combineRecords
+const RecordSchema = new mongoose.Schema(
+  {
+    date: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    time: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    vacuumLevel: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    mcOutletTemp: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    otiTemp: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    wtiTemp: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    remark: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+  },
+  { _id: false }
+);
+
 const Stage3Form3Schema = new mongoose.Schema(
   {
     projectName: {
@@ -13,91 +56,62 @@ const Stage3Form3Schema = new mongoose.Schema(
       required: true,
     },
     data: {
-      make: {
+      radiatorRecords: {
+        type: [RecordSchema],
+        default: [],
+      },
+      combineRecords: {
+        type: [RecordSchema],
+        default: [],
+      },
+      bdvKV: {
         type: String,
         trim: true,
         default: "",
       },
-      srNo: {
+      waterContentPPM: {
         type: String,
         trim: true,
         default: "",
       },
-      yearOfMfg: {
-        type: String, // Can be changed to Number if only numerical year is expected
-        trim: true,
-        default: "",
-      },
-      // Electrical specifications
-      currentHV: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      currentLV: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      hvKv: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      lvKv: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      mvaRating: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      impedancePercent: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      // Mechanical and physical information
-      winding: {
+      tempOTI: {
         type: String,
         trim: true,
         default: "",
       },
-      tempRiseOil: {
-        type: String, // Can be changed to Number for calculations
+      tempWTI: {
+        type: String,
         trim: true,
         default: "",
       },
-      noOfRadiators: {
-        type: String, // Can be changed to Number for calculations
+      tempAMB: {
+        type: String,
         trim: true,
         default: "",
       },
-      transportingWeight: {
-        type: String, // Can be changed to Number for calculations
+      hvEarth15Sec: {
+        type: String,
         trim: true,
         default: "",
       },
-      weightCoreWinding: {
-        type: String, // Can be changed to Number for calculations
+      hvEarth60Sec: {
+        type: String,
         trim: true,
         default: "",
       },
-      oilQuantityLiter: {
-        type: String, // Can be changed to Number for calculations
+      hvEarth600Sec: {
+        type: String,
         trim: true,
         default: "",
       },
-      totalWeight: {
-        type: String, // Can be changed to Number for calculations
+      hvEarth60600Sec: {
+        type: String,
         trim: true,
         default: "",
       },
       photos: {
-        type: [String],
-        default: [],
+        type: Object,
+        default: {},
       },
     },
   },

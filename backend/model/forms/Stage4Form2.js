@@ -1,5 +1,17 @@
 import mongoose from "mongoose";
 
+const voltageRatioTestSchema = new mongoose.Schema({
+  appliedVoltage: { type: String, trim: true, default: "" },
+  measuredVoltage11_21: { type: String, trim: true, default: "" },
+  measuredVoltage12_21: { type: String, trim: true, default: "" },
+  measuredVoltage11_12: { type: String, trim: true, default: "" },
+});
+
+const magnetisingTestSchema = new mongoose.Schema({
+  appliedVoltage: { type: String, trim: true, default: "" },
+  measuredCurrent: { type: String, trim: true, default: "" },
+});
+
 const Stage4Form2Schema = new mongoose.Schema(
   {
     projectName: {
@@ -13,90 +25,35 @@ const Stage4Form2Schema = new mongoose.Schema(
       required: true,
     },
     data: {
-      make: {
-        type: String,
-        trim: true,
-        default: "",
+      // General Insulation Test Details
+      date: { type: String, trim: true, default: "" },
+      time: { type: String, trim: true, default: "" },
+      insulationTesterDetails: { type: String, trim: true, default: "" },
+      ambTemp: { type: String, trim: true, default: "" },
+      make: { type: String, trim: true, default: "" },
+      oilTemp: { type: String, trim: true, default: "" },
+      srNo: { type: String, trim: true, default: "" },
+      wdgTemp: { type: String, trim: true, default: "" },
+      range: { type: String, trim: true, default: "" },
+      relativeHumidity: { type: String, trim: true, default: "" },
+      voltageLevel: { type: String, trim: true, default: "" },
+      hvEarth10Sec: { type: String, trim: true, default: "" },
+      hvEarth60Sec: { type: String, trim: true, default: "" },
+      ratioIR60IR10: { type: String, trim: true, default: "" },
+
+      // Voltage Ratio Tests
+      voltageRatioTests: {
+        type: [voltageRatioTestSchema],
+        default: [],
       },
-      srNo: {
-        type: String,
-        trim: true,
-        default: "",
-      },
-      yearOfMfg: {
-        type: String, // Can be changed to Number if only numerical year is expected
-        trim: true,
-        default: "",
-      },
-      // Electrical specifications
-      currentHV: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      currentLV: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      hvKv: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      lvKv: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      mvaRating: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      impedancePercent: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      // Mechanical and physical information
-      winding: {
-        type: String,
-        trim: true,
-        default: "",
-      },
-      tempRiseOil: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      noOfRadiators: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      transportingWeight: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      weightCoreWinding: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      oilQuantityLiter: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      totalWeight: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      photos: {
-        type: [String],
+
+      // Magnetising Current Tests
+      appliedVoltageMag: { type: String, trim: true, default: "" },
+      dateMag: { type: String, trim: true, default: "" },
+      timeMag: { type: String, trim: true, default: "" },
+      meterMakeSrNoMag: { type: String, trim: true, default: "" },
+      magnetisingTests: {
+        type: [magnetisingTestSchema],
         default: [],
       },
     },

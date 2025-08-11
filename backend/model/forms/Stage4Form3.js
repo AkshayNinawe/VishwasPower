@@ -13,92 +13,19 @@ const Stage4Form3Schema = new mongoose.Schema(
       required: true,
     },
     data: {
-      make: {
-        type: String,
-        trim: true,
-        default: "",
-      },
-      srNo: {
-        type: String,
-        trim: true,
-        default: "",
-      },
-      yearOfMfg: {
-        type: String, // Can be changed to Number if only numerical year is expected
-        trim: true,
-        default: "",
-      },
-      // Electrical specifications
-      currentHV: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      currentLV: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      hvKv: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      lvKv: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      mvaRating: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      impedancePercent: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      // Mechanical and physical information
-      winding: {
-        type: String,
-        trim: true,
-        default: "",
-      },
-      tempRiseOil: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      noOfRadiators: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      transportingWeight: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      weightCoreWinding: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      oilQuantityLiter: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      totalWeight: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      photos: {
-        type: [String],
-        default: [],
-      },
+      appliedVoltage: { type: String, trim: true, default: "" },
+      date: { type: String, trim: true, default: "" },
+      time: { type: String, trim: true, default: "" },
+      meterMakeSrNo: { type: String, trim: true, default: "" },
+      test11_12_measuredCurrent11: { type: String, trim: true, default: "" },
+      test11_12_measuredCurrent12_21: { type: String, trim: true, default: "" },
+      test12_21_measuredCurrent12: { type: String, trim: true, default: "" },
+      test12_21_measuredCurrent11_21: { type: String, trim: true, default: "" },
+      appliedVoltageHV: { type: String, trim: true, default: "" },
+      ratedCurrentLV: { type: String, trim: true, default: "" },
+      percentZ: { type: String, trim: true, default: "" },
+      ratedVoltageHV: { type: String, trim: true, default: "" },
+      measuredCurrentLV: { type: String, trim: true, default: "" },
     },
   },
   { timestamps: true }

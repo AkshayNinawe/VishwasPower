@@ -1,5 +1,42 @@
 import mongoose from "mongoose";
 
+// Sub-schema for a more detailed signatures object
+const DetailedSignatureSchema = new mongoose.Schema(
+  {
+    vpesName: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    vpesSignature: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    vpesDate: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    customerName: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    customerSignature: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    customerDate: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+  },
+  { _id: false }
+);
+
 const Stage5Form2Schema = new mongoose.Schema(
   {
     projectName: {
@@ -13,91 +50,103 @@ const Stage5Form2Schema = new mongoose.Schema(
       required: true,
     },
     data: {
-      make: {
+      bdvKV: {
         type: String,
         trim: true,
         default: "",
       },
-      srNo: {
+      moistureContentPPM: {
         type: String,
         trim: true,
         default: "",
       },
-      yearOfMfg: {
-        type: String, // Can be changed to Number if only numerical year is expected
-        trim: true,
-        default: "",
-      },
-      // Electrical specifications
-      currentHV: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      currentLV: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      hvKv: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      lvKv: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      mvaRating: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      impedancePercent: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      // Mechanical and physical information
-      winding: {
+      hvEarth15Sec: {
         type: String,
         trim: true,
         default: "",
       },
-      tempRiseOil: {
-        type: String, // Can be changed to Number for calculations
+      hvEarth60Sec: {
+        type: String,
         trim: true,
         default: "",
       },
-      noOfRadiators: {
-        type: String, // Can be changed to Number for calculations
+      hvEarth600Sec: {
+        type: String,
         trim: true,
         default: "",
       },
-      transportingWeight: {
-        type: String, // Can be changed to Number for calculations
+      oilLevelConservator: {
+        type: String,
         trim: true,
         default: "",
       },
-      weightCoreWinding: {
-        type: String, // Can be changed to Number for calculations
+      hvJumpersConnected: {
+        type: String,
+        enum: ["Yes", "No", ""], // Use enum for specific values
+        default: "",
+      },
+      lvJumpersConnected: {
+        type: String,
+        enum: ["Yes", "No", ""], // Use enum for specific values
+        default: "",
+      },
+      incomingLACounter: {
+        type: String,
         trim: true,
         default: "",
       },
-      oilQuantityLiter: {
-        type: String, // Can be changed to Number for calculations
+      outgoingLACounter: {
+        type: String,
         trim: true,
         default: "",
       },
-      totalWeight: {
-        type: String, // Can be changed to Number for calculations
+      allCTCableTerminated: {
+        type: String,
         trim: true,
         default: "",
+      },
+      protectionRelaysChecked: {
+        type: String,
+        trim: true,
+        default: "",
+      },
+      anabondAppliedHVBushings: {
+        type: String,
+        trim: true,
+        default: "",
+      },
+      allJointsSealed: {
+        type: String,
+        trim: true,
+        default: "",
+      },
+      allForeignMaterialCleared: {
+        type: String,
+        trim: true,
+        default: "",
+      },
+      temperatureWTI: {
+        type: String,
+        trim: true,
+        default: "",
+      },
+      temperatureOTI: {
+        type: String,
+        trim: true,
+        default: "",
+      },
+      remarks: {
+        type: String,
+        trim: true,
+        default: "",
+      },
+      signatures: {
+        type: DetailedSignatureSchema,
+        default: () => ({}),
       },
       photos: {
-        type: [String],
-        default: [],
+        type: Object,
+        default: {},
       },
     },
   },

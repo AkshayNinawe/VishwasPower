@@ -14,62 +14,55 @@ const Stage2Form2Schema = new mongoose.Schema(
     },
     data: {
       tempOTI: {
-        type: String, // Consider Number for numerical data
+        type: String,
         trim: true,
         default: "",
       },
       tempWTI: {
-        type: String, // Consider Number
+        type: String,
         trim: true,
         default: "",
       },
       tempAMB: {
-        type: String, // Consider Number
+        type: String,
         trim: true,
         default: "",
       },
       hvEarth15Sec: {
-        type: String, // Consider Number
+        type: String,
         trim: true,
         default: "",
       },
       hvEarth60Sec: {
-        type: String, // Consider Number
+        type: String,
         trim: true,
         default: "",
       },
       ratioIR60IR15: {
-        type: String, // Consider Number
+        type: String,
         trim: true,
         default: "",
       },
       hvWithRespectToEarth: {
-        type: String, // Consider Number
+        type: String,
         trim: true,
         default: "",
       },
       lvWithRespectToEarth: {
-        type: String, // Consider Number
+        type: String,
         trim: true,
         default: "",
       },
       neutralWithRespectToEarth: {
-        type: String, // Consider Number
+        type: String,
         trim: true,
         default: "",
       },
+      // The photos field is updated to be a generic Object
+      // to match the sample data's empty object structure.
       photos: {
-        // Nested object for photo details
-        filePath: {
-          type: String,
-          trim: true,
-          default: "",
-        },
-        originalName: {
-          type: String,
-          trim: true,
-          default: "",
-        },
+        type: Object,
+        default: {},
       },
     },
   },

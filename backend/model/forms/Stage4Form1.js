@@ -13,92 +13,55 @@ const Stage4Form1Schema = new mongoose.Schema(
       required: true,
     },
     data: {
-      make: {
-        type: String,
-        trim: true,
-        default: "",
-      },
-      srNo: {
-        type: String,
-        trim: true,
-        default: "",
-      },
-      yearOfMfg: {
-        type: String, // Can be changed to Number if only numerical year is expected
-        trim: true,
-        default: "",
-      },
-      // Electrical specifications
-      currentHV: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      currentLV: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      hvKv: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      lvKv: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      mvaRating: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      impedancePercent: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      // Mechanical and physical information
-      winding: {
-        type: String,
-        trim: true,
-        default: "",
-      },
-      tempRiseOil: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      noOfRadiators: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      transportingWeight: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      weightCoreWinding: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      oilQuantityLiter: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      totalWeight: {
-        type: String, // Can be changed to Number for calculations
-        trim: true,
-        default: "",
-      },
-      photos: {
-        type: [String],
-        default: [],
-      },
+      // General Details
+      makeOfMeter: { type: String, trim: true, default: "" },
+      date: { type: String, trim: true, default: "" },
+      modelSrNo: { type: String, trim: true, default: "" },
+      ambient: { type: String, trim: true, default: "" },
+      oti: { type: String, trim: true, default: "" },
+      wti: { type: String, trim: true, default: "" },
+      testReportReviewed: { type: String, trim: true, default: "" },
+      acceptanceOfTest: { type: String, trim: true, default: "" },
+
+      // Bushing Details
+      meterUsedBushing: { type: String, trim: true, default: "" },
+      dateBushing: { type: String, trim: true, default: "" },
+      timeBushing: { type: String, trim: true, default: "" },
+      modelSrNoBushing: { type: String, trim: true, default: "" },
+      wtiBushing: { type: String, trim: true, default: "" },
+      otiBushing: { type: String, trim: true, default: "" },
+      bushing11_05kv_tanDelta: { type: String, trim: true, default: "" },
+      bushing11_05kv_capacitance: { type: String, trim: true, default: "" },
+      bushing11_05kv_excitationCurrent: { type: String, trim: true, default: "" },
+      bushing11_05kv_dielectricLoss: { type: String, trim: true, default: "" },
+      bushing12_05kv_tanDelta: { type: String, trim: true, default: "" },
+      bushing12_05kv_capacitance: { type: String, trim: true, default: "" },
+      bushing12_05kv_excitationCurrent: { type: String, trim: true, default: "" },
+      bushing12_05kv_dielectricLoss: { type: String, trim: true, default: "" },
+      bushing11_10kv_tanDelta: { type: String, trim: true, default: "" },
+      bushing11_10kv_capacitance: { type: String, trim: true, default: "" },
+      bushing11_10kv_excitationCurrent: { type: String, trim: true, default: "" },
+      bushing11_10kv_dielectricLoss: { type: String, trim: true, default: "" },
+      bushing12_10kv_tanDelta: { type: String, trim: true, default: "" },
+      bushing12_10kv_capacitance: { type: String, trim: true, default: "" },
+      bushing12_10kv_excitationCurrent: { type: String, trim: true, default: "" },
+      bushing12_10kv_dielectricLoss: { type: String, trim: true, default: "" },
+
+      // Winding Details
+      meterUsedWinding: { type: String, trim: true, default: "" },
+      dateWinding: { type: String, trim: true, default: "" },
+      timeWinding: { type: String, trim: true, default: "" },
+      makeSrNoWinding: { type: String, trim: true, default: "" },
+      ambientTempWinding: { type: String, trim: true, default: "" },
+      oilTempWinding: { type: String, trim: true, default: "" },
+      hvg_05kv_tanDelta: { type: String, trim: true, default: "" },
+      hvg_05kv_capacitance: { type: String, trim: true, default: "" },
+      hvg_05kv_excitationCurrent: { type: String, trim: true, default: "" },
+      hvg_05kv_dielectricLoss: { type: String, trim: true, default: "" },
+      hvg_10kv_tanDelta: { type: String, trim: true, default: "" },
+      hvg_10kv_capacitance: { type: String, trim: true, default: "" },
+      hvg_10kv_excitationCurrent: { type: String, trim: true, default: "" },
+      hvg_10kv_dielectricLoss: { type: String, trim: true, default: "" },
     },
   },
   { timestamps: true }
