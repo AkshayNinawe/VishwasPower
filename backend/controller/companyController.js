@@ -59,10 +59,13 @@ export const setapproveCompanyStage =  async(req, res) =>{
     const { companyName, projectName, stage } = req.body;
     console.log(companyName, projectName, stage)
     const updateOperation = {
+      $inc: {
+        "companyProjects.$.stage": 1,
+      },
       $set: {
-        // The positional operator `$` updates the first element that matches the query
         [`companyProjects.$.stageApprovals.${stage}`]: true,
         "companyProjects.$.status": "in-progress",
+        "companyProjects.$.formsCompleted": 0,
       },
     };
   
