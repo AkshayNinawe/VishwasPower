@@ -57,30 +57,32 @@ export const getAllCompanyData = async (req, res) => {
 export const setapproveCompanyStage =  async(req, res) =>{
   try {
     const { companyName, projectName, stage } = req.body;
-    const updateField = {
-      [`companyProjects.$.stageApprovals.${stage}`]: true,
+    console.log(companyName, projectName, stage)
+    const updateOperation = {
+      $set: {
+        // The positional operator `$` updates the first element that matches the query
+        [`companyProjects.$.stageApprovals.${stage}`]: true,
+        "companyProjects.$.status": "in-progress",
+      },
     };
-    updateSets["companyProjects.$.status"] = "in-progress";
-
+  
     const updatedCompany = await Company.findOneAndUpdate(
       {
         companyName: companyName,
         "companyProjects.name": projectName,
       },
-      {
-        $set: updateField,
-      },
+      updateOperation,
       {
         new: true, // Return the updated document
       }
     );
-
+  
     if (!updatedCompany) {
       return res.status(404).json({
         message: `Company with name '${companyName}' or project with name '${projectName}' not found.`,
       });
     }
-
+  
     res.status(200).json({
       message: `Stage '${stage}' for project '${projectName}' successfully approved.`,
       project: updatedCompany.companyProjects.find(
