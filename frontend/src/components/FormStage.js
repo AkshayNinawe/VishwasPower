@@ -183,7 +183,7 @@ const FormStage = ({
     const updatedFormData = { ...formData, [currentForm.form]: data };
     try {
       const response = await axios.post(
-        `${BACKEND_API_BASE_URL}/api/table/setTable/Stage1Form${
+        `${BACKEND_API_BASE_URL}/api/table/setTable/Stage${stage}Form${
           currentFormIndex + 1
         }`,
         {
