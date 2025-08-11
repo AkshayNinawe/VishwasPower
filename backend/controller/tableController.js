@@ -3,6 +3,18 @@ import Stage1Form2 from "../model/forms/Stage1Form2.js";
 import Stage1Form3 from "../model/forms/Stage1Form3.js";
 import Stage1Form4 from "../model/forms/Stage1Form4.js";
 import Stage1Form5 from "../model/forms/Stage1Form5.js";
+import Stage2Form1 from "../model/forms/Stage2Form1.js";
+import Stage2Form2 from "../model/forms/Stage2Form2.js";
+import Stage3Form1 from "../model/forms/Stage3Form1.js";
+import Stage3Form2 from "../model/forms/Stage3Form2.js";
+import Stage3Form3 from "../model/forms/Stage3Form3.js";
+import Stage4Form1 from "../model/forms/Stage4Form1.js";
+import Stage4Form2 from "../model/forms/Stage4Form2.js";
+import Stage4Form3 from "../model/forms/Stage4Form3.js";
+import Stage4Form4 from "../model/forms/Stage4Form4.js";
+import Stage5Form1 from "../model/forms/Stage5Form1.js";
+import Stage5Form2 from "../model/forms/Stage5Form2.js";
+import Stage6Form1 from "../model/forms/Stage6Form1.js";
 
 const StageSchemas = {
   Stage1Form1: Stage1Form1,
@@ -10,6 +22,18 @@ const StageSchemas = {
   Stage1Form3: Stage1Form3,
   Stage1Form4: Stage1Form4,
   Stage1Form5: Stage1Form5,
+  Stage2Form1: Stage2Form1,
+  Stage2Form2: Stage2Form2,
+  Stage3Form1: Stage3Form1,
+  Stage3Form2: Stage3Form2,
+  Stage3Form3: Stage3Form3,
+  Stage4Form1: Stage4Form1,
+  Stage4Form2: Stage4Form2,
+  Stage4Form3: Stage4Form3,
+  Stage4Form4: Stage4Form4,
+  Stage5Form1: Stage5Form1,
+  Stage5Form2: Stage5Form2,
+  Stage6Form1: Stage6Form1,
 };
 
 export const getTableData = async (req, res) => {
