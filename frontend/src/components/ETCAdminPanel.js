@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { BACKEND_API_BASE_URL } from "./constant";
+import { BACKEND_API_BASE_URL, additionalLogging } from "./constant";
 import FormStage from "./FormStage"; // Import FormStage
 import "./stage-review-styles.css";
 
@@ -142,6 +142,9 @@ const ETCAdminPanel = ({
   useEffect(() => {
     setDepartments(defaultDepartments);
     var backendSavedCompanys = [];
+    if(additionalLogging){
+    console.log("Frontend : From UseEffect get call to api/company")
+    }
     axios
       .get(`${BACKEND_API_BASE_URL}/api/company`, {
         params: {
@@ -153,51 +156,12 @@ const ETCAdminPanel = ({
         backendSavedCompanys = response.data;
 
         setCompanys(backendSavedCompanys);
-
-        // const savedCompanys = localStorage.getItem("etc_Companys")
-        // const savedCompanies = localStorage.getItem("etc_companies")
-        // const savedSubmittedForms = localStorage.getItem("etc_submitted_forms")
-
-        // if (savedCompanys) {
-        //   setCompanys(backendSavedCompanys)
-        // } else {
-        //   setCompanys(defaultCompanys)
-        //   localStorage.setItem("etc_Companys", JSON.stringify(defaultCompanys))
-        // }
-        //  console.log("companys",Companys)
-
-        // if (savedCompanies) {
-        //   setCompanies(JSON.parse(savedCompanies))
-        // } else {
-        //   setCompanies(defaultCompanies)
-        //   localStorage.setItem("etc_companies", JSON.stringify(defaultCompanies))
-        // }
-
-        // if (savedSubmittedForms) {
-        //   setSubmittedForms(JSON.parse(savedSubmittedForms))
-        // } else {
-        //   setSubmittedForms(mockSubmittedForms)
-        //   localStorage.setItem("etc_submitted_forms", JSON.stringify(mockSubmittedForms))
-        // }
       })
       .catch((error) => {
         console.error("Error creating company on the backend:", error);
         alert("Failed to create company. Please try again.");
       });
   }, []);
-
-  // Save to localStorage whenever data changes
-  // useEffect(() => {
-  //   localStorage.setItem("etc_Companys", JSON.stringify(Companys))
-  // }, [Companys])
-
-  // useEffect(() => {
-  //   localStorage.setItem("etc_companies", JSON.stringify(companies))
-  // }, [companies])
-
-  // useEffect(() => {
-  //   localStorage.setItem("etc_submitted_forms", JSON.stringify(submittedForms))
-  // }, [submittedForms])
 
   const handleCreateCompany = async () => {
     if (newCompany.name && newCompany.description && selectedDepartment) {
@@ -213,6 +177,9 @@ const ETCAdminPanel = ({
       };
 
       try {
+        if(additionalLogging){
+          console.log("Frontend : From handleCreateCompany post call to api/company")
+          }
         const response = await axios.post(
           `${BACKEND_API_BASE_URL}/api/company`,
           {
@@ -275,6 +242,9 @@ const ETCAdminPanel = ({
           try {
             // --- UPDATED POST REQUEST ---
             // We are now sending both the projectName and the CompanyId in the payload.
+            if(additionalLogging){
+              console.log("Frontend : From handleAddProject post call to api/company/addCompany")
+              }
             const response = await axios.post(
               `${BACKEND_API_BASE_URL}/api/company/addCompany`,
               {
@@ -289,10 +259,8 @@ const ETCAdminPanel = ({
               response.data
             );
 
-
             selectedMainCompany.companyProjects = selectedMainCompany.companyProjects ?? [];
             selectedMainCompany.companyProjects.push(newProject);
-
             
             setCompanies((prev) => [...prev, newProject]);
             showNotification(
@@ -340,6 +308,10 @@ const ETCAdminPanel = ({
   const handleApproveStage = async (stage) => {
 
     try {
+      if(additionalLogging){
+        console.log("Frontend : From handleApproveStage post call to api/company/approveCompanyStage")
+        }
+      console.log("CHecking this ",selectedProjectForReview, selectedMainCompany)
       const response = await axios.post(
         `${BACKEND_API_BASE_URL}/api/company/approveCompanyStage`,
         {
@@ -572,8 +544,8 @@ const ETCAdminPanel = ({
   };
 
   // Function to handle form submission from FormStage
-  const handleFormStageSubmit = (stage, submittedData) => {
-    console.log(`Submitting forms for stage ${stage}:`, submittedData);
+  const handleFormStageSubmit = (stage, submittedData, selectedProjectForReview) => {
+    console.log(`Submittingsds forms for stage ${stage}:`, submittedData, selectedProjectForReview);
 
     const newFormEntry = {
       id: Math.max(...submittedForms.map((f) => f.id), 0) + 1,
@@ -591,19 +563,6 @@ const ETCAdminPanel = ({
     setSubmittedForms((prev) => [...prev, newFormEntry]);
 
     // Update Project to show forms submitted and pending approval
-    setCompanies((prev) =>
-      prev.map((Project) =>
-        Project.id === formStageProject.id
-          ? {
-              ...Project,
-              status: "pending-approval",
-              submittedStages: { ...Project.submittedStages, [stage]: true },
-              formsCompleted: getStageFormCount(stage),
-              lastActivity: new Date().toISOString().split("T")[0],
-            }
-          : Project
-      )
-    );
 
     showNotification(
       `Forms for Stage ${stage} submitted successfully! Waiting for ETC Admin approval.`,
@@ -747,6 +706,7 @@ const ETCAdminPanel = ({
             onFormSubmit={handleFormStageSubmit}
             onBack={handleBackFromFormStage}
             ProjectData={formStageProject}
+            selectedProjectForReview = {selectedProjectForReview}
           />
         ) : reviewMode ? (
           <>

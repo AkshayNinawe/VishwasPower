@@ -6,7 +6,6 @@ import cors from 'cors'
 import connectDB from "./config/db.js"
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoute.js';
-import tableRoute from './routes/tableRoutes.js'
 import autoTransformerRoute from './routes/autoTransformerRoutes.js'
 import companyRoute from './routes/companyRoutes.js'
 
@@ -20,7 +19,6 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
-app.use("/api/table", tableRoute);
 app.use("/api/company", companyRoute);
 app.use("/api/data/", autoTransformerRoute);
 

@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import "./form-styles.css";
 import axios from "axios";
-import { BACKEND_API_BASE_URL } from "./constant";
+import { BACKEND_API_BASE_URL, additionalLogging } from "./constant";
 
 const FormStage = ({
   projectName,
@@ -42,10 +42,6 @@ const FormStage = ({
       stage5form2: {},
     },
   };
-
-  const stageNumber = "Stage" + stage;
-  const initialFormData = StageSchemas[stageNumber] || StageSchemas["Stage1"];
-  const [formDataFix, setFormDataFix] = useState(initialFormData);
 
   const stage1Forms = [
     {
@@ -180,6 +176,7 @@ const FormStage = ({
   const isLastFormOfStage = currentFormIndex === currentForms.length - 1;
 
   const handleFormSubmit = async (data) => {
+    if(additionalLogging){console.log("Frontend : handleformsubmit function to save the value and updateformscompleted")}
     const updatedFormData = { ...formData, [currentForm.form]: data };
     try {
       const response = await axios.post(
@@ -223,11 +220,13 @@ const FormStage = ({
     }
     setFormData(updatedFormData);
 
+    console.log(currentFormIndex)
     if (currentFormIndex < currentForms.length - 1) {
       setCurrentFormIndex(currentFormIndex + 1);
     } else {
       onFormSubmit(stage, updatedFormData);
     }
+    console.log(currentFormIndex)
   };
 
   const handlePrevious = () => {
