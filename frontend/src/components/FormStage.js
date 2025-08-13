@@ -183,13 +183,13 @@ const FormStage = ({
     const updatedFormData = { ...formData, [currentForm.form]: data };
     try {
       const response = await axios.post(
-        `${BACKEND_API_BASE_URL}/api/table/setTable/Stage${stage}Form${
-          currentFormIndex + 1
-        }`,
+        `${BACKEND_API_BASE_URL}/api/data/setTable`,
         {
           projectName: projectName,
           companyName: companyName,
           data: data,
+          stage: stage,
+          formNumber : currentFormIndex + 1,
         }
       );
 
@@ -836,13 +836,13 @@ function NamePlateDetailsForm({
   useEffect(() => {
     const fetchFormData = async () => {
       try {
-        const response = await axios.get(
-          `${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form1`,
+        const response = await axios.post(
+          `${BACKEND_API_BASE_URL}/api/data/getTable`,
           {
-            params: {
-              companyName: companyName,
-              projectName: projectName,
-            },
+            companyName: companyName,
+            projectName: projectName,
+            stage: stage,
+            formNumber: 1
           }
         );
         if (response.data && response.data.data) {
@@ -1143,17 +1143,18 @@ function ProtocolAccessoriesForm({
   useEffect(() => {
     const fetchFormData = async () => {
       try {
-        const response = await axios.get(
-          `${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form2`,
+        const response = await axios.post(
+          `${BACKEND_API_BASE_URL}/api/data/getTable`,
           {
-            params: {
-              companyName: companyName,
-              projectName: projectName,
-            },
+            companyName: companyName,
+            projectName: projectName,
+            stage: 1,
+            formNumber: 2
           }
         );
         if (response.data && response.data.data) {
           console.log("Data fetched from DB for stage1Form2");
+          console.log(response.data.data)
           setFormData(response.data.data);
         } else {
           console.log("There is no data in DB.");
@@ -1231,7 +1232,7 @@ function ProtocolAccessoriesForm({
               <td>
                 <input
                   type="text"
-                  value={formData.accessories[item.id]?.packingCase || ""}
+                  value={formData?.accessories[item.id]?.packingCase || ""}
                   onChange={(e) =>
                     handleAccessoryChange(
                       item.id,
@@ -1247,7 +1248,7 @@ function ProtocolAccessoriesForm({
               <td>
                 <input
                   type="text"
-                  value={formData.accessories[item.id]?.qtyPerPL || ""}
+                  value={formData?.accessories[item.id]?.qtyPerPL || ""}
                   onChange={(e) =>
                     handleAccessoryChange(item.id, "qtyPerPL", e.target.value)
                   }
@@ -1256,7 +1257,7 @@ function ProtocolAccessoriesForm({
               <td>
                 <input
                   type="text"
-                  value={formData.accessories[item.id]?.qtyReceived || ""}
+                  value={formData?.accessories[item.id]?.qtyReceived || ""}
                   onChange={(e) =>
                     handleAccessoryChange(
                       item.id,
@@ -1269,7 +1270,7 @@ function ProtocolAccessoriesForm({
               <td>
                 <input
                   type="text"
-                  value={formData.accessories[item.id]?.shortQty || ""}
+                  value={formData?.accessories[item.id]?.shortQty || ""}
                   onChange={(e) =>
                     handleAccessoryChange(item.id, "shortQty", e.target.value)
                   }
@@ -1278,7 +1279,7 @@ function ProtocolAccessoriesForm({
               <td>
                 <input
                   type="text"
-                  value={formData.accessories[item.id]?.damagedQty || ""}
+                  value={formData?.accessories[item.id]?.damagedQty || ""}
                   onChange={(e) =>
                     handleAccessoryChange(item.id, "damagedQty", e.target.value)
                   }
@@ -1372,13 +1373,13 @@ function CoreInsulationCheckForm({
   useEffect(() => {
     const fetchFormData = async () => {
       try {
-        const response = await axios.get(
-          `${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form3`,
+        const response = await axios.post(
+          `${BACKEND_API_BASE_URL}/api/data/getTable`,
           {
-            params: {
-              companyName: companyName,
-              projectName: projectName,
-            },
+            companyName: companyName,
+            projectName: projectName,
+            stage: 1,
+            formNumber: 3
           }
         );
         if (response.data && response.data.data) {
@@ -1874,13 +1875,13 @@ function PreErectionTanDeltaTestForm({
   useEffect(() => {
     const fetchFormData = async () => {
       try {
-        const response = await axios.get(
-          `${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form4`,
+        const response = await axios.post(
+          `${BACKEND_API_BASE_URL}/api/data/getTable`,
           {
-            params: {
-              companyName: companyName,
-              projectName: projectName,
-            },
+            companyName: companyName,
+            projectName: projectName,
+            stage: 1,
+            formNumber: 4
           }
         );
         if (response.data && response.data.data) {
@@ -2378,13 +2379,13 @@ function RecordMeasurementIRValuesForm({
   useEffect(() => {
     const fetchFormData = async () => {
       try {
-        const response = await axios.get(
-          `${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form5`,
+        const response = await axios.post(
+          `${BACKEND_API_BASE_URL}/api/data/getTable`,
           {
-            params: {
-              companyName: companyName,
-              projectName: projectName,
-            },
+            companyName: companyName,
+            projectName: projectName,
+            stage: 1,
+            formNumber: 5
           }
         );
         if (response.data && response.data.data) {

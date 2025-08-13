@@ -7,6 +7,7 @@ import connectDB from "./config/db.js"
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoute.js';
 import tableRoute from './routes/tableRoutes.js'
+import autoTransformerRoute from './routes/autoTransformerRoutes.js'
 import companyRoute from './routes/companyRoutes.js'
 
 dotenv.config();
@@ -21,6 +22,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use("/api/table", tableRoute);
 app.use("/api/company", companyRoute);
+app.use("/api/data/", autoTransformerRoute);
 
 // 🟢 Start the server
 const PORT = process.env.PORT || 7000;
