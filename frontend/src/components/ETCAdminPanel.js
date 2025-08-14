@@ -142,8 +142,8 @@ const ETCAdminPanel = ({
   useEffect(() => {
     setDepartments(defaultDepartments);
     var backendSavedCompanys = [];
-    if(additionalLogging){
-    console.log("Frontend : From UseEffect get call to api/company")
+    if (additionalLogging) {
+      console.log("Frontend : From UseEffect get call to api/company");
     }
     axios
       .get(`${BACKEND_API_BASE_URL}/api/company`, {
@@ -177,9 +177,11 @@ const ETCAdminPanel = ({
       };
 
       try {
-        if(additionalLogging){
-          console.log("Frontend : From handleCreateCompany post call to api/company")
-          }
+        if (additionalLogging) {
+          console.log(
+            "Frontend : From handleCreateCompany post call to api/company"
+          );
+        }
         const response = await axios.post(
           `${BACKEND_API_BASE_URL}/api/company`,
           {
@@ -242,9 +244,11 @@ const ETCAdminPanel = ({
           try {
             // --- UPDATED POST REQUEST ---
             // We are now sending both the projectName and the CompanyId in the payload.
-            if(additionalLogging){
-              console.log("Frontend : From handleAddProject post call to api/company/addCompany")
-              }
+            if (additionalLogging) {
+              console.log(
+                "Frontend : From handleAddProject post call to api/company/addCompany"
+              );
+            }
             const response = await axios.post(
               `${BACKEND_API_BASE_URL}/api/company/addCompany`,
               {
@@ -259,9 +263,10 @@ const ETCAdminPanel = ({
               response.data
             );
 
-            selectedMainCompany.companyProjects = selectedMainCompany.companyProjects ?? [];
+            selectedMainCompany.companyProjects =
+              selectedMainCompany.companyProjects ?? [];
             selectedMainCompany.companyProjects.push(newProject);
-            
+
             setCompanies((prev) => [...prev, newProject]);
             showNotification(
               `Project "${ProjectName}" added to this Company!`,
@@ -295,7 +300,7 @@ const ETCAdminPanel = ({
   };
 
   const handleReviewStage = (Project, stage) => {
-    if (Project.status !== "pending-approval" ) {
+    if (Project.status !== "pending-approval") {
       showNotification(`No forms submitted for Stage ${stage} yet.`, "warning");
       return;
     }
@@ -306,18 +311,23 @@ const ETCAdminPanel = ({
   };
 
   const handleApproveStage = async (stage) => {
-
     try {
-      if(additionalLogging){
-        console.log("Frontend : From handleApproveStage post call to api/company/approveCompanyStage")
-        }
-      console.log("CHecking this ",selectedProjectForReview, selectedMainCompany)
+      if (additionalLogging) {
+        console.log(
+          "Frontend : From handleApproveStage post call to api/company/approveCompanyStage"
+        );
+      }
+      console.log(
+        "CHecking this ",
+        selectedProjectForReview,
+        selectedMainCompany
+      );
       const response = await axios.post(
         `${BACKEND_API_BASE_URL}/api/company/approveCompanyStage`,
         {
           companyName: selectedProjectForReview.companyName,
           projectName: selectedProjectForReview.name,
-          stage: selectedProjectForReview.stage
+          stage: selectedProjectForReview.stage,
         }
       );
       console.log(
@@ -460,12 +470,31 @@ const ETCAdminPanel = ({
     setCurrentStageReview(1);
   };
 
-  const handleViewSubmittedForms = (Project) => {
-    if (Project.formsCompleted !== Project.totalForms) {
-      showNotification("No forms submitted yet.", "info");
+  const handleViewSubmittedForms = async (Project) => {
+    console.log("Fronend : handleViewSubmittedForm ");
+    try {
+      if (additionalLogging) {
+        console.log(
+          "Frontend : From handleCreateCompany post call to api/company"
+        );
+      }
+      const response = await axios.post(
+        `${BACKEND_API_BASE_URL}/api/data/getCompleteTable`,
+        {
+          projectName: Project.name,
+          companyName: Project.companyName,
+        }
+      );
+      console.log(
+        `Complete data has been provided for ${Project.companyName} and projectName ${Project.name}`,
+        response.data
+      );
+      setFormDataFromDB(response.data.data.autoTransformerData);
+    } catch (error) {
+      console.error("Error creating company on the backend:", error);
+      alert("Failed to create company. Please try again.");
       return;
     }
-
     setSelectedProjectForReview(Project);
     setShowSubmitterReview(true);
   };
@@ -492,15 +521,15 @@ const ETCAdminPanel = ({
 
   const getStageStatus = (project, stageNumber) => {
     if (project.stageApprovals?.[stageNumber]) {
-      return 'approved';
+      return "approved";
     }
     if (project.submittedStages?.[stageNumber]) {
-      return 'pending-review';
+      return "pending-review";
     }
     if (project.stage === stageNumber) {
-      return 'available';
+      return "available";
     }
-    return 'locked';
+    return "locked";
   };
 
   const getDepartmentCompanys = (departmentId) => {
@@ -544,8 +573,16 @@ const ETCAdminPanel = ({
   };
 
   // Function to handle form submission from FormStage
-  const handleFormStageSubmit = (stage, submittedData, selectedProjectForReview) => {
-    console.log(`Submittingsds forms for stage ${stage}:`, submittedData, selectedProjectForReview);
+  const handleFormStageSubmit = (
+    stage,
+    submittedData,
+    selectedProjectForReview
+  ) => {
+    console.log(
+      `Submittingsds forms for stage ${stage}:`,
+      submittedData,
+      selectedProjectForReview
+    );
 
     const newFormEntry = {
       id: Math.max(...submittedForms.map((f) => f.id), 0) + 1,
@@ -558,7 +595,6 @@ const ETCAdminPanel = ({
     };
 
     console.log(`Submitting forms for stagew ${stage}:`, newFormEntry);
-
 
     setSubmittedForms((prev) => [...prev, newFormEntry]);
 
@@ -706,7 +742,7 @@ const ETCAdminPanel = ({
             onFormSubmit={handleFormStageSubmit}
             onBack={handleBackFromFormStage}
             ProjectData={formStageProject}
-            selectedProjectForReview = {selectedProjectForReview}
+            selectedProjectForReview={selectedProjectForReview}
           />
         ) : reviewMode ? (
           <>
@@ -737,7 +773,7 @@ const ETCAdminPanel = ({
             </div>
 
             <div className="forms-review-grid">
-            {selectedProjectForReview ? (
+              {selectedProjectForReview ? (
                 <div
                   key={selectedProjectForReview.id}
                   className={`form-review-card ${selectedProjectForReview.status}`}
@@ -753,19 +789,24 @@ const ETCAdminPanel = ({
                           : "status-progress"
                       }`}
                     >
-                      {selectedProjectForReview.status === "approved" && "✅ Approved"}
-                      {selectedProjectForReview.status === "rejected" && "❌ Rejected"}
-                      {selectedProjectForReview.status === "pending-review" && "⏳ Pending Review"}
+                      {selectedProjectForReview.status === "approved" &&
+                        "✅ Approved"}
+                      {selectedProjectForReview.status === "rejected" &&
+                        "❌ Rejected"}
+                      {selectedProjectForReview.status === "pending-review" &&
+                        "⏳ Pending Review"}
                     </span>
                   </div>
 
                   <div className="form-review-details">
                     <p>
-                      <strong>Submitted:</strong> {selectedProjectForReview.lastActivity}
+                      <strong>Submitted:</strong>{" "}
+                      {selectedProjectForReview.lastActivity}
                     </p>
                     {selectedProjectForReview.reviewedAt && (
                       <p>
-                        <strong>Reviewed:</strong> {selectedProjectForReview.lastActivity}
+                        <strong>Reviewed:</strong>{" "}
+                        {selectedProjectForReview.lastActivity}
                       </p>
                     )}
                     {/* {selectedProjectForReview.name && (
@@ -801,18 +842,23 @@ const ETCAdminPanel = ({
                             <span className="data-value">{String(value)}</span>
                           )}
                         </div> */}
-                        {Array.from({ length: selectedProjectForReview.totalForms }, (_, index) => (
+                      {Array.from(
+                        { length: selectedProjectForReview.totalForms },
+                        (_, index) => (
                           <div key={index} className="data-item">
-                            <span className="data-label">Data {index + 1}:</span>
+                            <span className="data-label">
+                              Data {index + 1}:
+                            </span>
                             <span className="data-value">Data</span>
                           </div>
-                      ))}
+                        )
+                      )}
                     </div>
                   </div>
-                </div>):(
-                  <p>No project selected for review.</p>
-                )}
-              
+                </div>
+              ) : (
+                <p>No project selected for review.</p>
+              )}
             </div>
 
             <div className="stage-approval-actions">
@@ -884,95 +930,57 @@ const ETCAdminPanel = ({
             </div>
 
             <div className="stages-review-container">
-              {[1, 2, 3, 4, 5, 6].map((stage) => {
-                const stageForms = allProjectForms.filter(
-                  (form) => form.stage === stage
-                );
-                if (stageForms.length === 0) return null;
+  {Object.entries(formDataFromDB).map(([stageKey, forms]) => (
+    <div key={stageKey} className="stage-forms-section">
+      <h3>{stageKey.replace("stage", "Stage ")} Forms</h3>
 
-                return (
-                  <div key={stage} className="stage-forms-section">
-                    <h3>Stage {stage} Forms</h3>
-                    <div className="forms-review-grid">
-                      {stageForms.map((form) => (
-                        <div
-                          key={form.id}
-                          className={`form-review-card ${form.status}`}
-                        >
-                          <div className="form-review-header">
-                            <h4>{form.formName}</h4>
-                            <span
-                              className={`status-badge ${
-                                form.status === "approved"
-                                  ? "status-completed"
-                                  : form.status === "rejected"
-                                  ? "status-pending"
-                                  : "status-progress"
-                              }`}
-                            >
-                              {form.status === "approved" && "✅ Approved"}
-                              {form.status === "rejected" && "❌ Rejected"}
-                              {form.status === "pending-review" &&
-                                "⏳ Pending Review"}
-                            </span>
-                          </div>
+      <div className="forms-review-grid">
+        {Object.entries(forms).map(([formKey, formData], formIndex) => (
+          <div
+            key={`${stageKey}-${formKey}`}
+            className={`form-review-card ${selectedProjectForReview.status}`}
+          >
+            <h4>{formKey.replace("form", "Form ")}</h4>
 
-                          <div className="form-review-details">
-                            <p>
-                              <strong>Submitted:</strong> {form.submittedAt}
-                            </p>
-                            {form.reviewedAt && (
-                              <p>
-                                <strong>Reviewed:</strong> {form.reviewedAt}
-                              </p>
-                            )}
-                            {form.rejectionReason && (
-                              <div className="rejection-reason">
-                                <strong>Rejection Reason:</strong>
-                                <p>{form.rejectionReason}</p>
-                              </div>
-                            )}
-                          </div>
-
-                          <div className="form-data-preview">
-                            <h5>Form Data:</h5>
-                            <div className="data-grid">
-                              {Object.entries(form.data).map(([key, value]) => (
-                                <div key={key} className="data-item">
-                                  <span className="data-label">
-                                    {key
-                                      .replace(/([A-Z])/g, " $1")
-                                      .replace(/^./, (str) =>
-                                        str.toUpperCase()
-                                      )}
-                                    :
-                                  </span>
-                                  {typeof value === "string" &&
-                                  value.startsWith("data:image/") ? (
-                                    <img
-                                      src={value || "/placeholder.svg"}
-                                      alt={`${key} signature`}
-                                      style={{
-                                        maxWidth: "100px",
-                                        border: "1px solid #ccc",
-                                      }}
-                                    />
-                                  ) : (
-                                    <span className="data-value">
-                                      {String(value)}
-                                    </span>
-                                  )}
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
+            <div className="form-data-preview">
+              {Object.entries(formData).map(([fieldKey, fieldValue], idx) => (
+                <div key={`${stageKey}-${formKey}-${idx}`} className="data-item">
+                  <span className="data-label">{fieldKey}:</span>
+                  
+                  {typeof fieldValue === "string" && fieldValue.startsWith("data:image/") ? (
+                    <img
+                      src={fieldValue}
+                      alt={fieldKey}
+                      style={{ maxWidth: "100px", border: "1px solid #ccc" }}
+                    />
+                  ) : Array.isArray(fieldValue) ? (
+                    fieldValue.length > 0 ? (
+                      <ul>
+                        {fieldValue.map((item, i) => (
+                          <li key={i}>
+                            {typeof item === "object" ? JSON.stringify(item, null, 2) : String(item)}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <span className="data-value">[]</span>
+                    )
+                  ) : typeof fieldValue === "object" && fieldValue !== null ? (
+                    <pre style={{ whiteSpace: "pre-wrap" }}>
+                      {JSON.stringify(fieldValue, null, 2)}
+                    </pre>
+                  ) : (
+                    <span className="data-value">{String(fieldValue)}</span>
+                  )}
+                </div>
+              ))}
             </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  ))}
+</div>
           </>
         ) : !selectedDepartment ? (
           <>
@@ -1262,7 +1270,7 @@ const ETCAdminPanel = ({
                       <h4>Stage Management:</h4>
                       <div className="stages-row">
                         {[1, 2, 3, 4, 5, 6].map((stage) => {
-                          const stageStatus = getStageStatus(Project, stage); 
+                          const stageStatus = getStageStatus(Project, stage);
                           return (
                             <div
                               key={stage}
@@ -1271,11 +1279,12 @@ const ETCAdminPanel = ({
                               <div className="stage-number">{stage}</div>
                               <div className="stage-status-text">
                                 {stageStatus === "approved" && "✅ Approved"}
-                                {stageStatus === "pending-review" && "⏳ Pending"}
+                                {stageStatus === "pending-review" &&
+                                  "⏳ Pending"}
                                 {stageStatus === "available" && "📝 Available"}
                                 {stageStatus === "locked" && "🔒 Locked"}
                               </div>
-                                {stageStatus === "pending-review" && (
+                              {stageStatus === "pending-review" && (
                                 <button
                                   onClick={(e) => {
                                     e.stopPropagation();
