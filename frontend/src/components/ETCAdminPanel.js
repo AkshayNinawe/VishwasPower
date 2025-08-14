@@ -313,15 +313,8 @@ const ETCAdminPanel = ({
   const handleApproveStage = async (stage) => {
     try {
       if (additionalLogging) {
-        console.log(
-          "Frontend : From handleApproveStage post call to api/company/approveCompanyStage"
-        );
+        console.log( "Frontend : From handleApproveStage post call to api/company/approveCompanyStage" );
       }
-      console.log(
-        "CHecking this ",
-        selectedProjectForReview,
-        selectedMainCompany
-      );
       const response = await axios.post(
         `${BACKEND_API_BASE_URL}/api/company/approveCompanyStage`,
         {
@@ -349,39 +342,36 @@ const ETCAdminPanel = ({
       `Approving stage ${stage} for Project ${selectedProjectForReview.name}`
     );
 
-    // Update submitted forms status
-    setSubmittedForms((forms) =>
-      forms.map((form) =>
-        form.ProjectId === selectedProjectForReview.id && form.stage === stage
-          ? {
-              ...form,
-              status: "approved",
-              reviewedAt: new Date().toISOString().split("T")[0],
-            }
-          : form
-      )
-    );
+    // setCompanys([...Companys, Company]);
+    // setCompanys((companys) =>
+    //   companys.map((company) => ({
+    //     ...company,
+    //     companyProjects: company.companyProjects.map((proj) =>
+    //       proj._id === selectedProjectForReview._id
+    //         ? {
+    //             ...proj,
+    //             stageApprovals: {
+    //               ...proj.stageApprovals,
+    //               [stage]: true,
+    //             },
+    //             submittedStages: {
+    //               ...proj.submittedStages,
+    //               [stage]: true,
+    //             },
+    //             status: stage === 6 ? "completed" : "in-progress",
+    //             stage: stage === 6 ? 6 : stage + 1,
+    //             formsCompleted: 0,
+    //             totalForms:
+    //               stage === 6
+    //                 ? getStageFormCount(6)
+    //                 : getStageFormCount(stage + 1),
+    //             lastActivity: new Date().toISOString().split("T")[0],
+    //           }
+    //         : proj
+    //     ),
+    //   }))
+    // );
 
-    // Update Project status and unlock next stage
-    setCompanies((companies) =>
-      companies.map((Project) =>
-        Project.id === selectedProjectForReview.id
-          ? {
-              ...Project,
-              stageApprovals: { ...Project.stageApprovals, [stage]: true },
-              submittedStages: { ...Project.submittedStages, [stage]: true },
-              status: stage === 6 ? "completed" : "in-progress",
-              stage: stage === 6 ? 6 : stage + 1, // Move to next stage
-              formsCompleted: 0, // Reset forms for next stage
-              totalForms:
-                stage === 6
-                  ? getStageFormCount(6)
-                  : getStageFormCount(stage + 1), // Update total forms for next stage
-              lastActivity: new Date().toISOString().split("T")[0],
-            }
-          : Project
-      )
-    );
 
     showNotification(
       `Stage ${stage} approved for ${selectedProjectForReview.name}! ${
@@ -863,14 +853,14 @@ const ETCAdminPanel = ({
 
             <div className="stage-approval-actions">
               <button
-                onClick={() => handleApproveStage(currentStageReview)}
+                onClick={() => handleApproveStage(selectedProjectForReview)}
                 className="approve-stage-btn"
                 disabled={selectedProjectForReview.length === 0}
               >
                 ✅ Approve Stage {currentStageReview}
               </button>
               <button
-                onClick={() => handleRejectStage(currentStageReview)}
+                onClick={() => handleRejectStage(selectedProjectForReview)}
                 className="reject-stage-btn"
                 disabled={selectedProjectForReview.length === 0}
               >
@@ -1279,8 +1269,7 @@ const ETCAdminPanel = ({
                               <div className="stage-number">{stage}</div>
                               <div className="stage-status-text">
                                 {stageStatus === "approved" && "✅ Approved"}
-                                {stageStatus === "pending-review" &&
-                                  "⏳ Pending"}
+                                {stageStatus === "pending-review" && "⏳ Pending"}
                                 {stageStatus === "available" && "📝 Available"}
                                 {stageStatus === "locked" && "🔒 Locked"}
                               </div>

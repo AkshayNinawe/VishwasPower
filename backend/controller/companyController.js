@@ -57,17 +57,22 @@ export const getAllCompanyData = async (req, res) => {
 export const setapproveCompanyStage =  async(req, res) =>{
   try {
     const { companyName, projectName, stage } = req.body;
-    console.log(companyName, projectName, stage)
+    const stageNumber = Number(stage);
+    console.log(companyName, projectName, stageNumber)
     const updateOperation = {
-      $inc: {
-        "companyProjects.$.stage": 1,
-      },
       $set: {
-        [`companyProjects.$.stageApprovals.${stage}`]: true,
-        "companyProjects.$.status": "in-progress",
+        [`companyProjects.$.stageApprovals.${stageNumber}`]: true,
         "companyProjects.$.formsCompleted": 0,
       },
     };
+
+    if (stageNumber !== 6) {
+      updateOperation.$inc = { "companyProjects.$.stage": 1 };
+      updateOperation.$set["companyProjects.$.status"] = "in-progress";
+    } else {
+      console.log("white house")
+      updateOperation.$set["companyProjects.$.status"] = "completed";
+    }
   
     const updatedCompany = await Company.findOneAndUpdate(
       {
@@ -87,7 +92,10 @@ export const setapproveCompanyStage =  async(req, res) =>{
     }
   
     res.status(200).json({
-      message: `Stage '${stage}' for project '${projectName}' successfully approved.`,
+      message:
+      stageNumber !== 6
+          ? `Stage '${stageNumber}' for project '${projectName}' successfully approved.`
+          : `Stage '${stageNumber}' for project '${projectName}' marked as completed.`,
       project: updatedCompany.companyProjects.find(
         (proj) => proj.name === projectName
       ),
@@ -130,9 +138,9 @@ export const setFormsCompleted = async (req, res) => {
     }
     
     // Corrected logic: Dynamically create a Map object instead of an Array
-    if (stage && 5) {
+    if (Number(stage) && 6) {
       const submittedStagesMap = {};
-      for (let i = 1; i <= 5; i++) {
+      for (let i = 1; i <= 6; i++) {
         submittedStagesMap[i.toString()] = i <= stage;
       }
       updateSets["companyProjects.$.submittedStages"] = submittedStagesMap;
