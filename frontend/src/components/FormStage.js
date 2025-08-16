@@ -225,6 +225,7 @@ const FormStage = ({
                   return {
                     ...project,
                     submittedStages: submittedStagesMap,
+                    status: "pending-approval", 
                   };
                 }
                 return project; // ← keep other projects unchanged
