@@ -6,6 +6,7 @@ import axios from "axios";
 import { BACKEND_API_BASE_URL, additionalLogging } from "./constant";
 
 const FormStage = ({
+  setSelectedMainCompany,
   projectName,
   companyName,
   stage,
@@ -176,57 +177,90 @@ const FormStage = ({
   const isLastFormOfStage = currentFormIndex === currentForms.length - 1;
 
   const handleFormSubmit = async (data) => {
-    if(additionalLogging){console.log("Frontend : handleformsubmit function to save the value and updateformscompleted")}
+    if (additionalLogging) {
+      console.log("Frontend : handleformsubmit function to save the value and update formsCompleted");
+    }
+  
     const updatedFormData = { ...formData, [currentForm.form]: data };
+  
     try {
-      const response = await axios.post(
+      // 1. Save the form data
+      await axios.post(
         `${BACKEND_API_BASE_URL}/api/data/setTable`,
         {
           projectName: projectName,
           companyName: companyName,
           data: data,
           stage: stage,
-          formNumber : currentFormIndex + 1,
+          formNumber: currentFormIndex + 1,
         }
       );
-
+  
+      // 2. If last form of the stage → update formsCompleted and status
       if (isLastFormOfStage) {
-        const response2 = await axios.post(
+        await axios.post(
           `${BACKEND_API_BASE_URL}/api/company/updateFormsCompleted`,
           {
             projectName: projectName,
-            companyName: companyName, // Pass the CompanyId to the backend
+            companyName: companyName,
             formsCompleted: currentFormIndex + 1,
             status: "pending-approval",
-            stage: stage
+            stage: stage,
           }
         );
-        console.log("Submiting the last stage1 form and setting project status to pending-approval")
+        console.log("Submitting the last form of the stage → setting project status to pending-approval");
+  
+        // 🔹 Extra: Only run this stage approval logic when company/project matches
+        setSelectedMainCompany((prevCompany) => {
+          if (prevCompany.companyName === companyName) {
+            return {
+              ...prevCompany,
+              companyProjects: prevCompany.companyProjects.map((project) => {
+                if (project.name === projectName) {
+                  // Build submittedStagesMap
+                  const submittedStagesMap = {};
+                  for (let i = 1; i <= 6; i++) {
+                    submittedStagesMap[i.toString()] = i <= stage;
+                  }
+                  return {
+                    ...project,
+                    submittedStages: submittedStagesMap,
+                  };
+                }
+                return project; // ← keep other projects unchanged
+              }),
+            };
+          }
+          return prevCompany; // ← if no match, no changes
+        });
+  
       } else {
-        const response2 = await axios.post(
+        // Not last form → just update formsCompleted count
+        await axios.post(
           `${BACKEND_API_BASE_URL}/api/company/updateFormsCompleted`,
           {
             projectName: projectName,
-            companyName: companyName, // Pass the CompanyId to the backend
+            companyName: companyName,
             formsCompleted: currentFormIndex + 1,
           }
         );
-        console.log("Submiting the stage1 forms project is in progress")
+        console.log("Submitting a form before the last one → project still in progress");
       }
+  
     } catch (error) {
       console.error("Error creating company on the backend:", error);
       alert("Failed to create company. Please try again.");
       return;
     }
+  
+    // 3. Update local form state and move to next form
     setFormData(updatedFormData);
-
-    console.log(currentFormIndex)
+  
     if (currentFormIndex < currentForms.length - 1) {
       setCurrentFormIndex(currentFormIndex + 1);
     } else {
       onFormSubmit(stage, updatedFormData);
     }
-    console.log(currentFormIndex)
   };
 
   const handlePrevious = () => {

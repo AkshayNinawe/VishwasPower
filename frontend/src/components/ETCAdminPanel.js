@@ -342,37 +342,28 @@ const ETCAdminPanel = ({
       `Approving stage ${stage} for Project ${selectedProjectForReview.name}`
     );
 
-    // setCompanys([...Companys, Company]);
-    // setCompanys((companys) =>
-    //   companys.map((company) => ({
-    //     ...company,
-    //     companyProjects: company.companyProjects.map((proj) =>
-    //       proj._id === selectedProjectForReview._id
-    //         ? {
-    //             ...proj,
-    //             stageApprovals: {
-    //               ...proj.stageApprovals,
-    //               [stage]: true,
-    //             },
-    //             submittedStages: {
-    //               ...proj.submittedStages,
-    //               [stage]: true,
-    //             },
-    //             status: stage === 6 ? "completed" : "in-progress",
-    //             stage: stage === 6 ? 6 : stage + 1,
-    //             formsCompleted: 0,
-    //             totalForms:
-    //               stage === 6
-    //                 ? getStageFormCount(6)
-    //                 : getStageFormCount(stage + 1),
-    //             lastActivity: new Date().toISOString().split("T")[0],
-    //           }
-    //         : proj
-    //     ),
-    //   }))
-    // );
-
-
+    setSelectedMainCompany((prevCompany) => ({
+      ...prevCompany,
+      companyProjects: prevCompany.companyProjects.map((project) => {
+        if (
+          prevCompany.companyName === selectedProjectForReview.companyName &&
+          project.name === selectedProjectForReview.name
+        ) {
+          const currentStage = project.stage;
+          return {
+            ...project,
+            stage: currentStage !== 6 ? currentStage + 1 : currentStage,
+            status: currentStage === 6 ? "completed" : "in-progress",
+            stageApprovals: {
+              ...project.stageApprovals,
+              [currentStage]: true,
+            },
+          };
+        }
+        return project; // unchanged projects
+      }),
+    }));
+    
     showNotification(
       `Stage ${stage} approved for ${selectedProjectForReview.name}! ${
         stage === 6
@@ -732,6 +723,7 @@ const ETCAdminPanel = ({
             onFormSubmit={handleFormStageSubmit}
             onBack={handleBackFromFormStage}
             ProjectData={formStageProject}
+            setSelectedMainCompany={setSelectedMainCompany} 
             selectedProjectForReview={selectedProjectForReview}
           />
         ) : reviewMode ? (
