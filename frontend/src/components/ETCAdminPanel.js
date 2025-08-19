@@ -61,6 +61,8 @@ const ETCAdminPanel = ({
   const [rejectionStage, setRejectionStage] = useState(null);
   const [rejectionReason, setRejectionReason] = useState("");
 
+  const totalStageForm = [5, 2, 3, 4, 2, 1];
+
   // Default data for initialization
   const defaultDepartments = [
     {
@@ -299,9 +301,28 @@ const ETCAdminPanel = ({
     return stageForms[stage] || 1;
   };
 
-  const handleReviewStage = (Project, stage) => {
+  const handleReviewStage = async (Project, stage) => {
     if (Project.status !== "pending-approval") {
       showNotification(`No forms submitted for Stage ${stage} yet.`, "warning");
+      return;
+    }
+    try {
+      const response = await axios.post(
+        `${BACKEND_API_BASE_URL}/api/data/getStageTable`,
+        {
+          projectName: Project.name,
+          companyName: Project.companyName,
+          stage: Project.stage,
+        }
+      );
+      console.log(
+        `Complete data has been provided for ${Project.companyName} and projectName ${Project.name}`,
+        response.data
+      );
+      setFormDataFromDB(response.data.data);
+    } catch (error) {
+      console.error("Error creating company on the backend:", error);
+      alert("Failed to create company. Please try again.");
       return;
     }
 
@@ -313,7 +334,9 @@ const ETCAdminPanel = ({
   const handleApproveStage = async (stage) => {
     try {
       if (additionalLogging) {
-        console.log( "Frontend : From handleApproveStage post call to api/company/approveCompanyStage" );
+        console.log(
+          "Frontend : From handleApproveStage post call to api/company/approveCompanyStage"
+        );
       }
       const response = await axios.post(
         `${BACKEND_API_BASE_URL}/api/company/approveCompanyStage`,
@@ -363,7 +386,7 @@ const ETCAdminPanel = ({
         return project; // unchanged projects
       }),
     }));
-    
+
     showNotification(
       `Stage ${stage} approved for ${selectedProjectForReview.name}! ${
         stage === 6
@@ -723,7 +746,7 @@ const ETCAdminPanel = ({
             onFormSubmit={handleFormStageSubmit}
             onBack={handleBackFromFormStage}
             ProjectData={formStageProject}
-            setSelectedMainCompany={setSelectedMainCompany} 
+            setSelectedMainCompany={setSelectedMainCompany}
             selectedProjectForReview={selectedProjectForReview}
           />
         ) : reviewMode ? (
@@ -800,42 +823,48 @@ const ETCAdminPanel = ({
                   </div>
 
                   <div className="form-data-preview">
-                    <h4>Form Data:</h4>
-                    <div className="data-grid">
-                      {/* {Object.entries(selectedProjectForReview.data).map(([key, value]) => (
-                        <div key={key} className="data-item">
-                          <span className="data-label">
-                            {key
-                              .replace(/([A-Z])/g, " $1")
-                              .replace(/^./, (str) => str.toUpperCase())}
-                            :
-                          </span>
-                          {typeof value === "string" &&
-                          value.startsWith("data:image/") ? (
+                    {Object.entries(formDataFromDB).map(
+                      ([fieldKey, fieldValue], idx) => (
+                        <div  className="data-item">
+                          <span className="data-label">{fieldKey}:</span>
+
+                          {typeof fieldValue === "string" &&
+                          fieldValue.startsWith("data:image/") ? (
                             <img
-                              src={value || "/placeholder.svg"}
-                              alt={`${key} signature`}
+                              src={fieldValue}
+                              alt={fieldKey}
                               style={{
                                 maxWidth: "100px",
                                 border: "1px solid #ccc",
                               }}
                             />
+                          ) : Array.isArray(fieldValue) ? (
+                            fieldValue.length > 0 ? (
+                              <ul>
+                                {fieldValue.map((item, i) => (
+                                  <li key={i}>
+                                    {typeof item === "object"
+                                      ? JSON.stringify(item, null, 2)
+                                      : String(item)}
+                                  </li>
+                                ))}
+                              </ul>
+                            ) : (
+                              <span className="data-value">[]</span>
+                            )
+                          ) : typeof fieldValue === "object" &&
+                            fieldValue !== null ? (
+                            <pre style={{ whiteSpace: "pre-wrap" }}>
+                              {JSON.stringify(fieldValue, null, 2)}
+                            </pre>
                           ) : (
-                            <span className="data-value">{String(value)}</span>
-                          )}
-                        </div> */}
-                      {Array.from(
-                        { length: selectedProjectForReview.totalForms },
-                        (_, index) => (
-                          <div key={index} className="data-item">
-                            <span className="data-label">
-                              Data {index + 1}:
+                            <span className="data-value">
+                              {String(fieldValue)}
                             </span>
-                            <span className="data-value">Data</span>
-                          </div>
-                        )
-                      )}
-                    </div>
+                          )}
+                        </div>
+                      )
+                    )}
                   </div>
                 </div>
               ) : (
@@ -912,57 +941,75 @@ const ETCAdminPanel = ({
             </div>
 
             <div className="stages-review-container">
-  {Object.entries(formDataFromDB).map(([stageKey, forms]) => (
-    <div key={stageKey} className="stage-forms-section">
-      <h3>{stageKey.replace("stage", "Stage ")} Forms</h3>
+              {Object.entries(formDataFromDB).map(([stageKey, forms]) => (
+                <div key={stageKey} className="stage-forms-section">
+                  <h3>{stageKey.replace("stage", "Stage ")} Forms</h3>
 
-      <div className="forms-review-grid">
-        {Object.entries(forms).map(([formKey, formData], formIndex) => (
-          <div
-            key={`${stageKey}-${formKey}`}
-            className={`form-review-card ${selectedProjectForReview.status}`}
-          >
-            <h4>{formKey.replace("form", "Form ")}</h4>
+                  <div className="forms-review-grid">
+                    {Object.entries(forms).map(
+                      ([formKey, formData], formIndex) => (
+                        <div
+                          key={`${stageKey}-${formKey}`}
+                          className={`form-review-card ${selectedProjectForReview.status}`}
+                        >
+                          <h4>{formKey.replace("form", "Form ")}</h4>
 
-            <div className="form-data-preview">
-              {Object.entries(formData).map(([fieldKey, fieldValue], idx) => (
-                <div key={`${stageKey}-${formKey}-${idx}`} className="data-item">
-                  <span className="data-label">{fieldKey}:</span>
-                  
-                  {typeof fieldValue === "string" && fieldValue.startsWith("data:image/") ? (
-                    <img
-                      src={fieldValue}
-                      alt={fieldKey}
-                      style={{ maxWidth: "100px", border: "1px solid #ccc" }}
-                    />
-                  ) : Array.isArray(fieldValue) ? (
-                    fieldValue.length > 0 ? (
-                      <ul>
-                        {fieldValue.map((item, i) => (
-                          <li key={i}>
-                            {typeof item === "object" ? JSON.stringify(item, null, 2) : String(item)}
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <span className="data-value">[]</span>
-                    )
-                  ) : typeof fieldValue === "object" && fieldValue !== null ? (
-                    <pre style={{ whiteSpace: "pre-wrap" }}>
-                      {JSON.stringify(fieldValue, null, 2)}
-                    </pre>
-                  ) : (
-                    <span className="data-value">{String(fieldValue)}</span>
-                  )}
+                          <div className="form-data-preview">
+                            {Object.entries(formData).map(
+                              ([fieldKey, fieldValue], idx) => (
+                                <div
+                                  key={`${stageKey}-${formKey}-${idx}`}
+                                  className="data-item"
+                                >
+                                  <span className="data-label">
+                                    {fieldKey}:
+                                  </span>
+
+                                  {typeof fieldValue === "string" &&
+                                  fieldValue.startsWith("data:image/") ? (
+                                    <img
+                                      src={fieldValue}
+                                      alt={fieldKey}
+                                      style={{
+                                        maxWidth: "100px",
+                                        border: "1px solid #ccc",
+                                      }}
+                                    />
+                                  ) : Array.isArray(fieldValue) ? (
+                                    fieldValue.length > 0 ? (
+                                      <ul>
+                                        {fieldValue.map((item, i) => (
+                                          <li key={i}>
+                                            {typeof item === "object"
+                                              ? JSON.stringify(item, null, 2)
+                                              : String(item)}
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    ) : (
+                                      <span className="data-value">[]</span>
+                                    )
+                                  ) : typeof fieldValue === "object" &&
+                                    fieldValue !== null ? (
+                                    <pre style={{ whiteSpace: "pre-wrap" }}>
+                                      {JSON.stringify(fieldValue, null, 2)}
+                                    </pre>
+                                  ) : (
+                                    <span className="data-value">
+                                      {String(fieldValue)}
+                                    </span>
+                                  )}
+                                </div>
+                              )
+                            )}
+                          </div>
+                        </div>
+                      )
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  ))}
-</div>
           </>
         ) : !selectedDepartment ? (
           <>
@@ -1225,14 +1272,16 @@ const ETCAdminPanel = ({
                     <h3>{Project.name}</h3>
                     <p>
                       Stage {Project.stage} • {Project.formsCompleted}/
-                      {Project.totalForms} forms completed
+                      {totalStageForm[Project.stage - 1]} forms completed
                     </p>
                     <div className="progress-bar">
                       <div
                         className="progress-fill"
                         style={{
                           width: `${
-                            (Project.formsCompleted / Project.totalForms) * 100
+                            (Project.formsCompleted /
+                              totalStageForm[Project.stage - 1]) *
+                            100
                           }%`,
                         }}
                       ></div>
@@ -1261,7 +1310,8 @@ const ETCAdminPanel = ({
                               <div className="stage-number">{stage}</div>
                               <div className="stage-status-text">
                                 {stageStatus === "approved" && "✅ Approved"}
-                                {stageStatus === "pending-review" && "⏳ Pending"}
+                                {stageStatus === "pending-review" &&
+                                  "⏳ Pending"}
                                 {stageStatus === "available" && "📝 Available"}
                                 {stageStatus === "locked" && "🔒 Locked"}
                               </div>
