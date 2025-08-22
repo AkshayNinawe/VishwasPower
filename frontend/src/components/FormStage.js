@@ -2125,28 +2125,28 @@ function PreErectionTanDeltaTestForm({
               />
             </td>
             <td>
-              <input
-                type="text"
-                value={formData.bushing11_05kv_dielectricLoss}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    bushing11_05kv_dielectricLoss: e.target.value,
-                  })
-                }
-              />
+               <input
+          type="text"
+          value={formData.excCurrent_05kv_11 || ""}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              excCurrent_05kv_11: e.target.value,
+            })
+          }
+        />
             </td>
             <td>
               <input
-                type="text"
-                value={formData.bushing11_10kv_dielectricLoss}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    bushing11_10kv_dielectricLoss: e.target.value,
-                  })
-                }
-              />
+          type="text"
+          value={formData.dielLoss_05kv_11 || ""}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              dielLoss_05kv_11: e.target.value,
+            })
+          }
+        />
             </td>
           </tr>
           <tr>
@@ -2190,28 +2190,28 @@ function PreErectionTanDeltaTestForm({
               />
             </td>
             <td>
-              <input
-                type="text"
-                value={formData.bushing12_05kv_dielectricLoss}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    bushing12_05kv_dielectricLoss: e.target.value,
-                  })
-                }
-              />
+               <input
+          type="text"
+          value={formData.excCurrent_05kv_12 || ""}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              excCurrent_05kv_12: e.target.value,
+            })
+          }
+        />
             </td>
             <td>
               <input
-                type="text"
-                value={formData.bushing11_10kv_dielectricLoss}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    bushing11_10kv_dielectricLoss: e.target.value,
-                  })
-                }
-              />
+          type="text"
+          value={formData.dielLoss_05kv_12 || ""}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              dielLoss_05kv_12: e.target.value,
+            })
+          }
+        />
             </td>
           </tr>
         </tbody>
@@ -2270,28 +2270,28 @@ function PreErectionTanDeltaTestForm({
               />
             </td>
             <td>
-              <input
-                type="text"
-                value={formData.bushing11_10kv_dielectricLoss}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    bushing11_10kv_dielectricLoss: e.target.value,
-                  })
-                }
-              />
+             <input
+          type="text"
+          value={formData.excCurrent_10kv_11 || ""}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              excCurrent_10kv_11: e.target.value,
+            })
+          }
+        />
             </td>
             <td>
-              <input
-                type="text"
-                value={formData.bushing11_10kv_dielectricLoss}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    bushing11_10kv_dielectricLoss: e.target.value,
-                  })
-                }
-              />
+               <input
+          type="text"
+          value={formData.dielLoss_10kv_11 || ""}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              dielLoss_10kv_11: e.target.value,
+            })
+          }
+        />
             </td>
           </tr>
           <tr>
@@ -2336,27 +2336,27 @@ function PreErectionTanDeltaTestForm({
             </td>
             <td>
               <input
-                type="text"
-                value={formData.bushing12_10kv_dielectricLoss}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    bushing12_10kv_dielectricLoss: e.target.value,
-                  })
-                }
-              />
+          type="text"
+          value={formData.excCurrent_10kv_12 || ""}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              excCurrent_10kv_12: e.target.value,
+            })
+          }
+        />
             </td>
             <td>
-              <input
-                type="text"
-                value={formData.bushing11_10kv_dielectricLoss}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    bushing11_10kv_dielectricLoss: e.target.value,
-                  })
-                }
-              />
+               <input
+          type="text"
+          value={formData.dielLoss_10kv_12 || ""}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              dielLoss_10kv_12: e.target.value,
+            })
+          }
+        />
             </td>
           </tr>
         </tbody>
