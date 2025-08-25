@@ -620,6 +620,33 @@ const ETCAdminPanel = ({
     setFormStageStage(1);
   };
 
+  const capitalizeFirst = (s) =>
+    typeof s === "string" && s.length ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+  
+  const isObjectOfObjects = (obj) =>
+    obj &&
+    typeof obj === "object" &&
+    !Array.isArray(obj) &&
+    Object.values(obj).every(
+      (v) => v && typeof v === "object" && !Array.isArray(v)
+    );
+  
+  const renderPrimitiveCell = (val, labelForImg = "") => {
+    if (typeof val === "string" && val.startsWith("data:image/")) {
+      return (
+        <img
+          src={val}
+          alt={labelForImg || "image"}
+          style={{ maxWidth: "100px", border: "1px solid #ccc" }}
+        />
+      );
+    }
+    if (Array.isArray(val)) {
+      return JSON.stringify(val);
+    }
+    return String(val);
+  };
+
   const handleStageSubmit = async (Project) => {
     const nextStage = Project.stage;
     const canSubmit = nextStage === 1 || Project.stageApprovals[nextStage - 1];
@@ -823,49 +850,97 @@ const ETCAdminPanel = ({
                   </div>
 
                   <div className="form-data-preview">
-                    {Object.entries(formDataFromDB).map(
-                      ([fieldKey, fieldValue], idx) => (
-                        <div  className="data-item">
-                          <span className="data-label">{fieldKey}:</span>
+  {Object.entries(formDataFromDB).map(([fieldKey, fieldValue], idx) => (
+    <div className="data-item" key={fieldKey || idx}>
+      <span className="data-label">{capitalizeFirst(fieldKey)}:</span>
 
-                          {typeof fieldValue === "string" &&
-                          fieldValue.startsWith("data:image/") ? (
-                            <img
-                              src={fieldValue}
-                              alt={fieldKey}
-                              style={{
-                                maxWidth: "100px",
-                                border: "1px solid #ccc",
-                              }}
-                            />
-                          ) : Array.isArray(fieldValue) ? (
-                            fieldValue.length > 0 ? (
-                              <ul>
-                                {fieldValue.map((item, i) => (
-                                  <li key={i}>
-                                    {typeof item === "object"
-                                      ? JSON.stringify(item, null, 2)
-                                      : String(item)}
-                                  </li>
-                                ))}
-                              </ul>
-                            ) : (
-                              <span className="data-value">[]</span>
-                            )
-                          ) : typeof fieldValue === "object" &&
-                            fieldValue !== null ? (
-                            <pre style={{ whiteSpace: "pre-wrap" }}>
-                              {JSON.stringify(fieldValue, null, 2)}
-                            </pre>
-                          ) : (
-                            <span className="data-value">
-                              {String(fieldValue)}
-                            </span>
-                          )}
-                        </div>
-                      )
-                    )}
-                  </div>
+      {/* Images (string starting with data:image/) */}
+      {typeof fieldValue === "string" && fieldValue.startsWith("data:image/") ? (
+        <img
+          src={fieldValue}
+          alt={fieldKey}
+          style={{ maxWidth: "100px", border: "1px solid #ccc" }}
+        />
+      ) : Array.isArray(fieldValue) ? (
+        /* Arrays */
+        fieldValue.length === 0 ? (
+          <span className="data-value">[]</span>
+        ) : typeof fieldValue[0] === "object" && fieldValue[0] !== null ? (
+          /* Array of objects → stack as subtables */
+          <div>
+            {fieldValue.map((row, i) => (
+              <div key={i}>
+                <h5>
+                  {capitalizeFirst(fieldKey)} {i + 1}
+                </h5>
+                <table>
+                  <tbody>
+                    {Object.entries(row).map(([k, v]) => (
+                      <tr key={k}>
+                        <td>{capitalizeFirst(k)}</td>
+                        <td>{renderPrimitiveCell(v, k)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ))}
+          </div>
+        ) : (
+          /* Array of primitives → list */
+          <ul>
+            {fieldValue.map((item, i) => (
+              <li key={i}>
+                {typeof item === "object"
+                  ? JSON.stringify(item, null, 2)
+                  : String(item)}
+              </li>
+            ))}
+          </ul>
+        )
+      ) : typeof fieldValue === "object" && fieldValue !== null ? (
+        /* Objects */
+        isObjectOfObjects(fieldValue) ? (
+          /* Object of objects (e.g., accessories { "1": {...}, "2": {...} }) → each as its own subtable */
+          <div>
+            {Object.entries(fieldValue).map(([subKey, subVal]) => (
+              <div key={subKey}>
+                <h5>
+                  {capitalizeFirst(fieldKey)} {subKey}
+                </h5>
+                <table>
+                  <tbody>
+                    {Object.entries(subVal).map(([k, v]) => (
+                      <tr key={k}>
+                        <td>{capitalizeFirst(k)}</td>
+                        <td>{renderPrimitiveCell(v, k)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ))}
+          </div>
+        ) : (
+          /* Plain object → single 2-column table */
+          <table>
+            <tbody>
+              {Object.entries(fieldValue).map(([k, v]) => (
+                <tr key={k}>
+                  <td>{capitalizeFirst(k)}</td>
+                  <td>{renderPrimitiveCell(v, k)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )
+      ) : (
+        /* Primitives fallback */
+        <span className="data-value">{String(fieldValue)}</span>
+      )}
+    </div>
+  ))}
+</div>
                 </div>
               ) : (
                 <p>No project selected for review.</p>
@@ -946,66 +1021,138 @@ const ETCAdminPanel = ({
                   <h3>{stageKey.replace("stage", "Stage ")} Forms</h3>
 
                   <div className="forms-review-grid">
-                    {Object.entries(forms).map(
-                      ([formKey, formData], formIndex) => (
-                        <div
-                          key={`${stageKey}-${formKey}`}
-                          className={`form-review-card ${selectedProjectForReview.status}`}
-                        >
-                          <h4>{formKey.replace("form", "Form ")}</h4>
+                    {Object.entries(forms).map(([formKey, formData]) => (
+                      <div
+                        key={`${stageKey}-${formKey}`}
+                        className={`form-review-card ${selectedProjectForReview?.status}`}
+                      >
+                        <h4>{formKey.replace("form", "Form ")}</h4>
 
-                          <div className="form-data-preview">
-                            {Object.entries(formData).map(
-                              ([fieldKey, fieldValue], idx) => (
-                                <div
-                                  key={`${stageKey}-${formKey}-${idx}`}
-                                  className="data-item"
-                                >
-                                  <span className="data-label">
-                                    {fieldKey}:
-                                  </span>
-
-                                  {typeof fieldValue === "string" &&
-                                  fieldValue.startsWith("data:image/") ? (
-                                    <img
-                                      src={fieldValue}
-                                      alt={fieldKey}
-                                      style={{
-                                        maxWidth: "100px",
-                                        border: "1px solid #ccc",
-                                      }}
-                                    />
-                                  ) : Array.isArray(fieldValue) ? (
-                                    fieldValue.length > 0 ? (
-                                      <ul>
-                                        {fieldValue.map((item, i) => (
-                                          <li key={i}>
-                                            {typeof item === "object"
-                                              ? JSON.stringify(item, null, 2)
-                                              : String(item)}
-                                          </li>
-                                        ))}
-                                      </ul>
-                                    ) : (
-                                      <span className="data-value">[]</span>
-                                    )
-                                  ) : typeof fieldValue === "object" &&
-                                    fieldValue !== null ? (
-                                    <pre style={{ whiteSpace: "pre-wrap" }}>
-                                      {JSON.stringify(fieldValue, null, 2)}
-                                    </pre>
-                                  ) : (
+                        <div className="form-data-preview">
+                          {Object.entries(formData).map(
+                            ([fieldKey, fieldValue]) => (
+                              <div
+                                key={`${stageKey}-${formKey}-${fieldKey}`}
+                                className="data-item-wrapper"
+                              >
+                                {/* Handle Strings & Numbers */}
+                                {typeof fieldValue === "string" ||
+                                typeof fieldValue === "number" ? (
+                                  <div className="data-item">
+                                    <span className="data-label">
+                                      {fieldKey.charAt(0).toUpperCase() +
+                                        fieldKey.slice(1)}
+                                      :
+                                    </span>
                                     <span className="data-value">
                                       {String(fieldValue)}
                                     </span>
-                                  )}
-                                </div>
-                              )
-                            )}
-                          </div>
+                                  </div>
+                                ) : Array.isArray(fieldValue) ? (
+                                  fieldValue.length > 0 &&
+                                  typeof fieldValue[0] === "object" ? (
+                                    /* Handle Arrays of Objects */
+                                    <div>
+                                      <h5>
+                                        {fieldKey.charAt(0).toUpperCase() +
+                                          fieldKey.slice(1)}
+                                      </h5>
+                                      {fieldValue.map((row, idx) => (
+                                        <div key={idx}>
+                                          <h4>
+                                            {fieldKey.charAt(0).toUpperCase() +
+                                              fieldKey.slice(1)}{" "}
+                                            {idx + 1}
+                                          </h4>
+                                          <table>
+                                            <tbody>
+                                              {Object.entries(row).map(
+                                                ([k, v]) => (
+                                                  <tr key={k}>
+                                                    <td>
+                                                      {k
+                                                        .charAt(0)
+                                                        .toUpperCase() +
+                                                        k.slice(1)}
+                                                    </td>
+                                                    <td>{String(v)}</td>
+                                                  </tr>
+                                                )
+                                              )}
+                                            </tbody>
+                                          </table>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  ) : (
+                                    /* Handle Arrays of Primitives */
+                                    <div className="data-item">
+                                      <span className="data-label">
+                                        {fieldKey.charAt(0).toUpperCase() +
+                                          fieldKey.slice(1)}
+                                        :
+                                      </span>
+                                      <span className="data-value">
+                                        {JSON.stringify(fieldValue)}
+                                      </span>
+                                    </div>
+                                  )
+                                ) : typeof fieldValue === "object" &&
+                                  fieldValue !== null ? (
+                                  /* Handle Nested Objects */
+                                  <div>
+                                    <h5>
+                                      {fieldKey.charAt(0).toUpperCase() +
+                                        fieldKey.slice(1)}
+                                    </h5>
+                                    {Object.entries(fieldValue).map(
+                                      ([subKey, subVal]) => (
+                                        <div key={subKey}>
+                                          <h6>
+                                            {fieldKey.charAt(0).toUpperCase() +
+                                              fieldKey.slice(1)}{" "}
+                                            {subKey}
+                                          </h6>
+                                          <table>
+                                            <tbody>
+                                              {Object.entries(subVal).map(
+                                                ([k, v]) => (
+                                                  <tr key={k}>
+                                                    <td>
+                                                      {k
+                                                        .charAt(0)
+                                                        .toUpperCase() +
+                                                        k.slice(1)}
+                                                    </td>
+                                                    <td>{String(v)}</td>
+                                                  </tr>
+                                                )
+                                              )}
+                                            </tbody>
+                                          </table>
+                                        </div>
+                                      )
+                                    )}
+                                  </div>
+                                ) : (
+                                  /* Fallback */
+                                  <div className="data-item">
+                                    <span className="data-label">
+                                      {fieldKey.charAt(0).toUpperCase() +
+                                        fieldKey.slice(1)}
+                                      :
+                                    </span>
+                                    <span className="data-value">
+                                      {String(fieldValue)}
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+                            )
+                          )}
                         </div>
-                      )
-                    )}
+                      </div>
+                    ))}
                   </div>
                 </div>
               ))}
