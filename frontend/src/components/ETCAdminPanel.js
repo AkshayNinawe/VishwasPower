@@ -496,7 +496,13 @@ const ETCAdminPanel = ({
       setFormDataFromDB(response.data.data.autoTransformerData);
     } catch (error) {
       console.error("Error creating company on the backend:", error);
-      alert("Failed to create company. Please try again.");
+
+      if (error.response?.status === 404) {
+        // ✅ Custom message for 404
+        alert("Please fill the forms first");
+      } else {
+        alert(`Failed to load submitted forms: ${error.response?.data?.message || error.message}`);
+      }
       return;
     }
     setSelectedProjectForReview(Project);
