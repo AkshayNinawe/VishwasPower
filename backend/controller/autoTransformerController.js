@@ -18,7 +18,7 @@ export const getStageTableData = async (req, res) => {
     const queryPath = `autoTransformerData.stage${stage}`;
     const document = await AutoTransformer.findOne(
       { projectName, companyName },
-      { [queryPath]: 1 }
+      { [queryPath]: 1, projectName: 1, companyName: 1 }
     ).lean();
 
     if (!document) {
@@ -34,10 +34,42 @@ export const getStageTableData = async (req, res) => {
         message: `Data for stage ${stage} not found.`,
       });
     }
+    // 🔹 Build base URL dynamically
+    const baseUrl = `${req.protocol}://${req.get("host")}`;
+
+    // 🔹 Recursively convert any "photos" map values to full URLs
+    const convertPhotoPathsToUrls = (data) => {
+      if (!data || typeof data !== "object") return data;
+
+      if (data.photos && typeof data.photos === "object") {
+        const newPhotos = {};
+        for (const [key, value] of Object.entries(data.photos)) {
+          if (typeof value === "string") {
+            newPhotos[key] = `${baseUrl}/${value}`;
+          } else if (Array.isArray(value)) {
+            newPhotos[key] = value.map((v) =>
+              typeof v === "string" ? `${baseUrl}/${v}` : v
+            );
+          }
+        }
+        data.photos = newPhotos;
+      }
+
+      // also check nested sub-objects
+      for (const [k, v] of Object.entries(data)) {
+        if (v && typeof v === "object") {
+          data[k] = convertPhotoPathsToUrls(v);
+        }
+      }
+
+      return data;
+    };
+
+    const responseData = convertPhotoPathsToUrls(nestedData);
 
     res.status(200).json({
       message: `Data for stage ${stage} retrieved successfully`,
-      data: nestedData,
+      data: responseData,
     });
   } catch (error) {
     console.error("Error retrieving form data:", error);
@@ -47,6 +79,7 @@ export const getStageTableData = async (req, res) => {
     });
   }
 };
+
 
 export const getTableData = async (req, res) => {
   console.log("Backend API for getTableData");

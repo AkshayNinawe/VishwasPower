@@ -72,7 +72,7 @@ const Stage1Form3SubSchema = new mongoose.Schema(
     fireExtinguisher: { type: String, trim: true, default: "" },
     firstAidKit: { type: String, trim: true, default: "" },
     ppeEquipment: { type: String, trim: true, default: "" },
-    photos: { type: Object, default: {} },
+    photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );
@@ -104,7 +104,7 @@ const Stage1Form4SubSchema = new mongoose.Schema(
     bushing12_10kv_capacitance: { type: String, trim: true, default: "" },
     bushing12_10kv_excitationCurrent: { type: String, trim: true, default: "" },
     bushing12_10kv_dielectricLoss: { type: String, trim: true, default: "" },
-    photos: { type: Object, default: {} },
+    photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );
@@ -126,7 +126,7 @@ const Stage1Form5SubSchema = new mongoose.Schema(
     hvEarth15Sec: { type: String, trim: true, default: "" },
     hvEarth60Sec: { type: String, trim: true, default: "" },
     ratioIR60IR15: { type: String, trim: true, default: "" },
-    photos: { type: Object, default: {} },
+    photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );
@@ -153,7 +153,7 @@ const Stage2Form1SubSchema = new mongoose.Schema(
     tank1BDV: { type: String, trim: true, default: "" },
     tank1MoistureContent: { type: String, trim: true, default: "" },
     filtrationRecords: [FiltrationRecordSchema],
-    photos: { type: [String], default: [] },
+    photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );
@@ -170,7 +170,7 @@ const Stage2Form2SubSchema = new mongoose.Schema(
     hvWithRespectToEarth: { type: String, trim: true, default: "" },
     lvWithRespectToEarth: { type: String, trim: true, default: "" },
     neutralWithRespectToEarth: { type: String, trim: true, default: "" },
-    photos: { type: Object, default: {} },
+    photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );
@@ -263,7 +263,7 @@ const Stage3Form3SubSchema = new mongoose.Schema(
     hvEarth60Sec: { type: String, trim: true, default: "" },
     hvEarth600Sec: { type: String, trim: true, default: "" },
     hvEarth60600Sec: { type: String, trim: true, default: "" },
-    photos: { type: Object, default: {} },
+    photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );
@@ -430,7 +430,7 @@ const Stage4Form4SubSchema = new mongoose.Schema(
     ratioIR60IR10: { type: String, trim: true, default: "" },
     ratioIR600IR60: { type: String, trim: true, default: "" },
     signatures: { type: SignatureSubSchema, default: () => ({}) },
-    photos: { type: Object, default: () => ({}) },
+    photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );
@@ -509,7 +509,7 @@ const Stage5Form2SubSchema = new mongoose.Schema(
     temperatureOTI: { type: String, trim: true, default: "" },
     remarks: { type: String, trim: true, default: "" },
     signatures: { type: DetailedSignatureSubSchema, default: () => ({}) },
-    photos: { type: Object, default: () => ({}) },
+    photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );

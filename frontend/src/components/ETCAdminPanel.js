@@ -501,7 +501,11 @@ const ETCAdminPanel = ({
         // ✅ Custom message for 404
         alert("Please fill the forms first");
       } else {
-        alert(`Failed to load submitted forms: ${error.response?.data?.message || error.message}`);
+        alert(
+          `Failed to load submitted forms: ${
+            error.response?.data?.message || error.message
+          }`
+        );
       }
       return;
     }
@@ -679,11 +683,10 @@ const ETCAdminPanel = ({
   };
 
   const handleProjectDelete = async (Project) => {
-
     const confirmDelete = window.confirm(
       `Are you sure you want to delete project "${Project.name}" from company "${Project.companyName}"?`
     );
-  
+
     if (!confirmDelete) {
       // User clicked "Cancel"
       return;
@@ -709,12 +712,15 @@ const ETCAdminPanel = ({
 
       console.log("Project deleted successfully from backend:", response.data);
 
-      selectedMainCompany.companyProjects =
-        (selectedMainCompany.companyProjects ?? []).filter(
-          (proj) =>
-            !(proj.companyName === Project.companyName &&
-              proj.name === Project.name)
-        );
+      selectedMainCompany.companyProjects = (
+        selectedMainCompany.companyProjects ?? []
+      ).filter(
+        (proj) =>
+          !(
+            proj.companyName === Project.companyName &&
+            proj.name === Project.name
+          )
+      );
 
       // ✅ Update frontend state by filtering out the deleted project
       setCompanies((prev) =>
@@ -724,8 +730,10 @@ const ETCAdminPanel = ({
                 ...company,
                 companyProjects: (company.companyProjects ?? []).filter(
                   (proj) =>
-                    !(proj.companyName === Project.companyName &&
-                      proj.name === Project.name)
+                    !(
+                      proj.companyName === Project.companyName &&
+                      proj.name === Project.name
+                    )
                 ),
               }
             : company
@@ -1120,15 +1128,69 @@ const ETCAdminPanel = ({
 
                         <div className="form-data-preview">
                           {Object.entries(formData).map(
-                            ([fieldKey, fieldValue]) => (
-                              <div
-                                key={`${stageKey}-${formKey}-${fieldKey}`}
-                                className="data-item-wrapper"
-                              >
-                                {/* Handle Strings & Numbers */}
-                                {typeof fieldValue === "string" ||
-                                typeof fieldValue === "number" ? (
-                                  <div className="data-item">
+                            ([fieldKey, fieldValue]) => {
+                              // 🔹 Special case for photos
+                              if (
+                                fieldKey === "photos" &&
+                                fieldValue &&
+                                typeof fieldValue === "object"
+                              ) {
+                                return (
+                                  <div
+                                    key={`${stageKey}-${formKey}-photos`}
+                                    className="data-item-wrapper"
+                                  >
+                                    <h5 className="data-label">
+                                      {fieldKey.charAt(0).toUpperCase() +
+                                        fieldKey.slice(1)}
+                                    </h5>
+                                    <div className="photo-list mt-2 space-y-3">
+                                      {Object.entries(fieldValue).map(
+                                        ([photoKey, url]) => {
+                                          const fullUrl = url.startsWith("http")
+                                            ? url
+                                            : `http://localhost:7000/${url}`;
+                                          return (
+                                            <div
+                                              key={photoKey}
+                                              className="photo-preview"
+                                            >
+                                              <p className="text-sm font-medium">
+                                                {photoKey}
+                                              </p>
+                                              <a
+                                                href={fullUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-blue-600 underline break-all"
+                                              >
+                                                {fullUrl}
+                                              </a>
+                                              {/* Optional thumbnail preview */}
+                                              <img
+                                                src={fullUrl}
+                                                alt={photoKey}
+                                                className="mt-1 w-40 h-24 object-cover rounded border"
+                                              />
+                                            </div>
+                                          );
+                                        }
+                                      )}
+                                    </div>
+                                  </div>
+                                );
+                              }
+
+                              // 🔹 Strings & numbers
+                              if (
+                                typeof fieldValue === "string" ||
+                                typeof fieldValue === "number"
+                              ) {
+                                return (
+                                  <div
+                                    key={`${stageKey}-${formKey}-${fieldKey}`}
+                                    className="data-item"
+                                  >
                                     <span className="data-label">
                                       {fieldKey.charAt(0).toUpperCase() +
                                         fieldKey.slice(1)}
@@ -1138,16 +1200,23 @@ const ETCAdminPanel = ({
                                       {String(fieldValue)}
                                     </span>
                                   </div>
-                                ) : Array.isArray(fieldValue) ? (
-                                  fieldValue.length > 0 &&
-                                  typeof fieldValue[0] === "object" ? (
-                                    /* Handle Arrays of Objects */
-                                    <div>
-                                      <h5>
-                                        {fieldKey.charAt(0).toUpperCase() +
-                                          fieldKey.slice(1)}
-                                      </h5>
-                                      {fieldValue.map((row, idx) => (
+                                );
+                              }
+
+                              // 🔹 Arrays
+                              if (Array.isArray(fieldValue)) {
+                                return (
+                                  <div
+                                    key={`${stageKey}-${formKey}-${fieldKey}`}
+                                    className="data-item-wrapper"
+                                  >
+                                    <h5>
+                                      {fieldKey.charAt(0).toUpperCase() +
+                                        fieldKey.slice(1)}
+                                    </h5>
+                                    {fieldValue.length > 0 &&
+                                      typeof fieldValue[0] === "object" &&
+                                      fieldValue.map((row, idx) => (
                                         <div key={idx}>
                                           <h4>
                                             {fieldKey.charAt(0).toUpperCase() +
@@ -1173,24 +1242,33 @@ const ETCAdminPanel = ({
                                           </table>
                                         </div>
                                       ))}
-                                    </div>
-                                  ) : (
-                                    /* Handle Arrays of Primitives */
-                                    <div className="data-item">
-                                      <span className="data-label">
-                                        {fieldKey.charAt(0).toUpperCase() +
-                                          fieldKey.slice(1)}
-                                        :
-                                      </span>
-                                      <span className="data-value">
-                                        {JSON.stringify(fieldValue)}
-                                      </span>
-                                    </div>
-                                  )
-                                ) : typeof fieldValue === "object" &&
-                                  fieldValue !== null ? (
-                                  /* Handle Nested Objects */
-                                  <div>
+                                    {fieldValue.length > 0 &&
+                                      typeof fieldValue[0] !== "object" && (
+                                        <div className="data-item">
+                                          <span className="data-label">
+                                            {fieldKey.charAt(0).toUpperCase() +
+                                              fieldKey.slice(1)}
+                                            :
+                                          </span>
+                                          <span className="data-value">
+                                            {JSON.stringify(fieldValue)}
+                                          </span>
+                                        </div>
+                                      )}
+                                  </div>
+                                );
+                              }
+
+                              // 🔹 Nested objects (non-photos)
+                              if (
+                                typeof fieldValue === "object" &&
+                                fieldValue !== null
+                              ) {
+                                return (
+                                  <div
+                                    key={`${stageKey}-${formKey}-${fieldKey}`}
+                                    className="data-item-wrapper"
+                                  >
                                     <h5>
                                       {fieldKey.charAt(0).toUpperCase() +
                                         fieldKey.slice(1)}
@@ -1224,21 +1302,26 @@ const ETCAdminPanel = ({
                                       )
                                     )}
                                   </div>
-                                ) : (
-                                  /* Fallback */
-                                  <div className="data-item">
-                                    <span className="data-label">
-                                      {fieldKey.charAt(0).toUpperCase() +
-                                        fieldKey.slice(1)}
-                                      :
-                                    </span>
-                                    <span className="data-value">
-                                      {String(fieldValue)}
-                                    </span>
-                                  </div>
-                                )}
-                              </div>
-                            )
+                                );
+                              }
+
+                              // 🔹 Fallback
+                              return (
+                                <div
+                                  key={`${stageKey}-${formKey}-${fieldKey}`}
+                                  className="data-item"
+                                >
+                                  <span className="data-label">
+                                    {fieldKey.charAt(0).toUpperCase() +
+                                      fieldKey.slice(1)}
+                                    :
+                                  </span>
+                                  <span className="data-value">
+                                    {String(fieldValue)}
+                                  </span>
+                                </div>
+                              );
+                            }
                           )}
                         </div>
                       </div>
