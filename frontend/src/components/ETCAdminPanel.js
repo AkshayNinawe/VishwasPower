@@ -621,8 +621,10 @@ const ETCAdminPanel = ({
   };
 
   const capitalizeFirst = (s) =>
-    typeof s === "string" && s.length ? s.charAt(0).toUpperCase() + s.slice(1) : s;
-  
+    typeof s === "string" && s.length
+      ? s.charAt(0).toUpperCase() + s.slice(1)
+      : s;
+
   const isObjectOfObjects = (obj) =>
     obj &&
     typeof obj === "object" &&
@@ -630,7 +632,7 @@ const ETCAdminPanel = ({
     Object.values(obj).every(
       (v) => v && typeof v === "object" && !Array.isArray(v)
     );
-  
+
   const renderPrimitiveCell = (val, labelForImg = "") => {
     if (typeof val === "string" && val.startsWith("data:image/")) {
       return (
@@ -667,6 +669,60 @@ const ETCAdminPanel = ({
         `Stage ${nextStage - 1} must be approved first!`,
         "warning"
       );
+    }
+  };
+
+  const handleProjectDelete = async (Project) => {
+    try {
+      if (additionalLogging) {
+        console.log(
+          "Frontend : From handleDeleteProject delete call to api/company/deleteProject"
+        );
+      }
+
+      // ✅ Axios DELETE requires "data" wrapper for body
+      const response = await axios.delete(
+        `${BACKEND_API_BASE_URL}/api/company/deleteProject`,
+        {
+          data: {
+            projectName: Project.name,
+            companyName: Project.companyName,
+          },
+        }
+      );
+
+      console.log("Project deleted successfully from backend:", response.data);
+
+      selectedMainCompany.companyProjects =
+        (selectedMainCompany.companyProjects ?? []).filter(
+          (proj) =>
+            !(proj.companyName === Project.companyName &&
+              proj.name === Project.name)
+        );
+
+      // ✅ Update frontend state by filtering out the deleted project
+      setCompanies((prev) =>
+        prev.map((company) =>
+          company.companyName === Project.companyName
+            ? {
+                ...company,
+                companyProjects: (company.companyProjects ?? []).filter(
+                  (proj) =>
+                    !(proj.companyName === Project.companyName &&
+                      proj.name === Project.name)
+                ),
+              }
+            : company
+        )
+      );
+
+      showNotification(
+        `Project "${Project.name}" deleted successfully!`,
+        "success"
+      );
+    } catch (error) {
+      console.error("Error deleting project on the backend:", error);
+      showNotification("Failed to delete project. Please try again.", "error");
     }
   };
 
@@ -850,97 +906,115 @@ const ETCAdminPanel = ({
                   </div>
 
                   <div className="form-data-preview">
-  {Object.entries(formDataFromDB).map(([fieldKey, fieldValue], idx) => (
-    <div className="data-item" key={fieldKey || idx}>
-      <span className="data-label">{capitalizeFirst(fieldKey)}:</span>
+                    {Object.entries(formDataFromDB).map(
+                      ([fieldKey, fieldValue], idx) => (
+                        <div className="data-item" key={fieldKey || idx}>
+                          <span className="data-label">
+                            {capitalizeFirst(fieldKey)}:
+                          </span>
 
-      {/* Images (string starting with data:image/) */}
-      {typeof fieldValue === "string" && fieldValue.startsWith("data:image/") ? (
-        <img
-          src={fieldValue}
-          alt={fieldKey}
-          style={{ maxWidth: "100px", border: "1px solid #ccc" }}
-        />
-      ) : Array.isArray(fieldValue) ? (
-        /* Arrays */
-        fieldValue.length === 0 ? (
-          <span className="data-value">[]</span>
-        ) : typeof fieldValue[0] === "object" && fieldValue[0] !== null ? (
-          /* Array of objects → stack as subtables */
-          <div>
-            {fieldValue.map((row, i) => (
-              <div key={i}>
-                <h5>
-                  {capitalizeFirst(fieldKey)} {i + 1}
-                </h5>
-                <table>
-                  <tbody>
-                    {Object.entries(row).map(([k, v]) => (
-                      <tr key={k}>
-                        <td>{capitalizeFirst(k)}</td>
-                        <td>{renderPrimitiveCell(v, k)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            ))}
-          </div>
-        ) : (
-          /* Array of primitives → list */
-          <ul>
-            {fieldValue.map((item, i) => (
-              <li key={i}>
-                {typeof item === "object"
-                  ? JSON.stringify(item, null, 2)
-                  : String(item)}
-              </li>
-            ))}
-          </ul>
-        )
-      ) : typeof fieldValue === "object" && fieldValue !== null ? (
-        /* Objects */
-        isObjectOfObjects(fieldValue) ? (
-          /* Object of objects (e.g., accessories { "1": {...}, "2": {...} }) → each as its own subtable */
-          <div>
-            {Object.entries(fieldValue).map(([subKey, subVal]) => (
-              <div key={subKey}>
-                <h5>
-                  {capitalizeFirst(fieldKey)} {subKey}
-                </h5>
-                <table>
-                  <tbody>
-                    {Object.entries(subVal).map(([k, v]) => (
-                      <tr key={k}>
-                        <td>{capitalizeFirst(k)}</td>
-                        <td>{renderPrimitiveCell(v, k)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            ))}
-          </div>
-        ) : (
-          /* Plain object → single 2-column table */
-          <table>
-            <tbody>
-              {Object.entries(fieldValue).map(([k, v]) => (
-                <tr key={k}>
-                  <td>{capitalizeFirst(k)}</td>
-                  <td>{renderPrimitiveCell(v, k)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )
-      ) : (
-        /* Primitives fallback */
-        <span className="data-value">{String(fieldValue)}</span>
-      )}
-    </div>
-  ))}
-</div>
+                          {/* Images (string starting with data:image/) */}
+                          {typeof fieldValue === "string" &&
+                          fieldValue.startsWith("data:image/") ? (
+                            <img
+                              src={fieldValue}
+                              alt={fieldKey}
+                              style={{
+                                maxWidth: "100px",
+                                border: "1px solid #ccc",
+                              }}
+                            />
+                          ) : Array.isArray(fieldValue) ? (
+                            /* Arrays */
+                            fieldValue.length === 0 ? (
+                              <span className="data-value">[]</span>
+                            ) : typeof fieldValue[0] === "object" &&
+                              fieldValue[0] !== null ? (
+                              /* Array of objects → stack as subtables */
+                              <div>
+                                {fieldValue.map((row, i) => (
+                                  <div key={i}>
+                                    <h5>
+                                      {capitalizeFirst(fieldKey)} {i + 1}
+                                    </h5>
+                                    <table>
+                                      <tbody>
+                                        {Object.entries(row).map(([k, v]) => (
+                                          <tr key={k}>
+                                            <td>{capitalizeFirst(k)}</td>
+                                            <td>{renderPrimitiveCell(v, k)}</td>
+                                          </tr>
+                                        ))}
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                ))}
+                              </div>
+                            ) : (
+                              /* Array of primitives → list */
+                              <ul>
+                                {fieldValue.map((item, i) => (
+                                  <li key={i}>
+                                    {typeof item === "object"
+                                      ? JSON.stringify(item, null, 2)
+                                      : String(item)}
+                                  </li>
+                                ))}
+                              </ul>
+                            )
+                          ) : typeof fieldValue === "object" &&
+                            fieldValue !== null ? (
+                            /* Objects */
+                            isObjectOfObjects(fieldValue) ? (
+                              /* Object of objects (e.g., accessories { "1": {...}, "2": {...} }) → each as its own subtable */
+                              <div>
+                                {Object.entries(fieldValue).map(
+                                  ([subKey, subVal]) => (
+                                    <div key={subKey}>
+                                      <h5>
+                                        {capitalizeFirst(fieldKey)} {subKey}
+                                      </h5>
+                                      <table>
+                                        <tbody>
+                                          {Object.entries(subVal).map(
+                                            ([k, v]) => (
+                                              <tr key={k}>
+                                                <td>{capitalizeFirst(k)}</td>
+                                                <td>
+                                                  {renderPrimitiveCell(v, k)}
+                                                </td>
+                                              </tr>
+                                            )
+                                          )}
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  )
+                                )}
+                              </div>
+                            ) : (
+                              /* Plain object → single 2-column table */
+                              <table>
+                                <tbody>
+                                  {Object.entries(fieldValue).map(([k, v]) => (
+                                    <tr key={k}>
+                                      <td>{capitalizeFirst(k)}</td>
+                                      <td>{renderPrimitiveCell(v, k)}</td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            )
+                          ) : (
+                            /* Primitives fallback */
+                            <span className="data-value">
+                              {String(fieldValue)}
+                            </span>
+                          )}
+                        </div>
+                      )
+                    )}
+                  </div>
                 </div>
               ) : (
                 <p>No project selected for review.</p>
@@ -1487,6 +1561,7 @@ const ETCAdminPanel = ({
                         gap: "10px",
                       }}
                     >
+                      {/* View Forms */}
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
@@ -1508,6 +1583,8 @@ const ETCAdminPanel = ({
                       >
                         📋 View Forms
                       </button>
+
+                      {/* Submit Stage */}
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
@@ -1528,6 +1605,28 @@ const ETCAdminPanel = ({
                         }}
                       >
                         📝 Submit Stage {Project.stage}
+                      </button>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleProjectDelete(Project);
+                        }}
+                        className="delete-btn"
+                        style={{
+                          background:
+                            "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)", // red gradient
+                          color: "white",
+                          border: "none",
+                          padding: "8px 16px",
+                          borderRadius: "8px",
+                          fontSize: "0.85rem",
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          transition: "all 0.3s ease",
+                        }}
+                      >
+                        🗑️ Delete Project
                       </button>
                     </div>
                   </div>

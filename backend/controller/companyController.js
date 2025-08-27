@@ -43,6 +43,35 @@ export const setCompanyData = async (req, res) => {
   }
 };
 
+export const deleteProjectByName = async (req, res) => {
+  try {
+    const { companyName, projectName } = req.body; 
+    if (!companyName || !projectName) {
+      return res.status(400).json({ message: "companyName and projectName are required." });
+    }
+  
+    const updatedCompany = await Company.findOneAndUpdate(
+      { companyName: companyName },
+      { $pull: { companyProjects: { name: projectName } }, updatedAt: Date.now() },
+      { new: true }
+    );
+
+    if (!updatedCompany) {
+      return res.status(404).json({
+        message: `Company '${companyName}' not found or project '${projectName}' not deleted.`,
+      });
+    }
+
+    res.status(200).json({
+      message: `Project '${projectName}' deleted successfully from company '${companyName}'.`,
+      company: updatedCompany,
+    });
+  } catch (error) {
+    console.error("Error deleting project:", error);
+    res.status(500).json({ message: "An internal server error occurred." });
+  }
+};
+
 // Get all Company
 export const getAllCompanyData = async (req, res) => {
   console.log("Get all Company");
