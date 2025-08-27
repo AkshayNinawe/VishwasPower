@@ -21,7 +21,7 @@ const Stage1Form1SubSchema = new mongoose.Schema(
     weightCoreWinding: { type: String, trim: true, default: "" },
     oilQuantityLiter: { type: String, trim: true, default: "" },
     totalWeight: { type: String, trim: true, default: "" },
-    photos: { type: [String], default: [] },
+    photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );

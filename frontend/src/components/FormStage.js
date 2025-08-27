@@ -178,46 +178,63 @@ const FormStage = ({
 
   const handleFormSubmit = async (data) => {
     if (additionalLogging) {
-      console.log("Frontend : handleformsubmit function to save the value and update formsCompleted");
+      console.log("Frontend: handleFormSubmit → saving form data");
     }
-  
+
     const updatedFormData = { ...formData, [currentForm.form]: data };
-  
+
     try {
-      // 1. Save the form data
+      // 🔹 Always build FormData
+      const formDataToSend = new FormData();
+      formDataToSend.append("projectName", projectName);
+      formDataToSend.append("companyName", companyName);
+      formDataToSend.append("stage", stage);
+      formDataToSend.append("formNumber", currentFormIndex + 1);
+
+      // loop through keys of `data`
+      Object.entries(data).forEach(([key, value]) => {
+        if (key === "photos" && typeof value === "object") {
+          Object.entries(value).forEach(([photoKey, file]) => {
+            if (file instanceof File) {
+              formDataToSend.append(`photos[${photoKey}]`, file);
+            }
+          });
+        } else if (typeof value === "object") {
+          // 🔹 make sure objects are stringified before sending
+          formDataToSend.append(key, JSON.stringify(value));
+        } else {
+          formDataToSend.append(key, value ?? "");
+        }
+      });
+
+      // 🔹 POST request
       await axios.post(
         `${BACKEND_API_BASE_URL}/api/data/setTable`,
+        formDataToSend,
         {
-          projectName: projectName,
-          companyName: companyName,
-          data: data,
-          stage: stage,
-          formNumber: currentFormIndex + 1,
+          headers: { "Content-Type": "multipart/form-data" },
         }
       );
-  
-      // 2. If last form of the stage → update formsCompleted and status
+
+      // 🔹 formsCompleted + project status logic
       if (isLastFormOfStage) {
         await axios.post(
           `${BACKEND_API_BASE_URL}/api/company/updateFormsCompleted`,
           {
-            projectName: projectName,
-            companyName: companyName,
+            projectName,
+            companyName,
             formsCompleted: currentFormIndex + 1,
             status: "pending-approval",
-            stage: stage,
+            stage,
           }
         );
-        console.log("Submitting the last form of the stage → setting project status to pending-approval");
-  
-        // 🔹 Extra: Only run this stage approval logic when company/project matches
+
         setSelectedMainCompany((prevCompany) => {
           if (prevCompany.companyName === companyName) {
             return {
               ...prevCompany,
               companyProjects: prevCompany.companyProjects.map((project) => {
                 if (project.name === projectName) {
-                  // Build submittedStagesMap
                   const submittedStagesMap = {};
                   for (let i = 1; i <= 6; i++) {
                     submittedStagesMap[i.toString()] = i <= stage;
@@ -225,38 +242,34 @@ const FormStage = ({
                   return {
                     ...project,
                     submittedStages: submittedStagesMap,
-                    status: "pending-approval", 
+                    status: "pending-approval",
                   };
                 }
-                return project; // ← keep other projects unchanged
+                return project;
               }),
             };
           }
-          return prevCompany; // ← if no match, no changes
+          return prevCompany;
         });
-  
       } else {
-        // Not last form → just update formsCompleted count
         await axios.post(
           `${BACKEND_API_BASE_URL}/api/company/updateFormsCompleted`,
           {
-            projectName: projectName,
-            companyName: companyName,
+            projectName,
+            companyName,
             formsCompleted: currentFormIndex + 1,
           }
         );
-        console.log("Submitting a form before the last one → project still in progress");
       }
-  
     } catch (error) {
-      console.error("Error creating company on the backend:", error);
-      alert("Failed to create company. Please try again.");
+      console.error("Error saving form:", error);
+      alert("Failed to save form. Please try again.");
       return;
     }
-  
-    // 3. Update local form state and move to next form
+
+    // 🔹 Local update + move forward
     setFormData(updatedFormData);
-  
+
     if (currentFormIndex < currentForms.length - 1) {
       setCurrentFormIndex(currentFormIndex + 1);
     } else {
@@ -876,7 +889,7 @@ function NamePlateDetailsForm({
             companyName: companyName,
             projectName: projectName,
             stage: stage,
-            formNumber: 1
+            formNumber: 1,
           }
         );
         if (response.data && response.data.data) {
@@ -1183,12 +1196,12 @@ function ProtocolAccessoriesForm({
             companyName: companyName,
             projectName: projectName,
             stage: 1,
-            formNumber: 2
+            formNumber: 2,
           }
         );
         if (response.data && response.data.data) {
           console.log("Data fetched from DB for stage1Form2");
-          console.log(response.data.data)
+          console.log(response.data.data);
           setFormData(response.data.data);
         } else {
           console.log("There is no data in DB.");
@@ -1413,7 +1426,7 @@ function CoreInsulationCheckForm({
             companyName: companyName,
             projectName: projectName,
             stage: 1,
-            formNumber: 3
+            formNumber: 3,
           }
         );
         if (response.data && response.data.data) {
@@ -1915,7 +1928,7 @@ function PreErectionTanDeltaTestForm({
             companyName: companyName,
             projectName: projectName,
             stage: 1,
-            formNumber: 4
+            formNumber: 4,
           }
         );
         if (response.data && response.data.data) {
@@ -2125,28 +2138,28 @@ function PreErectionTanDeltaTestForm({
               />
             </td>
             <td>
-               <input
-          type="text"
-          value={formData.excCurrent_05kv_11 || ""}
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              excCurrent_05kv_11: e.target.value,
-            })
-          }
-        />
+              <input
+                type="text"
+                value={formData.excCurrent_05kv_11 || ""}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    excCurrent_05kv_11: e.target.value,
+                  })
+                }
+              />
             </td>
             <td>
               <input
-          type="text"
-          value={formData.dielLoss_05kv_11 || ""}
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              dielLoss_05kv_11: e.target.value,
-            })
-          }
-        />
+                type="text"
+                value={formData.dielLoss_05kv_11 || ""}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    dielLoss_05kv_11: e.target.value,
+                  })
+                }
+              />
             </td>
           </tr>
           <tr>
@@ -2190,28 +2203,28 @@ function PreErectionTanDeltaTestForm({
               />
             </td>
             <td>
-               <input
-          type="text"
-          value={formData.excCurrent_05kv_12 || ""}
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              excCurrent_05kv_12: e.target.value,
-            })
-          }
-        />
+              <input
+                type="text"
+                value={formData.excCurrent_05kv_12 || ""}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    excCurrent_05kv_12: e.target.value,
+                  })
+                }
+              />
             </td>
             <td>
               <input
-          type="text"
-          value={formData.dielLoss_05kv_12 || ""}
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              dielLoss_05kv_12: e.target.value,
-            })
-          }
-        />
+                type="text"
+                value={formData.dielLoss_05kv_12 || ""}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    dielLoss_05kv_12: e.target.value,
+                  })
+                }
+              />
             </td>
           </tr>
         </tbody>
@@ -2270,28 +2283,28 @@ function PreErectionTanDeltaTestForm({
               />
             </td>
             <td>
-             <input
-          type="text"
-          value={formData.excCurrent_10kv_11 || ""}
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              excCurrent_10kv_11: e.target.value,
-            })
-          }
-        />
+              <input
+                type="text"
+                value={formData.excCurrent_10kv_11 || ""}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    excCurrent_10kv_11: e.target.value,
+                  })
+                }
+              />
             </td>
             <td>
-               <input
-          type="text"
-          value={formData.dielLoss_10kv_11 || ""}
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              dielLoss_10kv_11: e.target.value,
-            })
-          }
-        />
+              <input
+                type="text"
+                value={formData.dielLoss_10kv_11 || ""}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    dielLoss_10kv_11: e.target.value,
+                  })
+                }
+              />
             </td>
           </tr>
           <tr>
@@ -2336,27 +2349,27 @@ function PreErectionTanDeltaTestForm({
             </td>
             <td>
               <input
-          type="text"
-          value={formData.excCurrent_10kv_12 || ""}
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              excCurrent_10kv_12: e.target.value,
-            })
-          }
-        />
+                type="text"
+                value={formData.excCurrent_10kv_12 || ""}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    excCurrent_10kv_12: e.target.value,
+                  })
+                }
+              />
             </td>
             <td>
-               <input
-          type="text"
-          value={formData.dielLoss_10kv_12 || ""}
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              dielLoss_10kv_12: e.target.value,
-            })
-          }
-        />
+              <input
+                type="text"
+                value={formData.dielLoss_10kv_12 || ""}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    dielLoss_10kv_12: e.target.value,
+                  })
+                }
+              />
             </td>
           </tr>
         </tbody>
@@ -2419,7 +2432,7 @@ function RecordMeasurementIRValuesForm({
             companyName: companyName,
             projectName: projectName,
             stage: 1,
-            formNumber: 5
+            formNumber: 5,
           }
         );
         if (response.data && response.data.data) {
