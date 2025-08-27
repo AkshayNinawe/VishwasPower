@@ -1182,11 +1182,11 @@ const ETCAdminPanel = ({
                                     {Object.entries(fieldValue).map(
                                       ([subKey, subVal]) => (
                                         <div key={subKey}>
-                                          <h6>
+                                          <h4>
                                             {fieldKey.charAt(0).toUpperCase() +
                                               fieldKey.slice(1)}{" "}
                                             {subKey}
-                                          </h6>
+                                          </h4>
                                           <table>
                                             <tbody>
                                               {Object.entries(subVal).map(
