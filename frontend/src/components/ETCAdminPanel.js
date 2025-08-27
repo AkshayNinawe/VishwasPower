@@ -679,6 +679,16 @@ const ETCAdminPanel = ({
   };
 
   const handleProjectDelete = async (Project) => {
+
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete project "${Project.name}" from company "${Project.companyName}"?`
+    );
+  
+    if (!confirmDelete) {
+      // User clicked "Cancel"
+      return;
+    }
+
     try {
       if (additionalLogging) {
         console.log(
