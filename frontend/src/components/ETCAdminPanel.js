@@ -750,6 +750,45 @@ const ETCAdminPanel = ({
     }
   };
 
+  const handleCompanyDelete = async (company) => {
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete company "${company.companyName}" and all its projects?`
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      if (additionalLogging) {
+        console.log(
+          "Frontend : From handleDeleteProject delete call to api/company/deleteProject"
+        );
+      }
+
+      // ✅ Axios DELETE requires "data" wrapper for body
+      const response = await axios.delete(
+        `${BACKEND_API_BASE_URL}/api/company/deleteCompany`,
+        {
+          data: { companyName: company.companyName },
+        }
+      );
+
+      console.log("Company deleted successfully from backend:", response.data);
+
+      // ✅ Update frontend state → remove the company
+      setCompanys((prev) =>
+        prev.filter((c) => c.companyName !== company.companyName)
+      );
+
+      showNotification(
+        `Company "${company.companyName}" deleted successfully!`,
+        "success"
+      );
+    } catch (error) {
+      console.error("Error deleting company on the backend:", error);
+      showNotification("Failed to delete company. Please try again.", "error");
+    }
+  };
+
   return (
     <div className="dashboard-container">
       <header className="etc-header">
@@ -941,9 +980,7 @@ const ETCAdminPanel = ({
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="text-blue-600 underline break-all"
-                                      >
-                                        
-                                      </a>
+                                      ></a>
                                       <img
                                         src={fullUrl}
                                         alt={photoKey}
@@ -1517,6 +1554,27 @@ const ETCAdminPanel = ({
                         justifyContent: "flex-end",
                       }}
                     >
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleCompanyDelete(Company);
+                        }}
+                        className="delete-btn"
+                        style={{
+                          background:
+                            "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)", // red gradient
+                          color: "white",
+                          border: "none",
+                          padding: "8px 16px",
+                          borderRadius: "8px",
+                          fontSize: "0.85rem",
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          transition: "all 0.3s ease",
+                        }}
+                      >
+                        🗑️ Delete 
+                      </button>
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
