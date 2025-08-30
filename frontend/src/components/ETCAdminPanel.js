@@ -885,66 +885,83 @@ const ETCAdminPanel = ({
             </div>
 
             <div className="forms-review-grid">
-              {selectedProjectForReview ? (
+              {Object.entries(formDataFromDB).map(([formKey, formData]) => (
                 <div
-                  key={selectedProjectForReview.id}
-                  className={`form-review-card ${selectedProjectForReview.status}`}
+                  key={`${1}-${formKey}`}
+                  className={`form-review-card ${selectedProjectForReview?.status}`}
                 >
                   <div className="form-review-header">
-                    <h3>{selectedProjectForReview.formName}</h3>
+                    <h3>{formKey.replace("form", "Form ")}</h3>
                     <span
                       className={`status-badge ${
-                        selectedProjectForReview.status === "approved"
+                        selectedProjectForReview?.status === "approved"
                           ? "status-completed"
-                          : selectedProjectForReview.status === "rejected"
+                          : selectedProjectForReview?.status === "rejected"
                           ? "status-pending"
                           : "status-progress"
                       }`}
                     >
-                      {selectedProjectForReview.status === "approved" &&
+                      {selectedProjectForReview?.status === "approved" &&
                         "✅ Approved"}
-                      {selectedProjectForReview.status === "rejected" &&
+                      {selectedProjectForReview?.status === "rejected" &&
                         "❌ Rejected"}
-                      {selectedProjectForReview.status === "pending-review" &&
+                      {selectedProjectForReview?.status === "pending-review" &&
                         "⏳ Pending Review"}
                     </span>
                   </div>
 
-                  <div className="form-review-details">
-                    <p>
-                      <strong>Submitted:</strong>{" "}
-                      {selectedProjectForReview.lastActivity}
-                    </p>
-                    {selectedProjectForReview.reviewedAt && (
-                      <p>
-                        <strong>Reviewed:</strong>{" "}
-                        {selectedProjectForReview.lastActivity}
-                      </p>
-                    )}
-                    {/* {selectedProjectForReview.name && (
-                      <div className="rejection-reason">
-                        <strong>Rejection Reason:</strong>
-                        <p>{0}</p>
-                      </div>
-                    )} */}
-                  </div>
-
                   <div className="form-data-preview">
-                    {Object.entries(formDataFromDB).map(
+                    {Object.entries(formData).map(
                       ([fieldKey, fieldValue], idx) => (
                         <div className="data-item" key={fieldKey || idx}>
                           <span className="data-label">
                             {capitalizeFirst(fieldKey)}:
                           </span>
 
-                          {/* Images (string starting with data:image/) */}
-                          {typeof fieldValue === "string" &&
-                          fieldValue.startsWith("data:image/") ? (
+                          {/* 🔹 Special handling for "photos" object */}
+                          {fieldKey.toLowerCase() === "photos" &&
+                          fieldValue &&
+                          typeof fieldValue === "object" ? (
+                            <div className="photo-list mt-2 space-y-3">
+                              {Object.entries(fieldValue).map(
+                                ([photoKey, url]) => {
+                                  const fullUrl = url.startsWith("http")
+                                    ? url
+                                    : `${BACKEND_API_BASE_URL}/${url}`;
+                                  return (
+                                    <div
+                                      key={photoKey}
+                                      className="photo-preview"
+                                    >
+                                      <p className="text-sm font-medium">
+                                        {photoKey}
+                                      </p>
+                                      <a
+                                        href={fullUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-blue-600 underline break-all"
+                                      >
+                                        
+                                      </a>
+                                      <img
+                                        src={fullUrl}
+                                        alt={photoKey}
+                                        className="mt-1 w-40 h-24 object-cover rounded border"
+                                      />
+                                    </div>
+                                  );
+                                }
+                              )}
+                            </div>
+                          ) : typeof fieldValue === "string" &&
+                            fieldValue.startsWith("data:image/") ? (
+                            /* Base64 inline image */
                             <img
                               src={fieldValue}
                               alt={fieldKey}
                               style={{
-                                maxWidth: "100px",
+                                maxWidth: "120px",
                                 border: "1px solid #ccc",
                               }}
                             />
@@ -954,7 +971,6 @@ const ETCAdminPanel = ({
                               <span className="data-value">[]</span>
                             ) : typeof fieldValue[0] === "object" &&
                               fieldValue[0] !== null ? (
-                              /* Array of objects → stack as subtables */
                               <div>
                                 {fieldValue.map((row, i) => (
                                   <div key={i}>
@@ -975,7 +991,6 @@ const ETCAdminPanel = ({
                                 ))}
                               </div>
                             ) : (
-                              /* Array of primitives → list */
                               <ul>
                                 {fieldValue.map((item, i) => (
                                   <li key={i}>
@@ -990,7 +1005,6 @@ const ETCAdminPanel = ({
                             fieldValue !== null ? (
                             /* Objects */
                             isObjectOfObjects(fieldValue) ? (
-                              /* Object of objects (e.g., accessories { "1": {...}, "2": {...} }) → each as its own subtable */
                               <div>
                                 {Object.entries(fieldValue).map(
                                   ([subKey, subVal]) => (
@@ -1017,7 +1031,6 @@ const ETCAdminPanel = ({
                                 )}
                               </div>
                             ) : (
-                              /* Plain object → single 2-column table */
                               <table>
                                 <tbody>
                                   {Object.entries(fieldValue).map(([k, v]) => (
@@ -1030,7 +1043,6 @@ const ETCAdminPanel = ({
                               </table>
                             )
                           ) : (
-                            /* Primitives fallback */
                             <span className="data-value">
                               {String(fieldValue)}
                             </span>
@@ -1040,9 +1052,7 @@ const ETCAdminPanel = ({
                     )}
                   </div>
                 </div>
-              ) : (
-                <p>No project selected for review.</p>
-              )}
+              ))}
             </div>
 
             <div className="stage-approval-actions">
@@ -1163,9 +1173,7 @@ const ETCAdminPanel = ({
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="text-blue-600 underline break-all"
-                                              >
-                                                
-                                              </a>
+                                              ></a>
                                               {/* Optional thumbnail preview */}
                                               <img
                                                 src={fullUrl}
