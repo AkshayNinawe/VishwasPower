@@ -1982,7 +1982,7 @@ const ETCAdminPanel = ({
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
                 <span style={{ fontSize: "1.5rem" }}>❌</span>
-                <h3>Reject Stage {rejectionStage}</h3>
+                <h3>Reject Stage {rejectionStage.stage}</h3>
               </div>
             </div>
             <p
