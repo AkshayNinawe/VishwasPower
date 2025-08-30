@@ -1149,7 +1149,7 @@ const ETCAdminPanel = ({
                                         ([photoKey, url]) => {
                                           const fullUrl = url.startsWith("http")
                                             ? url
-                                            : `http://localhost:7000/${url}`;
+                                            : `${BACKEND_API_BASE_URL}/${url}`;
                                           return (
                                             <div
                                               key={photoKey}
@@ -1164,7 +1164,7 @@ const ETCAdminPanel = ({
                                                 rel="noopener noreferrer"
                                                 className="text-blue-600 underline break-all"
                                               >
-                                                {fullUrl}
+                                                
                                               </a>
                                               {/* Optional thumbnail preview */}
                                               <img
