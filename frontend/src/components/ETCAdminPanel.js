@@ -405,7 +405,8 @@ const ETCAdminPanel = ({
       showNotification("No Project selected for review.", "error");
       return;
     }
-
+    stage.submittedStages[stage.stage]= false
+    stage.status = "rejected"
     setRejectionStage(stage);
     setRejectionReason("");
     setShowRejectionModal(true);
