@@ -884,7 +884,7 @@ const ETCAdminPanel = ({
               </div>
             </div>
 
-            <div className="forms-review-grid">
+            <div className="">
               {selectedProjectForReview ? (
                 <div
                   key={selectedProjectForReview.id}
@@ -1118,7 +1118,7 @@ const ETCAdminPanel = ({
                 <div key={stageKey} className="stage-forms-section">
                   <h3>{stageKey.replace("stage", "Stage ")} Forms</h3>
 
-                  <div className="forms-review-grid">
+                  <div className="">
                     {Object.entries(forms).map(([formKey, formData]) => (
                       <div
                         key={`${stageKey}-${formKey}`}
