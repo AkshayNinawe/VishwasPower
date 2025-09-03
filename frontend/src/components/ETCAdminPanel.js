@@ -405,8 +405,8 @@ const ETCAdminPanel = ({
       showNotification("No Project selected for review.", "error");
       return;
     }
-    stage.submittedStages[stage.stage]= false
-    stage.status = "rejected"
+    stage.submittedStages[stage.stage] = false;
+    stage.status = "rejected";
     setRejectionStage(stage);
     setRejectionReason("");
     setShowRejectionModal(true);
@@ -992,19 +992,24 @@ const ETCAdminPanel = ({
                                 }
                               )}
                             </div>
-                          ) : typeof fieldValue === "string" &&
+                          ) : typeof fieldValue === "string" ? (
+                            /* 🔹 Strings */
                             fieldValue.startsWith("data:image/") ? (
-                            /* Base64 inline image */
-                            <img
-                              src={fieldValue}
-                              alt={fieldKey}
-                              style={{
-                                maxWidth: "120px",
-                                border: "1px solid #ccc",
-                              }}
-                            />
+                              <img
+                                src={fieldValue}
+                                alt={fieldKey}
+                                style={{
+                                  maxWidth: "120px",
+                                  border: "1px solid #ccc",
+                                }}
+                              />
+                            ) : (
+                              <span className="data-value">
+                                {String(fieldValue)}
+                              </span>
+                            )
                           ) : Array.isArray(fieldValue) ? (
-                            /* Arrays */
+                            /* 🔹 Arrays */
                             fieldValue.length === 0 ? (
                               <span className="data-value">[]</span>
                             ) : typeof fieldValue[0] === "object" &&
@@ -1020,7 +1025,21 @@ const ETCAdminPanel = ({
                                         {Object.entries(row).map(([k, v]) => (
                                           <tr key={k}>
                                             <td>{capitalizeFirst(k)}</td>
-                                            <td>{renderPrimitiveCell(v, k)}</td>
+                                            <td>
+                                              {typeof v === "string" &&
+                                              v.startsWith("data:image/") ? (
+                                                <img
+                                                  src={v}
+                                                  alt={k}
+                                                  style={{
+                                                    maxWidth: "120px",
+                                                    border: "1px solid #ccc",
+                                                  }}
+                                                />
+                                              ) : (
+                                                renderPrimitiveCell(v, k)
+                                              )}
+                                            </td>
                                           </tr>
                                         ))}
                                       </tbody>
@@ -1032,16 +1051,28 @@ const ETCAdminPanel = ({
                               <ul>
                                 {fieldValue.map((item, i) => (
                                   <li key={i}>
-                                    {typeof item === "object"
-                                      ? JSON.stringify(item, null, 2)
-                                      : String(item)}
+                                    {typeof item === "string" &&
+                                    item.startsWith("data:image/") ? (
+                                      <img
+                                        src={item}
+                                        alt={`${fieldKey}-${i}`}
+                                        style={{
+                                          maxWidth: "120px",
+                                          border: "1px solid #ccc",
+                                        }}
+                                      />
+                                    ) : typeof item === "object" ? (
+                                      JSON.stringify(item, null, 2)
+                                    ) : (
+                                      String(item)
+                                    )}
                                   </li>
                                 ))}
                               </ul>
                             )
                           ) : typeof fieldValue === "object" &&
                             fieldValue !== null ? (
-                            /* Objects */
+                            /* 🔹 Objects */
                             isObjectOfObjects(fieldValue) ? (
                               <div>
                                 {Object.entries(fieldValue).map(
@@ -1057,7 +1088,22 @@ const ETCAdminPanel = ({
                                               <tr key={k}>
                                                 <td>{capitalizeFirst(k)}</td>
                                                 <td>
-                                                  {renderPrimitiveCell(v, k)}
+                                                  {typeof v === "string" &&
+                                                  v.startsWith(
+                                                    "data:image/"
+                                                  ) ? (
+                                                    <img
+                                                      src={v}
+                                                      alt={k}
+                                                      style={{
+                                                        maxWidth: "120px",
+                                                        border:
+                                                          "1px solid #ccc",
+                                                      }}
+                                                    />
+                                                  ) : (
+                                                    renderPrimitiveCell(v, k)
+                                                  )}
                                                 </td>
                                               </tr>
                                             )
@@ -1074,13 +1120,28 @@ const ETCAdminPanel = ({
                                   {Object.entries(fieldValue).map(([k, v]) => (
                                     <tr key={k}>
                                       <td>{capitalizeFirst(k)}</td>
-                                      <td>{renderPrimitiveCell(v, k)}</td>
+                                      <td>
+                                        {typeof v === "string" &&
+                                        v.startsWith("data:image/") ? (
+                                          <img
+                                            src={v}
+                                            alt={k}
+                                            style={{
+                                              maxWidth: "120px",
+                                              border: "1px solid #ccc",
+                                            }}
+                                          />
+                                        ) : (
+                                          renderPrimitiveCell(v, k)
+                                        )}
+                                      </td>
                                     </tr>
                                   ))}
                                 </tbody>
                               </table>
                             )
                           ) : (
+                            /* 🔹 Fallback */
                             <span className="data-value">
                               {String(fieldValue)}
                             </span>
@@ -1543,7 +1604,9 @@ const ETCAdminPanel = ({
                     <h3>{Company.companyName}</h3>
                     <p>{Company.companyDescription}</p>
                     <div className="Company-footer">
-                      <span>🏢 {CompanyCompanies.length} companies</span>
+                      <span>
+                        🏢 {Company?.companyProjects?.length} companies
+                      </span>
                       <span>📅 {Company.createdAt}</span>
                     </div>
                     <div
@@ -1574,7 +1637,7 @@ const ETCAdminPanel = ({
                           transition: "all 0.3s ease",
                         }}
                       >
-                        🗑️ Delete 
+                        🗑️ Delete
                       </button>
                       <button
                         onClick={(e) => {
