@@ -1,67 +1,59 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { BACKEND_API_BASE_URL, additionalLogging } from "./constant";
-import FormStage from "./FormStage"; // Import FormStage
-import "./stage-review-styles.css";
+import { useState, useEffect } from "react"
+import axios from "axios"
+import { BACKEND_API_BASE_URL, additionalLogging } from "./constant"
+import FormStage from "./FormStage" // Import FormStage
+import "./stage-review-styles.css"
 
-const ETCAdminPanel = ({
-  user,
-  selectedCompany,
-  onLogout,
-  onCompanySelect,
-  onProjectSelect,
-  onBackToMain,
-}) => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [departments, setDepartments] = useState([]);
-  const [Companys, setCompanys] = useState([]);
-  const [companies, setCompanies] = useState([]);
-  const [submittedForms, setSubmittedForms] = useState([]);
+const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onProjectSelect, onBackToMain }) => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [departments, setDepartments] = useState([])
+  const [Companys, setCompanys] = useState([])
+  const [companies, setCompanies] = useState([])
+  const [submittedForms, setSubmittedForms] = useState([])
 
-  const [projectName, setProjectName] = useState(null);
-  const [companyName, setCompanyName] = useState(null);
+  const [projectName, setProjectName] = useState(null)
+  const [companyName, setCompanyName] = useState(null)
 
-  const [selectedDepartment, setSelectedDepartment] = useState(null);
-  const [selectedMainCompany, setSelectedMainCompany] = useState(null);
+  const [selectedDepartment, setSelectedDepartment] = useState(null)
+  const [selectedMainCompany, setSelectedMainCompany] = useState(null)
 
-  const [newCompany, setNewCompany] = useState({ name: "", description: "" });
-  const [showCreateCompanyForm, setShowCreateCompanyForm] = useState(false);
+  const [newCompany, setNewCompany] = useState({ name: "", description: "" })
+  const [showCreateCompanyForm, setShowCreateCompanyForm] = useState(false)
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [reviewMode, setReviewMode] = useState(false);
-  const [selectedProjectForReview, setSelectedProjectForReview] =
-    useState(null);
-  const [currentStageReview, setCurrentStageReview] = useState(1);
-  const [showSubmitterReview, setShowSubmitterReview] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("")
+  const [reviewMode, setReviewMode] = useState(false)
+  const [selectedProjectForReview, setSelectedProjectForReview] = useState(null)
+  const [currentStageReview, setCurrentStageReview] = useState(1)
+  const [showSubmitterReview, setShowSubmitterReview] = useState(false)
 
   // State for showing and managing FormStage
-  const [formDataFromDB, setFormDataFromDB] = useState(false);
-  const [showFormStage, setShowFormStage] = useState(false);
-  const [formStageProject, setFormStageProject] = useState(null);
-  const [formStageStage, setFormStageStage] = useState(1);
+  const [formDataFromDB, setFormDataFromDB] = useState(false)
+  const [showFormStage, setShowFormStage] = useState(false)
+  const [formStageProject, setFormStageProject] = useState(null)
+  const [formStageStage, setFormStageStage] = useState(1)
 
   // Modal states for replacing alerts and prompts
-  const [showNotificationModal, setShowNotificationModal] = useState(false);
-  const [notificationMessage, setNotificationMessage] = useState("");
-  const [notificationType, setNotificationType] = useState("info"); // info, success, error, warning
+  const [showNotificationModal, setShowNotificationModal] = useState(false)
+  const [notificationMessage, setNotificationMessage] = useState("")
+  const [notificationType, setNotificationType] = useState("info") // info, success, error, warning
 
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [confirmMessage, setConfirmMessage] = useState("");
-  const [confirmAction, setConfirmAction] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false)
+  const [confirmMessage, setConfirmMessage] = useState("")
+  const [confirmAction, setConfirmAction] = useState(null)
 
-  const [showInputModal, setShowInputModal] = useState(false);
-  const [inputModalTitle, setInputModalTitle] = useState("");
-  const [inputModalPlaceholder, setInputModalPlaceholder] = useState("");
-  const [inputModalValue, setInputModalValue] = useState("");
-  const [inputModalAction, setInputModalAction] = useState(null);
+  const [showInputModal, setShowInputModal] = useState(false)
+  const [inputModalTitle, setInputModalTitle] = useState("")
+  const [inputModalPlaceholder, setInputModalPlaceholder] = useState("")
+  const [inputModalValue, setInputModalValue] = useState("")
+  const [inputModalAction, setInputModalAction] = useState(null)
 
-  const [showRejectionModal, setShowRejectionModal] = useState(false);
-  const [rejectionStage, setRejectionStage] = useState(null);
-  const [rejectionReason, setRejectionReason] = useState("");
+  const [showRejectionModal, setShowRejectionModal] = useState(false)
+  const [rejectionStage, setRejectionStage] = useState(null)
+  const [rejectionReason, setRejectionReason] = useState("")
 
-  const totalStageForm = [5, 2, 3, 4, 2, 1];
+  const totalStageForm = [5, 2, 3, 4, 2, 1]
 
   // Default data for initialization
   const defaultDepartments = [
@@ -82,12 +74,11 @@ const ETCAdminPanel = ({
     {
       id: 3,
       name: "V Connected 63 MVA Transformer",
-      description:
-        "V Connected 63 MVA transformer department for high voltage systems",
+      description: "V Connected 63 MVA transformer department for high voltage systems",
       icon: "🔌",
       color: "#047857",
     },
-  ];
+  ]
 
   const defaultCompanys = [
     {
@@ -114,38 +105,38 @@ const ETCAdminPanel = ({
       createdAt: "2024-02-15",
       departmentId: 3,
     },
-  ];
+  ]
 
-  const defaultCompanies = [];
-  const mockSubmittedForms = [];
+  const defaultCompanies = []
+  const mockSubmittedForms = []
 
   // Helper functions for modals
   const showNotification = (message, type = "info") => {
-    setNotificationMessage(message);
-    setNotificationType(type);
-    setShowNotificationModal(true);
-  };
+    setNotificationMessage(message)
+    setNotificationType(type)
+    setShowNotificationModal(true)
+  }
 
   const showConfirmDialog = (message, action) => {
-    setConfirmMessage(message);
-    setConfirmAction(() => action);
-    setShowConfirmModal(true);
-  };
+    setConfirmMessage(message)
+    setConfirmAction(() => action)
+    setShowConfirmModal(true)
+  }
 
   const showInputDialog = (title, placeholder, action) => {
-    setInputModalTitle(title);
-    setInputModalPlaceholder(placeholder);
-    setInputModalValue("");
-    setInputModalAction(() => action);
-    setShowInputModal(true);
-  };
+    setInputModalTitle(title)
+    setInputModalPlaceholder(placeholder)
+    setInputModalValue("")
+    setInputModalAction(() => action)
+    setShowInputModal(true)
+  }
 
   // Load data from localStorage on component mount
   useEffect(() => {
-    setDepartments(defaultDepartments);
-    var backendSavedCompanys = [];
+    setDepartments(defaultDepartments)
+    var backendSavedCompanys = []
     if (additionalLogging) {
-      console.log("Frontend : From UseEffect get call to api/company");
+      console.log("Frontend : From UseEffect get call to api/company")
     }
     axios
       .get(`${BACKEND_API_BASE_URL}/api/company`, {
@@ -155,19 +146,19 @@ const ETCAdminPanel = ({
         },
       })
       .then((response) => {
-        backendSavedCompanys = response.data;
+        backendSavedCompanys = response.data
 
-        setCompanys(backendSavedCompanys);
+        setCompanys(backendSavedCompanys)
       })
       .catch((error) => {
-        console.error("Error creating company on the backend:", error);
-        alert("Failed to create company. Please try again.");
-      });
-  }, []);
+        console.error("Error creating company on the backend:", error)
+        alert("Failed to create company. Please try again.")
+      })
+  }, [])
 
   const handleCreateCompany = async () => {
     if (newCompany.name && newCompany.description && selectedDepartment) {
-      const CompanyId = Math.max(...Companys.map((p) => p.id), 0) + 1;
+      const CompanyId = Math.max(...Companys.map((p) => p.id), 0) + 1
 
       const Company = {
         id: CompanyId,
@@ -176,117 +167,90 @@ const ETCAdminPanel = ({
         status: "active",
         createdAt: new Date().toISOString().split("T")[0],
         departmentId: selectedDepartment.id,
-      };
+      }
 
       try {
         if (additionalLogging) {
-          console.log(
-            "Frontend : From handleCreateCompany post call to api/company"
-          );
+          console.log("Frontend : From handleCreateCompany post call to api/company")
         }
-        const response = await axios.post(
-          `${BACKEND_API_BASE_URL}/api/company`,
-          {
-            companyName: newCompany.name,
-            companyDescription: newCompany.description,
-          }
-        );
-        console.log(
-          "company created successfully on the backend:",
-          response.data
-        );
+        const response = await axios.post(`${BACKEND_API_BASE_URL}/api/company`, {
+          companyName: newCompany.name,
+          companyDescription: newCompany.description,
+        })
+        console.log("company created successfully on the backend:", response.data)
       } catch (error) {
-        console.error("Error creating company on the backend:", error);
-        alert("Failed to create company. Please try again.");
-        return;
+        console.error("Error creating company on the backend:", error)
+        alert("Failed to create company. Please try again.")
+        return
       }
 
-      setCompanys([...Companys, Company]);
+      setCompanys([...Companys, Company])
       // setNewCompany({ name: "", description: "" })
-      setShowCreateCompanyForm(false);
+      setShowCreateCompanyForm(false)
       showNotification(
         `Company "${Company.companyName}" created successfully in ${selectedDepartment.name}!`,
-        "success"
-      );
+        "success",
+      )
     }
-  };
+  }
 
   const handleAddProject = (CompanyName) => {
-    showInputDialog(
-      "Create New Project",
-      "Enter Project name...",
-      async (ProjectName) => {
-        if (ProjectName.trim()) {
-          const newProject = {
-            id: Math.max(...companies.map((c) => c.id), 0) + 1,
-            name: ProjectName,
-            companyName: CompanyName,
-            stage: 1,
-            formsCompleted: 0,
-            totalForms: getStageFormCount(1),
-            status: "in-progress",
-            lastActivity: new Date().toISOString().split("T")[0],
-            stageApprovals: {
-              1: false,
-              2: false,
-              3: false,
-              4: false,
-              5: false,
-              6: false,
-            },
-            submittedStages: {
-              1: false,
-              2: false,
-              3: false,
-              4: false,
-              5: false,
-              6: false,
-            },
-          };
-          try {
-            // --- UPDATED POST REQUEST ---
-            // We are now sending both the projectName and the CompanyId in the payload.
-            if (additionalLogging) {
-              console.log(
-                "Frontend : From handleAddProject post call to api/company/addCompany"
-              );
-            }
-            const response = await axios.post(
-              `${BACKEND_API_BASE_URL}/api/company/addCompany`,
-              {
-                projectName: ProjectName,
-                companyName: CompanyName, // Pass the CompanyId to the backend
-                companyProjects: newProject,
-              }
-            );
-
-            console.log(
-              "Project created successfully on the backend:",
-              response.data
-            );
-
-            selectedMainCompany.companyProjects =
-              selectedMainCompany.companyProjects ?? [];
-            selectedMainCompany.companyProjects.push(newProject);
-
-            setCompanies((prev) => [...prev, newProject]);
-            showNotification(
-              `Project "${ProjectName}" added to this Company!`,
-              "success"
-            );
-          } catch (error) {
-            console.error("Error creating project on the backend:", error);
-
-            showNotification(
-              "Failed to create project. Please try again.",
-              "error"
-            );
-            return;
+    showInputDialog("Create New Project", "Enter Project name...", async (ProjectName) => {
+      if (ProjectName.trim()) {
+        const newProject = {
+          id: Math.max(...companies.map((c) => c.id), 0) + 1,
+          name: ProjectName,
+          companyName: CompanyName,
+          stage: 1,
+          formsCompleted: 0,
+          totalForms: getStageFormCount(1),
+          status: "in-progress",
+          lastActivity: new Date().toISOString().split("T")[0],
+          stageApprovals: {
+            1: false,
+            2: false,
+            3: false,
+            4: false,
+            5: false,
+            6: false,
+          },
+          submittedStages: {
+            1: false,
+            2: false,
+            3: false,
+            4: false,
+            5: false,
+            6: false,
+          },
+        }
+        try {
+          // --- UPDATED POST REQUEST ---
+          // We are now sending both the projectName and the CompanyId in the payload.
+          if (additionalLogging) {
+            console.log("Frontend : From handleAddProject post call to api/company/addCompany")
           }
+          const response = await axios.post(`${BACKEND_API_BASE_URL}/api/company/addCompany`, {
+            projectName: ProjectName,
+            companyName: CompanyName, // Pass the CompanyId to the backend
+            companyProjects: newProject,
+          })
+
+          console.log("Project created successfully on the backend:", response.data)
+
+          selectedMainCompany.companyProjects = selectedMainCompany.companyProjects ?? []
+          selectedMainCompany.companyProjects.push(newProject)
+
+          setCompanies((prev) => [...prev, newProject])
+          showNotification(`Project "${ProjectName}" added to this Company!`, "success")
+        } catch (error) {
+          console.error("Error creating project on the backend:", error)
+
+          showNotification("Failed to create project. Please try again.", "error")
+          return
         }
       }
-    );
-  };
+    })
+  }
 
   // Helper function to get form count for each stage
   const getStageFormCount = (stage) => {
@@ -297,73 +261,60 @@ const ETCAdminPanel = ({
       4: 6, // Stage 4 has 6 forms
       5: 1, // Stage 5 has 1 form
       6: 1, // Stage 6 has 1 form
-    };
-    return stageForms[stage] || 1;
-  };
+    }
+    return stageForms[stage] || 1
+  }
 
   const handleReviewStage = async (Project, stage) => {
     if (Project.status !== "pending-approval") {
-      showNotification(`No forms submitted for Stage ${stage} yet.`, "warning");
-      return;
+      showNotification(`No forms submitted for Stage ${stage} yet.`, "warning")
+      return
     }
     try {
-      const response = await axios.post(
-        `${BACKEND_API_BASE_URL}/api/data/getStageTable`,
-        {
-          projectName: Project.name,
-          companyName: Project.companyName,
-          stage: Project.stage,
-        }
-      );
+      const response = await axios.post(`${BACKEND_API_BASE_URL}/api/data/getStageTable`, {
+        projectName: Project.name,
+        companyName: Project.companyName,
+        stage: Project.stage,
+      })
       console.log(
         `Complete data has been provided for ${Project.companyName} and projectName ${Project.name}`,
-        response.data
-      );
-      setFormDataFromDB(response.data.data);
+        response.data,
+      )
+      setFormDataFromDB(response.data.data)
     } catch (error) {
-      console.error("Error creating company on the backend:", error);
-      alert("Failed to create company. Please try again.");
-      return;
+      console.error("Error creating company on the backend:", error)
+      alert("Failed to create company. Please try again.")
+      return
     }
 
-    setSelectedProjectForReview(Project);
-    setCurrentStageReview(stage);
-    setReviewMode(true);
-  };
+    setSelectedProjectForReview(Project)
+    setCurrentStageReview(stage)
+    setReviewMode(true)
+  }
 
   const handleApproveStage = async (stage) => {
     try {
       if (additionalLogging) {
-        console.log(
-          "Frontend : From handleApproveStage post call to api/company/approveCompanyStage"
-        );
+        console.log("Frontend : From handleApproveStage post call to api/company/approveCompanyStage")
       }
-      const response = await axios.post(
-        `${BACKEND_API_BASE_URL}/api/company/approveCompanyStage`,
-        {
-          companyName: selectedProjectForReview.companyName,
-          projectName: selectedProjectForReview.name,
-          stage: selectedProjectForReview.stage,
-        }
-      );
-      console.log(
-        "company created successfully on the backend:",
-        response.data
-      );
+      const response = await axios.post(`${BACKEND_API_BASE_URL}/api/company/approveCompanyStage`, {
+        companyName: selectedProjectForReview.companyName,
+        projectName: selectedProjectForReview.name,
+        stage: selectedProjectForReview.stage,
+      })
+      console.log("company created successfully on the backend:", response.data)
     } catch (error) {
-      console.error("Error creating company on the backend:", error);
-      alert("Failed to create company. Please try again.");
-      return;
+      console.error("Error creating company on the backend:", error)
+      alert("Failed to create company. Please try again.")
+      return
     }
 
     if (!selectedProjectForReview) {
-      showNotification("No Project selected for review.", "error");
-      return;
+      showNotification("No Project selected for review.", "error")
+      return
     }
 
-    console.log(
-      `Approving stage ${stage} for Project ${selectedProjectForReview.name}`
-    );
+    console.log(`Approving stage ${stage} for Project ${selectedProjectForReview.name}`)
 
     setSelectedMainCompany((prevCompany) => ({
       ...prevCompany,
@@ -372,7 +323,7 @@ const ETCAdminPanel = ({
           prevCompany.companyName === selectedProjectForReview.companyName &&
           project.name === selectedProjectForReview.name
         ) {
-          const currentStage = project.stage;
+          const currentStage = project.stage
           return {
             ...project,
             stage: currentStage !== 6 ? currentStage + 1 : currentStage,
@@ -381,63 +332,56 @@ const ETCAdminPanel = ({
               ...project.stageApprovals,
               [currentStage]: true,
             },
-          };
+          }
         }
-        return project; // unchanged projects
+        return project // unchanged projects
       }),
-    }));
+    }))
 
     showNotification(
       `Stage ${stage} approved for ${selectedProjectForReview.name}! ${
-        stage === 6
-          ? "Project completed all stages."
-          : `Stage ${stage + 1} is now available.`
+        stage === 6 ? "Project completed all stages." : `Stage ${stage + 1} is now available.`
       }`,
-      "success"
-    );
-    setReviewMode(false);
-    setSelectedProjectForReview(null);
-    setCurrentStageReview(1);
-  };
+      "success",
+    )
+    setReviewMode(false)
+    setSelectedProjectForReview(null)
+    setCurrentStageReview(1)
+  }
 
   const handleRejectStage = (stage) => {
     if (!selectedProjectForReview) {
-      showNotification("No Project selected for review.", "error");
-      return;
+      showNotification("No Project selected for review.", "error")
+      return
     }
-
-    setRejectionStage(stage);
-    setRejectionReason("");
-    setShowRejectionModal(true);
-  };
+    stage.submittedStages[stage.stage] = false
+    stage.status = "rejected"
+    setRejectionStage(stage)
+    setRejectionReason("")
+    setShowRejectionModal(true)
+  }
 
   const confirmRejectStage = () => {
     if (!rejectionReason.trim()) {
-      showNotification(
-        "Please provide a reason for rejecting this stage.",
-        "warning"
-      );
-      return;
+      showNotification("Please provide a reason for rejecting this stage.", "warning")
+      return
     }
 
-    console.log(
-      `Rejecting stage ${rejectionStage} for Project ${selectedProjectForReview.name}`
-    );
+    console.log(`Rejecting stage ${rejectionStage} for Project ${selectedProjectForReview.name}`)
 
     // Update submitted forms status
     setSubmittedForms((forms) =>
       forms.map((form) =>
-        form.ProjectId === selectedProjectForReview.id &&
-        form.stage === rejectionStage
+        form.ProjectId === selectedProjectForReview.id && form.stage === rejectionStage
           ? {
               ...form,
               status: "rejected",
               rejectionReason,
               reviewedAt: new Date().toISOString().split("T")[0],
             }
-          : form
-      )
-    );
+          : form,
+      ),
+    )
 
     // Reset Project stage submission status
     setCompanies((companies) =>
@@ -458,145 +402,124 @@ const ETCAdminPanel = ({
               totalForms: getStageFormCount(rejectionStage), // Reset total forms for current stage
               lastActivity: new Date().toISOString().split("T")[0],
             }
-          : Project
-      )
-    );
+          : Project,
+      ),
+    )
 
     showNotification(
       `Stage ${rejectionStage} rejected for ${selectedProjectForReview.name}. Project needs to resubmit forms.`,
-      "warning"
-    );
-    setShowRejectionModal(false);
-    setRejectionStage(null);
-    setRejectionReason("");
-    setReviewMode(false);
-    setSelectedProjectForReview(null);
-    setCurrentStageReview(1);
-  };
+      "warning",
+    )
+    setShowRejectionModal(false)
+    setRejectionStage(null)
+    setRejectionReason("")
+    setReviewMode(false)
+    setSelectedProjectForReview(null)
+    setCurrentStageReview(1)
+  }
 
   const handleViewSubmittedForms = async (Project) => {
-    console.log("Fronend : handleViewSubmittedForm ");
+    console.log("Fronend : handleViewSubmittedForm ")
     try {
       if (additionalLogging) {
-        console.log(
-          "Frontend : From handleCreateCompany post call to api/company"
-        );
+        console.log("Frontend : From handleCreateCompany post call to api/company")
       }
-      const response = await axios.post(
-        `${BACKEND_API_BASE_URL}/api/data/getCompleteTable`,
-        {
-          projectName: Project.name,
-          companyName: Project.companyName,
-        }
-      );
+      const response = await axios.post(`${BACKEND_API_BASE_URL}/api/data/getCompleteTable`, {
+        projectName: Project.name,
+        companyName: Project.companyName,
+      })
       console.log(
         `Complete data has been provided for ${Project.companyName} and projectName ${Project.name}`,
-        response.data
-      );
-      setFormDataFromDB(response.data.data.autoTransformerData);
+        response.data,
+      )
+      setFormDataFromDB(response.data.data.autoTransformerData)
     } catch (error) {
-      console.error("Error creating company on the backend:", error);
+      console.error("Error creating company on the backend:", error)
 
       if (error.response?.status === 404) {
         // ✅ Custom message for 404
-        alert("Please fill the forms first");
+        alert("Please fill the forms first")
       } else {
-        alert(
-          `Failed to load submitted forms: ${
-            error.response?.data?.message || error.message
-          }`
-        );
+        alert(`Failed to load submitted forms: ${error.response?.data?.message || error.message}`)
       }
-      return;
+      return
     }
-    setSelectedProjectForReview(Project);
-    setShowSubmitterReview(true);
-  };
+    setSelectedProjectForReview(Project)
+    setShowSubmitterReview(true)
+  }
 
   const handleBackFromReview = () => {
-    setReviewMode(false);
-    setShowSubmitterReview(false);
-    setSelectedProjectForReview(null);
-    setCurrentStageReview(1);
-  };
+    setReviewMode(false)
+    setShowSubmitterReview(false)
+    setSelectedProjectForReview(null)
+    setCurrentStageReview(1)
+  }
 
   const getStatusColor = (status) => {
     switch (status) {
       case "completed":
-        return "status-completed";
+        return "status-completed"
       case "in-progress":
-        return "status-progress";
+        return "status-progress"
       case "pending-approval":
-        return "status-pending";
+        return "status-pending"
       default:
-        return "status-default";
+        return "status-default"
     }
-  };
+  }
 
   const getStageStatus = (project, stageNumber) => {
     if (project.stageApprovals?.[stageNumber]) {
-      return "approved";
+      return "approved"
     }
     if (project.submittedStages?.[stageNumber]) {
-      return "pending-review";
+      return "pending-review"
     }
     if (project.stage === stageNumber) {
-      return "available";
+      return "available"
     }
-    return "locked";
-  };
+    return "locked"
+  }
 
   const getDepartmentCompanys = (departmentId) => {
-    return Companys.filter((Company) => Company.departmentId === departmentId);
-  };
+    return Companys.filter((Company) => Company.departmentId === departmentId)
+  }
 
   const getCompanyCompanies = (CompanyId) => {
-    return companies.filter((Project) => Project.CompanyId === CompanyId);
-  };
+    return companies.filter((Project) => Project.CompanyId === CompanyId)
+  }
 
   const currentStageForms = reviewMode
     ? submittedForms.filter(
-        (form) =>
-          form.ProjectId === selectedProjectForReview.id &&
-          form.stage === currentStageReview
+        (form) => form.ProjectId === selectedProjectForReview.id && form.stage === currentStageReview,
       )
-    : [];
+    : []
 
   const allProjectForms = showSubmitterReview
-    ? submittedForms.filter(
-        (form) => form.ProjectId === selectedProjectForReview.id
-      )
-    : [];
+    ? submittedForms.filter((form) => form.ProjectId === selectedProjectForReview.id)
+    : []
 
   const handleLogoutAndClearData = () => {
-    localStorage.removeItem("etc_Companys");
-    localStorage.removeItem("etc_companies");
-    localStorage.removeItem("etc_submitted_forms");
+    localStorage.removeItem("etc_Companys")
+    localStorage.removeItem("etc_companies")
+    localStorage.removeItem("etc_submitted_forms")
 
-    setCompanys([]);
-    setCompanies([]);
-    setSubmittedForms([]);
-    setSelectedDepartment(null);
-    setSelectedMainCompany(null);
-    setSelectedProjectForReview(null);
-    setReviewMode(false);
-    setShowSubmitterReview(false);
-    setShowFormStage(false);
+    setCompanys([])
+    setCompanies([])
+    setSubmittedForms([])
+    setSelectedDepartment(null)
+    setSelectedMainCompany(null)
+    setSelectedProjectForReview(null)
+    setReviewMode(false)
+    setShowSubmitterReview(false)
+    setShowFormStage(false)
 
-    onLogout();
-  };
+    onLogout()
+  }
 
   // Function to handle form submission from FormStage
-  const handleFormStageSubmit = (
-    stage,
-    submittedData,
-    selectedProjectForReview
-  ) => {
-    console.log(
-      `Submittingsds forms for stage ${stage}:`,
-      submittedData,
-      selectedProjectForReview
-    );
+  const handleFormStageSubmit = (stage, submittedData, selectedProjectForReview) => {
+    console.log(`Submittingsds forms for stage ${stage}:`, submittedData, selectedProjectForReview)
 
     const newFormEntry = {
       id: Math.max(...submittedForms.map((f) => f.id), 0) + 1,
@@ -606,121 +529,96 @@ const ETCAdminPanel = ({
       submittedAt: new Date().toISOString().split("T")[0],
       status: "pending-review",
       data: submittedData,
-    };
+    }
 
-    console.log(`Submitting forms for stagew ${stage}:`, newFormEntry);
+    console.log(`Submitting forms for stagew ${stage}:`, newFormEntry)
 
-    setSubmittedForms((prev) => [...prev, newFormEntry]);
+    setSubmittedForms((prev) => [...prev, newFormEntry])
 
     // Update Project to show forms submitted and pending approval
 
-    showNotification(
-      `Forms for Stage ${stage} submitted successfully! Waiting for ETC Admin approval.`,
-      "success"
-    );
-    setShowFormStage(false);
-    setFormStageProject(null);
-    setFormStageStage(1);
-  };
+    showNotification(`Forms for Stage ${stage} submitted successfully! Waiting for ETC Admin approval.`, "success")
+    setShowFormStage(false)
+    setFormStageProject(null)
+    setFormStageStage(1)
+  }
 
   // Function to go back from FormStage
   const handleBackFromFormStage = () => {
-    setShowFormStage(false);
-    setFormStageProject(null);
-    setFormStageStage(1);
-  };
+    setShowFormStage(false)
+    setFormStageProject(null)
+    setFormStageStage(1)
+  }
 
-  const capitalizeFirst = (s) =>
-    typeof s === "string" && s.length
-      ? s.charAt(0).toUpperCase() + s.slice(1)
-      : s;
+  const capitalizeFirst = (s) => (typeof s === "string" && s.length ? s.charAt(0).toUpperCase() + s.slice(1) : s)
 
   const isObjectOfObjects = (obj) =>
     obj &&
     typeof obj === "object" &&
     !Array.isArray(obj) &&
-    Object.values(obj).every(
-      (v) => v && typeof v === "object" && !Array.isArray(v)
-    );
+    Object.values(obj).every((v) => v && typeof v === "object" && !Array.isArray(v))
 
   const renderPrimitiveCell = (val, labelForImg = "") => {
     if (typeof val === "string" && val.startsWith("data:image/")) {
       return (
         <img
-          src={val}
+          src={val || "/placeholder.svg"}
           alt={labelForImg || "image"}
           style={{ maxWidth: "100px", border: "1px solid #ccc" }}
         />
-      );
+      )
     }
     if (Array.isArray(val)) {
-      return JSON.stringify(val);
+      return JSON.stringify(val)
     }
-    return String(val);
-  };
+    return String(val)
+  }
 
   const handleStageSubmit = async (Project) => {
-    const nextStage = Project.stage;
-    const canSubmit = nextStage === 1 || Project.stageApprovals[nextStage - 1];
-    setProjectName(Project.name);
-    setCompanyName(Project.companyName);
+    const nextStage = Project.stage
+    const canSubmit = nextStage === 1 || Project.stageApprovals[nextStage - 1]
+    setProjectName(Project.name)
+    setCompanyName(Project.companyName)
 
     if (canSubmit && !Project.submittedStages[nextStage]) {
-      setFormStageProject(Project);
-      setFormStageStage(nextStage);
-      setShowFormStage(true);
+      setFormStageProject(Project)
+      setFormStageStage(nextStage)
+      setShowFormStage(true)
     } else if (Project.submittedStages[nextStage]) {
-      showNotification(
-        `Stage ${nextStage} forms already submitted!`,
-        "warning"
-      );
+      showNotification(`Stage ${nextStage} forms already submitted!`, "warning")
     } else {
-      showNotification(
-        `Stage ${nextStage - 1} must be approved first!`,
-        "warning"
-      );
+      showNotification(`Stage ${nextStage - 1} must be approved first!`, "warning")
     }
-  };
+  }
 
   const handleProjectDelete = async (Project) => {
     const confirmDelete = window.confirm(
-      `Are you sure you want to delete project "${Project.name}" from company "${Project.companyName}"?`
-    );
+      `Are you sure you want to delete project "${Project.name}" from company "${Project.companyName}"?`,
+    )
 
     if (!confirmDelete) {
       // User clicked "Cancel"
-      return;
+      return
     }
 
     try {
       if (additionalLogging) {
-        console.log(
-          "Frontend : From handleDeleteProject delete call to api/company/deleteProject"
-        );
+        console.log("Frontend : From handleDeleteProject delete call to api/company/deleteProject")
       }
 
       // ✅ Axios DELETE requires "data" wrapper for body
-      const response = await axios.delete(
-        `${BACKEND_API_BASE_URL}/api/company/deleteProject`,
-        {
-          data: {
-            projectName: Project.name,
-            companyName: Project.companyName,
-          },
-        }
-      );
+      const response = await axios.delete(`${BACKEND_API_BASE_URL}/api/company/deleteProject`, {
+        data: {
+          projectName: Project.name,
+          companyName: Project.companyName,
+        },
+      })
 
-      console.log("Project deleted successfully from backend:", response.data);
+      console.log("Project deleted successfully from backend:", response.data)
 
-      selectedMainCompany.companyProjects = (
-        selectedMainCompany.companyProjects ?? []
-      ).filter(
-        (proj) =>
-          !(
-            proj.companyName === Project.companyName &&
-            proj.name === Project.name
-          )
-      );
+      selectedMainCompany.companyProjects = (selectedMainCompany.companyProjects ?? []).filter(
+        (proj) => !(proj.companyName === Project.companyName && proj.name === Project.name),
+      )
 
       // ✅ Update frontend state by filtering out the deleted project
       setCompanies((prev) =>
@@ -729,26 +627,111 @@ const ETCAdminPanel = ({
             ? {
                 ...company,
                 companyProjects: (company.companyProjects ?? []).filter(
-                  (proj) =>
-                    !(
-                      proj.companyName === Project.companyName &&
-                      proj.name === Project.name
-                    )
+                  (proj) => !(proj.companyName === Project.companyName && proj.name === Project.name),
                 ),
               }
-            : company
-        )
-      );
+            : company,
+        ),
+      )
 
-      showNotification(
-        `Project "${Project.name}" deleted successfully!`,
-        "success"
-      );
+      showNotification(`Project "${Project.name}" deleted successfully!`, "success")
     } catch (error) {
-      console.error("Error deleting project on the backend:", error);
-      showNotification("Failed to delete project. Please try again.", "error");
+      console.error("Error deleting project on the backend:", error)
+      showNotification("Failed to delete project. Please try again.", "error")
     }
-  };
+  }
+
+  const handleCompanyDelete = async (company) => {
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete company "${company.companyName}" and all its projects?`,
+    )
+
+    if (!confirmDelete) return
+
+    try {
+      if (additionalLogging) {
+        console.log("Frontend : From handleDeleteProject delete call to api/company/deleteProject")
+      }
+
+      // ✅ Axios DELETE requires "data" wrapper for body
+      const response = await axios.delete(`${BACKEND_API_BASE_URL}/api/company/deleteCompany`, {
+        data: { companyName: company.companyName },
+      })
+
+      console.log("Company deleted successfully from backend:", response.data)
+
+      // ✅ Update frontend state → remove the company
+      setCompanys((prev) => prev.filter((c) => c.companyName !== company.companyName))
+
+      showNotification(`Company "${company.companyName}" deleted successfully!`, "success")
+    } catch (error) {
+      console.error("Error deleting company on the backend:", error)
+      showNotification("Failed to delete company. Please try again.", "error")
+    }
+  }
+
+  const [expandedStages, setExpandedStages] = useState({})
+
+  const toggleStageExpansion = (stageKey) => {
+    setExpandedStages((prev) => ({
+      ...prev,
+      [stageKey]: !prev[stageKey],
+    }))
+  }
+
+  const handleDownloadAllForms = () => {
+    if (!formDataFromDB) {
+      showNotification("No forms data available to download", "warning")
+      return
+    }
+
+    try {
+      // Create a comprehensive data structure for download
+      const downloadData = {
+        projectName: selectedProjectForReview?.name,
+        companyName: selectedProjectForReview?.companyName,
+        downloadDate: new Date().toISOString(),
+        totalStages: Object.keys(formDataFromDB).length,
+        stages: {},
+      }
+
+      // Process each stage
+      Object.entries(formDataFromDB).forEach(([stageKey, forms]) => {
+        downloadData.stages[stageKey] = {
+          stageName: stageKey.replace("stage", "Stage "),
+          totalForms: Object.keys(forms).length,
+          forms: {},
+        }
+
+        // Process each form in the stage
+        Object.entries(forms).forEach(([formKey, formData]) => {
+          downloadData.stages[stageKey].forms[formKey] = {
+            formName: formKey.replace("form", "Form "),
+            data: formData,
+          }
+        })
+      })
+
+      // Convert to JSON and create download
+      const jsonString = JSON.stringify(downloadData, null, 2)
+      const blob = new Blob([jsonString], { type: "application/json" })
+      const url = URL.createObjectURL(blob)
+
+      // Create download link
+      const link = document.createElement("a")
+      link.href = url
+      link.download = `${selectedProjectForReview?.name}_all_forms_${new Date().toISOString().split("T")[0]}.json`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
+
+      showNotification("All forms and stages downloaded successfully!", "success")
+    } catch (error) {
+      console.error("Error downloading forms:", error)
+      showNotification("Failed to download forms", "error")
+    }
+  }
 
   return (
     <div className="dashboard-container">
@@ -760,10 +743,7 @@ const ETCAdminPanel = ({
                 ← Back
               </button>
             )}
-            <button
-              className="mobile-menu-toggle"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
+            <button className="mobile-menu-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
               <span className="hamburger-line"></span>
               <span className="hamburger-line"></span>
               <span className="hamburger-line"></span>
@@ -775,27 +755,27 @@ const ETCAdminPanel = ({
                 {showFormStage
                   ? `Submit Forms - ${formStageProject?.name} (Stage ${formStageStage})`
                   : reviewMode
-                  ? `Review Stage ${currentStageReview} - ${selectedProjectForReview?.name}`
-                  : showSubmitterReview
-                  ? `Submitted Forms - ${selectedProjectForReview?.name}`
-                  : selectedMainCompany
-                  ? `${selectedMainCompany.name} - Companies`
-                  : selectedDepartment
-                  ? `${selectedDepartment.name} - Companys`
-                  : "ETC Admin Panel"}
+                    ? `Review Stage ${currentStageReview} - ${selectedProjectForReview?.name}`
+                    : showSubmitterReview
+                      ? `Submitted Forms - ${selectedProjectForReview?.name}`
+                      : selectedMainCompany
+                        ? `${selectedMainCompany.name} - Companies`
+                        : selectedDepartment
+                          ? `${selectedDepartment.name} - Companys`
+                          : "ETC Admin Panel"}
               </h1>
               <p>
                 {showFormStage
                   ? "Fill out and submit the required forms for this stage."
                   : reviewMode
-                  ? "Review and approve/reject stage forms"
-                  : showSubmitterReview
-                  ? "View all submitted forms by Project"
-                  : selectedMainCompany
-                  ? "Manage companies and their workflows"
-                  : selectedDepartment
-                  ? "Manage Companys in department"
-                  : "Manage departments, Companys and companies"}
+                    ? "Review and approve/reject stage forms"
+                    : showSubmitterReview
+                      ? "View all submitted forms by Project"
+                      : selectedMainCompany
+                        ? "Manage companies and their workflows"
+                        : selectedDepartment
+                          ? "Manage Companys in department"
+                          : "Manage departments, Companys and companies"}
               </p>
             </div>
           </div>
@@ -808,21 +788,11 @@ const ETCAdminPanel = ({
           </div>
 
           {isMobileMenuOpen && (
-            <div
-              className="mobile-menu-overlay"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
+            <div className="mobile-menu-overlay" onClick={() => setIsMobileMenuOpen(false)}>
               <div className="mobile-menu" onClick={(e) => e.stopPropagation()}>
                 <div className="mobile-menu-header">
-                  <img
-                    src="/logo.png"
-                    alt="Vishvas Power"
-                    className="logo-small"
-                  />
-                  <button
-                    className="mobile-menu-close"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
+                  <img src="/logo.png" alt="Vishvas Power" className="logo-small" />
+                  <button className="mobile-menu-close" onClick={() => setIsMobileMenuOpen(false)}>
                     ×
                   </button>
                 </div>
@@ -830,10 +800,7 @@ const ETCAdminPanel = ({
                   <div className="mobile-user-info">
                     <span className="user-badge">ETC Admin</span>
                   </div>
-                  <button
-                    onClick={handleLogoutAndClearData}
-                    className="mobile-logout-btn"
-                  >
+                  <button onClick={handleLogoutAndClearData} className="mobile-logout-btn">
                     🚪 Logout
                   </button>
                 </div>
@@ -878,171 +845,201 @@ const ETCAdminPanel = ({
                   <strong>Total Forms:</strong> {currentStageForms.length}
                 </p>
                 <p>
-                  <strong>Status:</strong>{" "}
-                  {getStageStatus(selectedProjectForReview, currentStageReview)}
+                  <strong>Status:</strong> {getStageStatus(selectedProjectForReview, currentStageReview)}
                 </p>
               </div>
             </div>
 
-            <div className="">
-              {selectedProjectForReview ? (
-                <div
-                  key={selectedProjectForReview.id}
-                  className={`form-review-card ${selectedProjectForReview.status}`}
-                >
+            <div className="forms-review-grid">
+              {Object.entries(formDataFromDB).map(([formKey, formData]) => (
+                <div key={`${1}-${formKey}`} className={`form-review-card ${selectedProjectForReview?.status}`}>
                   <div className="form-review-header">
-                    <h3>{selectedProjectForReview.formName}</h3>
+                    <h3>{formKey.replace("form", "Form ")}</h3>
                     <span
                       className={`status-badge ${
-                        selectedProjectForReview.status === "approved"
+                        selectedProjectForReview?.status === "approved"
                           ? "status-completed"
-                          : selectedProjectForReview.status === "rejected"
-                          ? "status-pending"
-                          : "status-progress"
+                          : selectedProjectForReview?.status === "rejected"
+                            ? "status-pending"
+                            : "status-progress"
                       }`}
                     >
-                      {selectedProjectForReview.status === "approved" &&
-                        "✅ Approved"}
-                      {selectedProjectForReview.status === "rejected" &&
-                        "❌ Rejected"}
-                      {selectedProjectForReview.status === "pending-review" &&
-                        "⏳ Pending Review"}
+                      {selectedProjectForReview?.status === "approved" && "✅ Approved"}
+                      {selectedProjectForReview?.status === "rejected" && "❌ Rejected"}
+                      {selectedProjectForReview?.status === "pending-review" && "⏳ Pending Review"}
                     </span>
                   </div>
 
-                  <div className="form-review-details">
-                    <p>
-                      <strong>Submitted:</strong>{" "}
-                      {selectedProjectForReview.lastActivity}
-                    </p>
-                    {selectedProjectForReview.reviewedAt && (
-                      <p>
-                        <strong>Reviewed:</strong>{" "}
-                        {selectedProjectForReview.lastActivity}
-                      </p>
-                    )}
-                    {/* {selectedProjectForReview.name && (
-                      <div className="rejection-reason">
-                        <strong>Rejection Reason:</strong>
-                        <p>{0}</p>
-                      </div>
-                    )} */}
-                  </div>
-
                   <div className="form-data-preview">
-                    {Object.entries(formDataFromDB).map(
-                      ([fieldKey, fieldValue], idx) => (
-                        <div className="data-item" key={fieldKey || idx}>
-                          <span className="data-label">
-                            {capitalizeFirst(fieldKey)}:
-                          </span>
+                    {Object.entries(formData).map(([fieldKey, fieldValue], idx) => (
+                      <div className="data-item" key={fieldKey || idx}>
+                        <span className="data-label">{capitalizeFirst(fieldKey)}:</span>
 
-                          {/* Images (string starting with data:image/) */}
-                          {typeof fieldValue === "string" &&
+                        {/* 🔹 Special handling for "photos" object */}
+                        {fieldKey.toLowerCase() === "photos" && fieldValue && typeof fieldValue === "object" ? (
+                          <div className="photo-list mt-2 space-y-3">
+                            {Object.entries(fieldValue).map(([photoKey, url]) => {
+                              const fullUrl = url.startsWith("http") ? url : `${BACKEND_API_BASE_URL}/${url}`
+                              return (
+                                <div key={photoKey} className="photo-preview">
+                                  <p className="text-sm font-medium">{photoKey}</p>
+                                  <a
+                                    href={fullUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-blue-600 underline break-all"
+                                  ></a>
+                                  <img
+                                    src={fullUrl || "/placeholder.svg"}
+                                    alt={photoKey}
+                                    className="mt-1 w-40 h-24 object-cover rounded border"
+                                  />
+                                </div>
+                              )
+                            })}
+                          </div>
+                        ) : typeof fieldValue === "string" ? (
+                          /* 🔹 Strings */
                           fieldValue.startsWith("data:image/") ? (
                             <img
-                              src={fieldValue}
+                              src={fieldValue || "/placeholder.svg"}
                               alt={fieldKey}
                               style={{
-                                maxWidth: "100px",
+                                maxWidth: "120px",
                                 border: "1px solid #ccc",
                               }}
                             />
-                          ) : Array.isArray(fieldValue) ? (
-                            /* Arrays */
-                            fieldValue.length === 0 ? (
-                              <span className="data-value">[]</span>
-                            ) : typeof fieldValue[0] === "object" &&
-                              fieldValue[0] !== null ? (
-                              /* Array of objects → stack as subtables */
-                              <div>
-                                {fieldValue.map((row, i) => (
-                                  <div key={i}>
-                                    <h5>
-                                      {capitalizeFirst(fieldKey)} {i + 1}
-                                    </h5>
-                                    <table>
-                                      <tbody>
-                                        {Object.entries(row).map(([k, v]) => (
-                                          <tr key={k}>
-                                            <td>{capitalizeFirst(k)}</td>
-                                            <td>{renderPrimitiveCell(v, k)}</td>
-                                          </tr>
-                                        ))}
-                                      </tbody>
-                                    </table>
-                                  </div>
-                                ))}
-                              </div>
-                            ) : (
-                              /* Array of primitives → list */
-                              <ul>
-                                {fieldValue.map((item, i) => (
-                                  <li key={i}>
-                                    {typeof item === "object"
-                                      ? JSON.stringify(item, null, 2)
-                                      : String(item)}
-                                  </li>
-                                ))}
-                              </ul>
-                            )
-                          ) : typeof fieldValue === "object" &&
-                            fieldValue !== null ? (
-                            /* Objects */
-                            isObjectOfObjects(fieldValue) ? (
-                              /* Object of objects (e.g., accessories { "1": {...}, "2": {...} }) → each as its own subtable */
-                              <div>
-                                {Object.entries(fieldValue).map(
-                                  ([subKey, subVal]) => (
-                                    <div key={subKey}>
-                                      <h5>
-                                        {capitalizeFirst(fieldKey)} {subKey}
-                                      </h5>
-                                      <table>
-                                        <tbody>
-                                          {Object.entries(subVal).map(
-                                            ([k, v]) => (
-                                              <tr key={k}>
-                                                <td>{capitalizeFirst(k)}</td>
-                                                <td>
-                                                  {renderPrimitiveCell(v, k)}
-                                                </td>
-                                              </tr>
-                                            )
-                                          )}
-                                        </tbody>
-                                      </table>
-                                    </div>
-                                  )
-                                )}
-                              </div>
-                            ) : (
-                              /* Plain object → single 2-column table */
-                              <table>
-                                <tbody>
-                                  {Object.entries(fieldValue).map(([k, v]) => (
-                                    <tr key={k}>
-                                      <td>{capitalizeFirst(k)}</td>
-                                      <td>{renderPrimitiveCell(v, k)}</td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </table>
-                            )
                           ) : (
-                            /* Primitives fallback */
-                            <span className="data-value">
-                              {String(fieldValue)}
-                            </span>
-                          )}
-                        </div>
-                      )
-                    )}
+                            <span className="data-value">{String(fieldValue)}</span>
+                          )
+                        ) : Array.isArray(fieldValue) ? (
+                          /* 🔹 Arrays */
+                          fieldValue.length === 0 ? (
+                            <span className="data-value">[]</span>
+                          ) : typeof fieldValue[0] === "object" && fieldValue[0] !== null ? (
+                            <div>
+                              {fieldValue.map((row, i) => (
+                                <div key={i}>
+                                  <h5>
+                                    {capitalizeFirst(fieldKey)} {i + 1}
+                                  </h5>
+                                  <table>
+                                    <tbody>
+                                      {Object.entries(row).map(([k, v]) => (
+                                        <tr key={k}>
+                                          <td>{capitalizeFirst(k)}</td>
+                                          <td>
+                                            {typeof v === "string" && v.startsWith("data:image/") ? (
+                                              <img
+                                                src={v || "/placeholder.svg"}
+                                                alt={k}
+                                                style={{
+                                                  maxWidth: "120px",
+                                                  border: "1px solid #ccc",
+                                                }}
+                                              />
+                                            ) : (
+                                              renderPrimitiveCell(v, k)
+                                            )}
+                                          </td>
+                                        </tr>
+                                      ))}
+                                    </tbody>
+                                  </table>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <ul>
+                              {fieldValue.map((item, i) => (
+                                <li key={i}>
+                                  {typeof item === "string" && item.startsWith("data:image/") ? (
+                                    <img
+                                      src={item || "/placeholder.svg"}
+                                      alt={`${fieldKey}-${i}`}
+                                      style={{
+                                        maxWidth: "120px",
+                                        border: "1px solid #ccc",
+                                      }}
+                                    />
+                                  ) : typeof item === "object" ? (
+                                    JSON.stringify(item, null, 2)
+                                  ) : (
+                                    String(item)
+                                  )}
+                                </li>
+                              ))}
+                            </ul>
+                          )
+                        ) : typeof fieldValue === "object" && fieldValue !== null ? (
+                          /* 🔹 Objects */
+                          isObjectOfObjects(fieldValue) ? (
+                            <div>
+                              {Object.entries(fieldValue).map(([subKey, subVal]) => (
+                                <div key={subKey}>
+                                  <h5>
+                                    {capitalizeFirst(fieldKey)} {subKey}
+                                  </h5>
+                                  <table>
+                                    <tbody>
+                                      {Object.entries(subVal).map(([k, v]) => (
+                                        <tr key={k}>
+                                          <td>{capitalizeFirst(k)}</td>
+                                          <td>
+                                            {typeof v === "string" && v.startsWith("data:image/") ? (
+                                              <img
+                                                src={v || "/placeholder.svg"}
+                                                alt={k}
+                                                style={{
+                                                  maxWidth: "120px",
+                                                  border: "1px solid #ccc",
+                                                }}
+                                              />
+                                            ) : (
+                                              renderPrimitiveCell(v, k)
+                                            )}
+                                          </td>
+                                        </tr>
+                                      ))}
+                                    </tbody>
+                                  </table>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <table>
+                              <tbody>
+                                {Object.entries(fieldValue).map(([k, v]) => (
+                                  <tr key={k}>
+                                    <td>{capitalizeFirst(k)}</td>
+                                    <td>
+                                      {typeof v === "string" && v.startsWith("data:image/") ? (
+                                        <img
+                                          src={v || "/placeholder.svg"}
+                                          alt={k}
+                                          style={{
+                                            maxWidth: "120px",
+                                            border: "1px solid #ccc",
+                                          }}
+                                        />
+                                      ) : (
+                                        renderPrimitiveCell(v, k)
+                                      )}
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          )
+                        ) : (
+                          /* 🔹 Fallback */
+                          <span className="data-value">{String(fieldValue)}</span>
+                        )}
+                      </div>
+                    ))}
                   </div>
                 </div>
-              ) : (
-                <p>No project selected for review.</p>
-              )}
+              ))}
             </div>
 
             <div className="stage-approval-actions">
@@ -1067,13 +1064,34 @@ const ETCAdminPanel = ({
             <div className="section-header">
               <div>
                 <h2>All Submitted Forms</h2>
-                <p>
-                  Review all forms submitted by {selectedProjectForReview?.name}
-                </p>
+                <p>Review all forms submitted by {selectedProjectForReview?.name}</p>
               </div>
-              <button onClick={handleBackFromReview} className="back-btn">
-                ← Back to Companies
-              </button>
+              <div className="header-actions">
+                <button
+                  onClick={handleDownloadAllForms}
+                  className="download-all-btn"
+                  style={{
+                    background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
+                    color: "white",
+                    border: "none",
+                    padding: "12px 24px",
+                    borderRadius: "8px",
+                    fontSize: "0.9rem",
+                    fontWeight: "600",
+                    cursor: "pointer",
+                    transition: "all 0.3s ease",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    marginRight: "16px",
+                  }}
+                >
+                  📥 Download All Forms & Stages
+                </button>
+                <button onClick={handleBackFromReview} className="back-btn">
+                  ← Back to Companies
+                </button>
+              </div>
             </div>
 
             <div className="submitter-review-summary">
@@ -1084,31 +1102,17 @@ const ETCAdminPanel = ({
                 </div>
                 <div className="stat-card">
                   <h4>Approved</h4>
-                  <div className="stat-number">
-                    {
-                      allProjectForms.filter((f) => f.status === "approved")
-                        .length
-                    }
-                  </div>
+                  <div className="stat-number">{allProjectForms.filter((f) => f.status === "approved").length}</div>
                 </div>
                 <div className="stat-card">
                   <h4>Pending</h4>
                   <div className="stat-number">
-                    {
-                      allProjectForms.filter(
-                        (f) => f.status === "pending-review"
-                      ).length
-                    }
+                    {allProjectForms.filter((f) => f.status === "pending-review").length}
                   </div>
                 </div>
                 <div className="stat-card">
                   <h4>Rejected</h4>
-                  <div className="stat-number">
-                    {
-                      allProjectForms.filter((f) => f.status === "rejected")
-                        .length
-                    }
-                  </div>
+                  <div className="stat-number">{allProjectForms.filter((f) => f.status === "rejected").length}</div>
                 </div>
               </div>
             </div>
@@ -1116,217 +1120,191 @@ const ETCAdminPanel = ({
             <div className="stages-review-container">
               {Object.entries(formDataFromDB).map(([stageKey, forms]) => (
                 <div key={stageKey} className="stage-forms-section">
-                  <h3>{stageKey.replace("stage", "Stage ")} Forms</h3>
+                  <div
+                    className="stage-header-clickable"
+                    onClick={() => toggleStageExpansion(stageKey)}
+                    style={{
+                      cursor: "pointer",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      padding: "16px 20px",
+                      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                      borderRadius: "12px",
+                      marginBottom: expandedStages[stageKey] ? "20px" : "0",
+                      transition: "all 0.3s ease",
+                    }}
+                  >
+                    <h3
+                      style={{
+                        margin: 0,
+                        color: "white",
+                        fontSize: "1.3rem",
+                        fontWeight: "700",
+                      }}
+                    >
+                      {stageKey.replace("stage", "Stage ")} ({Object.keys(forms).length} forms)
+                    </h3>
+                    <span
+                      style={{
+                        color: "white",
+                        fontSize: "1.2rem",
+                        transform: expandedStages[stageKey] ? "rotate(180deg)" : "rotate(0deg)",
+                        transition: "transform 0.3s ease",
+                      }}
+                    >
+                      ▼
+                    </span>
+                  </div>
 
-                  <div className="">
-                    {Object.entries(forms).map(([formKey, formData]) => (
-                      <div
-                        key={`${stageKey}-${formKey}`}
-                        className={`form-review-card ${selectedProjectForReview?.status}`}
-                      >
-                        <h4>{formKey.replace("form", "Form ")}</h4>
+                  {expandedStages[stageKey] && (
+                    <div
+                      className="forms-dropdown-content"
+                      style={{
+                        animation: "slideDown 0.3s ease-out",
+                      }}
+                    >
+                      {Object.entries(forms).map(([formKey, formData]) => (
+                        <div
+                          key={`${stageKey}-${formKey}`}
+                          className={`form-review-card ${selectedProjectForReview?.status}`}
+                          style={{
+                            marginBottom: "20px",
+                            border: "2px solid #e5e7eb",
+                            borderRadius: "12px",
+                            padding: "20px",
+                            background: "white",
+                            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                          }}
+                        >
+                          <h4
+                            style={{
+                              color: "#374151",
+                              fontSize: "1.1rem",
+                              fontWeight: "600",
+                              marginBottom: "16px",
+                              paddingBottom: "8px",
+                              borderBottom: "1px solid #e5e7eb",
+                            }}
+                          >
+                            📋 {formKey.replace("form", "Form ")}
+                          </h4>
 
-                        <div className="form-data-preview">
-                          {Object.entries(formData).map(
-                            ([fieldKey, fieldValue]) => {
+                          <div className="form-data-preview">
+                            {Object.entries(formData).map(([fieldKey, fieldValue]) => {
                               // 🔹 Special case for photos
-                              if (
-                                fieldKey === "photos" &&
-                                fieldValue &&
-                                typeof fieldValue === "object"
-                              ) {
+                              if (fieldKey === "photos" && fieldValue && typeof fieldValue === "object") {
                                 return (
                                   <div
                                     key={`${stageKey}-${formKey}-photos`}
                                     className="data-item-wrapper"
+                                    style={{ marginBottom: "16px" }}
                                   >
-                                    <h5 className="data-label">
-                                      {fieldKey.charAt(0).toUpperCase() +
-                                        fieldKey.slice(1)}
+                                    <h5
+                                      className="data-label"
+                                      style={{
+                                        fontSize: "0.9rem",
+                                        fontWeight: "600",
+                                        color: "#374151",
+                                        marginBottom: "8px",
+                                      }}
+                                    >
+                                      📸 {fieldKey.charAt(0).toUpperCase() + fieldKey.slice(1)}
                                     </h5>
                                     <div className="photo-list mt-2 space-y-3">
-                                      {Object.entries(fieldValue).map(
-                                        ([photoKey, url]) => {
-                                          const fullUrl = url.startsWith("http")
-                                            ? url
-                                            : `http://localhost:7000/${url}`;
-                                          return (
-                                            <div
-                                              key={photoKey}
-                                              className="photo-preview"
+                                      {Object.entries(fieldValue).map(([photoKey, url]) => {
+                                        const fullUrl = url.startsWith("http") ? url : `${BACKEND_API_BASE_URL}/${url}`
+                                        return (
+                                          <div
+                                            key={photoKey}
+                                            className="photo-preview"
+                                            style={{
+                                              padding: "12px",
+                                              border: "1px solid #e5e7eb",
+                                              borderRadius: "8px",
+                                              background: "#f9fafb",
+                                            }}
+                                          >
+                                            <p
+                                              className="text-sm font-medium"
+                                              style={{
+                                                fontSize: "0.85rem",
+                                                fontWeight: "500",
+                                                marginBottom: "8px",
+                                              }}
                                             >
-                                              <p className="text-sm font-medium">
-                                                {photoKey}
-                                              </p>
-                                              <a
-                                                href={fullUrl}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-blue-600 underline break-all"
-                                              >
-                                                {fullUrl}
-                                              </a>
-                                              {/* Optional thumbnail preview */}
-                                              <img
-                                                src={fullUrl}
-                                                alt={photoKey}
-                                                className="mt-1 w-40 h-24 object-cover rounded border"
-                                              />
-                                            </div>
-                                          );
-                                        }
-                                      )}
+                                              {photoKey}
+                                            </p>
+                                            <img
+                                              src={fullUrl || "/placeholder.svg"}
+                                              alt={photoKey}
+                                              className="mt-1 w-40 h-24 object-cover rounded border"
+                                              style={{
+                                                width: "160px",
+                                                height: "96px",
+                                                objectFit: "cover",
+                                                borderRadius: "6px",
+                                                border: "1px solid #d1d5db",
+                                              }}
+                                            />
+                                          </div>
+                                        )
+                                      })}
                                     </div>
                                   </div>
-                                );
+                                )
                               }
 
                               // 🔹 Strings & numbers
-                              if (
-                                typeof fieldValue === "string" ||
-                                typeof fieldValue === "number"
-                              ) {
+                              if (typeof fieldValue === "string" || typeof fieldValue === "number") {
                                 return (
                                   <div
                                     key={`${stageKey}-${formKey}-${fieldKey}`}
                                     className="data-item"
+                                    style={{
+                                      display: "flex",
+                                      justifyContent: "space-between",
+                                      alignItems: "center",
+                                      padding: "12px",
+                                      marginBottom: "8px",
+                                      background: "#f8fafc",
+                                      borderRadius: "6px",
+                                      border: "1px solid #e2e8f0",
+                                    }}
                                   >
-                                    <span className="data-label">
-                                      {fieldKey.charAt(0).toUpperCase() +
-                                        fieldKey.slice(1)}
-                                      :
+                                    <span
+                                      className="data-label"
+                                      style={{
+                                        fontWeight: "500",
+                                        color: "#374151",
+                                        fontSize: "0.9rem",
+                                      }}
+                                    >
+                                      {fieldKey.charAt(0).toUpperCase() + fieldKey.slice(1)}:
                                     </span>
-                                    <span className="data-value">
-                                      {String(fieldValue)}
+                                    <span
+                                      className="data-value"
+                                      style={{
+                                        color: "#6b7280",
+                                        fontSize: "0.9rem",
+                                        maxWidth: "60%",
+                                        textAlign: "right",
+                                        wordBreak: "break-word",
+                                      }}
+                                    >
+                                      {fieldValue}
                                     </span>
                                   </div>
-                                );
+                                )
                               }
 
-                              // 🔹 Arrays
-                              if (Array.isArray(fieldValue)) {
-                                return (
-                                  <div
-                                    key={`${stageKey}-${formKey}-${fieldKey}`}
-                                    className="data-item-wrapper"
-                                  >
-                                    <h5>
-                                      {fieldKey.charAt(0).toUpperCase() +
-                                        fieldKey.slice(1)}
-                                    </h5>
-                                    {fieldValue.length > 0 &&
-                                      typeof fieldValue[0] === "object" &&
-                                      fieldValue.map((row, idx) => (
-                                        <div key={idx}>
-                                          <h4>
-                                            {fieldKey.charAt(0).toUpperCase() +
-                                              fieldKey.slice(1)}{" "}
-                                            {idx + 1}
-                                          </h4>
-                                          <table>
-                                            <tbody>
-                                              {Object.entries(row).map(
-                                                ([k, v]) => (
-                                                  <tr key={k}>
-                                                    <td>
-                                                      {k
-                                                        .charAt(0)
-                                                        .toUpperCase() +
-                                                        k.slice(1)}
-                                                    </td>
-                                                    <td>{String(v)}</td>
-                                                  </tr>
-                                                )
-                                              )}
-                                            </tbody>
-                                          </table>
-                                        </div>
-                                      ))}
-                                    {fieldValue.length > 0 &&
-                                      typeof fieldValue[0] !== "object" && (
-                                        <div className="data-item">
-                                          <span className="data-label">
-                                            {fieldKey.charAt(0).toUpperCase() +
-                                              fieldKey.slice(1)}
-                                            :
-                                          </span>
-                                          <span className="data-value">
-                                            {JSON.stringify(fieldValue)}
-                                          </span>
-                                        </div>
-                                      )}
-                                  </div>
-                                );
-                              }
-
-                              // 🔹 Nested objects (non-photos)
-                              if (
-                                typeof fieldValue === "object" &&
-                                fieldValue !== null
-                              ) {
-                                return (
-                                  <div
-                                    key={`${stageKey}-${formKey}-${fieldKey}`}
-                                    className="data-item-wrapper"
-                                  >
-                                    <h5>
-                                      {fieldKey.charAt(0).toUpperCase() +
-                                        fieldKey.slice(1)}
-                                    </h5>
-                                    {Object.entries(fieldValue).map(
-                                      ([subKey, subVal]) => (
-                                        <div key={subKey}>
-                                          <h4>
-                                            {fieldKey.charAt(0).toUpperCase() +
-                                              fieldKey.slice(1)}{" "}
-                                            {subKey}
-                                          </h4>
-                                          <table>
-                                            <tbody>
-                                              {Object.entries(subVal).map(
-                                                ([k, v]) => (
-                                                  <tr key={k}>
-                                                    <td>
-                                                      {k
-                                                        .charAt(0)
-                                                        .toUpperCase() +
-                                                        k.slice(1)}
-                                                    </td>
-                                                    <td>{String(v)}</td>
-                                                  </tr>
-                                                )
-                                              )}
-                                            </tbody>
-                                          </table>
-                                        </div>
-                                      )
-                                    )}
-                                  </div>
-                                );
-                              }
-
-                              // 🔹 Fallback
-                              return (
-                                <div
-                                  key={`${stageKey}-${formKey}-${fieldKey}`}
-                                  className="data-item"
-                                >
-                                  <span className="data-label">
-                                    {fieldKey.charAt(0).toUpperCase() +
-                                      fieldKey.slice(1)}
-                                    :
-                                  </span>
-                                  <span className="data-value">
-                                    {String(fieldValue)}
-                                  </span>
-                                </div>
-                              );
-                            }
-                          )}
+                              return null
+                            })}
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -1342,7 +1320,7 @@ const ETCAdminPanel = ({
 
             <div className="departments-grid">
               {departments.map((department) => {
-                const departmentCompanys = getDepartmentCompanys(department.id);
+                const departmentCompanys = getDepartmentCompanys(department.id)
                 return (
                   <div
                     key={department.id}
@@ -1350,15 +1328,10 @@ const ETCAdminPanel = ({
                     onClick={() => setSelectedDepartment(department)}
                   >
                     <div className="department-header">
-                      <div
-                        className="department-icon"
-                        style={{ backgroundColor: department.color }}
-                      >
+                      <div className="department-icon" style={{ backgroundColor: department.color }}>
                         {department.icon}
                       </div>
-                      <span className="status-badge status-progress">
-                        Active
-                      </span>
+                      <span className="status-badge status-progress">Active</span>
                     </div>
                     <h3>{department.name}</h3>
                     <p>{department.description}</p>
@@ -1367,13 +1340,13 @@ const ETCAdminPanel = ({
                       <span>
                         🏢{" "}
                         {departmentCompanys.reduce((acc, proj) => {
-                          return acc + getCompanyCompanies(proj.id).length;
+                          return acc + getCompanyCompanies(proj.id).length
                         }, 0)}{" "}
                         companies
                       </span>
                     </div>
                   </div>
-                );
+                )
               })}
             </div>
           </>
@@ -1385,16 +1358,10 @@ const ETCAdminPanel = ({
                 <p>Create and manage Companys for this category</p>
               </div>
               <div className="section-actions">
-                <button
-                  onClick={() => setShowCreateCompanyForm(true)}
-                  className="create-btn"
-                >
+                <button onClick={() => setShowCreateCompanyForm(true)} className="create-btn">
                   ➕ Create Company
                 </button>
-                <button
-                  onClick={() => setSelectedDepartment(null)}
-                  className="back-btn"
-                >
+                <button onClick={() => setSelectedDepartment(null)} className="back-btn">
                   ← Back to Categories
                 </button>
               </div>
@@ -1410,20 +1377,10 @@ const ETCAdminPanel = ({
             </div>
 
             {showCreateCompanyForm && (
-              <div
-                className="modal-overlay"
-                onClick={() => setShowCreateCompanyForm(false)}
-              >
-                <div
-                  className="modal-content"
-                  onClick={(e) => e.stopPropagation()}
-                >
+              <div className="modal-overlay" onClick={() => setShowCreateCompanyForm(false)}>
+                <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                   <div className="modal-header">
-                    <img
-                      src="/logo.png"
-                      alt="Vishvas Power"
-                      className="logo-small"
-                    />
+                    <img src="/logo.png" alt="Vishvas Power" className="logo-small" />
                     <h3>Create New Company in {selectedDepartment.name}</h3>
                   </div>
                   <p>Companies will be added to this Company after creation</p>
@@ -1433,9 +1390,7 @@ const ETCAdminPanel = ({
                       type="text"
                       placeholder="Enter Company name"
                       value={newCompany.companyName}
-                      onChange={(e) =>
-                        setNewCompany({ ...newCompany, name: e.target.value })
-                      }
+                      onChange={(e) => setNewCompany({ ...newCompany, name: e.target.value })}
                       required
                     />
                   </div>
@@ -1462,10 +1417,7 @@ const ETCAdminPanel = ({
                     >
                       Create Company
                     </button>
-                    <button
-                      onClick={() => setShowCreateCompanyForm(false)}
-                      className="cancel-btn"
-                    >
+                    <button onClick={() => setShowCreateCompanyForm(false)} className="cancel-btn">
                       Cancel
                     </button>
                   </div>
@@ -1475,29 +1427,20 @@ const ETCAdminPanel = ({
 
             <div className="Companys-grid">
               {Companys.map((Company) => {
-                const CompanyCompanies = getCompanyCompanies(Company.id);
+                const CompanyCompanies = getCompanyCompanies(Company.id)
 
                 return (
                   <div key={Company._id} className="Company-card">
                     <div className="Company-header">
-                      <div
-                        className="Company-icon"
-                        style={{ backgroundColor: selectedDepartment.color }}
-                      >
+                      <div className="Company-icon" style={{ backgroundColor: selectedDepartment.color }}>
                         📁
                       </div>
-                      <span
-                        className={`status-badge ${getStatusColor(
-                          Company.status
-                        )}`}
-                      >
-                        {Company.status}
-                      </span>
+                      <span className={`status-badge ${getStatusColor(Company.status)}`}>{Company.status}</span>
                     </div>
                     <h3>{Company.companyName}</h3>
                     <p>{Company.companyDescription}</p>
                     <div className="Company-footer">
-                      <span>🏢 {CompanyCompanies.length} companies</span>
+                      <span>🏢 {Company?.companyProjects?.length} companies</span>
                       <span>📅 {Company.createdAt}</span>
                     </div>
                     <div
@@ -1511,13 +1454,32 @@ const ETCAdminPanel = ({
                     >
                       <button
                         onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedMainCompany(Company);
+                          e.stopPropagation()
+                          handleCompanyDelete(Company)
+                        }}
+                        className="delete-btn"
+                        style={{
+                          background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)", // red gradient
+                          color: "white",
+                          border: "none",
+                          padding: "8px 16px",
+                          borderRadius: "8px",
+                          fontSize: "0.85rem",
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          transition: "all 0.3s ease",
+                        }}
+                      >
+                        🗑️ Delete
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setSelectedMainCompany(Company)
                         }}
                         className="view-btn"
                         style={{
-                          background:
-                            "linear-gradient(135deg, #4299e1 0%, #3182ce 100%)",
+                          background: "linear-gradient(135deg, #4299e1 0%, #3182ce 100%)",
                           color: "white",
                           border: "none",
                           padding: "8px 16px",
@@ -1532,7 +1494,7 @@ const ETCAdminPanel = ({
                       </button>
                     </div>
                   </div>
-                );
+                )
               })}
             </div>
           </>
@@ -1544,45 +1506,28 @@ const ETCAdminPanel = ({
                 <p>Manage companies and their workflows</p>
               </div>
               <div className="section-actions">
-                <button
-                  onClick={() =>
-                    handleAddProject(selectedMainCompany.companyName)
-                  }
-                  className="create-btn"
-                >
+                <button onClick={() => handleAddProject(selectedMainCompany.companyName)} className="create-btn">
                   ➕ Create Project
                 </button>
-                <button
-                  onClick={() => setSelectedMainCompany(null)}
-                  className="back-btn"
-                >
+                <button onClick={() => setSelectedMainCompany(null)} className="back-btn">
                   ← Back to Companys
                 </button>
               </div>
             </div>
 
             <div className="companies-grid">
-              {selectedMainCompany.companyProjects === undefined ||
-              selectedMainCompany.companyProjects.length === 0 ? (
+              {selectedMainCompany.companyProjects === undefined || selectedMainCompany.companyProjects.length === 0 ? (
                 <p className="no-data-message">
-                  No companies found for this Company. Click "Create Company" to
-                  create one.
+                  No companies found for this Company. Click "Create Company" to create one.
                 </p>
               ) : (
                 selectedMainCompany.companyProjects.map((Project, index) => (
                   <div key={index} className="Project-card">
                     <div className="Project-header">
-                      <div
-                        className="Project-icon"
-                        style={{ backgroundColor: "#1E3A8A" }}
-                      >
+                      <div className="Project-icon" style={{ backgroundColor: "#1E3A8A" }}>
                         🏢
                       </div>
-                      <span
-                        className={`status-badge ${getStatusColor(
-                          Project.status
-                        )}`}
-                      >
+                      <span className={`status-badge ${getStatusColor(Project.status)}`}>
                         {Project.status === "pending-approval" && "⏳"}
                         {Project.status === "in-progress" && "🔄"}
                         {Project.status === "completed" && "✅"}
@@ -1591,29 +1536,19 @@ const ETCAdminPanel = ({
                     </div>
                     <h3>{Project.name}</h3>
                     <p>
-                      Stage {Project.stage} • {Project.formsCompleted}/
-                      {totalStageForm[Project.stage - 1]} forms completed
+                      Stage {Project.stage} • {Project.formsCompleted}/{totalStageForm[Project.stage - 1]} forms
+                      completed
                     </p>
                     <div className="progress-bar">
                       <div
                         className="progress-fill"
                         style={{
-                          width: `${
-                            (Project.formsCompleted /
-                              totalStageForm[Project.stage - 1]) *
-                            100
-                          }%`,
+                          width: `${(Project.formsCompleted / totalStageForm[Project.stage - 1]) * 100}%`,
                         }}
                       ></div>
                     </div>
                     <div className="Project-footer">
-                      <span>
-                        📊{" "}
-                        {Math.round(
-                          (Project.formsCompleted / Project.totalForms) * 100
-                        )}
-                        % complete
-                      </span>
+                      <span>📊 {Math.round((Project.formsCompleted / Project.totalForms) * 100)}% complete</span>
                       <span>📅 {Project.lastActivity}</span>
                     </div>
 
@@ -1621,25 +1556,21 @@ const ETCAdminPanel = ({
                       <h4>Stage Management:</h4>
                       <div className="stages-row">
                         {[1, 2, 3, 4, 5, 6].map((stage) => {
-                          const stageStatus = getStageStatus(Project, stage);
+                          const stageStatus = getStageStatus(Project, stage)
                           return (
-                            <div
-                              key={stage}
-                              className={`stage-item ${stageStatus}`}
-                            >
+                            <div key={stage} className={`stage-item ${stageStatus}`}>
                               <div className="stage-number">{stage}</div>
                               <div className="stage-status-text">
                                 {stageStatus === "approved" && "✅ Approved"}
-                                {stageStatus === "pending-review" &&
-                                  "⏳ Pending"}
+                                {stageStatus === "pending-review" && "⏳ Pending"}
                                 {stageStatus === "available" && "📝 Available"}
                                 {stageStatus === "locked" && "🔒 Locked"}
                               </div>
                               {stageStatus === "pending-review" && (
                                 <button
                                   onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleReviewStage(Project, stage);
+                                    e.stopPropagation()
+                                    handleReviewStage(Project, stage)
                                   }}
                                   className="review-stage-btn"
                                 >
@@ -1647,7 +1578,7 @@ const ETCAdminPanel = ({
                                 </button>
                               )}
                             </div>
-                          );
+                          )
                         })}
                       </div>
                     </div>
@@ -1663,13 +1594,12 @@ const ETCAdminPanel = ({
                       {/* View Forms */}
                       <button
                         onClick={(e) => {
-                          e.stopPropagation();
-                          handleViewSubmittedForms(Project);
+                          e.stopPropagation()
+                          handleViewSubmittedForms(Project)
                         }}
                         className="view-forms-btn"
                         style={{
-                          background:
-                            "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                          background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
                           color: "white",
                           border: "none",
                           padding: "8px 16px",
@@ -1686,13 +1616,12 @@ const ETCAdminPanel = ({
                       {/* Submit Stage */}
                       <button
                         onClick={(e) => {
-                          e.stopPropagation();
-                          handleStageSubmit(Project);
+                          e.stopPropagation()
+                          handleStageSubmit(Project)
                         }}
                         className="submit-test-btn"
                         style={{
-                          background:
-                            "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)",
+                          background: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)",
                           color: "white",
                           border: "none",
                           padding: "8px 16px",
@@ -1708,13 +1637,12 @@ const ETCAdminPanel = ({
 
                       <button
                         onClick={(e) => {
-                          e.stopPropagation();
-                          handleProjectDelete(Project);
+                          e.stopPropagation()
+                          handleProjectDelete(Project)
                         }}
                         className="delete-btn"
                         style={{
-                          background:
-                            "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)", // red gradient
+                          background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)", // red gradient
                           color: "white",
                           border: "none",
                           padding: "8px 16px",
@@ -1745,27 +1673,14 @@ const ETCAdminPanel = ({
 
       {/* Notification Modal */}
       {showNotificationModal && (
-        <div
-          className="modal-overlay"
-          onClick={() => setShowNotificationModal(false)}
-        >
+        <div className="modal-overlay" onClick={() => setShowNotificationModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
-              >
-                {notificationType === "success" && (
-                  <span style={{ fontSize: "1.5rem" }}>✅</span>
-                )}
-                {notificationType === "error" && (
-                  <span style={{ fontSize: "1.5rem" }}>❌</span>
-                )}
-                {notificationType === "warning" && (
-                  <span style={{ fontSize: "1.5rem" }}>⚠️</span>
-                )}
-                {notificationType === "info" && (
-                  <span style={{ fontSize: "1.5rem" }}>ℹ️</span>
-                )}
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                {notificationType === "success" && <span style={{ fontSize: "1.5rem" }}>✅</span>}
+                {notificationType === "error" && <span style={{ fontSize: "1.5rem" }}>❌</span>}
+                {notificationType === "warning" && <span style={{ fontSize: "1.5rem" }}>⚠️</span>}
+                {notificationType === "info" && <span style={{ fontSize: "1.5rem" }}>ℹ️</span>}
                 <h3>
                   {notificationType === "success" && "Success"}
                   {notificationType === "error" && "Error"}
@@ -1784,10 +1699,7 @@ const ETCAdminPanel = ({
               {notificationMessage}
             </p>
             <div className="modal-actions">
-              <button
-                onClick={() => setShowNotificationModal(false)}
-                className="submit-btn"
-              >
+              <button onClick={() => setShowNotificationModal(false)} className="submit-btn">
                 OK
               </button>
             </div>
@@ -1797,15 +1709,10 @@ const ETCAdminPanel = ({
 
       {/* Confirmation Modal */}
       {showConfirmModal && (
-        <div
-          className="modal-overlay"
-          onClick={() => setShowConfirmModal(false)}
-        >
+        <div className="modal-overlay" onClick={() => setShowConfirmModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
-              >
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                 <span style={{ fontSize: "1.5rem" }}>❓</span>
                 <h3>Confirmation</h3>
               </div>
@@ -1822,9 +1729,9 @@ const ETCAdminPanel = ({
             <div className="modal-actions">
               <button
                 onClick={() => {
-                  if (confirmAction) confirmAction();
-                  setShowConfirmModal(false);
-                  setConfirmAction(null);
+                  if (confirmAction) confirmAction()
+                  setShowConfirmModal(false)
+                  setConfirmAction(null)
                 }}
                 className="submit-btn"
               >
@@ -1832,8 +1739,8 @@ const ETCAdminPanel = ({
               </button>
               <button
                 onClick={() => {
-                  setShowConfirmModal(false);
-                  setConfirmAction(null);
+                  setShowConfirmModal(false)
+                  setConfirmAction(null)
                 }}
                 className="cancel-btn"
               >
@@ -1849,9 +1756,7 @@ const ETCAdminPanel = ({
         <div className="modal-overlay" onClick={() => setShowInputModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
-              >
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                 <span style={{ fontSize: "1.5rem" }}>✏️</span>
                 <h3>{inputModalTitle}</h3>
               </div>
@@ -1864,11 +1769,10 @@ const ETCAdminPanel = ({
                 onChange={(e) => setInputModalValue(e.target.value)}
                 onKeyPress={(e) => {
                   if (e.key === "Enter" && inputModalValue.trim()) {
-                    if (inputModalAction)
-                      inputModalAction(inputModalValue.trim());
-                    setShowInputModal(false);
-                    setInputModalAction(null);
-                    setInputModalValue("");
+                    if (inputModalAction) inputModalAction(inputModalValue.trim())
+                    setShowInputModal(false)
+                    setInputModalAction(null)
+                    setInputModalValue("")
                   }
                 }}
                 autoFocus
@@ -1878,11 +1782,11 @@ const ETCAdminPanel = ({
               <button
                 onClick={() => {
                   if (inputModalValue.trim() && inputModalAction) {
-                    inputModalAction(inputModalValue.trim());
+                    inputModalAction(inputModalValue.trim())
                   }
-                  setShowInputModal(false);
-                  setInputModalAction(null);
-                  setInputModalValue("");
+                  setShowInputModal(false)
+                  setInputModalAction(null)
+                  setInputModalValue("")
                 }}
                 className="submit-btn"
                 disabled={!inputModalValue.trim()}
@@ -1891,9 +1795,9 @@ const ETCAdminPanel = ({
               </button>
               <button
                 onClick={() => {
-                  setShowInputModal(false);
-                  setInputModalAction(null);
-                  setInputModalValue("");
+                  setShowInputModal(false)
+                  setInputModalAction(null)
+                  setInputModalValue("")
                 }}
                 className="cancel-btn"
               >
@@ -1906,24 +1810,17 @@ const ETCAdminPanel = ({
 
       {/* Rejection Modal */}
       {showRejectionModal && (
-        <div
-          className="modal-overlay"
-          onClick={() => setShowRejectionModal(false)}
-        >
+        <div className="modal-overlay" onClick={() => setShowRejectionModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
-              >
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                 <span style={{ fontSize: "1.5rem" }}>❌</span>
-                <h3>Reject Stage {rejectionStage}</h3>
+                <h3>Reject Stage {rejectionStage.stage}</h3>
               </div>
             </div>
-            <p
-              style={{ fontSize: "1rem", color: "#666", marginBottom: "20px" }}
-            >
-              Please provide a detailed reason for rejecting this stage. This
-              will help the submitter understand what needs to be corrected.
+            <p style={{ fontSize: "1rem", color: "#666", marginBottom: "20px" }}>
+              Please provide a detailed reason for rejecting this stage. This will help the submitter understand what
+              needs to be corrected.
             </p>
             <div className="form-group">
               <label>Rejection Reason *</label>
@@ -1942,9 +1839,7 @@ const ETCAdminPanel = ({
                 className="reject-stage-btn"
                 disabled={!rejectionReason.trim()}
                 style={{
-                  background: rejectionReason.trim()
-                    ? "linear-gradient(135deg, #f44336, #d32f2f)"
-                    : "#ccc",
+                  background: rejectionReason.trim() ? "linear-gradient(135deg, #f44336, #d32f2f)" : "#ccc",
                   cursor: rejectionReason.trim() ? "pointer" : "not-allowed",
                 }}
               >
@@ -1952,9 +1847,9 @@ const ETCAdminPanel = ({
               </button>
               <button
                 onClick={() => {
-                  setShowRejectionModal(false);
-                  setRejectionStage(null);
-                  setRejectionReason("");
+                  setShowRejectionModal(false)
+                  setRejectionStage(null)
+                  setRejectionReason("")
                 }}
                 className="cancel-btn"
               >
@@ -1965,7 +1860,7 @@ const ETCAdminPanel = ({
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default ETCAdminPanel;
+export default ETCAdminPanel

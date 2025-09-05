@@ -4157,12 +4157,14 @@ function SFRATestRecordForm({
     wtiBushing: initialData.wtiBushing || "",
     otiBushing: initialData.otiBushing || "",
     // AT 05 KV PHASE
+    bushing11_05kv_phase: initialData.bushing11_05kv_phase || "",
     bushing11_05kv_tanDelta: initialData.bushing11_05kv_tanDelta || "",
     bushing11_05kv_capacitance: initialData.bushing11_05kv_capacitance || "",
     bushing11_05kv_excitationCurrent:
       initialData.bushing11_05kv_excitationCurrent || "",
     bushing11_05kv_dielectricLoss:
       initialData.bushing11_05kv_dielectricLoss || "",
+    bushing12_05kv_phase: initialData.bushing12_05kv_phase || "",
     bushing12_05kv_tanDelta: initialData.bushing12_05kv_tanDelta || "",
     bushing12_05kv_capacitance: initialData.bushing12_05kv_capacitance || "",
     bushing12_05kv_excitationCurrent:
@@ -4170,12 +4172,14 @@ function SFRATestRecordForm({
     bushing12_05kv_dielectricLoss:
       initialData.bushing12_05kv_dielectricLoss || "",
     // AT 10 KV PHASE
+    bushing11_10kv_phase: initialData.bushing11_10kv_phase || "",
     bushing11_10kv_tanDelta: initialData.bushing11_10kv_tanDelta || "",
     bushing11_10kv_capacitance: initialData.bushing11_10kv_capacitance || "",
     bushing11_10kv_excitationCurrent:
       initialData.bushing11_10kv_excitationCurrent || "",
     bushing11_10kv_dielectricLoss:
       initialData.bushing11_10kv_dielectricLoss || "",
+    bushing12_10kv_phase: initialData.bushing12_10kv_phase || "",
     bushing12_10kv_tanDelta: initialData.bushing12_10kv_tanDelta || "",
     bushing12_10kv_capacitance: initialData.bushing12_10kv_capacitance || "",
     bushing12_10kv_excitationCurrent:
@@ -4434,6 +4438,18 @@ function SFRATestRecordForm({
             <td>
               <input
                 type="text"
+                value={formData.bushing11_05kv_phase}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_05kv_phase: e.target.value,
+                  })
+                }
+              />
+            </td>
+            <td>
+              <input
+                type="text"
                 value={formData.bushing11_05kv_tanDelta}
                 onChange={(e) =>
                   setFormData({
@@ -4479,22 +4495,22 @@ function SFRATestRecordForm({
                 }
               />
             </td>
-            <td>
-              <input
-                type="text"
-                value={formData.dielLoss_05kv_11 || ""}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    dielLoss_05kv_11: e.target.value,
-                  })
-                }
-              />
-            </td>
           </tr>
           <tr>
             <td>
               <strong>1.2</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.bushing11_10kv_dielectricLoss}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_10kv_dielectricLoss: e.target.value,
+                  })
+                }
+              />
             </td>
             <td>
               <input
@@ -4547,11 +4563,11 @@ function SFRATestRecordForm({
             <td>
               <input
                 type="text"
-                value={formData.dielLoss_05kv_12 || ""}
+                value={formData.bushing11_10kv_dielectricLoss}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    dielLoss_05kv_12: e.target.value,
+                    bushing11_10kv_dielectricLoss: e.target.value,
                   })
                 }
               />
@@ -4575,6 +4591,18 @@ function SFRATestRecordForm({
            <tr>
             <td>
               <strong>1.1</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.bushing11_10kv_phase}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_10kv_phase: e.target.value,
+                  })
+                }
+              />
             </td>
             <td>
               <input
@@ -4603,23 +4631,11 @@ function SFRATestRecordForm({
             <td>
               <input
                 type="text"
-                value={formData.bushing11_10kv_excitationCurrent}
+                value={formData.bushing11_10kv_dielectricLoss}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    bushing11_10kv_excitationCurrent: e.target.value,
-                  })
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.excCurrent_10kv_11 || ""}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    excCurrent_10kv_11: e.target.value,
+                    bushing11_10kv_dielectricLoss: e.target.value,
                   })
                 }
               />
@@ -4631,15 +4647,22 @@ function SFRATestRecordForm({
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    dielLoss_10kv_11: e.target.value,
+                    bushing11_10kv_dielectricLoss: e.target.value,
                   })
                 }
               />
             </td>
-          </tr>
-          <tr>
             <td>
-              <strong>1.2</strong>
+              <input
+                type="text"
+                value={formData.bushing11_10kv_dielectricLoss}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_10kv_dielectricLoss: e.target.value,
+                  })
+                }
+              />
             </td>
             <td>
               <input
@@ -4692,11 +4715,23 @@ function SFRATestRecordForm({
             <td>
               <input
                 type="text"
-                value={formData.dielLoss_10kv_12 || ""}
+                value={formData.bushing11_10kv_dielectricLoss}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    dielLoss_10kv_12: e.target.value,
+                    bushing11_10kv_dielectricLoss: e.target.value,
+                  })
+                }
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.bushing11_10kv_dielectricLoss}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    bushing11_10kv_dielectricLoss: e.target.value,
                   })
                 }
               />
@@ -4860,11 +4895,11 @@ function SFRATestRecordForm({
             <td>
               <input
                 type="text"
-                value={formData.bushing11_10kv_dielectricLoss}
+                value={formData.hvg_05kv_bushing_dielectricLoss}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    bushing11_10kv_dielectricLoss: e.target.value,
+                    hvg_05kv_bushing_dielectricLoss: e.target.value,
                   })
                 }
               />
@@ -4940,11 +4975,11 @@ function SFRATestRecordForm({
             <td>
               <input
                 type="text"
-                value={formData.bushing11_10kv_dielectricLoss}
+                value={formData.hvg_10kv_bushing_dielectricLoss}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    bushing11_10kv_dielectricLoss: e.target.value,
+                    hvg_10kv_bushing_dielectricLoss: e.target.value,
                   })
                 }
               />
@@ -7151,13 +7186,14 @@ function WorkCompletionReportForm({
           <div
             style={{ fontSize: "2rem", fontWeight: "bold", color: "#C41E3A" }}
           >
-            V
+            
           </div>
           <div>
             <div
               style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#333" }}
             >
-              VISHVAS
+              
+               <img src="/logo.png" alt="Vishvas Power" className="logo" />
             </div>
             <div
               style={{
@@ -7166,7 +7202,7 @@ function WorkCompletionReportForm({
                 letterSpacing: "2px",
               }}
             >
-              POWER
+            
             </div>
             <div style={{ fontSize: "0.8rem", color: "#666" }}>
               (A unit of M/s Vishvas Power Engineering Services Pvt Ltd)

@@ -41,6 +41,10 @@ const projectSchema = {
     type: Map,
     of: Boolean,
   },
+  rejectionReason: {
+    type: String,
+    default: "",
+  },
 };
 
 const companySchema = new mongoose.Schema(

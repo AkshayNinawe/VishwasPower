@@ -2,3 +2,4 @@ backend/node_modules
 
 frontend/node_modules
 frontend/src/components/constant.js
+backend/uploads
