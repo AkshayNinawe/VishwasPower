@@ -457,27 +457,27 @@ const ETCAdminPanel = ({
     );
 
     // Reset Project stage submission status
-    setCompanies((companies) =>
-      companies.map((Project) =>
-        Project.id === selectedProjectForReview.id
-          ? {
-              ...Project,
-              status: "in-progress",
-              submittedStages: {
-                ...Project.submittedStages,
-                [rejectionStage]: false,
-              },
-              stageApprovals: {
-                ...Project.stageApprovals,
-                [rejectionStage]: false,
-              },
-              formsCompleted: 0, // Reset forms completed for this stage
-              totalForms: getStageFormCount(rejectionStage), // Reset total forms for current stage
-              lastActivity: new Date().toISOString().split("T")[0],
-            }
-          : Project
-      )
-    );
+    // setCompanies((companies) =>
+    //   companies.map((Project) =>
+    //     Project.id === selectedProjectForReview.id
+    //       ? {
+    //           ...Project,
+    //           status: "in-progress",
+    //           submittedStages: {
+    //             ...Project.submittedStages,
+    //             [rejectionStage]: false,
+    //           },
+    //           stageApprovals: {
+    //             ...Project.stageApprovals,
+    //             [rejectionStage]: false,
+    //           },
+    //           formsCompleted: 0, // Reset forms completed for this stage
+    //           totalForms: getStageFormCount(rejectionStage), // Reset total forms for current stage
+    //           lastActivity: new Date().toISOString().split("T")[0],
+    //         }
+    //       : Project
+    //   )
+    // );
 
     showNotification(
       `Stage ${ rejectionStage.stage} rejected for Project : ${selectedProjectForReview.name}. Project needs to resubmit forms.`,
