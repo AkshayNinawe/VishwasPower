@@ -5,7 +5,7 @@ import axios from "axios";
 import { BACKEND_API_BASE_URL, additionalLogging } from "./constant";
 import FormStage from "./FormStage"; // Import FormStage
 import "./stage-review-styles.css";
-import html2pdf from "html2pdf.js"
+import html2pdf from "html2pdf.js";
 
 const ETCAdminPanel = ({
   user,
@@ -421,9 +421,8 @@ const ETCAdminPanel = ({
         );
       }
 
-      const element = document.getElementById('root');
-      html2pdf().from(element).save()
-      
+      const element = document.getElementById("root");
+      html2pdf().from(element).save();
     } catch (error) {
       console.error("Error downloading the PDF", error);
       alert("Failed to download PDF");
@@ -670,7 +669,7 @@ const ETCAdminPanel = ({
     if (typeof val === "string" && val.startsWith("data:image/")) {
       return (
         <img
-          src={val}
+          src={val || "/placeholder.svg"}
           alt={labelForImg || "image"}
           style={{ maxWidth: "100px", border: "1px solid #ccc" }}
         />
@@ -809,6 +808,74 @@ const ETCAdminPanel = ({
     } catch (error) {
       console.error("Error deleting company on the backend:", error);
       showNotification("Failed to delete company. Please try again.", "error");
+    }
+  };
+
+  const [expandedStages, setExpandedStages] = useState({});
+
+  const toggleStageExpansion = (stageKey) => {
+    setExpandedStages((prev) => ({
+      ...prev,
+      [stageKey]: !prev[stageKey],
+    }));
+  };
+
+  const handleDownloadAllForms = () => {
+    if (!formDataFromDB) {
+      showNotification("No forms data available to download", "warning");
+      return;
+    }
+
+    try {
+      // Create a comprehensive data structure for download
+      const downloadData = {
+        projectName: selectedProjectForReview?.name,
+        companyName: selectedProjectForReview?.companyName,
+        downloadDate: new Date().toISOString(),
+        totalStages: Object.keys(formDataFromDB).length,
+        stages: {},
+      };
+
+      // Process each stage
+      Object.entries(formDataFromDB).forEach(([stageKey, forms]) => {
+        downloadData.stages[stageKey] = {
+          stageName: stageKey.replace("stage", "Stage "),
+          totalForms: Object.keys(forms).length,
+          forms: {},
+        };
+
+        // Process each form in the stage
+        Object.entries(forms).forEach(([formKey, formData]) => {
+          downloadData.stages[stageKey].forms[formKey] = {
+            formName: formKey.replace("form", "Form "),
+            data: formData,
+          };
+        });
+      });
+
+      // Convert to JSON and create download
+      const jsonString = JSON.stringify(downloadData, null, 2);
+      const blob = new Blob([jsonString], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+
+      // Create download link
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${selectedProjectForReview?.name}_all_forms_${
+        new Date().toISOString().split("T")[0]
+      }.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      showNotification(
+        "All forms and stages downloaded successfully!",
+        "success"
+      );
+    } catch (error) {
+      console.error("Error downloading forms:", error);
+      showNotification("Failed to download forms", "error");
     }
   };
 
@@ -1006,7 +1073,7 @@ const ETCAdminPanel = ({
                                         className="text-blue-600 underline break-all"
                                       ></a>
                                       <img
-                                        src={fullUrl}
+                                        src={fullUrl || "/placeholder.svg"}
                                         alt={photoKey}
                                         className="mt-1 w-40 h-24 object-cover rounded border"
                                       />
@@ -1019,7 +1086,7 @@ const ETCAdminPanel = ({
                             /* 🔹 Strings */
                             fieldValue.startsWith("data:image/") ? (
                               <img
-                                src={fieldValue}
+                                src={fieldValue || "/placeholder.svg"}
                                 alt={fieldKey}
                                 style={{
                                   maxWidth: "120px",
@@ -1052,7 +1119,7 @@ const ETCAdminPanel = ({
                                               {typeof v === "string" &&
                                               v.startsWith("data:image/") ? (
                                                 <img
-                                                  src={v}
+                                                  src={v || "/placeholder.svg"}
                                                   alt={k}
                                                   style={{
                                                     maxWidth: "120px",
@@ -1077,7 +1144,7 @@ const ETCAdminPanel = ({
                                     {typeof item === "string" &&
                                     item.startsWith("data:image/") ? (
                                       <img
-                                        src={item}
+                                        src={item || "/placeholder.svg"}
                                         alt={`${fieldKey}-${i}`}
                                         style={{
                                           maxWidth: "120px",
@@ -1116,7 +1183,9 @@ const ETCAdminPanel = ({
                                                     "data:image/"
                                                   ) ? (
                                                     <img
-                                                      src={v}
+                                                      src={
+                                                        v || "/placeholder.svg"
+                                                      }
                                                       alt={k}
                                                       style={{
                                                         maxWidth: "120px",
@@ -1147,7 +1216,7 @@ const ETCAdminPanel = ({
                                         {typeof v === "string" &&
                                         v.startsWith("data:image/") ? (
                                           <img
-                                            src={v}
+                                            src={v || "/placeholder.svg"}
                                             alt={k}
                                             style={{
                                               maxWidth: "120px",
@@ -1203,9 +1272,33 @@ const ETCAdminPanel = ({
                   Review all forms submitted by {selectedProjectForReview?.name}
                 </p>
               </div>
-              <button onClick={handleBackFromReview} className="back-btn">
-                ← Back to Companies
-              </button>
+              <div className="header-actions">
+                <button
+                  onClick={handleDownloadAllForms}
+                  className="download-all-btn"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
+                    color: "white",
+                    border: "none",
+                    padding: "12px 24px",
+                    borderRadius: "8px",
+                    fontSize: "0.9rem",
+                    fontWeight: "600",
+                    cursor: "pointer",
+                    transition: "all 0.3s ease",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    marginRight: "16px",
+                  }}
+                >
+                  📥 Download All Forms & Stages
+                </button>
+                <button onClick={handleBackFromReview} className="back-btn">
+                  ← Back to Companies
+                </button>
+              </div>
             </div>
 
             <div className="submitter-review-summary">
@@ -1254,215 +1347,217 @@ const ETCAdminPanel = ({
             <div className="stages-review-container">
               {Object.entries(formDataFromDB).map(([stageKey, forms]) => (
                 <div key={stageKey} className="stage-forms-section">
-                  <h3>{stageKey.replace("stage", "Stage ")} Forms</h3>
-
-                  <div className="forms-review-grid">
-                    {Object.entries(forms).map(([formKey, formData]) => (
-                      <div
-                        key={`${stageKey}-${formKey}`}
-                        className={`form-review-card ${selectedProjectForReview?.status}`}
-                      >
-                        <h4>{formKey.replace("form", "Form ")}</h4>
-
-                        <div className="form-data-preview">
-                          {Object.entries(formData).map(
-                            ([fieldKey, fieldValue]) => {
-                              // 🔹 Special case for photos
-                              if (
-                                fieldKey === "photos" &&
-                                fieldValue &&
-                                typeof fieldValue === "object"
-                              ) {
-                                return (
-                                  <div
-                                    key={`${stageKey}-${formKey}-photos`}
-                                    className="data-item-wrapper"
-                                  >
-                                    <h5 className="data-label">
-                                      {fieldKey.charAt(0).toUpperCase() +
-                                        fieldKey.slice(1)}
-                                    </h5>
-                                    <div className="photo-list mt-2 space-y-3">
-                                      {Object.entries(fieldValue).map(
-                                        ([photoKey, url]) => {
-                                          const fullUrl = url.startsWith("http")
-                                            ? url
-                                            : `${BACKEND_API_BASE_URL}/${url}`;
-                                          return (
-                                            <div
-                                              key={photoKey}
-                                              className="photo-preview"
-                                            >
-                                              <p className="text-sm font-medium">
-                                                {photoKey}
-                                              </p>
-                                              <a
-                                                href={fullUrl}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-blue-600 underline break-all"
-                                              ></a>
-                                              {/* Optional thumbnail preview */}
-                                              <img
-                                                src={fullUrl}
-                                                alt={photoKey}
-                                                className="mt-1 w-40 h-24 object-cover rounded border"
-                                              />
-                                            </div>
-                                          );
-                                        }
-                                      )}
-                                    </div>
-                                  </div>
-                                );
-                              }
-
-                              // 🔹 Strings & numbers
-                              if (
-                                typeof fieldValue === "string" ||
-                                typeof fieldValue === "number"
-                              ) {
-                                return (
-                                  <div
-                                    key={`${stageKey}-${formKey}-${fieldKey}`}
-                                    className="data-item"
-                                  >
-                                    <span className="data-label">
-                                      {fieldKey.charAt(0).toUpperCase() +
-                                        fieldKey.slice(1)}
-                                      :
-                                    </span>
-                                    <span className="data-value">
-                                      {String(fieldValue)}
-                                    </span>
-                                  </div>
-                                );
-                              }
-
-                              // 🔹 Arrays
-                              if (Array.isArray(fieldValue)) {
-                                return (
-                                  <div
-                                    key={`${stageKey}-${formKey}-${fieldKey}`}
-                                    className="data-item-wrapper"
-                                  >
-                                    <h5>
-                                      {fieldKey.charAt(0).toUpperCase() +
-                                        fieldKey.slice(1)}
-                                    </h5>
-                                    {fieldValue.length > 0 &&
-                                      typeof fieldValue[0] === "object" &&
-                                      fieldValue.map((row, idx) => (
-                                        <div key={idx}>
-                                          <h4>
-                                            {fieldKey.charAt(0).toUpperCase() +
-                                              fieldKey.slice(1)}{" "}
-                                            {idx + 1}
-                                          </h4>
-                                          <table>
-                                            <tbody>
-                                              {Object.entries(row).map(
-                                                ([k, v]) => (
-                                                  <tr key={k}>
-                                                    <td>
-                                                      {k
-                                                        .charAt(0)
-                                                        .toUpperCase() +
-                                                        k.slice(1)}
-                                                    </td>
-                                                    <td>{String(v)}</td>
-                                                  </tr>
-                                                )
-                                              )}
-                                            </tbody>
-                                          </table>
-                                        </div>
-                                      ))}
-                                    {fieldValue.length > 0 &&
-                                      typeof fieldValue[0] !== "object" && (
-                                        <div className="data-item">
-                                          <span className="data-label">
-                                            {fieldKey.charAt(0).toUpperCase() +
-                                              fieldKey.slice(1)}
-                                            :
-                                          </span>
-                                          <span className="data-value">
-                                            {JSON.stringify(fieldValue)}
-                                          </span>
-                                        </div>
-                                      )}
-                                  </div>
-                                );
-                              }
-
-                              // 🔹 Nested objects (non-photos)
-                              if (
-                                typeof fieldValue === "object" &&
-                                fieldValue !== null
-                              ) {
-                                return (
-                                  <div
-                                    key={`${stageKey}-${formKey}-${fieldKey}`}
-                                    className="data-item-wrapper"
-                                  >
-                                    <h5>
-                                      {fieldKey.charAt(0).toUpperCase() +
-                                        fieldKey.slice(1)}
-                                    </h5>
-                                    {Object.entries(fieldValue).map(
-                                      ([subKey, subVal]) => (
-                                        <div key={subKey}>
-                                          <h4>
-                                            {fieldKey.charAt(0).toUpperCase() +
-                                              fieldKey.slice(1)}{" "}
-                                            {subKey}
-                                          </h4>
-                                          <table>
-                                            <tbody>
-                                              {Object.entries(subVal).map(
-                                                ([k, v]) => (
-                                                  <tr key={k}>
-                                                    <td>
-                                                      {k
-                                                        .charAt(0)
-                                                        .toUpperCase() +
-                                                        k.slice(1)}
-                                                    </td>
-                                                    <td>{String(v)}</td>
-                                                  </tr>
-                                                )
-                                              )}
-                                            </tbody>
-                                          </table>
-                                        </div>
-                                      )
-                                    )}
-                                  </div>
-                                );
-                              }
-
-                              // 🔹 Fallback
-                              return (
-                                <div
-                                  key={`${stageKey}-${formKey}-${fieldKey}`}
-                                  className="data-item"
-                                >
-                                  <span className="data-label">
-                                    {fieldKey.charAt(0).toUpperCase() +
-                                      fieldKey.slice(1)}
-                                    :
-                                  </span>
-                                  <span className="data-value">
-                                    {String(fieldValue)}
-                                  </span>
-                                </div>
-                              );
-                            }
-                          )}
-                        </div>
-                      </div>
-                    ))}
+                  <div
+                    className="stage-header-clickable"
+                    onClick={() => toggleStageExpansion(stageKey)}
+                    style={{
+                      cursor: "pointer",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      padding: "16px 20px",
+                      background:
+                        "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                      borderRadius: "12px",
+                      marginBottom: expandedStages[stageKey] ? "20px" : "0",
+                      transition: "all 0.3s ease",
+                    }}
+                  >
+                    <h3
+                      style={{
+                        margin: 0,
+                        color: "white",
+                        fontSize: "1.3rem",
+                        fontWeight: "700",
+                      }}
+                    >
+                      {stageKey.replace("stage", "Stage ")} (
+                      {Object.keys(forms).length} forms)
+                    </h3>
+                    <span
+                      style={{
+                        color: "white",
+                        fontSize: "1.2rem",
+                        transform: expandedStages[stageKey]
+                          ? "rotate(180deg)"
+                          : "rotate(0deg)",
+                        transition: "transform 0.3s ease",
+                      }}
+                    >
+                      ▼
+                    </span>
                   </div>
+
+                  {expandedStages[stageKey] && (
+                    <div
+                      className="forms-dropdown-content"
+                      style={{
+                        animation: "slideDown 0.3s ease-out",
+                      }}
+                    >
+                      {Object.entries(forms).map(([formKey, formData]) => (
+                        <div
+                          key={`${stageKey}-${formKey}`}
+                          className={`form-review-card ${selectedProjectForReview?.status}`}
+                          style={{
+                            marginBottom: "20px",
+                            border: "2px solid #e5e7eb",
+                            borderRadius: "12px",
+                            padding: "20px",
+                            background: "white",
+                            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                          }}
+                        >
+                          <h4
+                            style={{
+                              color: "#374151",
+                              fontSize: "1.1rem",
+                              fontWeight: "600",
+                              marginBottom: "16px",
+                              paddingBottom: "8px",
+                              borderBottom: "1px solid #e5e7eb",
+                            }}
+                          >
+                            📋 {formKey.replace("form", "Form ")}
+                          </h4>
+
+                          <div className="form-data-preview">
+                            {Object.entries(formData).map(
+                              ([fieldKey, fieldValue]) => {
+                                // 🔹 Special case for photos
+                                if (
+                                  fieldKey === "photos" &&
+                                  fieldValue &&
+                                  typeof fieldValue === "object"
+                                ) {
+                                  return (
+                                    <div
+                                      key={`${stageKey}-${formKey}-photos`}
+                                      className="data-item-wrapper"
+                                      style={{ marginBottom: "16px" }}
+                                    >
+                                      <h5
+                                        className="data-label"
+                                        style={{
+                                          fontSize: "0.9rem",
+                                          fontWeight: "600",
+                                          color: "#374151",
+                                          marginBottom: "8px",
+                                        }}
+                                      >
+                                        📸{" "}
+                                        {fieldKey.charAt(0).toUpperCase() +
+                                          fieldKey.slice(1)}
+                                      </h5>
+                                      <div className="photo-list mt-2 space-y-3">
+                                        {Object.entries(fieldValue).map(
+                                          ([photoKey, url]) => {
+                                            const fullUrl = url.startsWith(
+                                              "http"
+                                            )
+                                              ? url
+                                              : `${BACKEND_API_BASE_URL}/${url}`;
+                                            return (
+                                              <div
+                                                key={photoKey}
+                                                className="photo-preview"
+                                                style={{
+                                                  padding: "12px",
+                                                  border: "1px solid #e5e7eb",
+                                                  borderRadius: "8px",
+                                                  background: "#f9fafb",
+                                                }}
+                                              >
+                                                <p
+                                                  className="text-sm font-medium"
+                                                  style={{
+                                                    fontSize: "0.85rem",
+                                                    fontWeight: "500",
+                                                    marginBottom: "8px",
+                                                  }}
+                                                >
+                                                  {photoKey}
+                                                </p>
+                                                <img
+                                                  src={
+                                                    fullUrl ||
+                                                    "/placeholder.svg"
+                                                  }
+                                                  alt={photoKey}
+                                                  className="mt-1 w-40 h-24 object-cover rounded border"
+                                                  style={{
+                                                    width: "160px",
+                                                    height: "96px",
+                                                    objectFit: "cover",
+                                                    borderRadius: "6px",
+                                                    border: "1px solid #d1d5db",
+                                                  }}
+                                                />
+                                              </div>
+                                            );
+                                          }
+                                        )}
+                                      </div>
+                                    </div>
+                                  );
+                                }
+
+                                // 🔹 Strings & numbers
+                                if (
+                                  typeof fieldValue === "string" ||
+                                  typeof fieldValue === "number"
+                                ) {
+                                  return (
+                                    <div
+                                      key={`${stageKey}-${formKey}-${fieldKey}`}
+                                      className="data-item"
+                                      style={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        alignItems: "center",
+                                        padding: "12px",
+                                        marginBottom: "8px",
+                                        background: "#f8fafc",
+                                        borderRadius: "6px",
+                                        border: "1px solid #e2e8f0",
+                                      }}
+                                    >
+                                      <span
+                                        className="data-label"
+                                        style={{
+                                          fontWeight: "500",
+                                          color: "#374151",
+                                          fontSize: "0.9rem",
+                                        }}
+                                      >
+                                        {fieldKey.charAt(0).toUpperCase() +
+                                          fieldKey.slice(1)}
+                                        :
+                                      </span>
+                                      <span
+                                        className="data-value"
+                                        style={{
+                                          color: "#6b7280",
+                                          fontSize: "0.9rem",
+                                          maxWidth: "60%",
+                                          textAlign: "right",
+                                          wordBreak: "break-word",
+                                        }}
+                                      >
+                                        {fieldValue}
+                                      </span>
+                                    </div>
+                                  );
+                                }
+
+                                return null;
+                              }
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
