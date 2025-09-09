@@ -413,26 +413,6 @@ const ETCAdminPanel = ({
     setShowRejectionModal(true);
   };
 
-  const handlePDFDownlaod = async (stage) => {
-    try {
-      if (additionalLogging) {
-        console.log(
-          "Frontend : From handleApproveStage post call to api/company/approveCompanyStage"
-        );
-      }
-
-      const element = document.getElementById("root");
-      html2pdf().from(element).save();
-    } catch (error) {
-      console.error("Error downloading the PDF", error);
-      alert("Failed to download PDF");
-      return;
-    }
-    console.log(
-      `Downloading PDF form for Project ${selectedProjectForReview.name}`
-    );
-  };
-
   const confirmRejectStage = () => {
     if (!rejectionReason.trim()) {
       showNotification(
@@ -821,62 +801,106 @@ const ETCAdminPanel = ({
   };
 
   const handleDownloadAllForms = () => {
+    try {
+      const container = document.querySelector(".stages-review-container");
+      if (!container) {
+        alert("Stages container not found");
+        return;
+      }
+
+      // ✅ Expand all stages by simulating clicks
+      const headers = container.querySelectorAll(".stage-header-clickable");
+      headers.forEach((header) => {
+        const content = header.nextElementSibling;
+        if (!content || content.classList.contains("forms-dropdown-content")) {
+          // If collapsed, trigger a click (or directly set style)
+          if (
+            !content ||
+            content.style.display === "none" ||
+            !content.innerHTML.trim()
+          ) {
+            header.click();
+          }
+        }
+      });
+
+      // Small delay to allow React state/UI update
+      setTimeout(() => {
+        const opt = {
+          margin: 0.2,
+          filename: "all-stages.pdf",
+          image: { type: "jpeg", quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true },
+          jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+        };
+
+        html2pdf().set(opt).from(container).save();
+      }, 500); // adjust if animations are slower
+    } catch (error) {
+      console.error("Error downloading the PDF", error);
+      alert("Failed to download PDF");
+      return;
+    }
+    console.log(
+      `Downloading PDF form for Project ${selectedProjectForReview.name}`
+    );
+
     if (!formDataFromDB) {
       showNotification("No forms data available to download", "warning");
       return;
     }
 
-    try {
-      // Create a comprehensive data structure for download
-      const downloadData = {
-        projectName: selectedProjectForReview?.name,
-        companyName: selectedProjectForReview?.companyName,
-        downloadDate: new Date().toISOString(),
-        totalStages: Object.keys(formDataFromDB).length,
-        stages: {},
-      };
+    // try {
+    //   // Create a comprehensive data structure for download
+    //   const downloadData = {
+    //     projectName: selectedProjectForReview?.name,
+    //     companyName: selectedProjectForReview?.companyName,
+    //     downloadDate: new Date().toISOString(),
+    //     totalStages: Object.keys(formDataFromDB).length,
+    //     stages: {},
+    //   };
 
-      // Process each stage
-      Object.entries(formDataFromDB).forEach(([stageKey, forms]) => {
-        downloadData.stages[stageKey] = {
-          stageName: stageKey.replace("stage", "Stage "),
-          totalForms: Object.keys(forms).length,
-          forms: {},
-        };
+    //   // Process each stage
+    //   Object.entries(formDataFromDB).forEach(([stageKey, forms]) => {
+    //     downloadData.stages[stageKey] = {
+    //       stageName: stageKey.replace("stage", "Stage "),
+    //       totalForms: Object.keys(forms).length,
+    //       forms: {},
+    //     };
 
-        // Process each form in the stage
-        Object.entries(forms).forEach(([formKey, formData]) => {
-          downloadData.stages[stageKey].forms[formKey] = {
-            formName: formKey.replace("form", "Form "),
-            data: formData,
-          };
-        });
-      });
+    //     // Process each form in the stage
+    //     Object.entries(forms).forEach(([formKey, formData]) => {
+    //       downloadData.stages[stageKey].forms[formKey] = {
+    //         formName: formKey.replace("form", "Form "),
+    //         data: formData,
+    //       };
+    //     });
+    //   });
 
-      // Convert to JSON and create download
-      const jsonString = JSON.stringify(downloadData, null, 2);
-      const blob = new Blob([jsonString], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
+    //   // Convert to JSON and create download
+    //   const jsonString = JSON.stringify(downloadData, null, 2);
+    //   const blob = new Blob([jsonString], { type: "application/json" });
+    //   const url = URL.createObjectURL(blob);
 
-      // Create download link
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `${selectedProjectForReview?.name}_all_forms_${
-        new Date().toISOString().split("T")[0]
-      }.json`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+    //   // Create download link
+    //   const link = document.createElement("a");
+    //   link.href = url;
+    //   link.download = `${selectedProjectForReview?.name}_all_forms_${
+    //     new Date().toISOString().split("T")[0]
+    //   }.json`;
+    //   document.body.appendChild(link);
+    //   link.click();
+    //   document.body.removeChild(link);
+    //   URL.revokeObjectURL(url);
 
-      showNotification(
-        "All forms and stages downloaded successfully!",
-        "success"
-      );
-    } catch (error) {
-      console.error("Error downloading forms:", error);
-      showNotification("Failed to download forms", "error");
-    }
+    //   showNotification(
+    //     "All forms and stages downloaded successfully!",
+    //     "success"
+    //   );
+    // } catch (error) {
+    //   console.error("Error downloading forms:", error);
+    //   showNotification("Failed to download forms", "error");
+    // }
   };
 
   return (
@@ -1335,12 +1359,6 @@ const ETCAdminPanel = ({
                     }
                   </div>
                 </div>
-                <button
-                  onClick={() => handlePDFDownlaod(selectedProjectForReview)}
-                  className="approve-stage-btn"
-                >
-                  📥 Download PDF
-                </button>
               </div>
             </div>
 
