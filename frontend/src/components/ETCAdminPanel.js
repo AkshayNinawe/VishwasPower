@@ -413,7 +413,7 @@ const ETCAdminPanel = ({
     setShowRejectionModal(true);
   };
 
-  const confirmRejectStage = () => {
+  const confirmRejectStage = async () => {
     if (!rejectionReason.trim()) {
       showNotification(
         "Please provide a reason for rejecting this stage.",
@@ -422,6 +422,21 @@ const ETCAdminPanel = ({
       return;
     }
 
+
+    try {
+
+      const { data } = await axios.post(`${BACKEND_API_BASE_URL}/api/company/rejectStage`, {
+        companyName: selectedProjectForReview.companyName,
+        projectName: selectedProjectForReview.name,
+        stage: rejectionStage.stage,
+        rejectionReason,
+      });
+    } catch (error){
+      console.error("Error rejecting stage:", error);
+      showNotification(error.message, "error");
+    }
+
+    setRejectionReason(rejectionReason);
     console.log(
       `Rejecting stage ${rejectionStage} for Project ${selectedProjectForReview.name}`
     );
@@ -465,7 +480,7 @@ const ETCAdminPanel = ({
     );
 
     showNotification(
-      `Stage ${rejectionStage} rejected for ${selectedProjectForReview.name}. Project needs to resubmit forms.`,
+      `Stage ${ rejectionStage.stage} rejected for Project : ${selectedProjectForReview.name}. Project needs to resubmit forms.`,
       "warning"
     );
     setShowRejectionModal(false);
@@ -478,6 +493,13 @@ const ETCAdminPanel = ({
 
   const handleViewSubmittedForms = async (Project) => {
     console.log("Fronend : handleViewSubmittedForm ");
+    if(Project.status === "rejected" && Project.rejectionReason){
+      showNotification(
+        `Form got rejected due to  ${Project.rejectionReason}. Please resubmit the forms.`,
+        "warning"
+      );
+    }
+
     try {
       if (additionalLogging) {
         console.log(
@@ -662,6 +684,14 @@ const ETCAdminPanel = ({
   };
 
   const handleStageSubmit = async (Project) => {
+
+    if(Project.status === "rejected" && Project.rejectionReason){
+      showNotification(
+        `Form got rejected due to  ${Project.rejectionReason}. Please resubmit the forms.`,
+        "warning"
+      );
+    }
+
     const nextStage = Project.stage;
     const canSubmit = nextStage === 1 || Project.stageApprovals[nextStage - 1];
     setProjectName(Project.name);

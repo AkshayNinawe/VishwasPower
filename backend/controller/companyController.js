@@ -163,6 +163,55 @@ export const setapproveCompanyStage =  async(req, res) =>{
   }
 }
 
+export const rejectCompanyStage = async (req, res) => {
+  console.log("Rejecting stage:")
+  try {
+    const { companyName, projectName, stage, rejectionReason } = req.body;
+    const stageNumber = Number(stage);
+
+    console.log("Rejecting stage:", { companyName, projectName, stageNumber, rejectionReason });
+
+    const updateOperation = {
+      $set: {
+        [`companyProjects.$.stageApprovals.${stageNumber}`]: false, // explicitly false
+        [`companyProjects.$.submittedStages.${stageNumber}`]: false, // explicitly false
+        "companyProjects.$.status": "rejected",
+        "companyProjects.$.rejectionReason": rejectionReason || "No reason provided",
+      },
+    };
+
+    const updatedCompany = await Company.findOneAndUpdate(
+      {
+        companyName: companyName,
+        "companyProjects.name": projectName,
+      },
+      updateOperation,
+      {
+        new: true, // return updated doc
+      }
+    );
+
+    if (!updatedCompany) {
+      return res.status(404).json({
+        message: `Company '${companyName}' or project '${projectName}' not found.`,
+      });
+    }
+
+    res.status(200).json({
+      message: `Stage '${stageNumber}' for project '${projectName}' has been rejected.`,
+      project: updatedCompany.companyProjects.find(
+        (proj) => proj.name === projectName
+      ),
+    });
+  } catch (error) {
+    console.error("Error rejecting company stage:", error);
+    res.status(500).json({
+      message: "An internal server error occurred while rejecting the project stage.",
+      error: error.message,
+    });
+  }
+};
+
 
 // Delete a Company by ID
 export const deleteCompanyByID = async (req, res) => {
