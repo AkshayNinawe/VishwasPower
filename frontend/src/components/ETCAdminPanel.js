@@ -5,6 +5,7 @@ import axios from "axios";
 import { BACKEND_API_BASE_URL, additionalLogging } from "./constant";
 import FormStage from "./FormStage"; // Import FormStage
 import "./stage-review-styles.css";
+import html2pdf from "html2pdf.js"
 
 const ETCAdminPanel = ({
   user,
@@ -410,6 +411,27 @@ const ETCAdminPanel = ({
     setRejectionStage(stage);
     setRejectionReason("");
     setShowRejectionModal(true);
+  };
+
+  const handlePDFDownlaod = async (stage) => {
+    try {
+      if (additionalLogging) {
+        console.log(
+          "Frontend : From handleApproveStage post call to api/company/approveCompanyStage"
+        );
+      }
+
+      const element = document.getElementById('root');
+      html2pdf().from(element).save()
+      
+    } catch (error) {
+      console.error("Error downloading the PDF", error);
+      alert("Failed to download PDF");
+      return;
+    }
+    console.log(
+      `Downloading PDF form for Project ${selectedProjectForReview.name}`
+    );
   };
 
   const confirmRejectStage = () => {
@@ -950,6 +972,7 @@ const ETCAdminPanel = ({
                     </span>
                   </div>
 
+                  {/* Code for view form  */}
                   <div className="form-data-preview">
                     {Object.entries(formData).map(
                       ([fieldKey, fieldValue], idx) => (
@@ -1219,6 +1242,12 @@ const ETCAdminPanel = ({
                     }
                   </div>
                 </div>
+                <button
+                  onClick={() => handlePDFDownlaod(selectedProjectForReview)}
+                  className="approve-stage-btn"
+                >
+                  📥 Download PDF
+                </button>
               </div>
             </div>
 
