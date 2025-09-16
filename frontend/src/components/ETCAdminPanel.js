@@ -1,68 +1,347 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { BACKEND_API_BASE_URL, additionalLogging } from "./constant";
-import FormStage from "./FormStage"; // Import FormStage
-import "./stage-review-styles.css";
-import html2pdf from "html2pdf.js";
+import { useState, useEffect } from "react"
+import axios from "axios"
+import { BACKEND_API_BASE_URL, additionalLogging } from "./constant"
+import FormStage from "./FormStage" // Import FormStage
+import "./stage-review-styles.css"
+import "./form-styles.css"
+import html2pdf from "html2pdf.js"
 
-const ETCAdminPanel = ({
-  user,
-  selectedCompany,
-  onLogout,
-  onCompanySelect,
-  onProjectSelect,
-  onBackToMain,
-}) => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [departments, setDepartments] = useState([]);
-  const [Companys, setCompanys] = useState([]);
-  const [companies, setCompanies] = useState([]);
-  const [submittedForms, setSubmittedForms] = useState([]);
+const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onProjectSelect, onBackToMain }) => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [departments, setDepartments] = useState([])
+  const [Companys, setCompanys] = useState([])
+  const [companies, setCompanies] = useState([])
+  const [submittedForms, setSubmittedForms] = useState([])
 
-  const [projectName, setProjectName] = useState(null);
-  const [companyName, setCompanyName] = useState(null);
+  const [projectName, setProjectName] = useState(null)
+  const [companyName, setCompanyName] = useState(null)
 
-  const [selectedDepartment, setSelectedDepartment] = useState(null);
-  const [selectedMainCompany, setSelectedMainCompany] = useState(null);
+  const [selectedDepartment, setSelectedDepartment] = useState(null)
+  const [selectedMainCompany, setSelectedMainCompany] = useState(null)
 
-  const [newCompany, setNewCompany] = useState({ name: "", description: "" });
-  const [showCreateCompanyForm, setShowCreateCompanyForm] = useState(false);
+  const [newCompany, setNewCompany] = useState({ name: "", description: "" })
+  const [showCreateCompanyForm, setShowCreateCompanyForm] = useState(false)
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [reviewMode, setReviewMode] = useState(false);
-  const [selectedProjectForReview, setSelectedProjectForReview] =
-    useState(null);
-  const [currentStageReview, setCurrentStageReview] = useState(1);
-  const [showSubmitterReview, setShowSubmitterReview] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("")
+  const [reviewMode, setReviewMode] = useState(false)
+  const [selectedProjectForReview, setSelectedProjectForReview] = useState(null)
+  const [currentStageReview, setCurrentStageReview] = useState(1)
+  const [showSubmitterReview, setShowSubmitterReview] = useState(false)
+
+  const [viewMode, setViewMode] = useState(false)
+  const [selectedFormForView, setSelectedFormForView] = useState(null)
+  const [formViewData, setFormViewData] = useState({})
+  const [showPDFPreview, setShowPDFPreview] = useState(false)
 
   // State for showing and managing FormStage
-  const [formDataFromDB, setFormDataFromDB] = useState(false);
-  const [showFormStage, setShowFormStage] = useState(false);
-  const [formStageProject, setFormStageProject] = useState(null);
-  const [formStageStage, setFormStageStage] = useState(1);
+  const [formDataFromDB, setFormDataFromDB] = useState(false)
+  const [showFormStage, setShowFormStage] = useState(false)
+  const [formStageProject, setFormStageProject] = useState(null)
+  const [formStageStage, setFormStageStage] = useState(1)
 
   // Modal states for replacing alerts and prompts
-  const [showNotificationModal, setShowNotificationModal] = useState(false);
-  const [notificationMessage, setNotificationMessage] = useState("");
-  const [notificationType, setNotificationType] = useState("info"); // info, success, error, warning
+  const [showNotificationModal, setShowNotificationModal] = useState(false)
+  const [notificationMessage, setNotificationMessage] = useState("")
+  const [notificationType, setNotificationType] = useState("info") // info, success, error, warning
 
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [confirmMessage, setConfirmMessage] = useState("");
-  const [confirmAction, setConfirmAction] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false)
+  const [confirmMessage, setConfirmMessage] = useState("")
+  const [confirmAction, setConfirmAction] = useState(null)
 
-  const [showInputModal, setShowInputModal] = useState(false);
-  const [inputModalTitle, setInputModalTitle] = useState("");
-  const [inputModalPlaceholder, setInputModalPlaceholder] = useState("");
-  const [inputModalValue, setInputModalValue] = useState("");
-  const [inputModalAction, setInputModalAction] = useState(null);
+  const [showInputModal, setShowInputModal] = useState(false)
+  const [inputModalTitle, setInputModalTitle] = useState("")
+  const [inputModalPlaceholder, setInputModalPlaceholder] = useState("")
+  const [inputModalValue, setInputModalValue] = useState("")
+  const [inputModalAction, setInputModalAction] = useState(null)
 
-  const [showRejectionModal, setShowRejectionModal] = useState(false);
-  const [rejectionStage, setRejectionStage] = useState(null);
-  const [rejectionReason, setRejectionReason] = useState("");
+  const [showRejectionModal, setShowRejectionModal] = useState(false)
+  const [rejectionStage, setRejectionStage] = useState(null)
+  const [rejectionReason, setRejectionReason] = useState("")
 
-  const totalStageForm = [5, 2, 3, 4, 2, 1];
+  const totalStageForm = [5, 2, 3, 4, 2, 1]
+
+  const formStructures = {
+    stage1: {
+      forms: [
+        {
+          id: "name-plate-details",
+          title: "Name Plate Details Transformer",
+          fields: [
+            { name: "transformerType", label: "Transformer Type", type: "text" },
+            { name: "ratedPower", label: "Rated Power (kVA)", type: "number" },
+            { name: "primaryVoltage", label: "Primary Voltage (kV)", type: "number" },
+            { name: "secondaryVoltage", label: "Secondary Voltage (kV)", type: "number" },
+            { name: "frequency", label: "Frequency (Hz)", type: "number" },
+            { name: "serialNumber", label: "Serial Number", type: "text" },
+            { name: "manufacturingYear", label: "Manufacturing Year", type: "number" },
+            { name: "manufacturer", label: "Manufacturer", type: "text" },
+            { name: "weight", label: "Weight (kg)", type: "number" },
+            { name: "oilQuantity", label: "Oil Quantity (Liters)", type: "number" },
+          ],
+        },
+        {
+          id: "protocol-accessories-checking",
+          title: "Protocol for Accessories Checking",
+          fields: [
+            { name: "bushingCondition", label: "Bushing Condition", type: "select", options: ["Good", "Fair", "Poor"] },
+            {
+              name: "tapChangerOperation",
+              label: "Tap Changer Operation",
+              type: "select",
+              options: ["Smooth", "Stiff", "Not Working"],
+            },
+            { name: "coolingSystem", label: "Cooling System", type: "select", options: ["Working", "Not Working"] },
+            { name: "oilLevel", label: "Oil Level", type: "select", options: ["Normal", "Low", "High"] },
+            {
+              name: "gasketCondition",
+              label: "Gasket Condition",
+              type: "select",
+              options: ["Good", "Needs Replacement"],
+            },
+            { name: "earthingConnections", label: "Earthing Connections", type: "select", options: ["Tight", "Loose"] },
+          ],
+        },
+      ],
+    },
+    stage2: {
+      forms: [
+        {
+          id: "record-oil-handling",
+          title: "Record of Oil Handling - Test Values Prior to Filteration",
+          fields: [
+            { name: "oilTemperature", label: "Oil Temperature (°C)", type: "number" },
+            { name: "moistureContent", label: "Moisture Content (ppm)", type: "number" },
+            { name: "acidity", label: "Acidity (mg KOH/g)", type: "number" },
+            { name: "flashPoint", label: "Flash Point (°C)", type: "number" },
+            { name: "pourPoint", label: "Pour Point (°C)", type: "number" },
+            { name: "specificGravity", label: "Specific Gravity", type: "number" },
+            { name: "viscosity", label: "Viscosity (cSt)", type: "number" },
+          ],
+        },
+      ],
+    },
+  }
+
+  const handleViewForm = async (project, stage, formIndex) => {
+    try {
+      const response = await axios.get(`${BACKEND_API_BASE_URL}/api/data/getFormData`, {
+        params: {
+          projectName: project.name,
+          companyName: project.companyName,
+          stage: stage,
+          formNumber: formIndex + 1,
+        },
+      })
+
+      setSelectedFormForView({
+        project,
+        stage,
+        formIndex,
+        formData: response.data,
+      })
+      setViewMode(true)
+    } catch (error) {
+      console.error("Error fetching form data:", error)
+      showNotification("Failed to load form data", "error")
+    }
+  }
+
+  const generateFormPDF = () => {
+    if (!selectedFormForView) return
+
+    const { project, stage, formIndex, formData } = selectedFormForView
+    const formStructure = formStructures[`stage${stage}`]?.forms[formIndex]
+
+    if (!formStructure) return
+
+    const element = document.createElement("div")
+    element.innerHTML = `
+      <div style="padding: 20px; font-family: Arial, sans-serif;">
+        <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #4299e1; padding-bottom: 20px;">
+          <h1 style="color: #2d3748; margin-bottom: 10px;">VISHVAS POWER ENGINEERING</h1>
+          <h2 style="color: #4a5568; margin-bottom: 20px;">${formStructure.title}</h2>
+          <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+            <div><strong>Project:</strong> ${project.name}</div>
+            <div><strong>Company:</strong> ${project.companyName}</div>
+            <div><strong>Stage:</strong> ${stage}</div>
+          </div>
+        </div>
+        
+        <div style="margin-bottom: 30px;">
+          ${formStructure.fields
+            .map(
+              (field) => `
+            <div style="margin-bottom: 15px; display: flex; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">
+              <strong style="color: #2d3748; width: 40%;">${field.label}:</strong>
+              <span style="width: 55%; text-align: right;">${formData[field.name] || "N/A"}</span>
+            </div>
+          `,
+            )
+            .join("")}
+        </div>
+        
+        <div style="margin-top: 40px; display: flex; justify-content: space-between;">
+          <div style="text-align: center; width: 30%;">
+            <div style="border-top: 2px solid #000; margin-top: 50px; padding-top: 10px;">
+              <strong>Prepared By</strong><br>
+              Date: ${new Date().toLocaleDateString()}
+            </div>
+          </div>
+          <div style="text-align: center; width: 30%;">
+            <div style="border-top: 2px solid #000; margin-top: 50px; padding-top: 10px;">
+              <strong>Checked By</strong><br>
+              Date: ___________
+            </div>
+          </div>
+          <div style="text-align: center; width: 30%;">
+            <div style="border-top: 2px solid #000; margin-top: 50px; padding-top: 10px;">
+              <strong>Approved By</strong><br>
+              Date: ___________
+            </div>
+          </div>
+        </div>
+      </div>
+    `
+
+    const opt = {
+      margin: 1,
+      filename: `${project.name}_Stage${stage}_Form${formIndex + 1}.pdf`,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+    }
+
+    html2pdf().set(opt).from(element).save()
+  }
+
+  const renderFormView = () => {
+    if (!selectedFormForView) return null
+
+    const { project, stage, formIndex, formData } = selectedFormForView
+    const formStructure = formStructures[`stage${stage}`]?.forms[formIndex]
+
+    if (!formStructure) return null
+
+    return (
+      <div className="form-stage-container">
+        <div className="form-header">
+          <div className="form-progress">
+            <h2>View Form - Stage {stage}</h2>
+            <p>{formStructure.title}</p>
+          </div>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <button onClick={generateFormPDF} className="submit-btn">
+              📄 Download PDF
+            </button>
+            <button onClick={() => setViewMode(false)} className="back-btn">
+              ← Back
+            </button>
+          </div>
+        </div>
+
+        <div className="form-content">
+          <div className="company-header">
+            <h1>VISHVAS POWER ENGINEERING</h1>
+            <h2>{formStructure.title}</h2>
+            <div className="project-info">
+              <div className="info-item">
+                <strong>Project:</strong> {project.name}
+              </div>
+              <div className="info-item">
+                <strong>Company:</strong> {project.companyName}
+              </div>
+              <div className="info-item">
+                <strong>Stage:</strong> {stage}
+              </div>
+              <div className="info-item">
+                <strong>Date:</strong> {new Date().toLocaleDateString()}
+              </div>
+            </div>
+          </div>
+
+          <form className="form-layout">
+            <div className="form-grid">
+              {formStructure.fields.map((field, index) => (
+                <div key={index} className="form-group">
+                  <label className="form-label">{field.label}</label>
+                  {field.type === "select" ? (
+                    <div className="form-select-display">
+                      <select value={formData[field.name] || ""} disabled className="form-input disabled">
+                        <option value="">{formData[field.name] || "Not Selected"}</option>
+                        {field.options?.map((option, idx) => (
+                          <option key={idx} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  ) : field.type === "textarea" ? (
+                    <textarea
+                      value={formData[field.name] || ""}
+                      disabled
+                      className="form-textarea disabled"
+                      rows="4"
+                      placeholder="No data entered"
+                    />
+                  ) : field.type === "checkbox" ? (
+                    <div className="checkbox-group">
+                      <input
+                        type="checkbox"
+                        checked={formData[field.name] || false}
+                        disabled
+                        className="form-checkbox disabled"
+                      />
+                      <span className="checkbox-label">{formData[field.name] ? "Yes" : "No"}</span>
+                    </div>
+                  ) : field.type === "file" ? (
+                    <div className="file-display">
+                      {formData[field.name] ? (
+                        <div className="file-preview">
+                          <span className="file-name">📎 {formData[field.name]}</span>
+                        </div>
+                      ) : (
+                        <span className="no-file">No file uploaded</span>
+                      )}
+                    </div>
+                  ) : (
+                    <input
+                      type={field.type}
+                      value={formData[field.name] || ""}
+                      disabled
+                      className="form-input disabled"
+                      placeholder="No data entered"
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="signature-section">
+              <div className="signature-row">
+                <div className="signature-box">
+                  <div className="signature-line"></div>
+                  <label>Prepared By</label>
+                  <span className="signature-date">Date: {new Date().toLocaleDateString()}</span>
+                </div>
+                <div className="signature-box">
+                  <div className="signature-line"></div>
+                  <label>Checked By</label>
+                  <span className="signature-date">Date: ___________</span>
+                </div>
+                <div className="signature-box">
+                  <div className="signature-line"></div>
+                  <label>Approved By</label>
+                  <span className="signature-date">Date: ___________</span>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    )
+  }
 
   // Default data for initialization
   const defaultDepartments = [
@@ -83,12 +362,11 @@ const ETCAdminPanel = ({
     {
       id: 3,
       name: "V Connected 63 MVA Transformer",
-      description:
-        "V Connected 63 MVA transformer department for high voltage systems",
+      description: "V Connected 63 MVA transformer department for high voltage systems",
       icon: "🔌",
       color: "#047857",
     },
-  ];
+  ]
 
   const defaultCompanys = [
     {
@@ -115,38 +393,38 @@ const ETCAdminPanel = ({
       createdAt: "2024-02-15",
       departmentId: 3,
     },
-  ];
+  ]
 
-  const defaultCompanies = [];
-  const mockSubmittedForms = [];
+  const defaultCompanies = []
+  const mockSubmittedForms = []
 
   // Helper functions for modals
   const showNotification = (message, type = "info") => {
-    setNotificationMessage(message);
-    setNotificationType(type);
-    setShowNotificationModal(true);
-  };
+    setNotificationMessage(message)
+    setNotificationType(type)
+    setShowNotificationModal(true)
+  }
 
   const showConfirmDialog = (message, action) => {
-    setConfirmMessage(message);
-    setConfirmAction(() => action);
-    setShowConfirmModal(true);
-  };
+    setConfirmMessage(message)
+    setConfirmAction(() => action)
+    setShowConfirmModal(true)
+  }
 
   const showInputDialog = (title, placeholder, action) => {
-    setInputModalTitle(title);
-    setInputModalPlaceholder(placeholder);
-    setInputModalValue("");
-    setInputModalAction(() => action);
-    setShowInputModal(true);
-  };
+    setInputModalTitle(title)
+    setInputModalPlaceholder(placeholder)
+    setInputModalValue("")
+    setInputModalAction(() => action)
+    setShowInputModal(true)
+  }
 
   // Load data from localStorage on component mount
   useEffect(() => {
-    setDepartments(defaultDepartments);
-    var backendSavedCompanys = [];
+    setDepartments(defaultDepartments)
+    var backendSavedCompanys = []
     if (additionalLogging) {
-      console.log("Frontend : From UseEffect get call to api/company");
+      console.log("Frontend : From UseEffect get call to api/company")
     }
     axios
       .get(`${BACKEND_API_BASE_URL}/api/company`, {
@@ -156,19 +434,19 @@ const ETCAdminPanel = ({
         },
       })
       .then((response) => {
-        backendSavedCompanys = response.data;
+        backendSavedCompanys = response.data
 
-        setCompanys(backendSavedCompanys);
+        setCompanys(backendSavedCompanys)
       })
       .catch((error) => {
-        console.error("Error creating company on the backend:", error);
-        alert("Failed to create company. Please try again.");
-      });
-  }, []);
+        console.error("Error creating company on the backend:", error)
+        alert("Failed to create company. Please try again.")
+      })
+  }, [])
 
   const handleCreateCompany = async () => {
     if (newCompany.name && newCompany.description && selectedDepartment) {
-      const CompanyId = Math.max(...Companys.map((p) => p.id), 0) + 1;
+      const CompanyId = Math.max(...Companys.map((p) => p.id), 0) + 1
 
       const Company = {
         id: CompanyId,
@@ -177,117 +455,90 @@ const ETCAdminPanel = ({
         status: "active",
         createdAt: new Date().toISOString().split("T")[0],
         departmentId: selectedDepartment.id,
-      };
+      }
 
       try {
         if (additionalLogging) {
-          console.log(
-            "Frontend : From handleCreateCompany post call to api/company"
-          );
+          console.log("Frontend : From handleCreateCompany post call to api/company")
         }
-        const response = await axios.post(
-          `${BACKEND_API_BASE_URL}/api/company`,
-          {
-            companyName: newCompany.name,
-            companyDescription: newCompany.description,
-          }
-        );
-        console.log(
-          "company created successfully on the backend:",
-          response.data
-        );
+        const response = await axios.post(`${BACKEND_API_BASE_URL}/api/company`, {
+          companyName: newCompany.name,
+          companyDescription: newCompany.description,
+        })
+        console.log("company created successfully on the backend:", response.data)
       } catch (error) {
-        console.error("Error creating company on the backend:", error);
-        alert("Failed to create company. Please try again.");
-        return;
+        console.error("Error creating company on the backend:", error)
+        alert("Failed to create company. Please try again.")
+        return
       }
 
-      setCompanys([...Companys, Company]);
+      setCompanys([...Companys, Company])
       // setNewCompany({ name: "", description: "" })
-      setShowCreateCompanyForm(false);
+      setShowCreateCompanyForm(false)
       showNotification(
         `Company "${Company.companyName}" created successfully in ${selectedDepartment.name}!`,
-        "success"
-      );
+        "success",
+      )
     }
-  };
+  }
 
   const handleAddProject = (CompanyName) => {
-    showInputDialog(
-      "Create New Project",
-      "Enter Project name...",
-      async (ProjectName) => {
-        if (ProjectName.trim()) {
-          const newProject = {
-            id: Math.max(...companies.map((c) => c.id), 0) + 1,
-            name: ProjectName,
-            companyName: CompanyName,
-            stage: 1,
-            formsCompleted: 0,
-            totalForms: getStageFormCount(1),
-            status: "in-progress",
-            lastActivity: new Date().toISOString().split("T")[0],
-            stageApprovals: {
-              1: false,
-              2: false,
-              3: false,
-              4: false,
-              5: false,
-              6: false,
-            },
-            submittedStages: {
-              1: false,
-              2: false,
-              3: false,
-              4: false,
-              5: false,
-              6: false,
-            },
-          };
-          try {
-            // --- UPDATED POST REQUEST ---
-            // We are now sending both the projectName and the CompanyId in the payload.
-            if (additionalLogging) {
-              console.log(
-                "Frontend : From handleAddProject post call to api/company/addCompany"
-              );
-            }
-            const response = await axios.post(
-              `${BACKEND_API_BASE_URL}/api/company/addCompany`,
-              {
-                projectName: ProjectName,
-                companyName: CompanyName, // Pass the CompanyId to the backend
-                companyProjects: newProject,
-              }
-            );
-
-            console.log(
-              "Project created successfully on the backend:",
-              response.data
-            );
-
-            selectedMainCompany.companyProjects =
-              selectedMainCompany.companyProjects ?? [];
-            selectedMainCompany.companyProjects.push(newProject);
-
-            setCompanies((prev) => [...prev, newProject]);
-            showNotification(
-              `Project "${ProjectName}" added to this Company!`,
-              "success"
-            );
-          } catch (error) {
-            console.error("Error creating project on the backend:", error);
-
-            showNotification(
-              "Failed to create project. Please try again.",
-              "error"
-            );
-            return;
+    showInputDialog("Create New Project", "Enter Project name...", async (ProjectName) => {
+      if (ProjectName.trim()) {
+        const newProject = {
+          id: Math.max(...companies.map((c) => c.id), 0) + 1,
+          name: ProjectName,
+          companyName: CompanyName,
+          stage: 1,
+          formsCompleted: 0,
+          totalForms: getStageFormCount(1),
+          status: "in-progress",
+          lastActivity: new Date().toISOString().split("T")[0],
+          stageApprovals: {
+            1: false,
+            2: false,
+            3: false,
+            4: false,
+            5: false,
+            6: false,
+          },
+          submittedStages: {
+            1: false,
+            2: false,
+            3: false,
+            4: false,
+            5: false,
+            6: false,
+          },
+        }
+        try {
+          // --- UPDATED POST REQUEST ---
+          // We are now sending both the projectName and the CompanyId in the payload.
+          if (additionalLogging) {
+            console.log("Frontend : From handleAddProject post call to api/company/addCompany")
           }
+          const response = await axios.post(`${BACKEND_API_BASE_URL}/api/company/addCompany`, {
+            projectName: ProjectName,
+            companyName: CompanyName, // Pass the CompanyId to the backend
+            companyProjects: newProject,
+          })
+
+          console.log("Project created successfully on the backend:", response.data)
+
+          selectedMainCompany.companyProjects = selectedMainCompany.companyProjects ?? []
+          selectedMainCompany.companyProjects.push(newProject)
+
+          setCompanies((prev) => [...prev, newProject])
+          showNotification(`Project "${ProjectName}" added to this Company!`, "success")
+        } catch (error) {
+          console.error("Error creating project on the backend:", error)
+
+          showNotification("Failed to create project. Please try again.", "error")
+          return
         }
       }
-    );
-  };
+    })
+  }
 
   // Helper function to get form count for each stage
   const getStageFormCount = (stage) => {
@@ -298,73 +549,60 @@ const ETCAdminPanel = ({
       4: 6, // Stage 4 has 6 forms
       5: 1, // Stage 5 has 1 form
       6: 1, // Stage 6 has 1 form
-    };
-    return stageForms[stage] || 1;
-  };
+    }
+    return stageForms[stage] || 1
+  }
 
   const handleReviewStage = async (Project, stage) => {
     if (Project.status !== "pending-approval") {
-      showNotification(`No forms submitted for Stage ${stage} yet.`, "warning");
-      return;
+      showNotification(`No forms submitted for Stage ${stage} yet.`, "warning")
+      return
     }
     try {
-      const response = await axios.post(
-        `${BACKEND_API_BASE_URL}/api/data/getStageTable`,
-        {
-          projectName: Project.name,
-          companyName: Project.companyName,
-          stage: Project.stage,
-        }
-      );
+      const response = await axios.post(`${BACKEND_API_BASE_URL}/api/data/getStageTable`, {
+        projectName: Project.name,
+        companyName: Project.companyName,
+        stage: Project.stage,
+      })
       console.log(
         `Complete data has been provided for ${Project.companyName} and projectName ${Project.name}`,
-        response.data
-      );
-      setFormDataFromDB(response.data.data);
+        response.data,
+      )
+      setFormDataFromDB(response.data.data)
     } catch (error) {
-      console.error("Error creating company on the backend:", error);
-      alert("Failed to create company. Please try again.");
-      return;
+      console.error("Error creating company on the backend:", error)
+      alert("Failed to create company. Please try again.")
+      return
     }
 
-    setSelectedProjectForReview(Project);
-    setCurrentStageReview(stage);
-    setReviewMode(true);
-  };
+    setSelectedProjectForReview(Project)
+    setCurrentStageReview(stage)
+    setReviewMode(true)
+  }
 
   const handleApproveStage = async (stage) => {
     try {
       if (additionalLogging) {
-        console.log(
-          "Frontend : From handleApproveStage post call to api/company/approveCompanyStage"
-        );
+        console.log("Frontend : From handleApproveStage post call to api/company/approveCompanyStage")
       }
-      const response = await axios.post(
-        `${BACKEND_API_BASE_URL}/api/company/approveCompanyStage`,
-        {
-          companyName: selectedProjectForReview.companyName,
-          projectName: selectedProjectForReview.name,
-          stage: selectedProjectForReview.stage,
-        }
-      );
-      console.log(
-        "company created successfully on the backend:",
-        response.data
-      );
+      const response = await axios.post(`${BACKEND_API_BASE_URL}/api/company/approveCompanyStage`, {
+        companyName: selectedProjectForReview.companyName,
+        projectName: selectedProjectForReview.name,
+        stage: selectedProjectForReview.stage,
+      })
+      console.log("company created successfully on the backend:", response.data)
     } catch (error) {
-      console.error("Error creating company on the backend:", error);
-      alert("Failed to create company. Please try again.");
-      return;
+      console.error("Error creating company on the backend:", error)
+      alert("Failed to create company. Please try again.")
+      return
     }
 
     if (!selectedProjectForReview) {
-      showNotification("No Project selected for review.", "error");
-      return;
+      showNotification("No Project selected for review.", "error")
+      return
     }
 
-    console.log(
-      `Approving stage ${stage} for Project ${selectedProjectForReview.name}`
-    );
+    console.log(`Approving stage ${stage} for Project ${selectedProjectForReview.name}`)
 
     setSelectedMainCompany((prevCompany) => ({
       ...prevCompany,
@@ -373,7 +611,7 @@ const ETCAdminPanel = ({
           prevCompany.companyName === selectedProjectForReview.companyName &&
           project.name === selectedProjectForReview.name
         ) {
-          const currentStage = project.stage;
+          const currentStage = project.stage
           return {
             ...project,
             stage: currentStage !== 6 ? currentStage + 1 : currentStage,
@@ -382,79 +620,69 @@ const ETCAdminPanel = ({
               ...project.stageApprovals,
               [currentStage]: true,
             },
-          };
+          }
         }
-        return project; // unchanged projects
+        return project // unchanged projects
       }),
-    }));
+    }))
 
     showNotification(
       `Stage ${stage} approved for ${selectedProjectForReview.name}! ${
-        stage === 6
-          ? "Project completed all stages."
-          : `Stage ${stage + 1} is now available.`
+        stage === 6 ? "Project completed all stages." : `Stage ${stage + 1} is now available.`
       }`,
-      "success"
-    );
-    setReviewMode(false);
-    setSelectedProjectForReview(null);
-    setCurrentStageReview(1);
-  };
+      "success",
+    )
+    setReviewMode(false)
+    setSelectedProjectForReview(null)
+    setCurrentStageReview(1)
+  }
 
   const handleRejectStage = (stage) => {
     if (!selectedProjectForReview) {
-      showNotification("No Project selected for review.", "error");
-      return;
+      showNotification("No Project selected for review.", "error")
+      return
     }
-    stage.submittedStages[stage.stage] = false;
-    stage.status = "rejected";
-    setRejectionStage(stage);
-    setRejectionReason("");
-    setShowRejectionModal(true);
-  };
+    stage.submittedStages[stage.stage] = false
+    stage.status = "rejected"
+    setRejectionStage(stage)
+    setRejectionReason("")
+    setShowRejectionModal(true)
+  }
 
   const confirmRejectStage = async () => {
     if (!rejectionReason.trim()) {
-      showNotification(
-        "Please provide a reason for rejecting this stage.",
-        "warning"
-      );
-      return;
+      showNotification("Please provide a reason for rejecting this stage.", "warning")
+      return
     }
 
-
     try {
-
       const { data } = await axios.post(`${BACKEND_API_BASE_URL}/api/company/rejectStage`, {
         companyName: selectedProjectForReview.companyName,
         projectName: selectedProjectForReview.name,
         stage: rejectionStage.stage,
         rejectionReason,
-      });
-    } catch (error){
-      console.error("Error rejecting stage:", error);
-      showNotification(error.message, "error");
+      })
+    } catch (error) {
+      console.error("Error rejecting stage:", error)
+      showNotification(error.message, "error")
     }
 
-    setRejectionReason(rejectionReason);
-    console.log(
-      `Rejecting stage ${rejectionStage} for Project ${selectedProjectForReview.name}`
-    );
+    setRejectionReason(rejectionReason)
+    console.log(`Rejecting stage ${rejectionStage} for Project ${selectedProjectForReview.name}`)
 
     // Update submitted forms status
     setSubmittedForms((forms) =>
       forms.map((form) =>
-        form.ProjectId === selectedProjectForReview.id &&
-        form.stage === rejectionStage
+        form.ProjectId === selectedProjectForReview.id && form.stage === rejectionStage
           ? {
               ...form,
               status: "rejected",
               rejectionReason,
               reviewedAt: new Date().toISOString().split("T")[0],
             }
-          : form
-      )
-    );
+          : form,
+      ),
+    )
 
     // Reset Project stage submission status
     // setCompanies((companies) =>
@@ -480,147 +708,123 @@ const ETCAdminPanel = ({
     // );
 
     showNotification(
-      `Stage ${ rejectionStage.stage} rejected for Project : ${selectedProjectForReview.name}. Project needs to resubmit forms.`,
-      "warning"
-    );
-    setShowRejectionModal(false);
-    setRejectionStage(null);
-    setRejectionReason("");
-    setReviewMode(false);
-    setSelectedProjectForReview(null);
-    setCurrentStageReview(1);
-  };
+      `Stage ${rejectionStage.stage} rejected for Project : ${selectedProjectForReview.name}. Project needs to resubmit forms.`,
+      "warning",
+    )
+    setShowRejectionModal(false)
+    setRejectionStage(null)
+    setRejectionReason("")
+    setReviewMode(false)
+    setSelectedProjectForReview(null)
+    setCurrentStageReview(1)
+  }
 
   const handleViewSubmittedForms = async (Project) => {
-    console.log("Fronend : handleViewSubmittedForm ");
-    if(Project.status === "rejected" && Project.rejectionReason){
-      showNotification(
-        `Form got rejected due to  ${Project.rejectionReason}. Please resubmit the forms.`,
-        "warning"
-      );
+    console.log("Fronend : handleViewSubmittedForm ")
+    if (Project.status === "rejected" && Project.rejectionReason) {
+      showNotification(`Form got rejected due to  ${Project.rejectionReason}. Please resubmit the forms.`, "warning")
     }
 
     try {
       if (additionalLogging) {
-        console.log(
-          "Frontend : From handleCreateCompany post call to api/company"
-        );
+        console.log("Frontend : From handleCreateCompany post call to api/company")
       }
-      const response = await axios.post(
-        `${BACKEND_API_BASE_URL}/api/data/getCompleteTable`,
-        {
-          projectName: Project.name,
-          companyName: Project.companyName,
-        }
-      );
+      const response = await axios.post(`${BACKEND_API_BASE_URL}/api/data/getCompleteTable`, {
+        projectName: Project.name,
+        companyName: Project.companyName,
+      })
       console.log(
         `Complete data has been provided for ${Project.companyName} and projectName ${Project.name}`,
-        response.data
-      );
-      setFormDataFromDB(response.data.data.autoTransformerData);
+        response.data,
+      )
+      setFormDataFromDB(response.data.data.autoTransformerData)
     } catch (error) {
-      console.error("Error creating company on the backend:", error);
+      console.error("Error creating company on the backend:", error)
 
       if (error.response?.status === 404) {
         // ✅ Custom message for 404
-        alert("Please fill the forms first");
+        alert("Please fill the forms first")
       } else {
-        alert(
-          `Failed to load submitted forms: ${
-            error.response?.data?.message || error.message
-          }`
-        );
+        alert(`Failed to load submitted forms: ${error.response?.data?.message || error.message}`)
       }
-      return;
+      return
     }
-    setSelectedProjectForReview(Project);
-    setShowSubmitterReview(true);
-  };
+    setSelectedProjectForReview(Project)
+    setShowSubmitterReview(true)
+  }
 
   const handleBackFromReview = () => {
-    setReviewMode(false);
-    setShowSubmitterReview(false);
-    setSelectedProjectForReview(null);
-    setCurrentStageReview(1);
-  };
+    setReviewMode(false)
+    setShowSubmitterReview(false)
+    setSelectedProjectForReview(null)
+    setCurrentStageReview(1)
+  }
 
   const getStatusColor = (status) => {
     switch (status) {
       case "completed":
-        return "status-completed";
+        return "status-completed"
       case "in-progress":
-        return "status-progress";
+        return "status-progress"
       case "pending-approval":
-        return "status-pending";
+        return "status-pending"
       default:
-        return "status-default";
+        return "status-default"
     }
-  };
+  }
 
   const getStageStatus = (project, stageNumber) => {
     if (project.stageApprovals?.[stageNumber]) {
-      return "approved";
+      return "approved"
     }
     if (project.submittedStages?.[stageNumber]) {
-      return "pending-review";
+      return "pending-review"
     }
     if (project.stage === stageNumber) {
-      return "available";
+      return "available"
     }
-    return "locked";
-  };
+    return "locked"
+  }
 
   const getDepartmentCompanys = (departmentId) => {
-    return Companys.filter((Company) => Company.departmentId === departmentId);
-  };
+    return Companys.filter((Company) => Company.departmentId === departmentId)
+  }
 
   const getCompanyCompanies = (CompanyId) => {
-    return companies.filter((Project) => Project.CompanyId === CompanyId);
-  };
+    return companies.filter((Project) => Project.CompanyId === CompanyId)
+  }
 
   const currentStageForms = reviewMode
     ? submittedForms.filter(
-        (form) =>
-          form.ProjectId === selectedProjectForReview.id &&
-          form.stage === currentStageReview
+        (form) => form.ProjectId === selectedProjectForReview.id && form.stage === currentStageReview,
       )
-    : [];
+    : []
 
   const allProjectForms = showSubmitterReview
-    ? submittedForms.filter(
-        (form) => form.ProjectId === selectedProjectForReview.id
-      )
-    : [];
+    ? submittedForms.filter((form) => form.ProjectId === selectedProjectForReview.id)
+    : []
 
   const handleLogoutAndClearData = () => {
-    localStorage.removeItem("etc_Companys");
-    localStorage.removeItem("etc_companies");
-    localStorage.removeItem("etc_submitted_forms");
+    localStorage.removeItem("etc_Companys")
+    localStorage.removeItem("etc_companies")
+    localStorage.removeItem("etc_submitted_forms")
 
-    setCompanys([]);
-    setCompanies([]);
-    setSubmittedForms([]);
-    setSelectedDepartment(null);
-    setSelectedMainCompany(null);
-    setSelectedProjectForReview(null);
-    setReviewMode(false);
-    setShowSubmitterReview(false);
-    setShowFormStage(false);
+    setCompanys([])
+    setCompanies([])
+    setSubmittedForms([])
+    setSelectedDepartment(null)
+    setSelectedMainCompany(null)
+    setSelectedProjectForReview(null)
+    setReviewMode(false)
+    setShowSubmitterReview(false)
+    setShowFormStage(false)
 
-    onLogout();
-  };
+    onLogout()
+  }
 
   // Function to handle form submission from FormStage
-  const handleFormStageSubmit = (
-    stage,
-    submittedData,
-    selectedProjectForReview
-  ) => {
-    console.log(
-      `Submittingsds forms for stage ${stage}:`,
-      submittedData,
-      selectedProjectForReview
-    );
+  const handleFormStageSubmit = (stage, submittedData, selectedProjectForReview) => {
+    console.log(`Submittingsds forms for stage ${stage}:`, submittedData, selectedProjectForReview)
 
     const newFormEntry = {
       id: Math.max(...submittedForms.map((f) => f.id), 0) + 1,
@@ -630,42 +834,34 @@ const ETCAdminPanel = ({
       submittedAt: new Date().toISOString().split("T")[0],
       status: "pending-review",
       data: submittedData,
-    };
+    }
 
-    console.log(`Submitting forms for stagew ${stage}:`, newFormEntry);
+    console.log(`Submitting forms for stagew ${stage}:`, newFormEntry)
 
-    setSubmittedForms((prev) => [...prev, newFormEntry]);
+    setSubmittedForms((prev) => [...prev, newFormEntry])
 
     // Update Project to show forms submitted and pending approval
 
-    showNotification(
-      `Forms for Stage ${stage} submitted successfully! Waiting for ETC Admin approval.`,
-      "success"
-    );
-    setShowFormStage(false);
-    setFormStageProject(null);
-    setFormStageStage(1);
-  };
+    showNotification(`Forms for Stage ${stage} submitted successfully! Waiting for ETC Admin approval.`, "success")
+    setShowFormStage(false)
+    setFormStageProject(null)
+    setFormStageStage(1)
+  }
 
   // Function to go back from FormStage
   const handleBackFromFormStage = () => {
-    setShowFormStage(false);
-    setFormStageProject(null);
-    setFormStageStage(1);
-  };
+    setShowFormStage(false)
+    setFormStageProject(null)
+    setFormStageStage(1)
+  }
 
-  const capitalizeFirst = (s) =>
-    typeof s === "string" && s.length
-      ? s.charAt(0).toUpperCase() + s.slice(1)
-      : s;
+  const capitalizeFirst = (s) => (typeof s === "string" && s.length ? s.charAt(0).toUpperCase() + s.slice(1) : s)
 
   const isObjectOfObjects = (obj) =>
     obj &&
     typeof obj === "object" &&
     !Array.isArray(obj) &&
-    Object.values(obj).every(
-      (v) => v && typeof v === "object" && !Array.isArray(v)
-    );
+    Object.values(obj).every((v) => v && typeof v === "object" && !Array.isArray(v))
 
   const renderPrimitiveCell = (val, labelForImg = "") => {
     if (typeof val === "string" && val.startsWith("data:image/")) {
@@ -675,84 +871,63 @@ const ETCAdminPanel = ({
           alt={labelForImg || "image"}
           style={{ maxWidth: "100px", border: "1px solid #ccc" }}
         />
-      );
+      )
     }
     if (Array.isArray(val)) {
-      return JSON.stringify(val);
+      return JSON.stringify(val)
     }
-    return String(val);
-  };
+    return String(val)
+  }
 
   const handleStageSubmit = async (Project) => {
-
-    if(Project.status === "rejected" && Project.rejectionReason){
-      showNotification(
-        `Form got rejected due to  ${Project.rejectionReason}. Please resubmit the forms.`,
-        "warning"
-      );
+    if (Project.status === "rejected" && Project.rejectionReason) {
+      showNotification(`Form got rejected due to  ${Project.rejectionReason}. Please resubmit the forms.`, "warning")
     }
 
-    const nextStage = Project.stage;
-    const canSubmit = nextStage === 1 || Project.stageApprovals[nextStage - 1];
-    setProjectName(Project.name);
-    setCompanyName(Project.companyName);
+    const nextStage = Project.stage
+    const canSubmit = nextStage === 1 || Project.stageApprovals[nextStage - 1]
+    setProjectName(Project.name)
+    setCompanyName(Project.companyName)
 
     if (canSubmit && !Project.submittedStages[nextStage]) {
-      setFormStageProject(Project);
-      setFormStageStage(nextStage);
-      setShowFormStage(true);
+      setFormStageProject(Project)
+      setFormStageStage(nextStage)
+      setShowFormStage(true)
     } else if (Project.submittedStages[nextStage]) {
-      showNotification(
-        `Stage ${nextStage} forms already submitted!`,
-        "warning"
-      );
+      showNotification(`Stage ${nextStage} forms already submitted!`, "warning")
     } else {
-      showNotification(
-        `Stage ${nextStage - 1} must be approved first!`,
-        "warning"
-      );
+      showNotification(`Stage ${nextStage - 1} must be approved first!`, "warning")
     }
-  };
+  }
 
   const handleProjectDelete = async (Project) => {
     const confirmDelete = window.confirm(
-      `Are you sure you want to delete project "${Project.name}" from company "${Project.companyName}"?`
-    );
+      `Are you sure you want to delete project "${Project.name}" from company "${Project.companyName}"?`,
+    )
 
     if (!confirmDelete) {
       // User clicked "Cancel"
-      return;
+      return
     }
 
     try {
       if (additionalLogging) {
-        console.log(
-          "Frontend : From handleDeleteProject delete call to api/company/deleteProject"
-        );
+        console.log("Frontend : From handleDeleteProject delete call to api/company/deleteProject")
       }
 
       // ✅ Axios DELETE requires "data" wrapper for body
-      const response = await axios.delete(
-        `${BACKEND_API_BASE_URL}/api/company/deleteProject`,
-        {
-          data: {
-            projectName: Project.name,
-            companyName: Project.companyName,
-          },
-        }
-      );
+      const response = await axios.delete(`${BACKEND_API_BASE_URL}/api/company/deleteProject`, {
+        data: {
+          projectName: Project.name,
+          companyName: Project.companyName,
+        },
+      })
 
-      console.log("Project deleted successfully from backend:", response.data);
+      console.log("Project deleted successfully from backend:", response.data)
 
-      selectedMainCompany.companyProjects = (
-        selectedMainCompany.companyProjects ?? []
-      ).filter(
-        (proj) =>
-          !(
-            proj.companyName === Project.companyName &&
-            proj.name === Project.name
-          )
-      );
+      selectedMainCompany.companyProjects = (selectedMainCompany.companyProjects ?? []).filter(
+        (proj) => !(proj.companyName === Project.companyName && proj.name === Project.name),
+      )
 
       // ✅ Update frontend state by filtering out the deleted project
       setCompanies((prev) =>
@@ -761,177 +936,149 @@ const ETCAdminPanel = ({
             ? {
                 ...company,
                 companyProjects: (company.companyProjects ?? []).filter(
-                  (proj) =>
-                    !(
-                      proj.companyName === Project.companyName &&
-                      proj.name === Project.name
-                    )
+                  (proj) => !(proj.companyName === Project.companyName && proj.name === Project.name),
                 ),
               }
-            : company
-        )
-      );
+            : company,
+        ),
+      )
 
-      showNotification(
-        `Project "${Project.name}" deleted successfully!`,
-        "success"
-      );
+      showNotification(`Project "${Project.name}" deleted successfully!`, "success")
     } catch (error) {
-      console.error("Error deleting project on the backend:", error);
-      showNotification("Failed to delete project. Please try again.", "error");
+      console.error("Error deleting project on the backend:", error)
+      showNotification("Failed to delete project. Please try again.", "error")
     }
-  };
+  }
 
   const handleCompanyDelete = async (company) => {
     const confirmDelete = window.confirm(
-      `Are you sure you want to delete company "${company.companyName}" and all its projects?`
-    );
+      `Are you sure you want to delete company "${company.companyName}" and all its projects?`,
+    )
 
-    if (!confirmDelete) return;
+    if (!confirmDelete) return
 
     try {
       if (additionalLogging) {
-        console.log(
-          "Frontend : From handleDeleteProject delete call to api/company/deleteProject"
-        );
+        console.log("Frontend : From handleDeleteProject delete call to api/company/deleteProject")
       }
 
       // ✅ Axios DELETE requires "data" wrapper for body
-      const response = await axios.delete(
-        `${BACKEND_API_BASE_URL}/api/company/deleteCompany`,
-        {
-          data: { companyName: company.companyName },
-        }
-      );
+      const response = await axios.delete(`${BACKEND_API_BASE_URL}/api/company/deleteCompany`, {
+        data: { companyName: company.companyName },
+      })
 
-      console.log("Company deleted successfully from backend:", response.data);
+      console.log("Company deleted successfully from backend:", response.data)
 
       // ✅ Update frontend state → remove the company
-      setCompanys((prev) =>
-        prev.filter((c) => c.companyName !== company.companyName)
-      );
+      setCompanys((prev) => prev.filter((c) => c.companyName !== company.companyName))
 
-      showNotification(
-        `Company "${company.companyName}" deleted successfully!`,
-        "success"
-      );
+      showNotification(`Company "${company.companyName}" deleted successfully!`, "success")
     } catch (error) {
-      console.error("Error deleting company on the backend:", error);
-      showNotification("Failed to delete company. Please try again.", "error");
+      console.error("Error deleting company on the backend:", error)
+      showNotification("Failed to delete company. Please try again.", "error")
     }
-  };
+  }
 
-  const [expandedStages, setExpandedStages] = useState({});
+  const [expandedStages, setExpandedStages] = useState({})
 
   const toggleStageExpansion = (stageKey) => {
     setExpandedStages((prev) => ({
       ...prev,
       [stageKey]: !prev[stageKey],
-    }));
-  };
+    }))
+  }
 
   const handleDownloadAllForms = () => {
     try {
-      const container = document.querySelector(".stages-review-container");
+      const container = document.querySelector(".stages-review-container")
       if (!container) {
-        alert("Stages container not found");
-        return;
+        alert("Stages container not found")
+        return
       }
 
-      // ✅ Expand all stages by simulating clicks
-      const headers = container.querySelectorAll(".stage-header-clickable");
-      headers.forEach((header) => {
-        const content = header.nextElementSibling;
-        if (!content || content.classList.contains("forms-dropdown-content")) {
-          // If collapsed, trigger a click (or directly set style)
-          if (
-            !content ||
-            content.style.display === "none" ||
-            !content.innerHTML.trim()
-          ) {
-            header.click();
-          }
-        }
-      });
+      const allStageKeys = Object.keys(formDataFromDB)
+      const expandAllStages = {}
+      allStageKeys.forEach((stageKey) => {
+        expandAllStages[stageKey] = true
+      })
 
-      // Small delay to allow React state/UI update
+      // Update the expanded stages state
+      setExpandedStages(expandAllStages)
+
       setTimeout(() => {
-        const opt = {
-          margin: 0.2,
-          filename: "all-stages.pdf",
-          image: { type: "jpeg", quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true },
-          jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
-        };
+        const stageContents = container.querySelectorAll(".forms-dropdown-content")
+        let allExpanded = true
 
-        html2pdf().set(opt).from(container).save();
-      }, 500); // adjust if animations are slower
+        stageContents.forEach((content) => {
+          if (!content || content.style.display === "none" || !content.innerHTML.trim()) {
+            allExpanded = false
+          }
+        })
+
+        if (!allExpanded) {
+          console.warn("Not all stages are expanded, trying again...")
+          const headers = container.querySelectorAll(".stage-header-clickable")
+          headers.forEach((header) => {
+            const content = header.nextElementSibling
+            if (!content || content.style.display === "none" || !content.innerHTML.trim()) {
+              header.click()
+            }
+          })
+
+          setTimeout(() => {
+            generatePDF()
+          }, 1000)
+        } else {
+          generatePDF()
+        }
+      }, 1000) // Increased timeout to 1000ms for better reliability
+
+      function generatePDF() {
+        const opt = {
+          margin: [0.5, 0.5, 0.5, 0.5], // Added margins for better formatting
+          filename: `${selectedProjectForReview?.name || "project"}_all_stages_${new Date().toISOString().split("T")[0]}.pdf`,
+          image: { type: "jpeg", quality: 0.98 },
+          html2canvas: {
+            scale: 2,
+            useCORS: true,
+            allowTaint: true, // Added to handle images better
+            backgroundColor: "#ffffff", // Ensure white background
+            scrollX: 0,
+            scrollY: 0,
+          },
+          jsPDF: {
+            unit: "in",
+            format: "a4",
+            orientation: "portrait",
+            compress: true, // Added compression for smaller file size
+          },
+        }
+
+        html2pdf()
+          .set(opt)
+          .from(container)
+          .save()
+          .then(() => {
+            showNotification("All forms and stages downloaded successfully as PDF!", "success")
+          })
+          .catch((error) => {
+            console.error("Error generating PDF:", error)
+            showNotification("Failed to generate PDF. Please try again.", "error")
+          })
+      }
     } catch (error) {
-      console.error("Error downloading the PDF", error);
-      alert("Failed to download PDF");
-      return;
+      console.error("Error downloading the PDF", error)
+      showNotification("Failed to download PDF. Please try again.", "error")
+      return
     }
-    console.log(
-      `Downloading PDF form for Project ${selectedProjectForReview.name}`
-    );
+
+    console.log(`Downloading PDF form for Project ${selectedProjectForReview.name}`)
 
     if (!formDataFromDB) {
-      showNotification("No forms data available to download", "warning");
-      return;
+      showNotification("No forms data available to download", "warning")
+      return
     }
-
-    // try {
-    //   // Create a comprehensive data structure for download
-    //   const downloadData = {
-    //     projectName: selectedProjectForReview?.name,
-    //     companyName: selectedProjectForReview?.companyName,
-    //     downloadDate: new Date().toISOString(),
-    //     totalStages: Object.keys(formDataFromDB).length,
-    //     stages: {},
-    //   };
-
-    //   // Process each stage
-    //   Object.entries(formDataFromDB).forEach(([stageKey, forms]) => {
-    //     downloadData.stages[stageKey] = {
-    //       stageName: stageKey.replace("stage", "Stage "),
-    //       totalForms: Object.keys(forms).length,
-    //       forms: {},
-    //     };
-
-    //     // Process each form in the stage
-    //     Object.entries(forms).forEach(([formKey, formData]) => {
-    //       downloadData.stages[stageKey].forms[formKey] = {
-    //         formName: formKey.replace("form", "Form "),
-    //         data: formData,
-    //       };
-    //     });
-    //   });
-
-    //   // Convert to JSON and create download
-    //   const jsonString = JSON.stringify(downloadData, null, 2);
-    //   const blob = new Blob([jsonString], { type: "application/json" });
-    //   const url = URL.createObjectURL(blob);
-
-    //   // Create download link
-    //   const link = document.createElement("a");
-    //   link.href = url;
-    //   link.download = `${selectedProjectForReview?.name}_all_forms_${
-    //     new Date().toISOString().split("T")[0]
-    //   }.json`;
-    //   document.body.appendChild(link);
-    //   link.click();
-    //   document.body.removeChild(link);
-    //   URL.revokeObjectURL(url);
-
-    //   showNotification(
-    //     "All forms and stages downloaded successfully!",
-    //     "success"
-    //   );
-    // } catch (error) {
-    //   console.error("Error downloading forms:", error);
-    //   showNotification("Failed to download forms", "error");
-    // }
-  };
+  }
 
   return (
     <div className="dashboard-container">
@@ -943,10 +1090,7 @@ const ETCAdminPanel = ({
                 ← Back
               </button>
             )}
-            <button
-              className="mobile-menu-toggle"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
+            <button className="mobile-menu-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
               <span className="hamburger-line"></span>
               <span className="hamburger-line"></span>
               <span className="hamburger-line"></span>
@@ -958,27 +1102,27 @@ const ETCAdminPanel = ({
                 {showFormStage
                   ? `Submit Forms - ${formStageProject?.name} (Stage ${formStageStage})`
                   : reviewMode
-                  ? `Review Stage ${currentStageReview} - ${selectedProjectForReview?.name}`
-                  : showSubmitterReview
-                  ? `Submitted Forms - ${selectedProjectForReview?.name}`
-                  : selectedMainCompany
-                  ? `${selectedMainCompany.name} - Companies`
-                  : selectedDepartment
-                  ? `${selectedDepartment.name} - Companys`
-                  : "ETC Admin Panel"}
+                    ? `Review Stage ${currentStageReview} - ${selectedProjectForReview?.name}`
+                    : showSubmitterReview
+                      ? `Submitted Forms - ${selectedProjectForReview?.name}`
+                      : selectedMainCompany
+                        ? `${selectedMainCompany.name} - Companies`
+                        : selectedDepartment
+                          ? `${selectedDepartment.name} - Companys`
+                          : "ETC Admin Panel"}
               </h1>
               <p>
                 {showFormStage
                   ? "Fill out and submit the required forms for this stage."
                   : reviewMode
-                  ? "Review and approve/reject stage forms"
-                  : showSubmitterReview
-                  ? "View all submitted forms by Project"
-                  : selectedMainCompany
-                  ? "Manage companies and their workflows"
-                  : selectedDepartment
-                  ? "Manage Companys in department"
-                  : "Manage departments, Companys and companies"}
+                    ? "Review and approve/reject stage forms"
+                    : showSubmitterReview
+                      ? "View all submitted forms by Project"
+                      : selectedMainCompany
+                        ? "Manage companies and their workflows"
+                        : selectedDepartment
+                          ? "Manage Companys in department"
+                          : "Manage departments, Companys and companies"}
               </p>
             </div>
           </div>
@@ -991,21 +1135,11 @@ const ETCAdminPanel = ({
           </div>
 
           {isMobileMenuOpen && (
-            <div
-              className="mobile-menu-overlay"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
+            <div className="mobile-menu-overlay" onClick={() => setIsMobileMenuOpen(false)}>
               <div className="mobile-menu" onClick={(e) => e.stopPropagation()}>
                 <div className="mobile-menu-header">
-                  <img
-                    src="/logo.png"
-                    alt="Vishvas Power"
-                    className="logo-small"
-                  />
-                  <button
-                    className="mobile-menu-close"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
+                  <img src="/logo.png" alt="Vishvas Power" className="logo-small" />
+                  <button className="mobile-menu-close" onClick={() => setIsMobileMenuOpen(false)}>
                     ×
                   </button>
                 </div>
@@ -1013,10 +1147,7 @@ const ETCAdminPanel = ({
                   <div className="mobile-user-info">
                     <span className="user-badge">ETC Admin</span>
                   </div>
-                  <button
-                    onClick={handleLogoutAndClearData}
-                    className="mobile-logout-btn"
-                  >
+                  <button onClick={handleLogoutAndClearData} className="mobile-logout-btn">
                     🚪 Logout
                   </button>
                 </div>
@@ -1027,7 +1158,9 @@ const ETCAdminPanel = ({
       </header>
 
       <main className="etc-main">
-        {showFormStage && formStageProject ? (
+        {viewMode ? (
+          renderFormView()
+        ) : showFormStage && formStageProject ? (
           <FormStage
             firstFormDataFromDB={formDataFromDB}
             projectName={projectName}
@@ -1061,18 +1194,14 @@ const ETCAdminPanel = ({
                   <strong>Total Forms:</strong> {currentStageForms.length}
                 </p>
                 <p>
-                  <strong>Status:</strong>{" "}
-                  {getStageStatus(selectedProjectForReview, currentStageReview)}
+                  <strong>Status:</strong> {getStageStatus(selectedProjectForReview, currentStageReview)}
                 </p>
               </div>
             </div>
 
             <div className="forms-review-grid">
               {Object.entries(formDataFromDB).map(([formKey, formData]) => (
-                <div
-                  key={`${1}-${formKey}`}
-                  className={`form-review-card ${selectedProjectForReview?.status}`}
-                >
+                <div key={`${1}-${formKey}`} className={`form-review-card ${selectedProjectForReview?.status}`}>
                   <div className="form-review-header">
                     <h3>{formKey.replace("form", "Form ")}</h3>
                     <span
@@ -1080,221 +1209,141 @@ const ETCAdminPanel = ({
                         selectedProjectForReview?.status === "approved"
                           ? "status-completed"
                           : selectedProjectForReview?.status === "rejected"
-                          ? "status-pending"
-                          : "status-progress"
+                            ? "status-pending"
+                            : "status-progress"
                       }`}
                     >
-                      {selectedProjectForReview?.status === "approved" &&
-                        "✅ Approved"}
-                      {selectedProjectForReview?.status === "rejected" &&
-                        "❌ Rejected"}
-                      {selectedProjectForReview?.status === "pending-review" &&
-                        "⏳ Pending Review"}
+                      {selectedProjectForReview?.status === "approved" && "✅ Approved"}
+                      {selectedProjectForReview?.status === "rejected" && "❌ Rejected"}
+                      {selectedProjectForReview?.status === "pending-review" && "⏳ Pending Review"}
                     </span>
                   </div>
 
-                  {/* Code for view form  */}
-                  <div className="form-data-preview">
-                    {Object.entries(formData).map(
-                      ([fieldKey, fieldValue], idx) => (
-                        <div className="data-item" key={fieldKey || idx}>
-                          <span className="data-label">
-                            {capitalizeFirst(fieldKey)}:
-                          </span>
+                  <div className="form-layout-preview">
+                    <div className="form-grid-preview">
+                      {Object.entries(formData).map(([fieldKey, fieldValue], idx) => (
+                        <div className="form-group-preview" key={fieldKey || idx}>
+                          <label className="form-label-preview">{capitalizeFirst(fieldKey)}:</label>
 
-                          {/* 🔹 Special handling for "photos" object */}
-                          {fieldKey.toLowerCase() === "photos" &&
-                          fieldValue &&
-                          typeof fieldValue === "object" ? (
-                            <div className="photo-list mt-2 space-y-3">
-                              {Object.entries(fieldValue).map(
-                                ([photoKey, url]) => {
-                                  const fullUrl = url.startsWith("http")
-                                    ? url
-                                    : `${BACKEND_API_BASE_URL}/${url}`;
-                                  return (
-                                    <div
-                                      key={photoKey}
-                                      className="photo-preview"
-                                    >
-                                      <p className="text-sm font-medium">
-                                        {photoKey}
-                                      </p>
-                                      <a
-                                        href={fullUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-blue-600 underline break-all"
-                                      ></a>
-                                      <img
-                                        src={fullUrl || "/placeholder.svg"}
-                                        alt={photoKey}
-                                        className="mt-1 w-40 h-24 object-cover rounded border"
-                                      />
-                                    </div>
-                                  );
-                                }
-                              )}
+                          {/* Handle different field types with proper form styling */}
+                          {fieldKey.toLowerCase() === "photos" && fieldValue && typeof fieldValue === "object" ? (
+                            <div className="photo-display-grid">
+                              {Object.entries(fieldValue).map(([photoKey, url]) => {
+                                const fullUrl = url.startsWith("http") ? url : `${BACKEND_API_BASE_URL}/${url}`
+                                return (
+                                  <div key={photoKey} className="photo-item">
+                                    <span className="photo-label">{photoKey}</span>
+                                    <img
+                                      src={fullUrl || "/placeholder.svg"}
+                                      alt={photoKey}
+                                      className="photo-preview-img"
+                                    />
+                                  </div>
+                                )
+                              })}
                             </div>
                           ) : typeof fieldValue === "string" ? (
-                            /* 🔹 Strings */
                             fieldValue.startsWith("data:image/") ? (
-                              <img
-                                src={fieldValue || "/placeholder.svg"}
-                                alt={fieldKey}
-                                style={{
-                                  maxWidth: "120px",
-                                  border: "1px solid #ccc",
-                                }}
-                              />
+                              <div className="image-field-display">
+                                <img
+                                  src={fieldValue || "/placeholder.svg"}
+                                  alt={fieldKey}
+                                  className="form-image-preview"
+                                />
+                              </div>
                             ) : (
-                              <span className="data-value">
-                                {String(fieldValue)}
-                              </span>
+                              <div className="form-input-display">
+                                <input
+                                  type="text"
+                                  value={fieldValue}
+                                  disabled
+                                  className="form-input disabled preview"
+                                />
+                              </div>
                             )
                           ) : Array.isArray(fieldValue) ? (
-                            /* 🔹 Arrays */
                             fieldValue.length === 0 ? (
-                              <span className="data-value">[]</span>
-                            ) : typeof fieldValue[0] === "object" &&
-                              fieldValue[0] !== null ? (
-                              <div>
+                              <div className="form-input-display">
+                                <input type="text" value="No data" disabled className="form-input disabled preview" />
+                              </div>
+                            ) : typeof fieldValue[0] === "object" && fieldValue[0] !== null ? (
+                              <div className="array-data-display">
                                 {fieldValue.map((row, i) => (
-                                  <div key={i}>
-                                    <h5>
+                                  <div key={i} className="array-item-form">
+                                    <h5 className="array-item-title">
                                       {capitalizeFirst(fieldKey)} {i + 1}
                                     </h5>
-                                    <table>
-                                      <tbody>
-                                        {Object.entries(row).map(([k, v]) => (
-                                          <tr key={k}>
-                                            <td>{capitalizeFirst(k)}</td>
-                                            <td>
-                                              {typeof v === "string" &&
-                                              v.startsWith("data:image/") ? (
-                                                <img
-                                                  src={v || "/placeholder.svg"}
-                                                  alt={k}
-                                                  style={{
-                                                    maxWidth: "120px",
-                                                    border: "1px solid #ccc",
-                                                  }}
-                                                />
-                                              ) : (
-                                                renderPrimitiveCell(v, k)
-                                              )}
-                                            </td>
-                                          </tr>
-                                        ))}
-                                      </tbody>
-                                    </table>
+                                    <div className="array-item-grid">
+                                      {Object.entries(row).map(([k, v]) => (
+                                        <div key={k} className="array-field-group">
+                                          <label className="array-field-label">{capitalizeFirst(k)}:</label>
+                                          <div className="array-field-value">
+                                            {typeof v === "string" && v.startsWith("data:image/") ? (
+                                              <img
+                                                src={v || "/placeholder.svg"}
+                                                alt={k}
+                                                className="array-image-preview"
+                                              />
+                                            ) : (
+                                              <input
+                                                type="text"
+                                                value={String(v)}
+                                                disabled
+                                                className="form-input disabled preview small"
+                                              />
+                                            )}
+                                          </div>
+                                        </div>
+                                      ))}
+                                    </div>
                                   </div>
                                 ))}
                               </div>
                             ) : (
-                              <ul>
-                                {fieldValue.map((item, i) => (
-                                  <li key={i}>
-                                    {typeof item === "string" &&
-                                    item.startsWith("data:image/") ? (
-                                      <img
-                                        src={item || "/placeholder.svg"}
-                                        alt={`${fieldKey}-${i}`}
-                                        style={{
-                                          maxWidth: "120px",
-                                          border: "1px solid #ccc",
-                                        }}
-                                      />
-                                    ) : typeof item === "object" ? (
-                                      JSON.stringify(item, null, 2)
-                                    ) : (
-                                      String(item)
-                                    )}
-                                  </li>
-                                ))}
-                              </ul>
-                            )
-                          ) : typeof fieldValue === "object" &&
-                            fieldValue !== null ? (
-                            /* 🔹 Objects */
-                            isObjectOfObjects(fieldValue) ? (
-                              <div>
-                                {Object.entries(fieldValue).map(
-                                  ([subKey, subVal]) => (
-                                    <div key={subKey}>
-                                      <h5>
-                                        {capitalizeFirst(fieldKey)} {subKey}
-                                      </h5>
-                                      <table>
-                                        <tbody>
-                                          {Object.entries(subVal).map(
-                                            ([k, v]) => (
-                                              <tr key={k}>
-                                                <td>{capitalizeFirst(k)}</td>
-                                                <td>
-                                                  {typeof v === "string" &&
-                                                  v.startsWith(
-                                                    "data:image/"
-                                                  ) ? (
-                                                    <img
-                                                      src={
-                                                        v || "/placeholder.svg"
-                                                      }
-                                                      alt={k}
-                                                      style={{
-                                                        maxWidth: "120px",
-                                                        border:
-                                                          "1px solid #ccc",
-                                                      }}
-                                                    />
-                                                  ) : (
-                                                    renderPrimitiveCell(v, k)
-                                                  )}
-                                                </td>
-                                              </tr>
-                                            )
-                                          )}
-                                        </tbody>
-                                      </table>
-                                    </div>
-                                  )
-                                )}
+                              <div className="form-input-display">
+                                <textarea
+                                  value={fieldValue.join(", ")}
+                                  disabled
+                                  className="form-textarea disabled preview"
+                                  rows="2"
+                                />
                               </div>
-                            ) : (
-                              <table>
-                                <tbody>
-                                  {Object.entries(fieldValue).map(([k, v]) => (
-                                    <tr key={k}>
-                                      <td>{capitalizeFirst(k)}</td>
-                                      <td>
-                                        {typeof v === "string" &&
-                                        v.startsWith("data:image/") ? (
-                                          <img
-                                            src={v || "/placeholder.svg"}
-                                            alt={k}
-                                            style={{
-                                              maxWidth: "120px",
-                                              border: "1px solid #ccc",
-                                            }}
-                                          />
-                                        ) : (
-                                          renderPrimitiveCell(v, k)
-                                        )}
-                                      </td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </table>
                             )
+                          ) : typeof fieldValue === "object" && fieldValue !== null ? (
+                            <div className="object-data-display">
+                              <div className="object-fields-grid">
+                                {Object.entries(fieldValue).map(([k, v]) => (
+                                  <div key={k} className="object-field-group">
+                                    <label className="object-field-label">{capitalizeFirst(k)}:</label>
+                                    <div className="object-field-value">
+                                      {typeof v === "string" && v.startsWith("data:image/") ? (
+                                        <img src={v || "/placeholder.svg"} alt={k} className="object-image-preview" />
+                                      ) : (
+                                        <input
+                                          type="text"
+                                          value={String(v)}
+                                          disabled
+                                          className="form-input disabled preview small"
+                                        />
+                                      )}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
                           ) : (
-                            /* 🔹 Fallback */
-                            <span className="data-value">
-                              {String(fieldValue)}
-                            </span>
+                            <div className="form-input-display">
+                              <input
+                                type="text"
+                                value={String(fieldValue)}
+                                disabled
+                                className="form-input disabled preview"
+                              />
+                            </div>
                           )}
                         </div>
-                      )
-                    )}
+                      ))}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -1322,17 +1371,14 @@ const ETCAdminPanel = ({
             <div className="section-header">
               <div>
                 <h2>All Submitted Forms</h2>
-                <p>
-                  Review all forms submitted by {selectedProjectForReview?.name}
-                </p>
+                <p>Review all forms submitted by {selectedProjectForReview?.name}</p>
               </div>
               <div className="header-actions">
                 <button
                   onClick={handleDownloadAllForms}
                   className="download-all-btn"
                   style={{
-                    background:
-                      "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
+                    background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
                     color: "white",
                     border: "none",
                     padding: "12px 24px",
@@ -1363,31 +1409,17 @@ const ETCAdminPanel = ({
                 </div>
                 <div className="stat-card">
                   <h4>Approved</h4>
-                  <div className="stat-number">
-                    {
-                      allProjectForms.filter((f) => f.status === "approved")
-                        .length
-                    }
-                  </div>
+                  <div className="stat-number">{allProjectForms.filter((f) => f.status === "approved").length}</div>
                 </div>
                 <div className="stat-card">
                   <h4>Pending</h4>
                   <div className="stat-number">
-                    {
-                      allProjectForms.filter(
-                        (f) => f.status === "pending-review"
-                      ).length
-                    }
+                    {allProjectForms.filter((f) => f.status === "pending-review").length}
                   </div>
                 </div>
                 <div className="stat-card">
                   <h4>Rejected</h4>
-                  <div className="stat-number">
-                    {
-                      allProjectForms.filter((f) => f.status === "rejected")
-                        .length
-                    }
-                  </div>
+                  <div className="stat-number">{allProjectForms.filter((f) => f.status === "rejected").length}</div>
                 </div>
               </div>
             </div>
@@ -1404,8 +1436,7 @@ const ETCAdminPanel = ({
                       justifyContent: "space-between",
                       alignItems: "center",
                       padding: "16px 20px",
-                      background:
-                        "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                       borderRadius: "12px",
                       marginBottom: expandedStages[stageKey] ? "20px" : "0",
                       transition: "all 0.3s ease",
@@ -1419,16 +1450,13 @@ const ETCAdminPanel = ({
                         fontWeight: "700",
                       }}
                     >
-                      {stageKey.replace("stage", "Stage ")} (
-                      {Object.keys(forms).length} forms)
+                      {stageKey.replace("stage", "Stage ")} ({Object.keys(forms).length} forms)
                     </h3>
                     <span
                       style={{
                         color: "white",
                         fontSize: "1.2rem",
-                        transform: expandedStages[stageKey]
-                          ? "rotate(180deg)"
-                          : "rotate(0deg)",
+                        transform: expandedStages[stageKey] ? "rotate(180deg)" : "rotate(0deg)",
                         transition: "transform 0.3s ease",
                       }}
                     >
@@ -1469,138 +1497,109 @@ const ETCAdminPanel = ({
                             📋 {formKey.replace("form", "Form ")}
                           </h4>
 
-                          <div className="form-data-preview">
-                            {Object.entries(formData).map(
-                              ([fieldKey, fieldValue]) => {
-                                // 🔹 Special case for photos
-                                if (
-                                  fieldKey === "photos" &&
-                                  fieldValue &&
-                                  typeof fieldValue === "object"
-                                ) {
+                          <div className="form-layout-preview">
+                            <div className="form-grid-preview">
+                              {Object.entries(formData).map(([fieldKey, fieldValue]) => {
+                                // Handle photos specially
+                                if (fieldKey === "photos" && fieldValue && typeof fieldValue === "object") {
                                   return (
                                     <div
                                       key={`${stageKey}-${formKey}-photos`}
-                                      className="data-item-wrapper"
-                                      style={{ marginBottom: "16px" }}
+                                      className="form-group-preview photo-group"
                                     >
-                                      <h5
-                                        className="data-label"
-                                        style={{
-                                          fontSize: "0.9rem",
-                                          fontWeight: "600",
-                                          color: "#374151",
-                                          marginBottom: "8px",
-                                        }}
-                                      >
-                                        📸{" "}
-                                        {fieldKey.charAt(0).toUpperCase() +
-                                          fieldKey.slice(1)}
-                                      </h5>
-                                      <div className="photo-list mt-2 space-y-3">
-                                        {Object.entries(fieldValue).map(
-                                          ([photoKey, url]) => {
-                                            const fullUrl = url.startsWith(
-                                              "http"
-                                            )
-                                              ? url
-                                              : `${BACKEND_API_BASE_URL}/${url}`;
-                                            return (
-                                              <div
-                                                key={photoKey}
-                                                className="photo-preview"
-                                                style={{
-                                                  padding: "12px",
-                                                  border: "1px solid #e5e7eb",
-                                                  borderRadius: "8px",
-                                                  background: "#f9fafb",
-                                                }}
-                                              >
-                                                <p
-                                                  className="text-sm font-medium"
-                                                  style={{
-                                                    fontSize: "0.85rem",
-                                                    fontWeight: "500",
-                                                    marginBottom: "8px",
-                                                  }}
-                                                >
-                                                  {photoKey}
-                                                </p>
-                                                <img
-                                                  src={
-                                                    fullUrl ||
-                                                    "/placeholder.svg"
-                                                  }
-                                                  alt={photoKey}
-                                                  className="mt-1 w-40 h-24 object-cover rounded border"
-                                                  style={{
-                                                    width: "160px",
-                                                    height: "96px",
-                                                    objectFit: "cover",
-                                                    borderRadius: "6px",
-                                                    border: "1px solid #d1d5db",
-                                                  }}
-                                                />
-                                              </div>
-                                            );
-                                          }
-                                        )}
+                                      <label className="form-label-preview">
+                                        📸 {fieldKey.charAt(0).toUpperCase() + fieldKey.slice(1)}
+                                      </label>
+                                      <div className="photo-display-grid">
+                                        {Object.entries(fieldValue).map(([photoKey, url]) => {
+                                          const fullUrl = url.startsWith("http")
+                                            ? url
+                                            : `${BACKEND_API_BASE_URL}/${url}`
+                                          return (
+                                            <div key={photoKey} className="photo-item">
+                                              <span className="photo-label">{photoKey}</span>
+                                              <img
+                                                src={fullUrl || "/placeholder.svg"}
+                                                alt={photoKey}
+                                                className="photo-preview-img"
+                                              />
+                                            </div>
+                                          )
+                                        })}
                                       </div>
                                     </div>
-                                  );
+                                  )
                                 }
 
-                                // 🔹 Strings & numbers
-                                if (
-                                  typeof fieldValue === "string" ||
-                                  typeof fieldValue === "number"
-                                ) {
+                                // Handle strings & numbers with form input styling
+                                if (typeof fieldValue === "string" || typeof fieldValue === "number") {
                                   return (
-                                    <div
-                                      key={`${stageKey}-${formKey}-${fieldKey}`}
-                                      className="data-item"
-                                      style={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        alignItems: "center",
-                                        padding: "12px",
-                                        marginBottom: "8px",
-                                        background: "#f8fafc",
-                                        borderRadius: "6px",
-                                        border: "1px solid #e2e8f0",
-                                      }}
-                                    >
-                                      <span
-                                        className="data-label"
-                                        style={{
-                                          fontWeight: "500",
-                                          color: "#374151",
-                                          fontSize: "0.9rem",
-                                        }}
-                                      >
-                                        {fieldKey.charAt(0).toUpperCase() +
-                                          fieldKey.slice(1)}
-                                        :
-                                      </span>
-                                      <span
-                                        className="data-value"
-                                        style={{
-                                          color: "#6b7280",
-                                          fontSize: "0.9rem",
-                                          maxWidth: "60%",
-                                          textAlign: "right",
-                                          wordBreak: "break-word",
-                                        }}
-                                      >
-                                        {fieldValue}
-                                      </span>
+                                    <div key={`${stageKey}-${formKey}-${fieldKey}`} className="form-group-preview">
+                                      <label className="form-label-preview">
+                                        {fieldKey.charAt(0).toUpperCase() + fieldKey.slice(1)}
+                                      </label>
+                                      <div className="form-input-display">
+                                        <input
+                                          type="text"
+                                          value={fieldValue}
+                                          disabled
+                                          className="form-input disabled preview"
+                                        />
+                                      </div>
                                     </div>
-                                  );
+                                  )
                                 }
 
-                                return null;
-                              }
-                            )}
+                                return null
+                              })}
+                            </div>
+
+                            <div className="form-preview-container">
+                              {(() => {
+                                const stageNumber = Number.parseInt(stageKey.replace("stage", ""))
+                                const formIndex = Number.parseInt(formKey.replace("form", "")) - 1
+                                const formStructure = formStructures[`stage${stageNumber}`]?.forms[formIndex]
+
+                                if (!formStructure) return <div>Form structure not found</div>
+
+                                return (
+                                  <div className="direct-form-view">
+                                    <div className="form-title-only">
+                                      <h4>{formStructure.title}</h4>
+                                    </div>
+
+                                    <div className="mini-form-layout">
+                                      <div className="mini-form-grid">
+                                        {formStructure.fields.map((field, fieldIndex) => (
+                                          <div key={fieldIndex} className="mini-form-group">
+                                            <label className="mini-form-label">{field.label}:</label>
+                                            <div className="mini-form-value">
+                                              {field.type === "select" ? (
+                                                <span>{formData[field.name] || "Not Selected"}</span>
+                                              ) : field.type === "textarea" ? (
+                                                <span className="textarea-preview">
+                                                  {formData[field.name] || "No data entered"}
+                                                </span>
+                                              ) : field.type === "checkbox" ? (
+                                                <span className="checkbox-preview">
+                                                  {formData[field.name] ? "✓ Yes" : "✗ No"}
+                                                </span>
+                                              ) : field.type === "file" ? (
+                                                <span className="file-preview">
+                                                  {formData[field.name] ? `📎 ${formData[field.name]}` : "No file"}
+                                                </span>
+                                              ) : (
+                                                <span>{formData[field.name] || "No data entered"}</span>
+                                              )}
+                                            </div>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  </div>
+                                )
+                              })()}
+                            </div>
                           </div>
                         </div>
                       ))}
@@ -1621,7 +1620,7 @@ const ETCAdminPanel = ({
 
             <div className="departments-grid">
               {departments.map((department) => {
-                const departmentCompanys = getDepartmentCompanys(department.id);
+                const departmentCompanys = getDepartmentCompanys(department.id)
                 return (
                   <div
                     key={department.id}
@@ -1629,15 +1628,10 @@ const ETCAdminPanel = ({
                     onClick={() => setSelectedDepartment(department)}
                   >
                     <div className="department-header">
-                      <div
-                        className="department-icon"
-                        style={{ backgroundColor: department.color }}
-                      >
+                      <div className="department-icon" style={{ backgroundColor: department.color }}>
                         {department.icon}
                       </div>
-                      <span className="status-badge status-progress">
-                        Active
-                      </span>
+                      <span className="status-badge status-progress">Active</span>
                     </div>
                     <h3>{department.name}</h3>
                     <p>{department.description}</p>
@@ -1646,13 +1640,13 @@ const ETCAdminPanel = ({
                       <span>
                         🏢{" "}
                         {departmentCompanys.reduce((acc, proj) => {
-                          return acc + getCompanyCompanies(proj.id).length;
+                          return acc + getCompanyCompanies(proj.id).length
                         }, 0)}{" "}
                         companies
                       </span>
                     </div>
                   </div>
-                );
+                )
               })}
             </div>
           </>
@@ -1664,16 +1658,10 @@ const ETCAdminPanel = ({
                 <p>Create and manage Companys for this category</p>
               </div>
               <div className="section-actions">
-                <button
-                  onClick={() => setShowCreateCompanyForm(true)}
-                  className="create-btn"
-                >
+                <button onClick={() => setShowCreateCompanyForm(true)} className="create-btn">
                   ➕ Create Company
                 </button>
-                <button
-                  onClick={() => setSelectedDepartment(null)}
-                  className="back-btn"
-                >
+                <button onClick={() => setSelectedDepartment(null)} className="back-btn">
                   ← Back to Categories
                 </button>
               </div>
@@ -1689,20 +1677,10 @@ const ETCAdminPanel = ({
             </div>
 
             {showCreateCompanyForm && (
-              <div
-                className="modal-overlay"
-                onClick={() => setShowCreateCompanyForm(false)}
-              >
-                <div
-                  className="modal-content"
-                  onClick={(e) => e.stopPropagation()}
-                >
+              <div className="modal-overlay" onClick={() => setShowCreateCompanyForm(false)}>
+                <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                   <div className="modal-header">
-                    <img
-                      src="/logo.png"
-                      alt="Vishvas Power"
-                      className="logo-small"
-                    />
+                    <img src="/logo.png" alt="Vishvas Power" className="logo-small" />
                     <h3>Create New Company in {selectedDepartment.name}</h3>
                   </div>
                   <p>Companies will be added to this Company after creation</p>
@@ -1712,9 +1690,7 @@ const ETCAdminPanel = ({
                       type="text"
                       placeholder="Enter Company name"
                       value={newCompany.companyName}
-                      onChange={(e) =>
-                        setNewCompany({ ...newCompany, name: e.target.value })
-                      }
+                      onChange={(e) => setNewCompany({ ...newCompany, name: e.target.value })}
                       required
                     />
                   </div>
@@ -1741,10 +1717,7 @@ const ETCAdminPanel = ({
                     >
                       Create Company
                     </button>
-                    <button
-                      onClick={() => setShowCreateCompanyForm(false)}
-                      className="cancel-btn"
-                    >
+                    <button onClick={() => setShowCreateCompanyForm(false)} className="cancel-btn">
                       Cancel
                     </button>
                   </div>
@@ -1754,31 +1727,20 @@ const ETCAdminPanel = ({
 
             <div className="Companys-grid">
               {Companys.map((Company) => {
-                const CompanyCompanies = getCompanyCompanies(Company.id);
+                const CompanyCompanies = getCompanyCompanies(Company.id)
 
                 return (
                   <div key={Company._id} className="Company-card">
                     <div className="Company-header">
-                      <div
-                        className="Company-icon"
-                        style={{ backgroundColor: selectedDepartment.color }}
-                      >
+                      <div className="Company-icon" style={{ backgroundColor: selectedDepartment.color }}>
                         📁
                       </div>
-                      <span
-                        className={`status-badge ${getStatusColor(
-                          Company.status
-                        )}`}
-                      >
-                        {Company.status}
-                      </span>
+                      <span className={`status-badge ${getStatusColor(Company.status)}`}>{Company.status}</span>
                     </div>
                     <h3>{Company.companyName}</h3>
                     <p>{Company.companyDescription}</p>
                     <div className="Company-footer">
-                      <span>
-                        🏢 {Company?.companyProjects?.length} companies
-                      </span>
+                      <span>🏢 {Company?.companyProjects?.length} companies</span>
                       <span>📅 {Company.createdAt}</span>
                     </div>
                     <div
@@ -1792,13 +1754,12 @@ const ETCAdminPanel = ({
                     >
                       <button
                         onClick={(e) => {
-                          e.stopPropagation();
-                          handleCompanyDelete(Company);
+                          e.stopPropagation()
+                          handleCompanyDelete(Company)
                         }}
                         className="delete-btn"
                         style={{
-                          background:
-                            "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)", // red gradient
+                          background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)", // red gradient
                           color: "white",
                           border: "none",
                           padding: "8px 16px",
@@ -1813,13 +1774,12 @@ const ETCAdminPanel = ({
                       </button>
                       <button
                         onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedMainCompany(Company);
+                          e.stopPropagation()
+                          setSelectedMainCompany(Company)
                         }}
                         className="view-btn"
                         style={{
-                          background:
-                            "linear-gradient(135deg, #4299e1 0%, #3182ce 100%)",
+                          background: "linear-gradient(135deg, #4299e1 0%, #3182ce 100%)",
                           color: "white",
                           border: "none",
                           padding: "8px 16px",
@@ -1834,7 +1794,7 @@ const ETCAdminPanel = ({
                       </button>
                     </div>
                   </div>
-                );
+                )
               })}
             </div>
           </>
@@ -1846,45 +1806,28 @@ const ETCAdminPanel = ({
                 <p>Manage companies and their workflows</p>
               </div>
               <div className="section-actions">
-                <button
-                  onClick={() =>
-                    handleAddProject(selectedMainCompany.companyName)
-                  }
-                  className="create-btn"
-                >
+                <button onClick={() => handleAddProject(selectedMainCompany.companyName)} className="create-btn">
                   ➕ Create Project
                 </button>
-                <button
-                  onClick={() => setSelectedMainCompany(null)}
-                  className="back-btn"
-                >
+                <button onClick={() => setSelectedMainCompany(null)} className="back-btn">
                   ← Back to Companys
                 </button>
               </div>
             </div>
 
             <div className="companies-grid">
-              {selectedMainCompany.companyProjects === undefined ||
-              selectedMainCompany.companyProjects.length === 0 ? (
+              {selectedMainCompany.companyProjects === undefined || selectedMainCompany.companyProjects.length === 0 ? (
                 <p className="no-data-message">
-                  No companies found for this Company. Click "Create Company" to
-                  create one.
+                  No companies found for this Company. Click "Create Company" to create one.
                 </p>
               ) : (
                 selectedMainCompany.companyProjects.map((Project, index) => (
                   <div key={index} className="Project-card">
                     <div className="Project-header">
-                      <div
-                        className="Project-icon"
-                        style={{ backgroundColor: "#1E3A8A" }}
-                      >
+                      <div className="Project-icon" style={{ backgroundColor: "#1E3A8A" }}>
                         🏢
                       </div>
-                      <span
-                        className={`status-badge ${getStatusColor(
-                          Project.status
-                        )}`}
-                      >
+                      <span className={`status-badge ${getStatusColor(Project.status)}`}>
                         {Project.status === "pending-approval" && "⏳"}
                         {Project.status === "in-progress" && "🔄"}
                         {Project.status === "completed" && "✅"}
@@ -1893,29 +1836,19 @@ const ETCAdminPanel = ({
                     </div>
                     <h3>{Project.name}</h3>
                     <p>
-                      Stage {Project.stage} • {Project.formsCompleted}/
-                      {totalStageForm[Project.stage - 1]} forms completed
+                      Stage {Project.stage} • {Project.formsCompleted}/{totalStageForm[Project.stage - 1]} forms
+                      completed
                     </p>
                     <div className="progress-bar">
                       <div
                         className="progress-fill"
                         style={{
-                          width: `${
-                            (Project.formsCompleted /
-                              totalStageForm[Project.stage - 1]) *
-                            100
-                          }%`,
+                          width: `${(Project.formsCompleted / totalStageForm[Project.stage - 1]) * 100}%`,
                         }}
                       ></div>
                     </div>
                     <div className="Project-footer">
-                      <span>
-                        📊{" "}
-                        {Math.round(
-                          (Project.formsCompleted / Project.totalForms) * 100
-                        )}
-                        % complete
-                      </span>
+                      <span>📊 {Math.round((Project.formsCompleted / Project.totalForms) * 100)}% complete</span>
                       <span>📅 {Project.lastActivity}</span>
                     </div>
 
@@ -1923,25 +1856,21 @@ const ETCAdminPanel = ({
                       <h4>Stage Management:</h4>
                       <div className="stages-row">
                         {[1, 2, 3, 4, 5, 6].map((stage) => {
-                          const stageStatus = getStageStatus(Project, stage);
+                          const stageStatus = getStageStatus(Project, stage)
                           return (
-                            <div
-                              key={stage}
-                              className={`stage-item ${stageStatus}`}
-                            >
+                            <div key={stage} className={`stage-item ${stageStatus}`}>
                               <div className="stage-number">{stage}</div>
                               <div className="stage-status-text">
                                 {stageStatus === "approved" && "✅ Approved"}
-                                {stageStatus === "pending-review" &&
-                                  "⏳ Pending"}
+                                {stageStatus === "pending-review" && "⏳ Pending"}
                                 {stageStatus === "available" && "📝 Available"}
                                 {stageStatus === "locked" && "🔒 Locked"}
                               </div>
                               {stageStatus === "pending-review" && (
                                 <button
                                   onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleReviewStage(Project, stage);
+                                    e.stopPropagation()
+                                    handleReviewStage(Project, stage)
                                   }}
                                   className="review-stage-btn"
                                 >
@@ -1949,7 +1878,7 @@ const ETCAdminPanel = ({
                                 </button>
                               )}
                             </div>
-                          );
+                          )
                         })}
                       </div>
                     </div>
@@ -1965,13 +1894,12 @@ const ETCAdminPanel = ({
                       {/* View Forms */}
                       <button
                         onClick={(e) => {
-                          e.stopPropagation();
-                          handleViewSubmittedForms(Project);
+                          e.stopPropagation()
+                          handleViewSubmittedForms(Project)
                         }}
                         className="view-forms-btn"
                         style={{
-                          background:
-                            "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                          background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
                           color: "white",
                           border: "none",
                           padding: "8px 16px",
@@ -1988,13 +1916,12 @@ const ETCAdminPanel = ({
                       {/* Submit Stage */}
                       <button
                         onClick={(e) => {
-                          e.stopPropagation();
-                          handleStageSubmit(Project);
+                          e.stopPropagation()
+                          handleStageSubmit(Project)
                         }}
                         className="submit-test-btn"
                         style={{
-                          background:
-                            "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)",
+                          background: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)",
                           color: "white",
                           border: "none",
                           padding: "8px 16px",
@@ -2010,13 +1937,12 @@ const ETCAdminPanel = ({
 
                       <button
                         onClick={(e) => {
-                          e.stopPropagation();
-                          handleProjectDelete(Project);
+                          e.stopPropagation()
+                          handleProjectDelete(Project)
                         }}
                         className="delete-btn"
                         style={{
-                          background:
-                            "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)", // red gradient
+                          background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)", // red gradient
                           color: "white",
                           border: "none",
                           padding: "8px 16px",
@@ -2047,27 +1973,14 @@ const ETCAdminPanel = ({
 
       {/* Notification Modal */}
       {showNotificationModal && (
-        <div
-          className="modal-overlay"
-          onClick={() => setShowNotificationModal(false)}
-        >
+        <div className="modal-overlay" onClick={() => setShowNotificationModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
-              >
-                {notificationType === "success" && (
-                  <span style={{ fontSize: "1.5rem" }}>✅</span>
-                )}
-                {notificationType === "error" && (
-                  <span style={{ fontSize: "1.5rem" }}>❌</span>
-                )}
-                {notificationType === "warning" && (
-                  <span style={{ fontSize: "1.5rem" }}>⚠️</span>
-                )}
-                {notificationType === "info" && (
-                  <span style={{ fontSize: "1.5rem" }}>ℹ️</span>
-                )}
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                {notificationType === "success" && <span style={{ fontSize: "1.5rem" }}>✅</span>}
+                {notificationType === "error" && <span style={{ fontSize: "1.5rem" }}>❌</span>}
+                {notificationType === "warning" && <span style={{ fontSize: "1.5rem" }}>⚠️</span>}
+                {notificationType === "info" && <span style={{ fontSize: "1.5rem" }}>ℹ️</span>}
                 <h3>
                   {notificationType === "success" && "Success"}
                   {notificationType === "error" && "Error"}
@@ -2086,10 +1999,7 @@ const ETCAdminPanel = ({
               {notificationMessage}
             </p>
             <div className="modal-actions">
-              <button
-                onClick={() => setShowNotificationModal(false)}
-                className="submit-btn"
-              >
+              <button onClick={() => setShowNotificationModal(false)} className="submit-btn">
                 OK
               </button>
             </div>
@@ -2099,15 +2009,10 @@ const ETCAdminPanel = ({
 
       {/* Confirmation Modal */}
       {showConfirmModal && (
-        <div
-          className="modal-overlay"
-          onClick={() => setShowConfirmModal(false)}
-        >
+        <div className="modal-overlay" onClick={() => setShowConfirmModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
-              >
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                 <span style={{ fontSize: "1.5rem" }}>❓</span>
                 <h3>Confirmation</h3>
               </div>
@@ -2124,9 +2029,9 @@ const ETCAdminPanel = ({
             <div className="modal-actions">
               <button
                 onClick={() => {
-                  if (confirmAction) confirmAction();
-                  setShowConfirmModal(false);
-                  setConfirmAction(null);
+                  if (confirmAction) confirmAction()
+                  setShowConfirmModal(false)
+                  setConfirmAction(null)
                 }}
                 className="submit-btn"
               >
@@ -2134,8 +2039,8 @@ const ETCAdminPanel = ({
               </button>
               <button
                 onClick={() => {
-                  setShowConfirmModal(false);
-                  setConfirmAction(null);
+                  setShowConfirmModal(false)
+                  setConfirmAction(null)
                 }}
                 className="cancel-btn"
               >
@@ -2151,9 +2056,7 @@ const ETCAdminPanel = ({
         <div className="modal-overlay" onClick={() => setShowInputModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
-              >
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                 <span style={{ fontSize: "1.5rem" }}>✏️</span>
                 <h3>{inputModalTitle}</h3>
               </div>
@@ -2166,11 +2069,10 @@ const ETCAdminPanel = ({
                 onChange={(e) => setInputModalValue(e.target.value)}
                 onKeyPress={(e) => {
                   if (e.key === "Enter" && inputModalValue.trim()) {
-                    if (inputModalAction)
-                      inputModalAction(inputModalValue.trim());
-                    setShowInputModal(false);
-                    setInputModalAction(null);
-                    setInputModalValue("");
+                    if (inputModalAction) inputModalAction(inputModalValue.trim())
+                    setShowInputModal(false)
+                    setInputModalAction(null)
+                    setInputModalValue("")
                   }
                 }}
                 autoFocus
@@ -2180,11 +2082,11 @@ const ETCAdminPanel = ({
               <button
                 onClick={() => {
                   if (inputModalValue.trim() && inputModalAction) {
-                    inputModalAction(inputModalValue.trim());
+                    inputModalAction(inputModalValue.trim())
                   }
-                  setShowInputModal(false);
-                  setInputModalAction(null);
-                  setInputModalValue("");
+                  setShowInputModal(false)
+                  setInputModalAction(null)
+                  setInputModalValue("")
                 }}
                 className="submit-btn"
                 disabled={!inputModalValue.trim()}
@@ -2193,9 +2095,9 @@ const ETCAdminPanel = ({
               </button>
               <button
                 onClick={() => {
-                  setShowInputModal(false);
-                  setInputModalAction(null);
-                  setInputModalValue("");
+                  setShowInputModal(false)
+                  setInputModalAction(null)
+                  setInputModalValue("")
                 }}
                 className="cancel-btn"
               >
@@ -2208,24 +2110,17 @@ const ETCAdminPanel = ({
 
       {/* Rejection Modal */}
       {showRejectionModal && (
-        <div
-          className="modal-overlay"
-          onClick={() => setShowRejectionModal(false)}
-        >
+        <div className="modal-overlay" onClick={() => setShowRejectionModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
-              >
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                 <span style={{ fontSize: "1.5rem" }}>❌</span>
                 <h3>Reject Stage {rejectionStage.stage}</h3>
               </div>
             </div>
-            <p
-              style={{ fontSize: "1rem", color: "#666", marginBottom: "20px" }}
-            >
-              Please provide a detailed reason for rejecting this stage. This
-              will help the submitter understand what needs to be corrected.
+            <p style={{ fontSize: "1rem", color: "#666", marginBottom: "20px" }}>
+              Please provide a detailed reason for rejecting this stage. This will help the submitter understand what
+              needs to be corrected.
             </p>
             <div className="form-group">
               <label>Rejection Reason *</label>
@@ -2244,9 +2139,7 @@ const ETCAdminPanel = ({
                 className="reject-stage-btn"
                 disabled={!rejectionReason.trim()}
                 style={{
-                  background: rejectionReason.trim()
-                    ? "linear-gradient(135deg, #f44336, #d32f2f)"
-                    : "#ccc",
+                  background: rejectionReason.trim() ? "linear-gradient(135deg, #f44336, #d32f2f)" : "#ccc",
                   cursor: rejectionReason.trim() ? "pointer" : "not-allowed",
                 }}
               >
@@ -2254,9 +2147,9 @@ const ETCAdminPanel = ({
               </button>
               <button
                 onClick={() => {
-                  setShowRejectionModal(false);
-                  setRejectionStage(null);
-                  setRejectionReason("");
+                  setShowRejectionModal(false)
+                  setRejectionStage(null)
+                  setRejectionReason("")
                 }}
                 className="cancel-btn"
               >
@@ -2267,7 +2160,7 @@ const ETCAdminPanel = ({
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default ETCAdminPanel;
+export default ETCAdminPanel
