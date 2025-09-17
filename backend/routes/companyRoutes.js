@@ -11,6 +11,7 @@ import {
   rejectCompanyStage
 } from "../controller/companyController.js";
 
+
 const router = express.Router();
 
 router.post("/", setNewCompanyData);
