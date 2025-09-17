@@ -8,6 +8,7 @@ import {
   setTableData,
   getCompleteTableData,
   getStageTableData,
+  generatePDF,
 } from "../controller/autoTransformerController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
@@ -53,5 +54,6 @@ router.post("/getTable", getTableData);
 router.post("/getStageTable", getStageTableData);
 router.post("/getCompleteTable", getCompleteTableData);
 router.post("/setTable", upload.any(), setTableData);
+router.post("/download-all-forms", generatePDF);
 
 export default router;

@@ -1,6 +1,8 @@
 import AutoTransformer from "../model/AutoTransformer.js";
 import multer from "multer";
 import path from "path";
+import fs from "fs";
+import PDFDocument from "pdfkit";
 
 // Setup multer storage
 const storage = multer.diskStorage({
@@ -140,7 +142,6 @@ export const getCompleteTableData = async (req, res) => {
       data: document,
     });
   } catch (error) {
-    // Handle any potential server errors.
     console.error("Error retrieving form data:", error);
     res.status(500).json({
       message: "Failed to retrieve form data",
@@ -164,11 +165,10 @@ export const setTableData = async (req, res) => {
       } else {
         if (typeof value === "string") {
           try {
-            // if it's a JSON string (e.g. accessories), parse it
             const parsed = JSON.parse(value);
             parsedData[key] = parsed;
           } catch {
-            parsedData[key] = value; // keep as string
+            parsedData[key] = value;
           }
         } else {
           parsedData[key] = value;
@@ -216,5 +216,165 @@ export const setTableData = async (req, res) => {
       message: "Failed to save form data",
       error: error.message,
     });
+  }
+};
+
+export const generatePDF = async (req, res) => {
+  try {
+    const { projectName, formData } = req.body;
+
+    const doc = new PDFDocument({ margin: 50 });
+    const filename = `${
+      projectName || "project"
+    }_all_stages_${new Date().toISOString().split("T")[0]}.pdf`;
+
+    // Response headers
+    res.setHeader("Content-disposition", `attachment; filename="${filename}"`);
+    res.setHeader("Content-type", "application/pdf");
+    doc.pipe(res);
+
+    // Constants
+    const pageHeight = doc.page.height;
+    const margin = 50;
+    const keyColumnWidth = 200;
+    const valueColumnWidth = 300;
+    const rowHeight = 20;
+
+    // Draw text row
+    const drawRow = (key, value, y) => {
+      // ✅ Check if space left
+      if (y + rowHeight > pageHeight - margin) {
+        doc.addPage();
+        y = margin;
+      }
+
+      doc.rect(50, y, keyColumnWidth, rowHeight).stroke();
+      doc.rect(50 + keyColumnWidth, y, valueColumnWidth, rowHeight).stroke();
+
+      doc.font("Helvetica-Bold").fontSize(10).text(key, 55, y + 5, {
+        width: keyColumnWidth - 10,
+      });
+
+      doc.font("Helvetica").fontSize(10).text(
+        value !== undefined && value !== null ? String(value) : "",
+        55 + keyColumnWidth,
+        y + 5,
+        { width: valueColumnWidth - 10 }
+      );
+
+      return y + rowHeight;
+    };
+
+    // Draw image row (auto-resize with page break check)
+    const drawImageRow = (key, photoPath, y) => {
+      const imgMaxHeight = 150;
+      const imgMaxWidth = valueColumnWidth - 10;
+      let rowHeightDynamic = imgMaxHeight + 20;
+
+      // ✅ Pre-check: move to new page if not enough space
+      if (y + rowHeightDynamic > pageHeight - margin) {
+        doc.addPage();
+        y = margin;
+      }
+
+      try {
+        const fullPath = path.join(process.cwd(), photoPath);
+        if (fs.existsSync(fullPath)) {
+          doc.rect(50, y, keyColumnWidth, rowHeightDynamic).stroke();
+          doc.rect(50 + keyColumnWidth, y, valueColumnWidth, rowHeightDynamic).stroke();
+
+          doc.font("Helvetica-Bold").fontSize(10).text(key, 55, y + 10);
+
+          doc.image(fullPath, 55 + keyColumnWidth, y + 5, {
+            fit: [imgMaxWidth, imgMaxHeight],
+            align: "center",
+          });
+        } else {
+          rowHeightDynamic = rowHeight;
+          return drawRow(key, photoPath, y);
+        }
+      } catch (err) {
+        rowHeightDynamic = rowHeight;
+        return drawRow(key, photoPath, y);
+      }
+
+      return y + rowHeightDynamic;
+    };
+
+    // Recursive table drawer
+    const drawTable = (data, startY) => {
+      let y = startY;
+
+      for (const [key, value] of Object.entries(data)) {
+        // ✅ Page break check for each row
+        if (y + rowHeight > pageHeight - margin) {
+          doc.addPage();
+          y = margin;
+        }
+
+        if (value && typeof value === "object" && !Array.isArray(value)) {
+          if (key.toLowerCase() === "photos") {
+            for (const [photoKey, photoPath] of Object.entries(value)) {
+              y = drawImageRow(photoKey, photoPath, y);
+            }
+          } else {
+            doc.font("Helvetica-Bold").fontSize(12).text(`${key}:`, 50, y);
+            y += rowHeight / 2;
+            y = drawTable(value, y + 5);
+          }
+        } else if (Array.isArray(value)) {
+          doc.font("Helvetica-Bold").fontSize(12).text(`${key}:`, 50, y);
+          y += rowHeight;
+
+          value.forEach((item, i) => {
+            if (typeof item === "object") {
+              doc.font("Helvetica-Bold").fontSize(10).text(`Item ${i + 1}`, 70, y);
+              y += rowHeight / 2;
+              y = drawTable(item, y + 5);
+            } else {
+              y = drawRow(`Item ${i + 1}`, item, y);
+            }
+          });
+        } else {
+          y = drawRow(key, value, y);
+        }
+      }
+
+      return y;
+    };
+
+    // Title
+    doc.fontSize(20).text(`Project: ${projectName}`, { align: "center" });
+    doc.moveDown();
+
+    // Loop stages
+    Object.keys(formData).forEach((stageKey, stageIndex) => {
+      // Stage always starts on new page (except first one)
+      if (stageIndex > 0) doc.addPage();
+
+      doc.fontSize(16).font("Helvetica-Bold").text(`Stage: ${stageKey}`);
+      doc.moveDown();
+
+      const forms = formData[stageKey];
+      Object.entries(forms).forEach(([formKey, formValue], formIndex) => {
+        // Form always on new page
+        if (formIndex > 0) {
+          doc.addPage();
+          doc.fontSize(16).font("Helvetica-Bold").text(`Stage: ${stageKey}`);
+          doc.moveDown();
+        }
+
+        doc.fontSize(14).font("Helvetica-Bold").text(`Form: ${formKey}`);
+        doc.moveDown(0.5);
+
+        let currentY = doc.y;
+        drawTable(formValue, currentY + 5);
+      });
+    });
+
+    doc.end();
+  } catch (err) {
+    console.error("Error generating PDF:", err);
+    res.status(500).json({ error: "Failed to generate PDF" });
   }
 };

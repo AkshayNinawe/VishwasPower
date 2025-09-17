@@ -988,97 +988,41 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
     }))
   }
 
-  const handleDownloadAllForms = () => {
+  const handleDownloadAllForms = async () => {
     try {
-      const container = document.querySelector(".stages-review-container")
-      if (!container) {
-        alert("Stages container not found")
-        return
+      const allStageKeys = Object.keys(formDataFromDB);
+      if (!allStageKeys.length) {
+        showNotification("No forms data available to download", "warning");
+        return;
       }
-
-      const allStageKeys = Object.keys(formDataFromDB)
-      const expandAllStages = {}
-      allStageKeys.forEach((stageKey) => {
-        expandAllStages[stageKey] = true
-      })
-
-      // Update the expanded stages state
-      setExpandedStages(expandAllStages)
-
-      setTimeout(() => {
-        const stageContents = container.querySelectorAll(".forms-dropdown-content")
-        let allExpanded = true
-
-        stageContents.forEach((content) => {
-          if (!content || content.style.display === "none" || !content.innerHTML.trim()) {
-            allExpanded = false
-          }
-        })
-
-        if (!allExpanded) {
-          console.warn("Not all stages are expanded, trying again...")
-          const headers = container.querySelectorAll(".stage-header-clickable")
-          headers.forEach((header) => {
-            const content = header.nextElementSibling
-            if (!content || content.style.display === "none" || !content.innerHTML.trim()) {
-              header.click()
-            }
-          })
-
-          setTimeout(() => {
-            generatePDF()
-          }, 1000)
-        } else {
-          generatePDF()
-        }
-      }, 1000) // Increased timeout to 1000ms for better reliability
-
-      function generatePDF() {
-        const opt = {
-          margin: [0.5, 0.5, 0.5, 0.5], // Added margins for better formatting
-          filename: `${selectedProjectForReview?.name || "project"}_all_stages_${new Date().toISOString().split("T")[0]}.pdf`,
-          image: { type: "jpeg", quality: 0.98 },
-          html2canvas: {
-            scale: 2,
-            useCORS: true,
-            allowTaint: true, // Added to handle images better
-            backgroundColor: "#ffffff", // Ensure white background
-            scrollX: 0,
-            scrollY: 0,
-          },
-          jsPDF: {
-            unit: "in",
-            format: "a4",
-            orientation: "portrait",
-            compress: true, // Added compression for smaller file size
-          },
-        }
-
-        html2pdf()
-          .set(opt)
-          .from(container)
-          .save()
-          .then(() => {
-            showNotification("All forms and stages downloaded successfully as PDF!", "success")
-          })
-          .catch((error) => {
-            console.error("Error generating PDF:", error)
-            showNotification("Failed to generate PDF. Please try again.", "error")
-          })
-      }
+  
+      // Send request to backend
+      const response = await axios.post(
+        `${BACKEND_API_BASE_URL}/api/data/download-all-forms`,
+        {
+          projectName: selectedProjectForReview?.name,
+          formData: formDataFromDB,
+        },
+        { responseType: "blob" } // VERY IMPORTANT for PDFs
+      );
+  
+      // Download the PDF
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute(
+        "download",
+        `${selectedProjectForReview?.name || "project"}_all_stages.pdf`
+      );
+      document.body.appendChild(link);
+      link.click();
+  
+      showNotification("All forms and stages downloaded successfully as PDF!", "success");
     } catch (error) {
-      console.error("Error downloading the PDF", error)
-      showNotification("Failed to download PDF. Please try again.", "error")
-      return
+      console.error("Error downloading the PDF", error);
+      showNotification("Failed to download PDF. Please try again.", "error");
     }
-
-    console.log(`Downloading PDF form for Project ${selectedProjectForReview.name}`)
-
-    if (!formDataFromDB) {
-      showNotification("No forms data available to download", "warning")
-      return
-    }
-  }
+  };
 
   return (
     <div className="dashboard-container">
