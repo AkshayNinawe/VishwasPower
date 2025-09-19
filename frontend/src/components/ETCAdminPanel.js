@@ -143,8 +143,8 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
             { name: "vpesDesignation", label: "VPES Designation", type: "text" },
             { name: "vpesSignature", label: "VPES Signature", type: "text" },
             { name: "vpesDate", label: "VPES Date", type: "date" },
-            { name: "customerName2", label: "Customer Representative Name", type: "text" },
-            { name: "customerDesignation", label: "Customer Designation", type: "text" },
+            { name: "customerRepName", label: "Customer Representative Name", type: "text" },
+            { name: "customerRepDesignation", label: "Customer Designation", type: "text" },
             { name: "customerSignature", label: "Customer Signature", type: "text" },
             { name: "customerDate", label: "Customer Date", type: "date" },
           ],
@@ -154,288 +154,179 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
   }
 
   const formatLabel = (label) => {
+    // Handle specific cases first
     const specialCases = {
       SrNo: "Sr. No.",
       YearOfMfg: "Year Of Mfg",
-      ManufacturingYear: "Manufacturing Year",
-      SerialNumber: "Serial Number",
-      TransformerType: "Transformer Type",
-      RatedPower: "Rated Power",
-      PrimaryVoltage: "Primary Voltage",
-      SecondaryVoltage: "Secondary Voltage",
-      OilQuantity: "Oil Quantity",
-      BushingCondition: "Bushing Condition",
-      TapChangerOperation: "Tap Changer Operation",
-      CoolingSystem: "Cooling System",
-      OilLevel: "Oil Level",
-      GasketCondition: "Gasket Condition",
-      EarthingConnections: "Earthing Connections",
-      OilTemperature: "Oil Temperature",
-      MoistureContent: "Moisture Content",
-      FlashPoint: "Flash Point",
-      PourPoint: "Pour Point",
-      SpecificGravity: "Specific Gravity",
-      CustomerName: "Customer Name",
-      OrderNumber: "Order Number",
-      VoltageRating: "Voltage Rating",
-      CompletionDate: "Completion Date",
-      ChargingDate: "Charging Date",
-      CommissioningDate: "Commissioning Date",
-      VpesName: "VPES Name",
-      VpesDesignation: "VPES Designation",
-      VpesSignature: "VPES Signature",
-      VpesDate: "VPES Date",
-      CustomerName2: "Customer Representative Name",
-      CustomerDesignation: "Customer Designation",
-      CustomerSignature: "Customer Signature",
-      CustomerDate: "Customer Date",
-      // Additional common cases
-      TestDate: "Test Date",
-      TestTime: "Test Time",
-      TestResult: "Test Result",
-      InspectionDate: "Inspection Date",
-      ApprovalDate: "Approval Date",
-      ProjectName: "Project Name",
-      CompanyName: "Company Name",
-      ContactNumber: "Contact Number",
-      EmailAddress: "Email Address",
-      InstallationDate: "Installation Date",
-      MaintenanceDate: "Maintenance Date",
-      WarrantyPeriod: "Warranty Period",
-      ServiceDate: "Service Date",
-      RepairDate: "Repair Date",
-      ReplacementDate: "Replacement Date",
-      QualityCheck: "Quality Check",
-      SafetyCheck: "Safety Check",
-      FinalInspection: "Final Inspection",
-      DocumentNumber: "Document Number",
-      ReferenceNumber: "Reference Number",
-      BatchNumber: "Batch Number",
-      LotNumber: "Lot Number",
-      ModelNumber: "Model Number",
-      PartNumber: "Part Number",
-      ItemCode: "Item Code",
-      ProductCode: "Product Code",
-      MaterialCode: "Material Code",
-      SupplierName: "Supplier Name",
-      ManufacturerName: "Manufacturer Name",
-      BrandName: "Brand Name",
-      TradeName: "Trade Name",
-      TechnicalSpec: "Technical Spec",
-      PerformanceData: "Performance Data",
-      OperatingConditions: "Operating Conditions",
-      EnvironmentalConditions: "Environmental Conditions",
-      StorageConditions: "Storage Conditions",
-      HandlingInstructions: "Handling Instructions",
-      SafetyInstructions: "Safety Instructions",
-      MaintenanceInstructions: "Maintenance Instructions",
-      OperatingInstructions: "Operating Instructions",
-      InstallationInstructions: "Installation Instructions",
-      TroubleshootingGuide: "Troubleshooting Guide",
-      UserManual: "User Manual",
-      ServiceManual: "Service Manual",
-      TechnicalManual: "Technical Manual",
-      OperationManual: "Operation Manual",
-      MaintenanceManual: "Maintenance Manual",
-      InstallationManual: "Installation Manual",
-      SafetyManual: "Safety Manual",
-      QualityManual: "Quality Manual",
-      TestReport: "Test Report",
-      InspectionReport: "Inspection Report",
-      QualityReport: "Quality Report",
-      PerformanceReport: "Performance Report",
-      ComplianceReport: "Compliance Report",
-      SafetyReport: "Safety Report",
-      EnvironmentalReport: "Environmental Report",
-      TechnicalReport: "Technical Report",
-      AnalysisReport: "Analysis Report",
-      EvaluationReport: "Evaluation Report",
-      AssessmentReport: "Assessment Report",
-      AuditReport: "Audit Report",
-      ReviewReport: "Review Report",
-      SummaryReport: "Summary Report",
-      FinalReport: "Final Report",
-      InterimReport: "Interim Report",
-      ProgressReport: "Progress Report",
-      StatusReport: "Status Report",
-      UpdateReport: "Update Report",
-      MonthlyReport: "Monthly Report",
-      QuarterlyReport: "Quarterly Report",
-      AnnualReport: "Annual Report",
-      WeeklyReport: "Weekly Report",
-      DailyReport: "Daily Report",
+      DateOfMfg: "Date Of Mfg",
+      SerialNo: "Serial No.",
+      ModelNo: "Model No.",
+      PartNo: "Part No.",
+      OrderNo: "Order No.",
+      TestNo: "Test No.",
+      RefNo: "Ref. No.",
+      customerName: "Customer Name",
+      orderNumber: "Order Number",
+      voltageRating: "Voltage Rating",
+      serialNumber: "Serial Number",
+      completionDate: "Completion Date",
+      chargingDate: "Charging Date",
     }
 
-    // Check if it's a special case first
     if (specialCases[label]) {
       return specialCases[label]
     }
 
-    // For camelCase words, add spaces before capital letters
-    return label.replace(/([a-z])([A-Z])/g, "$1 $2")
+    // Add spaces before capital letters for camelCase
+    return label
+      .replace(/([a-z])([A-Z])/g, "$1 $2")
+      .replace(/([A-Z])([A-Z][a-z])/g, "$1 $2")
+      .replace(/^./, (str) => str.toUpperCase())
   }
 
   const renderIndexTable = () => {
+    const indexData = [
+      { srNo: 1, description: "Name plate details", stage: "Stage 1", docNo: "ETC/APCC/01" },
+      { srNo: 2, description: "Checking core insulation & accessories", stage: "Stage 1", docNo: "ETC/APCC/01" },
+      {
+        srNo: 3,
+        description: "Pre-Erection Tan delta & Capacitance test on bushing",
+        stage: "Stage 1",
+        docNo: "ETC/APCC/01",
+      },
+      { srNo: 4, description: "Measurment of IR values", stage: "Stage 1", docNo: "ETC/APCC/01" },
+      {
+        srNo: 5,
+        description: "Record of Oil handling & oil filteration in reservoir tank",
+        stage: "Stage 2",
+        docNo: "ETC/APCC/01",
+      },
+      { srNo: 6, description: "Lead clearance & after erection IR value", stage: "Stage 2", docNo: "ETC/APCC/01" },
+      {
+        srNo: 7,
+        description: "Main tank after oil filling , IR value & Pressure test",
+        stage: "Stage 2",
+        docNo: "ETC/APCC/01",
+      },
+      { srNo: 8, description: "Record of Oil Filteration - Main Tank", stage: "Stage 3", docNo: "ETC/APCC/01" },
+      { srNo: 9, description: "Oil Filteration of Radiator and Combine", stage: "Stage 3", docNo: "ETC/APCC/01" },
+      { srNo: 10, description: "After filteration BDV, PPM & PI values", stage: "Stage 3", docNo: "ETC/APCC/01" },
+      { srNo: 11, description: "SFRA Test Record", stage: "Stage 4", docNo: "ETC/APCC/01" },
+      { srNo: 12, description: "Tan delta and capacitance test on bushing", stage: "Stage 4", docNo: "ETC/APCC/01" },
+      { srNo: 13, description: "Tan delta & Capacitance test on winding", stage: "Stage 4", docNo: "ETC/APCC/01" },
+      {
+        srNo: 14,
+        description: "Record of Measurement of IR Values & Voltage Ratio Test",
+        stage: "Stage 4",
+        docNo: "ETC/APCC/01",
+      },
+      { srNo: 15, description: "Short Circuit Test", stage: "Stage 4", docNo: "ETC/APCC/01" },
+      {
+        srNo: 16,
+        description: "Winding Resistance Test and Record of Measurement of IR & PI Values",
+        stage: "Stage 4",
+        docNo: "ETC/APCC/01",
+      },
+      { srNo: 17, description: "Pre-Charging Check List", stage: "Stage 5", docNo: "ETC/APCC/01" },
+      { srNo: 18, description: "Work Completion Report", stage: "Stage 6", docNo: "ETC/APCC/01" },
+    ]
+
     return (
       <div
         style={{
+          width: "100%",
           marginBottom: "30px",
-          border: "2px solid #333",
-          borderRadius: "8px",
-          overflow: "hidden",
-          backgroundColor: "white",
+          border: "2px solid #000",
+          backgroundColor: "#fff",
+          fontFamily: "Arial, sans-serif",
         }}
       >
-        {/* Header */}
+        {/* Header with company logo and name */}
         <div
           style={{
-            backgroundColor: "#87CEEB",
-            padding: "15px",
+            backgroundColor: "#a8c8ec",
+            padding: "8px 15px",
             textAlign: "center",
-            borderBottom: "2px solid #333",
+            border: "1px solid #000",
+            fontWeight: "bold",
+            fontSize: "16px",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "15px",
-              marginBottom: "10px",
-            }}
-          >
-            <div
-              style={{
-                width: "40px",
-                height: "40px",
-                backgroundColor: "#4169E1",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "white",
-                fontWeight: "bold",
-                fontSize: "1.2rem",
-              }}
-            >
-              V
-            </div>
-            <div>
-              <div style={{ fontSize: "1.2rem", fontWeight: "bold", color: "#333" }}>
-                VISHVAS POWER ENGINEERING SERVICES PVT. LTD., NAGPUR
-              </div>
-            </div>
-          </div>
-          <div
-            style={{
-              backgroundColor: "#FF6B6B",
-              color: "white",
-              padding: "8px",
-              fontSize: "1.1rem",
-              fontWeight: "bold",
-              marginTop: "10px",
-            }}
-          >
-            AUTO - PROCESS COMPLAINE CHECKLIST
-          </div>
+          VISHVAS POWER ENGINEERING SERVICES PVT. LTD.,NAGPUR
         </div>
 
-        {/* Info Row */}
+        {/* Red banner */}
         <div
           style={{
-            display: "flex",
-            backgroundColor: "#f8f9fa",
-            borderBottom: "1px solid #333",
+            backgroundColor: "#8B0000",
+            color: "white",
+            padding: "8px 15px",
+            textAlign: "center",
+            fontWeight: "bold",
+            fontSize: "14px",
           }}
         >
-          <div style={{ flex: "1", padding: "8px", border: "1px solid #333", fontSize: "0.9rem" }}>
-            <strong>Issue No.:</strong> 01
+          AUTO - PROCESS COMPLAINE CHECKLIST
+        </div>
+
+        {/* Document info row */}
+        <div style={{ display: "flex", border: "1px solid #000" }}>
+          <div style={{ border: "1px solid #000", padding: "5px 10px", backgroundColor: "#f0f0f0", minWidth: "80px" }}>
+            <strong>Issue No.</strong> :01
           </div>
-          <div style={{ flex: "1", padding: "8px", border: "1px solid #333", fontSize: "0.9rem" }}>
+          <div style={{ border: "1px solid #000", padding: "5px 10px", backgroundColor: "#f0f0f0", minWidth: "120px" }}>
             <strong>Issue Date:</strong> 01.04.2025
           </div>
-          <div style={{ flex: "1", padding: "8px", border: "1px solid #333", fontSize: "0.9rem" }}>
-            <strong>Revision No.:</strong> 00
+          <div style={{ border: "1px solid #000", padding: "5px 10px", backgroundColor: "#f0f0f0", minWidth: "100px" }}>
+            <strong>Revision No.</strong> :00
           </div>
-          <div style={{ flex: "1", padding: "8px", border: "1px solid #333", fontSize: "0.9rem" }}>
-            <strong>Revision Date:</strong> 00.00.0000
+          <div style={{ border: "1px solid #000", padding: "5px 10px", backgroundColor: "#f0f0f0", minWidth: "120px" }}>
+            <strong>Revision Date</strong> : 00.00.0000
           </div>
-          <div style={{ flex: "1", padding: "8px", border: "1px solid #333", fontSize: "0.9rem" }}>
-            <strong>Stages No.:</strong> 1 of 6
+          <div style={{ border: "1px solid #000", padding: "5px 10px", backgroundColor: "#f0f0f0", minWidth: "100px" }}>
+            <strong>Stages No.</strong> : 1 of 6
           </div>
-          <div style={{ flex: "1", padding: "8px", border: "1px solid #333", fontSize: "0.9rem" }}>
-            <strong>Doc. No.:</strong> ETC/APCC/01
+          <div style={{ border: "1px solid #000", padding: "5px 10px", backgroundColor: "#f0f0f0", flex: 1 }}>
+            <strong>Doc. No.</strong> : ETC/APCC/01
           </div>
         </div>
 
-        {/* INDEX Title */}
+        {/* INDEX title */}
         <div
           style={{
             textAlign: "center",
             padding: "15px",
-            fontSize: "1.3rem",
+            fontSize: "18px",
             fontWeight: "bold",
             textDecoration: "underline",
-            backgroundColor: "white",
           }}
         >
           INDEX
         </div>
 
-        {/* Table Headers */}
-        <div
-          style={{
-            display: "flex",
-            backgroundColor: "#f8f9fa",
-            borderBottom: "2px solid #333",
-            fontWeight: "bold",
-          }}
-        >
-          <div style={{ flex: "0.5", padding: "12px", border: "1px solid #333", textAlign: "center" }}>Sr. No.</div>
-          <div style={{ flex: "3", padding: "12px", border: "1px solid #333", textAlign: "center" }}>Description</div>
-          <div style={{ flex: "1", padding: "12px", border: "1px solid #333", textAlign: "center" }}>Stages</div>
-          <div style={{ flex: "1", padding: "12px", border: "1px solid #333", textAlign: "center" }}>Doc. No.</div>
-        </div>
-
-        {/* Table Rows */}
-        {[
-          { sr: 1, desc: "Name plate details", stage: "Stage 1", doc: "" },
-          { sr: 2, desc: "Checking core insulation & accessories", stage: "Stage 1", doc: "" },
-          { sr: 3, desc: "Pre-Erection Tan delta & Capacitance test on bushing", stage: "Stage 1", doc: "" },
-          { sr: 4, desc: "Measurment of IR values", stage: "Stage 2", doc: "" },
-          { sr: 5, desc: "Record of Oil handling & oil filteration in reservoir tank", stage: "Stage 2", doc: "" },
-          { sr: 6, desc: "Lead clearance & after erection IR value", stage: "Stage 2", doc: "" },
-          { sr: 7, desc: "Main tank after oil filling , IR value & Pressure test", stage: "Stage 3", doc: "" },
-          { sr: 8, desc: "Record of Oil Filteration - Main Tank", stage: "Stage 3", doc: "" },
-          { sr: 9, desc: "Oil Filteration of Radiator and Combine", stage: "Stage 3", doc: "ETC/APCC/01" },
-          { sr: 10, desc: "After filteration BDV, PPM & PI values", stage: "Stage 3", doc: "" },
-          { sr: 11, desc: "SFRA Test Record", stage: "Stage 4", doc: "" },
-          { sr: 12, desc: "Tan delta and capacitance test on bushing", stage: "Stage 4", doc: "" },
-          { sr: 13, desc: "Tan delta & Capacitance test on winding", stage: "Stage 4", doc: "" },
-          { sr: 14, desc: "Record of Measurement of IR Values & Voltage Ratio Test", stage: "Stage 4", doc: "" },
-          { sr: 15, desc: "Short Circuit Test", stage: "Stage 4", doc: "" },
-          {
-            sr: 16,
-            desc: "Winding Resistance Test and Record of Measurement of IR & PI Values",
-            stage: "Stage 4",
-            doc: "",
-          },
-          { sr: 17, desc: "Pre-Charging Check List", stage: "Stage 5", doc: "" },
-          { sr: 18, desc: "Work Completion Report", stage: "Stage 6", doc: "" },
-        ].map((row, index) => (
-          <div
-            key={index}
-            style={{
-              display: "flex",
-              backgroundColor: index % 2 === 0 ? "white" : "#f8f9fa",
-              borderBottom: "1px solid #333",
-            }}
-          >
-            <div style={{ flex: "0.5", padding: "10px", border: "1px solid #333", textAlign: "center" }}>{row.sr}</div>
-            <div style={{ flex: "3", padding: "10px", border: "1px solid #333" }}>{row.desc}</div>
-            <div style={{ flex: "1", padding: "10px", border: "1px solid #333", textAlign: "center" }}>{row.stage}</div>
-            <div style={{ flex: "1", padding: "10px", border: "1px solid #333", textAlign: "center" }}>{row.doc}</div>
-          </div>
-        ))}
+        {/* Index table */}
+        <table style={{ width: "100%", borderCollapse: "collapse", border: "1px solid #000" }}>
+          <thead>
+            <tr style={{ backgroundColor: "#f0f0f0" }}>
+              <th style={{ border: "1px solid #000", padding: "8px", textAlign: "center", width: "80px" }}>Sr. No.</th>
+              <th style={{ border: "1px solid #000", padding: "8px", textAlign: "center" }}>Description</th>
+              <th style={{ border: "1px solid #000", padding: "8px", textAlign: "center", width: "100px" }}>Stages</th>
+              <th style={{ border: "1px solid #000", padding: "8px", textAlign: "center", width: "120px" }}>
+                Doc. No.
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {indexData.map((item, index) => (
+              <tr key={index}>
+                <td style={{ border: "1px solid #000", padding: "8px", textAlign: "center" }}>{item.srNo}</td>
+                <td style={{ border: "1px solid #000", padding: "8px" }}>{item.description}</td>
+                <td style={{ border: "1px solid #000", padding: "8px", textAlign: "center" }}>{item.stage}</td>
+                <td style={{ border: "1px solid #000", padding: "8px", textAlign: "center" }}>{item.docNo}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     )
   }
@@ -489,82 +380,367 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
         
         ${
           stage === 6
-            ? `
-          <div style="margin-bottom: 30px; padding: 20px; border: 2px solid #4CAF50; border-radius: 10px; background: #f8fff8;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 3px solid #C41E3A; padding-bottom: 20px;">
-              <div style="display: flex; align-items: center; gap: 15px;">
-                <div style="font-size: 2rem; font-weight: bold; color: #C41E3A;">📋</div>
-                <div>
-                  <div style="font-size: 1.5rem; font-weight: bold; color: #333;">VISHVAS</div>
-                  <div style="font-size: 0.8rem; color: #666;">(A unit of M/s Vishvas Power Engineering Services Pvt Ltd)</div>
+            ? `<div class="stage6-certificate" style="
+              background: white;
+              padding: 40px;
+              max-width: 800px;
+              margin: 20px auto;
+              border: 2px solid #000;
+              font-family: Arial, sans-serif
+            ">
+              {/* Header */}
+              <div style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 20px;
+                border-bottom: 2px solid #8B0000;
+                padding-bottom: 15px
+              ">
+                <div style="
+                  width: 60px;
+                  height: 60px;
+                  background-color: #fff;
+                  border: 2px solid #8B0000;
+                  border-radius: 50%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center
+                ">
+                  <span style="font-size: 24px; font-weight: bold; color: #8B0000">V</span>
+                </div>
+                <div style="text-align: center; flex: 1">
+                  <h2 style="margin: 0; color: #8B0000; font-size: 18px">VISHVAS</h2>
+                  <p style="margin: 0; font-size: 12px; color: #666">
+                    A unit of M/s Vishvas Power Engineering Services Pvt. Ltd.
+                  </p>
+                </div>
+                <div style="
+                  background-color: #8B0000;
+                  color: white;
+                  padding: 8px 15px;
+                  border-radius: 20px;
+                  font-size: 14px;
+                  font-weight: bold
+                ">
+                  25
                 </div>
               </div>
-              <div style="text-align: center;">
-                <div style="background: #C41E3A; color: white; border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
-                  <div>
-                    <div style="font-size: 1.2rem; font-weight: bold;">25</div>
-                    <div style="font-size: 0.7rem;">YEARS</div>
+
+              {/* Certificate badges */}
+              <div style="
+                display: flex;
+                justify-content: flex-end;
+                gap: 10px;
+                margin-bottom: 20px
+              ">
+                <span style="
+                  background-color: #28a745;
+                  color: white;
+                  padding: 4px 8px;
+                  border-radius: 12px;
+                  font-size: 10px
+                ">ISO CERTIFIED</span>
+                <span style="
+                  background-color: #28a745;
+                  color: white;
+                  padding: 4px 8px;
+                  border-radius: 12px;
+                  font-size: 10px
+                ">MSME CERTIFIED</span>
+                <span style="
+                  background-color: #28a745;
+                  color: white;
+                  padding: 4px 8px;
+                  border-radius: 12px;
+                  font-size: 10px
+                ">NSIC CERTIFIED</span>
+              </div>
+
+              {/* Title */}
+              <div style="
+                background-color: #8B0000;
+                color: white;
+                padding: 10px;
+                text-align: center;
+                margin-bottom: 20px
+              ">
+                <h3 style="margin: 0; font-size: 16px">
+                  Transformers upto 220 kV 250 MVA
+                </h3>
+              </div>
+
+              <div style="
+                text-align: center;
+                margin-bottom: 20px;
+                border-bottom: 1px solid #000;
+                padding-bottom: 10px
+              ">
+                <h4 style="margin: 0; font-size: 16px; text-decoration: underline">
+                  Work completion report
+                </h4>
+                <p style="margin: 5px 0; font-size: 12px">
+                  Date: ${formData.completionDate || new Date().toLocaleDateString()}
+                </p>
+              </div>
+
+              {/* Project Information */}
+              <div style="margin-bottom: 20px">
+                <h5 style="
+                  background-color: #f0f0f0;
+                  padding: 8px;
+                  margin: 0 0 10px 0;
+                  font-size: 14px;
+                  text-align: center;
+                  border: 1px solid #ccc
+                ">
+                  Project Information
+                </h5>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px">
+                  <div style="display: flex; border-bottom: 1px solid #000; padding: 5px 0">
+                    <strong style="min-width: 120px">Customer Name:</strong>
+                    <span style="border-bottom: 1px solid #000; flex: 1; padding-left: 10px">
+                      ${formData.customerName || "___________________"}
+                    </span>
+                  </div>
+                  <div style="display: flex; border-bottom: 1px solid #000; padding: 5px 0">
+                    <strong style="min-width: 120px">Order Number:</strong>
+                    <span style="border-bottom: 1px solid #000; flex: 1; padding-left: 10px">
+                      ${formData.orderNumber || "___________________"}
+                    </span>
+                  </div>
+                  <div style="display: flex; border-bottom: 1px solid #000; padding: 5px 0">
+                    <strong style="min-width: 120px">Location:</strong>
+                    <span style="border-bottom: 1px solid #000; flex: 1; padding-left: 10px">
+                      ${formData.location || "___________________"} SPCSP
+                    </span>
                   </div>
                 </div>
               </div>
-              <div style="text-align: right;">
-                <div style="background: #4CAF50; color: white; padding: 5px 10px; border-radius: 5px; margin-bottom: 5px; font-size: 0.8rem;">ISO CERTIFIED</div>
-                <div style="font-size: 0.7rem; color: #333;">• 9001 Certified<br>• 14001 Certified<br>• 45001 Certified</div>
+
+              {/* Transformer Details */}
+              <div style="margin-bottom: 20px">
+                <h5 style="
+                  background-color: #f0f0f0;
+                  padding: 8px;
+                  margin: 0 0 10px 0;
+                  font-size: 14px;
+                  text-align: center;
+                  border: 1px solid #ccc
+                ">
+                  Transformer Details
+                </h5>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px">
+                  <div style="display: flex; border-bottom: 1px solid #000; padding: 5px 0">
+                    <strong style="min-width: 120px">Type:</strong>
+                    <span style="border-bottom: 1px solid #000; flex: 1; padding-left: 10px">
+                      ${formData.type || "auto Transformer"}
+                    </span>
+                  </div>
+                  <div style="display: flex; border-bottom: 1px solid #000; padding: 5px 0">
+                    <strong style="min-width: 120px">Capacity:</strong>
+                    <span style="border-bottom: 1px solid #000; flex: 1; padding-left: 10px">
+                      ${formData.capacity || "___________________"} MVA
+                    </span>
+                  </div>
+                  <div style="display: flex; border-bottom: 1px solid #000; padding: 5px 0">
+                    <strong style="min-width: 120px">Voltage Rating:</strong>
+                    <span style="border-bottom: 1px solid #000; flex: 1; padding-left: 10px">
+                      ${formData.voltageRating || "___________________"} kV
+                    </span>
+                  </div>
+                  <div style="display: flex; border-bottom: 1px solid #000; padding: 5px 0">
+                    <strong style="min-width: 120px">Make:</strong>
+                    <span style="border-bottom: 1px solid #000; flex: 1; padding-left: 10px">
+                      ${formData.make || "___________________"}
+                    </span>
+                  </div>
+                  <div style="display: flex; border-bottom: 1px solid #000; padding: 5px 0; grid-column: 1 / -1">
+                    <strong style="min-width: 120px">Serial Number:</strong>
+                    <span style="border-bottom: 1px solid #000; flex: 1; padding-left: 10px">
+                      ${formData.serialNumber || "___________________"}
+                    </span>
+                  </div>
+                </div>
               </div>
-            </div>
-            
-            <div style="background: linear-gradient(135deg, #C41E3A, #8B0000); color: white; padding: 10px 20px; margin-bottom: 30px; clip-path: polygon(0 0, 100% 0, 95% 100%, 0% 100%);">
-              <div style="font-size: 1.1rem; font-weight: 600;">Transformers upto 220 kV 250 MVA</div>
-            </div>
-            
-            <div style="text-align: center; margin-bottom: 30px;">
-              <h1 style="font-size: 1.8rem; font-weight: bold; text-decoration: underline; margin: 0 0 10px 0;">Work completion report</h1>
-              <div style="text-align: right; font-size: 1rem;">
-                <strong>Date:-</strong> ${formData.completionDate || new Date().toLocaleDateString()}
+
+              {/* Subject */}
+              <div style="margin-bottom: 20px">
+                <p style="margin: 0; font-size: 14px; text-align: center; text-decoration: underline">
+                  <strong>Subject: Completion of Transformer Erection, Testing and Commissioning Work</strong>
+                </p>
               </div>
-            </div>
-            
-            <div style="margin-bottom: 30px;">
-              <h3 style="font-size: 1.2rem; font-weight: bold; margin-bottom: 15px;">Project Information</h3>
-              <div style="margin-bottom: 15px;"><strong>Customer Name: </strong>${formData.customerName || "_________________"}</div>
-              <div style="margin-bottom: 15px;"><strong>Order Number: </strong>${formData.orderNumber || "_________________"}</div>
-              <div style="margin-bottom: 15px;"><strong>Location: </strong>${formData.location || "_________________"} <strong style="margin-left: 20px;">SP/SSP</strong></div>
-            </div>
-            
-            <div style="margin-bottom: 30px;">
-              <h3 style="font-size: 1.2rem; font-weight: bold; margin-bottom: 15px;">Transformer Details</h3>
-              <div style="margin-bottom: 10px;"><strong>Type: – auto Transformer</strong></div>
-              <div style="margin-bottom: 10px;"><strong>Capacity: </strong>${formData.capacity || "_______"}<strong>MVA</strong></div>
-              <div style="margin-bottom: 10px;"><strong>Voltage Rating: </strong>${formData.voltageRating || "_______"}<strong>kV</strong></div>
-              <div style="margin-bottom: 10px;"><strong>Make: </strong>${formData.make || "_________________"}</div>
-              <div style="margin-bottom: 10px;"><strong>Serial Number: </strong>${formData.serialNumber || "_________________"}</div>
-            </div>
-            
-            <div style="margin-bottom: 30px;">
-              <h3 style="font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; text-decoration: underline;">Subject: <em>Completion of Transformer Erection, Testing and Commissioning Work</em></h3>
-              <p style="line-height: 1.6; margin-bottom: 15px;">This is to certify that the erection, Testing and commissioning of the above-mentioned transformer have been completed in accordance with the terms and conditions of the referenced order.</p>
-              <p style="line-height: 1.6; margin-bottom: 15px;">The installation work has been jointly inspected and found satisfactory by the undersigned representatives. The transformer was successfully charged/commissioned on no-load at ${formData.chargingDate || "_______"} hrs on ${formData.commissioningDate || "_______"} (date).</p>
-              <p style="line-height: 1.6; margin-bottom: 30px;">All works under the scope of the order have been completed, and no pending activities remain.</p>
-            </div>
-            
-            <div style="display: flex; justify-content: space-between; margin-top: 50px;">
-              <div style="width: 45%;">
-                <h4 style="font-size: 1.1rem; font-weight: bold; margin-bottom: 20px;">For VPES, Nagpur</h4>
-                <div style="margin-bottom: 15px;"><strong>Name: </strong>${formData.vpesName || "_________________"}</div>
-                <div style="margin-bottom: 15px;"><strong>Designation: </strong>${formData.vpesDesignation || "_________________"}</div>
-                <div style="margin-bottom: 15px;"><strong>Signature: </strong>${formData.vpesSignature ? "[Signature Present]" : "_________________"}</div>
-                <div style="margin-bottom: 15px;"><strong>Date: </strong>${formData.vpesDate || "_________________"}</div>
+
+              <div style="font-size: 12px; line-height: 1.6; margin-bottom: 30px">
+                <p>This is to certify that the erection, Testing and commissioning of the above-mentioned transformer have been completed in accordance with relevant IS standards and Specification.</p>
+                <p>The transformer unit has been jointly inspected and found satisfactory by the undersigned on behalf of VPES, Nagpur and the customer representative. The transformer is ready for commercial operation from <strong>${formData.chargingDate || "___________"}</strong> Hrs. Transformer is handed over to customer on <strong>${formData.completionDate || new Date().toLocaleDateString()}</strong>.</p>
+                <p>We also like to place on the record that work completed and all the activities carried out smoothly.</p>
               </div>
-              <div style="width: 45%;">
-                <h4 style="font-size: 1.1rem; font-weight: bold; margin-bottom: 20px;">For Customer</h4>
-                <div style="margin-bottom: 15px;"><strong>Name: </strong>${formData.customerName2 || "_________________"}</div>
-                <div style="margin-bottom: 15px;"><strong>Designation: </strong>${formData.customerDesignation || "_________________"}</div>
-                <div style="margin-bottom: 15px;"><strong>Signature: </strong>${formData.customerSignature ? "[Signature Present]" : "_________________"}</div>
-                <div style="margin-bottom: 15px;"><strong>Date: </strong>${formData.customerDate || "_________________"}</div>
+
+              {/* Signatures */}
+              <div style={{ display: "flex", justifyContent: "space-between", gap: "40px", marginBottom: "30px" }}>
+                {/* VPES Signature */}
+                <div style={{ flex: 1 }}>
+                  <h5 style={{ margin: "0 0 15px 0", fontSize: "14px", textAlign: "center" }}>
+                    <strong>For VPES, Nagpur</strong>
+                  </h5>
+                  <div style={{ marginBottom: "15px" }}>
+                    <div style={{ display: "flex", borderBottom: "1px solid #000", padding: "5px 0" }}>
+                      <strong style={{ minWidth: "80px" }}>Name:</strong>
+                      <span style={{ borderBottom: "1px solid #000", flex: 1, paddingLeft: "10px" }}>
+                        {formData.vpesName || "___________________"}
+                      </span>
+                    </div>
+                  </div>
+                  <div style={{ marginBottom: "15px" }}>
+                    <div style={{ display: "flex", borderBottom: "1px solid #000", padding: "5px 0" }}>
+                      <strong style={{ minWidth: "80px" }}>Designation:</strong>
+                      <span style={{ borderBottom: "1px solid #000", flex: 1, paddingLeft: "10px" }}>
+                        {formData.vpesDesignation || "___________________"}
+                      </span>
+                    </div>
+                  </div>
+                  <div style={{ marginBottom: "15px" }}>
+                    <div style={{ display: "flex", borderBottom: "1px solid #000", padding: "5px 0" }}>
+                      <strong style={{ minWidth: "80px" }}>Signature:</strong>
+                      <span style={{ borderBottom: "1px solid #000", flex: 1, paddingLeft: "10px" }}>
+                        {formData.vpesSignature || ""}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div style={{ 
+                    border: "1px solid #ccc", 
+                    height: "80px", 
+                    backgroundColor: "#f9f9f9",
+                    marginBottom: "15px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "12px",
+                    color: "#666"
+                  }}>
+                    {formData.vpesSignature ? (
+                      <img src={formData.vpesSignature || "/placeholder.svg"} alt="VPES Signature" style={{ maxHeight: "70px", maxWidth: "100%" }} />
+                    ) : (
+                      "Enter name"
+                    )}
+                  </div>
+                  
+                  <button style={{
+                    backgroundColor: "#dc3545",
+                    color: "white",
+                    border: "none",
+                    padding: "8px 16px",
+                    borderRadius: "4px",
+                    fontSize: "12px",
+                    cursor: "pointer",
+                    width: "100%",
+                    marginBottom: "15px"
+                  }}>
+                    CLEAR SIGNATURE
+                  </button>
+                  
+                  <div style={{ display: "flex", borderBottom: "1px solid #000", padding: "5px 0" }}>
+                    <strong style={{ minWidth: "80px" }}>Date:</strong>
+                    <span style={{ borderBottom: "1px solid #000", flex: 1, paddingLeft: "10px" }}>
+                      {formData.vpesDate || new Date().toLocaleDateString()}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Customer Signature */}
+                <div style={{ flex: 1 }}>
+                  <h5 style={{ margin: "0 0 15px 0", fontSize: "14px", textAlign: "center" }}>
+                    <strong>For Customer</strong>
+                  </h5>
+                  <div style={{ marginBottom: "15px" }}>
+                    <div style={{ display: "flex", borderBottom: "1px solid #000", padding: "5px 0" }}>
+                      <strong style={{ minWidth: "80px" }}>Name:</strong>
+                      <span style={{ borderBottom: "1px solid #000", flex: 1, paddingLeft: "10px" }}>
+                        {formData.customerRepName || "___________________"}
+                      </span>
+                    </div>
+                  </div>
+                  <div style={{ marginBottom: "15px" }}>
+                    <div style={{ display: "flex", borderBottom: "1px solid #000", padding: "5px 0" }}>
+                      <strong style={{ minWidth: "80px" }}>Designation:</strong>
+                      <span style={{ borderBottom: "1px solid #000", flex: 1, paddingLeft: "10px" }}>
+                        {formData.customerRepDesignation || "___________________"}
+                      </span>
+                    </div>
+                  </div>
+                  <div style={{ marginBottom: "15px" }}>
+                    <div style={{ display: "flex", borderBottom: "1px solid #000", padding: "5px 0" }}>
+                      <strong style={{ minWidth: "80px" }}>Signature:</strong>
+                      <span style={{ borderBottom: "1px solid #000", flex: 1, paddingLeft: "10px" }}>
+                        {formData.customerSignature || ""}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div style={{ 
+                    border: "1px solid #ccc", 
+                    height: "80px", 
+                    backgroundColor: "#f9f9f9",
+                    marginBottom: "15px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "12px",
+                    color: "#666"
+                  }}>
+                    {formData.customerSignature ? (
+                      <img src={formData.customerSignature || "/placeholder.svg"} alt="Customer Signature" style={{ maxHeight: "70px", maxWidth: "100%" }} />
+                    ) : (
+                      "Enter name"
+                    )}
+                  </div>
+                  
+                  <button style={{
+                    backgroundColor: "#dc3545",
+                    color: "white",
+                    border: "none",
+                    padding: "8px 16px",
+                    borderRadius: "4px",
+                    fontSize: "12px",
+                    cursor: "pointer",
+                    width: "100%",
+                    marginBottom: "15px"
+                  }}>
+                    CLEAR SIGNATURE
+                  </button>
+                  
+                  <div style={{ display: "flex", borderBottom: "1px solid #000", padding: "5px 0" }}>
+                    <strong style={{ minWidth: "80px" }}>Date:</strong>
+                    <span style={{ borderBottom: "1px solid #000", flex: 1, paddingLeft: "10px" }}>
+                      {formData.customerDate || new Date().toLocaleDateString()}
+                    </span>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        `
+
+              <div style="margin-top: 40px; display: flex; justify-content: space-between;">
+                <div style="text-align: center; width: 30%;">
+                  <div style="border-top: 2px solid #000; margin-top: 50px; padding-top: 10px;">
+                    <strong>Prepared By</strong><br>
+                    Date: ${new Date().toLocaleDateString()}
+                  </div>
+                </div>
+                <div style="text-align: center; width: 30%;">
+                  <div style="border-top: 2px solid #000; margin-top: 50px; padding-top: 10px;">
+                    <strong>Checked By</strong><br>
+                    Date: ___________
+                  </div>
+                </div>
+                <div style="text-align: center; width: 30%;">
+                  <div style="border-top: 2px solid #000; margin-top: 50px; padding-top: 10px;">
+                    <strong>Approved By</strong><br>
+                    Date: ___________
+                  </div>
+                </div>
+              </div>
+            </div>`
             : `
           <div style="margin-bottom: 30px;">
             ${formStructure.fields
@@ -669,316 +845,322 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
                 background: "white",
                 padding: "40px",
                 maxWidth: "800px",
-                margin: "0 auto",
+                margin: "20px auto",
+                border: "2px solid #000",
+                fontFamily: "Arial, sans-serif",
               }}
             >
-              {/* Header with logo and certifications */}
+              {/* Header */}
               <div
                 style={{
                   display: "flex",
-                  justifyContent: "space-between",
                   alignItems: "center",
-                  marginBottom: "30px",
-                  borderBottom: "3px solid #C41E3A",
-                  paddingBottom: "20px",
+                  justifyContent: "space-between",
+                  marginBottom: "20px",
+                  borderBottom: "2px solid #8B0000",
+                  paddingBottom: "15px",
                 }}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
-                  <div style={{ fontSize: "2rem", fontWeight: "bold", color: "#C41E3A" }}>📋</div>
+                <div
+                  style={{
+                    width: "60px",
+                    height: "60px",
+                    backgroundColor: "#fff",
+                    border: "2px solid #8B0000",
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <span style={{ fontSize: "24px", fontWeight: "bold", color: "#8B0000" }}>V</span>
+                </div>
+                <div style={{ textAlign: "center", flex: 1 }}>
+                  <h2 style={{ margin: "0", color: "#8B0000", fontSize: "18px" }}>VISHVAS</h2>
+                  <p style={{ margin: "0", fontSize: "12px", color: "#666" }}>
+                    A unit of M/s Vishvas Power Engineering Services Pvt. Ltd.
+                  </p>
+                </div>
+                <div
+                  style={{
+                    backgroundColor: "#8B0000",
+                    color: "white",
+                    padding: "8px 15px",
+                    borderRadius: "20px",
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  25
+                </div>
+              </div>
+
+              {/* Certificate badges */}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  gap: "10px",
+                  marginBottom: "20px",
+                }}
+              >
+                <div
+                  style={{
+                    backgroundColor: "#28a745",
+                    color: "white",
+                    padding: "5px 10px",
+                    borderRadius: "15px",
+                    fontSize: "12px",
+                  }}
+                >
+                  ISO CERTIFIED
+                </div>
+                <div
+                  style={{
+                    backgroundColor: "#007bff",
+                    color: "white",
+                    padding: "5px 10px",
+                    borderRadius: "15px",
+                    fontSize: "12px",
+                  }}
+                >
+                  MSME Certified
+                </div>
+              </div>
+
+              {/* Transformer specification */}
+              <div
+                style={{
+                  backgroundColor: "#8B0000",
+                  color: "white",
+                  padding: "10px",
+                  textAlign: "center",
+                  marginBottom: "20px",
+                  fontWeight: "bold",
+                }}
+              >
+                Transformers upto 250 kV 250 MVA
+              </div>
+
+              {/* Work completion report title */}
+              <div style={{ textAlign: "center", marginBottom: "20px" }}>
+                <h3 style={{ textDecoration: "underline", margin: "10px 0" }}>Work completion report</h3>
+                <div style={{ textAlign: "right", marginTop: "10px" }}>
+                  <strong>Date:</strong> <input type="date" style={{ marginLeft: "10px", padding: "5px" }} />
+                </div>
+              </div>
+
+              {/* Project Information */}
+              <div style={{ marginBottom: "20px" }}>
+                <h4 style={{ textAlign: "center", textDecoration: "underline" }}>Project Information</h4>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px", marginTop: "15px" }}>
                   <div>
-                    <div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#333" }}>VISHVAS</div>
-                    <div style={{ fontSize: "0.8rem", color: "#666" }}>
-                      (A unit of M/s Vishvas Power Engineering Services Pvt Ltd)
-                    </div>
+                    <strong>Customer Name:</strong>{" "}
+                    <span style={{ borderBottom: "1px solid #000", display: "inline-block", minWidth: "200px" }}>
+                      {formData?.customerName || ""}
+                    </span>
+                  </div>
+                  <div>
+                    <strong>Order Number:</strong>{" "}
+                    <span style={{ borderBottom: "1px solid #000", display: "inline-block", minWidth: "200px" }}>
+                      {formData?.orderNumber || ""}
+                    </span>
+                  </div>
+                  <div>
+                    <strong>Location:</strong>{" "}
+                    <span style={{ borderBottom: "1px solid #000", display: "inline-block", minWidth: "200px" }}>
+                      {formData?.location || ""}
+                    </span>
+                    <span style={{ marginLeft: "20px" }}>
+                      <strong>SPJSP</strong>
+                    </span>
                   </div>
                 </div>
+              </div>
 
-                <div style={{ textAlign: "center" }}>
+              {/* Transformer Details */}
+              <div style={{ marginBottom: "20px" }}>
+                <h4 style={{ textAlign: "center", textDecoration: "underline" }}>Transformer Details</h4>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px", marginTop: "15px" }}>
+                  <div>
+                    <strong>Type:</strong>{" "}
+                    <span style={{ borderBottom: "1px solid #000", display: "inline-block", minWidth: "150px" }}>
+                      {formData?.type || "auto Transformer"}
+                    </span>
+                  </div>
+                  <div>
+                    <strong>Capacity:</strong>{" "}
+                    <span style={{ borderBottom: "1px solid #000", display: "inline-block", minWidth: "100px" }}>
+                      {formData?.capacity || ""}
+                    </span>{" "}
+                    <strong>MVA</strong>
+                  </div>
+                  <div>
+                    <strong>Voltage Rating:</strong>{" "}
+                    <span style={{ borderBottom: "1px solid #000", display: "inline-block", minWidth: "100px" }}>
+                      {formData?.voltageRating || ""}
+                    </span>{" "}
+                    <strong>kV</strong>
+                  </div>
+                  <div>
+                    <strong>Make:</strong>{" "}
+                    <span style={{ borderBottom: "1px solid #000", display: "inline-block", minWidth: "150px" }}>
+                      {formData?.make || ""}
+                    </span>
+                  </div>
+                  <div style={{ gridColumn: "1 / -1" }}>
+                    <strong>Serial Number:</strong>{" "}
+                    <span style={{ borderBottom: "1px solid #000", display: "inline-block", minWidth: "200px" }}>
+                      {formData?.serialNumber || ""}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Subject */}
+              <div style={{ marginBottom: "30px" }}>
+                <p>
+                  <strong>Subject: Completion of Transformer Erection, Testing and Commissioning Work</strong>
+                </p>
+                <p style={{ fontSize: "14px", lineHeight: "1.6", textAlign: "justify" }}>
+                  This is to certify that the erection, Testing and commissioning of the above-mentioned transformer
+                  have been completed as required in accordance with relevant Indian/International Standards and found
+                  satisfactory by the undersigned.
+                </p>
+                <p style={{ fontSize: "14px", lineHeight: "1.6", textAlign: "justify" }}>
+                  The installation work has been jointly inspected and found satisfactory by the undersigned. The
+                  transformer commissioned is handed over to customer representative and is ready for commercial
+                  operation.
+                </p>
+                <p style={{ fontSize: "14px", lineHeight: "1.6" }}>
+                  Date when put on the commercial operation:{" "}
+                  <input type="date" style={{ marginLeft: "10px", padding: "5px" }} />
+                </p>
+              </div>
+
+              {/* Signature sections */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "40px", marginBottom: "30px" }}>
+                {/* VPES Section */}
+                <div>
+                  <h4 style={{ textAlign: "center", marginBottom: "20px" }}>For VPES, Nagpur</h4>
+                  <div style={{ marginBottom: "15px" }}>
+                    <strong>Name:</strong>{" "}
+                    <span style={{ borderBottom: "1px solid #000", display: "inline-block", minWidth: "150px" }}></span>
+                  </div>
+                  <div style={{ marginBottom: "15px" }}>
+                    <strong>Designation:</strong>{" "}
+                    <span style={{ borderBottom: "1px solid #000", display: "inline-block", minWidth: "150px" }}></span>
+                  </div>
+                  <div style={{ marginBottom: "15px" }}>
+                    <strong>Signature:</strong>
+                  </div>
                   <div
                     style={{
-                      background: "#C41E3A",
-                      color: "white",
-                      borderRadius: "50%",
-                      width: "80px",
+                      border: "1px solid #ccc",
                       height: "80px",
+                      marginBottom: "15px",
+                      backgroundColor: "#f9f9f9",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      margin: "0 auto 10px",
+                      color: "#666",
                     }}
                   >
-                    <div>
-                      <div style={{ fontSize: "1.2rem", fontWeight: "bold" }}>25</div>
-                      <div style={{ fontSize: "0.7rem" }}>YEARS</div>
-                    </div>
+                    E-sign name
                   </div>
+                  <button
+                    style={{
+                      backgroundColor: "#dc3545",
+                      color: "white",
+                      border: "none",
+                      padding: "8px 15px",
+                      borderRadius: "5px",
+                      fontSize: "12px",
+                    }}
+                  >
+                    CLEAR SIGNATURE
+                  </button>
                 </div>
 
-                <div style={{ textAlign: "right" }}>
+                {/* Customer Section */}
+                <div>
+                  <h4 style={{ textAlign: "center", marginBottom: "20px" }}>For Customer</h4>
+                  <div style={{ marginBottom: "15px" }}>
+                    <strong>Name:</strong>{" "}
+                    <span style={{ borderBottom: "1px solid #000", display: "inline-block", minWidth: "150px" }}></span>
+                  </div>
+                  <div style={{ marginBottom: "15px" }}>
+                    <strong>Designation:</strong>{" "}
+                    <span style={{ borderBottom: "1px solid #000", display: "inline-block", minWidth: "150px" }}></span>
+                  </div>
+                  <div style={{ marginBottom: "15px" }}>
+                    <strong>Signature:</strong>
+                  </div>
                   <div
                     style={{
-                      background: "#4CAF50",
-                      color: "white",
-                      padding: "5px 10px",
-                      borderRadius: "5px",
-                      marginBottom: "5px",
-                      fontSize: "0.8rem",
+                      border: "1px solid #ccc",
+                      height: "80px",
+                      marginBottom: "15px",
+                      backgroundColor: "#f9f9f9",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "#666",
                     }}
                   >
-                    ISO CERTIFIED
+                    E-sign name
                   </div>
-                  <div style={{ fontSize: "0.7rem", color: "#333" }}>
-                    • 9001 Certified
-                    <br />• 14001 Certified
-                    <br />• 45001 Certified
-                  </div>
+                  <button
+                    style={{
+                      backgroundColor: "#dc3545",
+                      color: "white",
+                      border: "none",
+                      padding: "8px 15px",
+                      borderRadius: "5px",
+                      fontSize: "12px",
+                    }}
+                  >
+                    CLEAR SIGNATURE
+                  </button>
                 </div>
               </div>
 
-              {/* Red banner */}
-              <div
-                style={{
-                  background: "linear-gradient(135deg, #C41E3A, #8B0000)",
-                  color: "white",
-                  padding: "10px 20px",
-                  marginBottom: "30px",
-                  clipPath: "polygon(0 0, 100% 0, 95% 100%, 0% 100%)",
-                }}
-              >
-                <div style={{ fontSize: "1.1rem", fontWeight: "600" }}>Transformers upto 220 kV 250 MVA</div>
+              {/* Date fields */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "40px", marginBottom: "30px" }}>
+                <div>
+                  <strong>Date:</strong> <input type="date" style={{ marginLeft: "10px", padding: "5px" }} />
+                </div>
+                <div>
+                  <strong>Date:</strong> <input type="date" style={{ marginLeft: "10px", padding: "5px" }} />
+                </div>
               </div>
 
-              <div style={{ textAlign: "center", marginBottom: "30px" }}>
-                <h1
+              {/* Submit button */}
+              <div style={{ textAlign: "center" }}>
+                <button
                   style={{
-                    fontSize: "1.8rem",
+                    backgroundColor: "#28a745",
+                    color: "white",
+                    border: "none",
+                    padding: "12px 30px",
+                    borderRadius: "25px",
+                    fontSize: "16px",
                     fontWeight: "bold",
-                    textDecoration: "underline",
-                    margin: "0 0 10px 0",
                   }}
                 >
-                  Work completion report
-                </h1>
-                <div style={{ textAlign: "right", fontSize: "1rem" }}>
-                  <strong>Date:-</strong> {formData.completionDate || new Date().toLocaleDateString()}
-                </div>
-              </div>
-
-              <div style={{ marginBottom: "30px" }}>
-                <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "15px" }}>Project Information</h3>
-                <div style={{ marginBottom: "15px" }}>
-                  <strong>Customer Name: </strong>
-                  {formData.customerName || "_________________"}
-                </div>
-                <div style={{ marginBottom: "15px" }}>
-                  <strong>Order Number: </strong>
-                  {formData.orderNumber || "_________________"}
-                </div>
-                <div style={{ marginBottom: "15px" }}>
-                  <strong>Location: </strong>
-                  {formData.location || "_________________"}
-                  <strong style={{ marginLeft: "20px" }}>SP/SSP</strong>
-                </div>
-              </div>
-
-              <div style={{ marginBottom: "30px" }}>
-                <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "15px" }}>Transformer Details</h3>
-                <div style={{ marginBottom: "10px" }}>
-                  <strong>Type: – auto Transformer</strong>
-                </div>
-                <div style={{ marginBottom: "10px" }}>
-                  <strong>Capacity: </strong>
-                  {formData.capacity || "_______"}
-                  <strong>MVA</strong>
-                </div>
-                <div style={{ marginBottom: "10px" }}>
-                  <strong>Voltage Rating: </strong>
-                  {formData.voltageRating || "_______"}
-                  <strong>kV</strong>
-                </div>
-                <div style={{ marginBottom: "10px" }}>
-                  <strong>Make: </strong>
-                  {formData.make || "_________________"}
-                </div>
-                <div style={{ marginBottom: "10px" }}>
-                  <strong>Serial Number: </strong>
-                  {formData.serialNumber || "_________________"}
-                </div>
-              </div>
-
-              <div style={{ marginBottom: "30px" }}>
-                <h3
-                  style={{
-                    fontSize: "1.2rem",
-                    fontWeight: "bold",
-                    marginBottom: "15px",
-                    textDecoration: "underline",
-                  }}
-                >
-                  Subject: <em>Completion of Transformer Erection, Testing and Commissioning Work</em>
-                </h3>
-                <p style={{ lineHeight: "1.6", marginBottom: "15px" }}>
-                  This is to certify that the erection, Testing and commissioning of the above-mentioned transformer
-                  have been completed in accordance with the terms and conditions of the referenced order.
-                </p>
-                <p style={{ lineHeight: "1.6", marginBottom: "15px" }}>
-                  The installation work has been jointly inspected and found satisfactory by the undersigned
-                  representatives. The transformer was successfully charged/commissioned on no-load at{" "}
-                  {formData.chargingDate || "_______"} hrs on {formData.commissioningDate || "_______"} (date).
-                </p>
-                <p style={{ lineHeight: "1.6", marginBottom: "30px" }}>
-                  All works under the scope of the order have been completed, and no pending activities remain.
-                </p>
-              </div>
-
-              <div style={{ display: "flex", justifyContent: "space-between", marginTop: "50px" }}>
-                <div style={{ width: "45%" }}>
-                  <h4 style={{ fontSize: "1.1rem", fontWeight: "bold", marginBottom: "20px" }}>For VPES, Nagpur</h4>
-                  <div style={{ marginBottom: "15px" }}>
-                    <strong>Name: </strong>
-                    {formData.vpesName || "_________________"}
-                  </div>
-                  <div style={{ marginBottom: "15px" }}>
-                    <strong>Designation: </strong>
-                    {formData.vpesDesignation || "_________________"}
-                  </div>
-                  <div style={{ marginBottom: "15px" }}>
-                    <strong>Signature: </strong>
-                    {formData.vpesSignature ? (
-                      <div
-                        style={{
-                          border: "1px solid #ccc",
-                          padding: "10px",
-                          marginTop: "5px",
-                          minHeight: "60px",
-                          background: "white",
-                        }}
-                      >
-                        [Signature Present]
-                      </div>
-                    ) : (
-                      "_________________"
-                    )}
-                  </div>
-                  <div style={{ marginBottom: "15px" }}>
-                    <strong>Date: </strong>
-                    {formData.vpesDate || "_________________"}
-                  </div>
-                </div>
-
-                <div style={{ width: "45%" }}>
-                  <h4 style={{ fontSize: "1.1rem", fontWeight: "bold", marginBottom: "20px" }}>For Customer</h4>
-                  <div style={{ marginBottom: "15px" }}>
-                    <strong>Name: </strong>
-                    {formData.customerName2 || "_________________"}
-                  </div>
-                  <div style={{ marginBottom: "15px" }}>
-                    <strong>Designation: </strong>
-                    {formData.customerDesignation || "_________________"}
-                  </div>
-                  <div style={{ marginBottom: "15px" }}>
-                    <strong>Signature: </strong>
-                    {formData.customerSignature ? (
-                      <div
-                        style={{
-                          border: "1px solid #ccc",
-                          padding: "10px",
-                          marginTop: "5px",
-                          minHeight: "60px",
-                          background: "white",
-                        }}
-                      >
-                        [Signature Present]
-                      </div>
-                    ) : (
-                      "_________________"
-                    )}
-                  </div>
-                  <div style={{ marginBottom: "15px" }}>
-                    <strong>Date: </strong>
-                    {formData.customerDate || "_________________"}
-                  </div>
-                </div>
+                  SUBMIT STAGE 6
+                </button>
               </div>
             </div>
           ) : (
-            <form className="form-layout">
-              <div className="form-grid">
-                {formStructure.fields.map((field, index) => (
-                  <div key={index} className="form-group">
-                    <label className="form-label">{formatLabel(field.label)}</label>
-                    {field.type === "select" ? (
-                      <div className="form-select-display">
-                        <select value={formData[field.name] || ""} disabled className="form-input disabled">
-                          <option value="">{formData[field.name] || "Not Selected"}</option>
-                          {field.options?.map((option, idx) => (
-                            <option key={idx} value={option}>
-                              {option}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    ) : field.type === "textarea" ? (
-                      <textarea
-                        value={formData[field.name] || ""}
-                        disabled
-                        className="form-textarea disabled"
-                        rows="4"
-                        placeholder="No data entered"
-                      />
-                    ) : field.type === "checkbox" ? (
-                      <div className="checkbox-group">
-                        <input
-                          type="checkbox"
-                          checked={formData[field.name] || false}
-                          disabled
-                          className="form-checkbox disabled"
-                        />
-                        <span className="checkbox-label">{formData[field.name] ? "Yes" : "No"}</span>
-                      </div>
-                    ) : field.type === "file" ? (
-                      <div className="file-display">
-                        {formData[field.name] ? (
-                          <div className="file-preview">
-                            <span className="file-name">📎 {formData[field.name]}</span>
-                          </div>
-                        ) : (
-                          <span className="no-file">No file uploaded</span>
-                        )}
-                      </div>
-                    ) : (
-                      <input
-                        type={field.type}
-                        value={formData[field.name] || ""}
-                        disabled
-                        className="form-input disabled"
-                        placeholder="No data entered"
-                      />
-                    )}
-                  </div>
-                ))}
-              </div>
-
-              <div className="signature-section">
-                <div className="signature-row">
-                  <div className="signature-box">
-                    <div className="signature-line"></div>
-                    <label>Prepared By</label>
-                    <span className="signature-date">Date: {new Date().toLocaleDateString()}</span>
-                  </div>
-                  <div className="signature-box">
-                    <div className="signature-line"></div>
-                    <label>Checked By</label>
-                    <span className="signature-date">Date: ___________</span>
-                  </div>
-                  <div className="signature-box">
-                    <div className="signature-line"></div>
-                    <label>Approved By</label>
-                    <span className="signature-date">Date: ___________</span>
-                  </div>
+            <div className="form-fields">
+              {formStructure.fields.map((field, index) => (
+                <div key={index} className="form-field">
+                  <label className="field-label">{formatLabel(field.label)}:</label>
+                  <div className="field-value">{formData?.[field.name] || "Not filled"}</div>
                 </div>
-              </div>
-            </form>
+              ))}
+            </div>
           )}
         </div>
       </div>
@@ -1806,7 +1988,7 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
                     <div className="form-grid-preview">
                       {Object.entries(formData).map(([fieldKey, fieldValue], idx) => (
                         <div className="form-group-preview" key={fieldKey || idx}>
-                          <label className="form-label-preview">{capitalizeFirst(fieldKey)}:</label>
+                          <label className="form-label-preview">{formatLabel(fieldKey)}:</label>
 
                           {/* Handle different field types with proper form styling */}
                           {fieldKey.toLowerCase() === "photos" && fieldValue && typeof fieldValue === "object" ? (
@@ -2118,9 +2300,7 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
                                 if (typeof fieldValue === "string" || typeof fieldValue === "number") {
                                   return (
                                     <div key={`${stageKey}-${formKey}-${fieldKey}`} className="form-group-preview">
-                                      <label className="form-label-preview">
-                                        {fieldKey.charAt(0).toUpperCase() + fieldKey.slice(1)}
-                                      </label>
+                                      <label className="form-label-preview">{formatLabel(fieldKey)}</label>
                                       <div className="form-input-display">
                                         <input
                                           type="text"
