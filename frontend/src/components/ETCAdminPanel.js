@@ -1491,7 +1491,7 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
       showNotification(error.message, "error")
     }
 
-    setRejectionReason(rejectionReason)
+    selectedProjectForReview.rejectionReason = rejectionReason
     console.log(`Rejecting stage ${rejectionStage} for Project ${selectedProjectForReview.name}`)
 
     // Update submitted forms status
