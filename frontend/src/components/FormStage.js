@@ -7213,7 +7213,7 @@ function WorkCompletionReportForm({
         <div style={{ textAlign: "center" }}>
           <div
             style={{
-              background: "#C41E3A",
+             
               color: "white",
               borderRadius: "50%",
               width: "80px",
@@ -7225,8 +7225,12 @@ function WorkCompletionReportForm({
             }}
           >
             <div>
-              <div style={{ fontSize: "1.2rem", fontWeight: "bold" }}>25</div>
-              <div style={{ fontSize: "0.7rem" }}>YEARS</div>
+               <div
+              style={{ fontSize: "1.5rem", fontWeight: "bold",  color: "#333" }}
+            >
+              
+               <img src="/stamp.png" alt="Vishvas Power" className="logo" />
+            </div>
             </div>
           </div>
         </div>
