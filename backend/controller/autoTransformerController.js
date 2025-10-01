@@ -245,6 +245,7 @@ export const generatePDF = async (req, res) => {
     const pageHeight = doc.page.height
     const pageWidth = doc.page.width
     const margin = 50
+    const headerHeight = 60 // Space reserved for header image
     const keyColumnWidth = 220
     const valueColumnWidth = 320
     const rowHeight = 30 // slightly taller for better readability
@@ -259,6 +260,55 @@ export const generatePDF = async (req, res) => {
     }
     doc.lineWidth(1.2).strokeColor(colors.border).fillColor(colors.text)
 
+    // Add cover page using the FirstPage.jpg image
+    const addCoverPage = () => {
+      try {
+        const coverImagePath = path.join(process.cwd(), 'src/FirstPage.jpg')
+        if (fs.existsSync(coverImagePath)) {
+          // Add the cover page image - fit it to the page
+          doc.image(coverImagePath, 0, 0, {
+            fit: [pageWidth, pageHeight],
+            align: 'center',
+            valign: 'center'
+          })
+          // Add a new page for the content
+          doc.addPage()
+        }
+      } catch (error) {
+        console.error('Error adding cover page:', error)
+        // Continue without cover page if there's an error
+      }
+    }
+
+    // Add the cover page first
+    addCoverPage()
+
+    // Track if we're on the first page (cover page)
+    let isFirstPage = true
+
+    // Function to add header image to pages (except first page)
+    const addHeaderImage = () => {
+      if (isFirstPage) {
+        isFirstPage = false
+        return margin // Return normal margin for first content page
+      }
+      
+      try {
+        const headerImagePath = path.join(process.cwd(), 'src/Header.jpg')
+        if (fs.existsSync(headerImagePath)) {
+          // Add header image at the top of the page with small height
+          doc.image(headerImagePath, margin, 10, {
+            width: pageWidth - (margin * 2),
+            height: headerHeight - 20 // Keep it compact
+          })
+          return margin + headerHeight // Return adjusted margin to account for header
+        }
+      } catch (error) {
+        console.error('Error adding header image:', error)
+      }
+      return margin // Return normal margin if header fails
+    }
+
     let stripe = false
 
     const drawHeaderBand = (title, y) => {
@@ -266,7 +316,7 @@ export const generatePDF = async (req, res) => {
       // Page break check
       if (y + bandHeight > pageHeight - margin) {
         doc.addPage()
-        y = margin
+        y = addHeaderImage() // Add header and get adjusted margin
       }
       doc.save().rect(leftX, y, tableWidth, bandHeight).fill(colors.headerBg).restore()
       doc.rect(leftX, y, tableWidth, bandHeight).stroke()
@@ -282,7 +332,7 @@ export const generatePDF = async (req, res) => {
       const bandHeight = 22
       if (y + bandHeight > pageHeight - margin) {
         doc.addPage()
-        y = margin
+        y = addHeaderImage() // Add header and get adjusted margin
       }
       doc.save().rect(leftX, y, tableWidth, bandHeight).fill(colors.subHeaderBg).restore()
       doc.rect(leftX, y, tableWidth, bandHeight).stroke()
@@ -298,7 +348,7 @@ export const generatePDF = async (req, res) => {
       const bandHeight = 26
       if (y + bandHeight > pageHeight - margin) {
         doc.addPage()
-        y = margin
+        y = addHeaderImage() // Add header and get adjusted margin
       }
       // background band across both columns
       doc.save().rect(leftX, y, tableWidth, bandHeight).fill(colors.headerBg).restore()
@@ -315,7 +365,7 @@ export const generatePDF = async (req, res) => {
     const drawRow = (key, value, y) => {
       if (y + rowHeight > pageHeight - margin) {
         doc.addPage()
-        y = margin
+        y = addHeaderImage() // Add header and get adjusted margin
       }
 
       // Stripe background across the full width of both columns
@@ -356,7 +406,7 @@ export const generatePDF = async (req, res) => {
 
       if (y + rowHeightDynamic > pageHeight - margin) {
         doc.addPage()
-        y = margin
+        y = addHeaderImage() // Add header and get adjusted margin
       }
 
       try {
@@ -440,7 +490,11 @@ export const generatePDF = async (req, res) => {
     doc.moveDown(0.5)
 
     Object.keys(formData).forEach((stageKey, stageIndex) => {
-      if (stageIndex > 0) doc.addPage()
+      if (stageIndex > 0) {
+        doc.addPage()
+        // Add header to new page
+        addHeaderImage()
+      }
 
       let y = doc.y
       y = drawHeaderBand(`Stage: ${formatLabel(stageKey)}`, y)
@@ -450,7 +504,7 @@ export const generatePDF = async (req, res) => {
       Object.entries(forms).forEach(([formKey, formValue], formIndex) => {
         if (formIndex > 0) {
           doc.addPage()
-          y = margin
+          y = addHeaderImage() // Add header and get adjusted margin
           y = drawHeaderBand(`Stage: ${formatLabel(stageKey)}`, y)
         }
 
