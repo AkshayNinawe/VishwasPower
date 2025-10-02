@@ -280,6 +280,26 @@ export const generatePDF = async (req, res) => {
       }
     }
 
+    // Add last page using the LastPage.jpg image
+    const addLastPage = () => {
+      try {
+        const lastPageImagePath = path.join(process.cwd(), 'src/LastPage.jpg')
+        if (fs.existsSync(lastPageImagePath)) {
+          // Add a new page for the last page
+          doc.addPage()
+          // Add the last page image - fit it to the page
+          doc.image(lastPageImagePath, 0, 0, {
+            fit: [pageWidth, pageHeight],
+            align: 'center',
+            valign: 'center'
+          })
+        }
+      } catch (error) {
+        console.error('Error adding last page:', error)
+        // Continue without last page if there's an error
+      }
+    }
+
     // Add the cover page first
     addCoverPage()
 
@@ -516,6 +536,9 @@ export const generatePDF = async (req, res) => {
         doc.y = endY + 6 // small gap after a form block
       })
     })
+
+    // Add the last page before ending the document
+    addLastPage()
 
     doc.end()
   } catch (err) {
