@@ -1246,26 +1246,7 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
   // Load data from localStorage on component mount
   useEffect(() => {
     setDepartments(defaultDepartments)
-    var backendSavedCompanys = []
-    if (additionalLogging) {
-      console.log("Frontend : From UseEffect get call to api/company")
-    }
-    axios
-      .get(`${BACKEND_API_BASE_URL}/api/company`, {
-        params: {
-          companyName: newCompany.name,
-          companyDescription: newCompany.description,
-        },
-      })
-      .then((response) => {
-        backendSavedCompanys = response.data
-
-        setCompanys(backendSavedCompanys)
-      })
-      .catch((error) => {
-        console.error("Error creating company on the backend:", error)
-        alert("Failed to create company. Please try again.")
-      })
+    
   }, [])
 
   const handleCreateCompany = async () => {
@@ -1845,6 +1826,41 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
     }
   }
 
+  const setDepartmentData = (department) => {
+    console.log(department)
+    if(department?.name === "Auto Transformer"){
+      var backendSavedCompanys = []
+      axios
+        .get(`${BACKEND_API_BASE_URL}/api/company`, {
+          params: {
+            companyName: newCompany.name,
+            companyDescription: newCompany.description,
+          },
+        })
+        .then((response) => {
+          backendSavedCompanys = response.data
+
+          setCompanys(backendSavedCompanys)
+        })
+        .catch((error) => {
+          console.error("Error creating company on the backend:", error)
+          alert("Failed to create company. Please try again.")
+        })
+      setSelectedDepartment(department)
+    }else{
+      if(department?.name === "Traction Transformer"){
+        var backendSavedCompanys = []
+        setCompanys(backendSavedCompanys)
+        setSelectedDepartment(department)
+      }else{
+        var backendSavedCompanys = []
+        setCompanys(backendSavedCompanys)
+        setSelectedDepartment(department)
+      }
+    }
+    
+  }
+
   return (
     <div className="dashboard-container">
       <header className="etc-header">
@@ -2388,7 +2404,7 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
                   <div
                     key={department.id}
                     className="department-card"
-                    onClick={() => setSelectedDepartment(department)}
+                    onClick={() => setDepartmentData(department)}
                   >
                     <div className="department-header">
                       <div className="department-icon" style={{ backgroundColor: department.color }}>
