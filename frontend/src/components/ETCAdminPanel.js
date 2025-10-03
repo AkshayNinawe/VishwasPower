@@ -1318,7 +1318,38 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
       )
       }
       }else{
+        if (newCompany.name && newCompany.description && selectedDepartment) {
+      const CompanyId = Math.max(...Companys.map((p) => p.id), 0) + 1
 
+      const newVConnectCompany = {
+        id: CompanyId,
+        companyName: newCompany.name,
+        companyDescription: newCompany.description,
+        status: "active",
+        createdAt: new Date().toISOString().split("T")[0],
+        departmentId: selectedDepartment.id,
+      }
+
+      try {
+          const response = await axios.post(`${BACKEND_API_BASE_URL}/api/TractionCompany`, {
+            companyName: newCompany.name,
+            companyDescription: newCompany.description,
+          })
+          console.log("company created successfully on the backend:", response.data)
+        } catch (error) {
+          console.error("Error creating company on the backend:", error)
+          alert("Failed to create company. Please try again.")
+          return
+        }
+
+      setCompanys([...Companys, newVConnectCompany])
+      // setNewCompany({ name: "", description: "" })
+      setShowCreateCompanyForm(false)
+      showNotification(
+        `Company "${newVConnectCompany.companyName}" created successfully in ${selectedDepartment.name}!`,
+        "success",
+      )
+      }
       }
     }
     
@@ -1434,7 +1465,56 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
         }
       })
       }else{
+        showInputDialog("Create New Project", "Enter Project name...", async (ProjectName) => {
+        if (ProjectName.trim()) {
+          const newProject = {
+            id: Math.max(...companies.map((c) => c.id), 0) + 1,
+            name: ProjectName,
+            companyName: CompanyName,
+            stage: 1,
+            formsCompleted: 0,
+            totalForms: getStageFormCount(1),
+            status: "in-progress",
+            lastActivity: new Date().toISOString().split("T")[0],
+            stageApprovals: {
+              1: false,
+              2: false,
+              3: false,
+              4: false,
+              5: false,
+              6: false,
+            },
+            submittedStages: {
+              1: false,
+              2: false,
+              3: false,
+              4: false,
+              5: false,
+              6: false,
+            },
+          }
+          try {
+            const response = await axios.post(`${BACKEND_API_BASE_URL}/api/TractionCompany/addCompany`, {
+              projectName: ProjectName,
+              companyName: CompanyName, // Pass the CompanyId to the backend
+              companyProjects: newProject,
+            })
 
+            console.log("Project created successfully on the backend:", response.data)
+
+            selectedMainCompany.companyProjects = selectedMainCompany.companyProjects ?? []
+            selectedMainCompany.companyProjects.push(newProject)
+
+            setCompanies((prev) => [...prev, newProject])
+            showNotification(`Project "${ProjectName}" added to this Company!`, "success")
+          } catch (error) {
+            console.error("Error creating project on the backend:", error)
+
+            showNotification("Failed to create project. Please try again.", "error")
+            return
+          }
+        }
+      })
       }
     }
     
@@ -1945,8 +2025,23 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
     }else{
       if(department?.name === "Traction Transformer"){
         var backendSavedCompanys = []
-        setCompanys(backendSavedCompanys)
-        setSelectedDepartment(department)
+      axios
+        .get(`${BACKEND_API_BASE_URL}/api/TractionCompany`, {
+          params: {
+            companyName: newCompany.name,
+            companyDescription: newCompany.description,
+          },
+        })
+        .then((response) => {
+          backendSavedCompanys = response.data
+
+          setCompanys(backendSavedCompanys)
+        })
+        .catch((error) => {
+          console.error("Error creating company on the backend:", error)
+          alert("Failed to create company. Please try again.")
+        })
+      setSelectedDepartment(department)
       }else{
         var backendSavedCompanys = []
       axios
