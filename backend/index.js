@@ -10,6 +10,7 @@ import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoute.js";
 import autoTransformerRoute from "./routes/autoTransformerRoutes.js";
 import companyRoute from "./routes/companyRoutes.js";
+import VConnectCompanyRoute from "./routes/VConnectCompanyRoute.js";
 
 dotenv.config();
 connectDB();
@@ -33,6 +34,7 @@ app.use("/uploads", express.static(uploadsPath));
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/company", companyRoute);
+app.use("/api/VConnectCompany", VConnectCompanyRoute);
 app.use("/api/data/", autoTransformerRoute);
 
 const PORT = process.env.PORT || 7000;
