@@ -1246,7 +1246,6 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
   // Load data from localStorage on component mount
   useEffect(() => {
     setDepartments(defaultDepartments)
-    
   }, [])
 
   const handleCreateCompany = async () => {
@@ -1260,6 +1259,7 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
         status: "active",
         createdAt: new Date().toISOString().split("T")[0],
         departmentId: selectedDepartment.id,
+        departmentType: selectedDepartment.name,
       }
 
       try {
@@ -1269,6 +1269,7 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
         const response = await axios.post(`${BACKEND_API_BASE_URL}/api/company`, {
           companyName: newCompany.name,
           companyDescription: newCompany.description,
+          departmentType: selectedDepartment.name,
         })
         console.log("company created successfully on the backend:", response.data)
       } catch (error) {
@@ -1828,37 +1829,69 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
 
   const setDepartmentData = (department) => {
     console.log(department)
-    if(department?.name === "Auto Transformer"){
-      var backendSavedCompanys = []
+
+    if (department?.name === "Auto Transformer") {
+      let backendSavedCompanys = [] // Corrected redeclaration
       axios
         .get(`${BACKEND_API_BASE_URL}/api/company`, {
           params: {
+            departmentType: "Auto Transformer",
             companyName: newCompany.name,
             companyDescription: newCompany.description,
           },
         })
         .then((response) => {
           backendSavedCompanys = response.data
-
           setCompanys(backendSavedCompanys)
         })
         .catch((error) => {
-          console.error("Error creating company on the backend:", error)
-          alert("Failed to create company. Please try again.")
+          console.error("Error fetching Auto Transformer companies:", error)
+          alert("Failed to fetch companies. Please try again.")
         })
       setSelectedDepartment(department)
-    }else{
-      if(department?.name === "Traction Transformer"){
-        var backendSavedCompanys = []
-        setCompanys(backendSavedCompanys)
-        setSelectedDepartment(department)
-      }else{
-        var backendSavedCompanys = []
-        setCompanys(backendSavedCompanys)
-        setSelectedDepartment(department)
-      }
+    } else if (department?.name === "Traction Transformer") {
+      let backendSavedCompanys = [] // Corrected redeclaration
+      axios
+        .get(`${BACKEND_API_BASE_URL}/api/company`, {
+          params: {
+            departmentType: "Traction Transformer",
+            companyName: newCompany.name,
+            companyDescription: newCompany.description,
+          },
+        })
+        .then((response) => {
+          backendSavedCompanys = response.data
+          setCompanys(backendSavedCompanys)
+        })
+        .catch((error) => {
+          console.error("Error fetching Traction Transformer companies:", error)
+          alert("Failed to fetch companies. Please try again.")
+        })
+      setSelectedDepartment(department)
+    } else if (department?.name === "V Connected 63 MVA Transformer") {
+      let backendSavedCompanys = [] // Corrected redeclaration
+      axios
+        .get(`${BACKEND_API_BASE_URL}/api/company`, {
+          params: {
+            departmentType: "V Connected 63 MVA Transformer",
+            companyName: newCompany.name,
+            companyDescription: newCompany.description,
+          },
+        })
+        .then((response) => {
+          backendSavedCompanys = response.data
+          setCompanys(backendSavedCompanys)
+        })
+        .catch((error) => {
+          console.error("Error fetching V Connected companies:", error)
+          alert("Failed to fetch companies. Please try again.")
+        })
+      setSelectedDepartment(department)
+    } else {
+      // Default case - clear companies
+      setCompanys([])
+      setSelectedDepartment(department)
     }
-    
   }
 
   return (
@@ -2401,11 +2434,7 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
               {departments.map((department) => {
                 const departmentCompanys = getDepartmentCompanys(department.id)
                 return (
-                  <div
-                    key={department.id}
-                    className="department-card"
-                    onClick={() => setDepartmentData(department)}
-                  >
+                  <div key={department.id} className="department-card" onClick={() => setDepartmentData(department)}>
                     <div className="department-header">
                       <div className="department-icon" style={{ backgroundColor: department.color }}>
                         {department.icon}
