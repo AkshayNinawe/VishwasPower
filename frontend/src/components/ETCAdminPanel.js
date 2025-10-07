@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import { BACKEND_API_BASE_URL, additionalLogging } from "./constant"
 import FormStage from "./FormStage" // Import FormStage
+import VConnected63MVATransformerForms from "./VConnected63MVATransformerForms" 
 import "./stage-review-styles.css"
 import "./form-styles.css"
 import html2pdf from "html2pdf.js"
@@ -2147,17 +2148,39 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
         {viewMode ? (
           renderFormView()
         ) : showFormStage && formStageProject ? (
-          <FormStage
-            firstFormDataFromDB={formDataFromDB}
-            projectName={projectName}
-            companyName={companyName}
-            stage={formStageStage}
-            onFormSubmit={handleFormStageSubmit}
-            onBack={handleBackFromFormStage}
-            ProjectData={formStageProject}
-            setSelectedMainCompany={setSelectedMainCompany}
-            selectedProjectForReview={selectedProjectForReview}
-          />
+          (() => {
+            if (selectedDepartment?.name === "V Connected 63 MVA Transformer") {
+              console.log("selectedDepartment?.name:", selectedDepartment?.name);
+              return (
+                <VConnected63MVATransformerForms
+                  firstFormDataFromDB={formDataFromDB}
+                  projectName={projectName}
+                  companyName={companyName}
+                  stage={formStageStage}
+                  onFormSubmit={handleFormStageSubmit}
+                  onBack={handleBackFromFormStage}
+                  ProjectData={formStageProject}
+                  setSelectedMainCompany={setSelectedMainCompany}
+                  selectedProjectForReview={selectedProjectForReview}
+                />
+              )
+            } else {
+              console.log("selectedDepartment?.name:", selectedDepartment?.name);
+              return (
+                <FormStage
+                  firstFormDataFromDB={formDataFromDB}
+                  projectName={projectName}
+                  companyName={companyName}
+                  stage={formStageStage}
+                  onFormSubmit={handleFormStageSubmit}
+                  onBack={handleBackFromFormStage}
+                  ProjectData={formStageProject}
+                  setSelectedMainCompany={setSelectedMainCompany}
+                  selectedProjectForReview={selectedProjectForReview}
+                />
+              )
+            }
+          })()
         ) : reviewMode ? (
           <>
             <div className="section-header">

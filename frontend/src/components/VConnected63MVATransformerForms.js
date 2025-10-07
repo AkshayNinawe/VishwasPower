@@ -331,6 +331,62 @@ const PhotoUploadSection = ({ title, photos, onPhotoChange, allowMultiple = fals
   )
 }
 
+// Individual Signature Box Component
+const SignatureBox = ({
+  label,
+  nameValue,
+  onNameChange,
+  onSignatureChange,
+  initialSignature,
+}) => {
+  const {
+    canvasRef,
+    signatureDataUrl,
+    clearCanvas,
+    startDrawing,
+    draw,
+    stopDrawing,
+  } = useSignatureCanvas(initialSignature);
+
+  useEffect(() => {
+    if (signatureDataUrl) {
+      onSignatureChange(signatureDataUrl);
+    }
+  }, [signatureDataUrl, onSignatureChange]);
+
+  return (
+    <div className="signature-box">
+      <label>{label}</label>
+      <input
+        type="text"
+        placeholder="Enter name"
+        value={nameValue}
+        onChange={(e) => onNameChange(e.target.value)}
+      />
+      <canvas
+        ref={canvasRef}
+        width={300}
+        height={150}
+        onMouseDown={startDrawing}
+        onMouseMove={draw}
+        onMouseUp={stopDrawing}
+        onMouseLeave={stopDrawing}
+        onTouchStart={startDrawing}
+        onTouchMove={draw}
+        onTouchEnd={stopDrawing}
+      /> 
+      <button
+        type="button"
+        onClick={clearCanvas}
+        className="clear-signature-btn"
+      >
+        Clear Signature
+      </button>
+      <small>Sign above</small>
+    </div>
+  );
+};
+
 // V Connected 63 MVA Transformer Forms
 
 // Stage 1 Forms
@@ -6184,6 +6240,18 @@ function ShortCircuitWindingResistanceTestForm({
     onSubmit(formData)
   }
 
+  const handleSignatureChange = (key, type, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      signatures: {
+        ...prev.signatures,
+        [`${key}${
+          type === "name" ? "Name" : type === "date" ? "Date" : "Signature"
+        }`]: value,
+      },
+    }));
+  };
+
   const handlePhotoChange = (key, file) => {
     setFormData((prev) => ({
       ...prev,
@@ -9764,8 +9832,123 @@ export function WorkCompletionReportForm({
   )
 }
 
+// Main V Connected 63 MVA Transformer Forms Component
+const VConnected63MVATransformerForms = ({
+  firstFormDataFromDB,
+  projectName,
+  companyName,
+  stage,
+  onFormSubmit,
+  onBack,
+  ProjectData,
+  setSelectedMainCompany,
+  selectedProjectForReview,
+}) => {
+  const [currentFormIndex, setCurrentFormIndex] = useState(0)
+  const [formData, setFormData] = useState({})
+
+  // Define stage forms mapping
+  const stageFormsMapping = {
+    1: [
+      { component: NamePlateDetailsReactorForm, name: "Name Plate Details Transformer/Reactor" },
+    ],
+    2: [
+      { component: RecordOilHandlingV63Form, name: "Record of Oil Handling" },
+      { component: IRAfterErectionStage2V63Form, name: "IR After Erection" },
+    ],
+    3: [
+      { component: VacuumCycleRecordingForm, name: "Vacuum Cycle Recording" },
+    ],
+    4: [
+      { component: RecordOilFiltrationMainTankV63Form, name: "Record Oil Filtration Main Tank" },
+      { component: IRValueBeforeRadiatorFiltrationForm, name: "IR Value Before Radiator Filtration" },
+      { component: OilFiltrationCombineV63Form, name: "Oil Filtration Combine" },
+      { component: IRPIValueAfterFiltrationForm, name: "IR & PI Value After Filtration" },
+    ],
+    5: [
+      { component: IRValuesTransformerForm, name: "IR Values of Transformer" },
+    ],
+    6: [
+      { component: PreCommissioningChecklistForm, name: "Pre-Commissioning Checklist" },
+      { component: TransformerProtectionAccessoriesForm, name: "Transformer Protection and Accessories" },
+      { component: FinalChecklistClearanceForm, name: "Final Checklist and Clearance" },
+    ],
+    7: [
+      { component: WorkCompletionReportForm, name: "Work Completion Report" },
+    ],
+  }
+
+  const currentStageForms = stageFormsMapping[stage] || []
+  const CurrentFormComponent = currentStageForms[currentFormIndex]?.component
+
+  const handleFormSubmit = (data) => {
+    const updatedFormData = { ...formData, [`form${currentFormIndex + 1}`]: data }
+    setFormData(updatedFormData)
+
+    if (currentFormIndex < currentStageForms.length - 1) {
+      setCurrentFormIndex(currentFormIndex + 1)
+    } else {
+      // All forms completed for this stage
+      onFormSubmit(stage, updatedFormData, selectedProjectForReview)
+    }
+  }
+
+  const handlePreviousForm = () => {
+    if (currentFormIndex > 0) {
+      setCurrentFormIndex(currentFormIndex - 1)
+    } else {
+      onBack()
+    }
+  }
+
+  if (!CurrentFormComponent) {
+    return (
+      <div className="form-stage-container">
+        <div className="form-header">
+          <h2>No forms available for Stage {stage}</h2>
+          <button onClick={onBack} className="back-btn">
+            ← Back
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="form-stage-container">
+      <div className="form-header">
+        <div className="form-progress">
+          <h2>
+            Stage {stage} - Form {currentFormIndex + 1} of {currentStageForms.length}
+          </h2>
+          <p>{currentStageForms[currentFormIndex]?.name}</p>
+          <div className="progress-bar">
+            <div
+              className="progress-fill"
+              style={{
+                width: `${((currentFormIndex + 1) / currentStageForms.length) * 100}%`,
+              }}
+            ></div>
+          </div>
+        </div>
+      </div>
+
+      <CurrentFormComponent
+        onSubmit={handleFormSubmit}
+        onPrevious={currentFormIndex > 0 || stage > 1 ? handlePreviousForm : null}
+        initialData={formData[`form${currentFormIndex + 1}`] || {}}
+        isLastFormOfStage={currentFormIndex === currentStageForms.length - 1}
+        companyData={ProjectData}
+        stage={stage}
+        companyName={companyName}
+        projectName={projectName}
+      />
+    </div>
+  )
+}
+
 // Export all forms for V Connected 63 MVA Transformer department
-export const VConnected63MVATransformerForms = {
+export const VConnected63MVATransformerFormsConfig = {
   // Stage 5 forms
   5: [
     {
