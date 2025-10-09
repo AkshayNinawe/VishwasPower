@@ -4560,18 +4560,7 @@ function SFRATestRecordForm({
                 }
               />
             </td>
-            <td>
-              <input
-                type="text"
-                value={formData.bushing11_10kv_dielectricLoss}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    bushing11_10kv_dielectricLoss: e.target.value,
-                  })
-                }
-              />
-            </td>
+           
           </tr>
         </tbody>
       </table>
@@ -4640,6 +4629,7 @@ function SFRATestRecordForm({
                 }
               />
             </td>
+            
             <td>
               <input
                 type="text"
@@ -4651,6 +4641,11 @@ function SFRATestRecordForm({
                   })
                 }
               />
+            </td>
+            </tr>
+            <tr>
+             <td>
+              <strong>1.2</strong>
             </td>
             <td>
               <input
@@ -4712,30 +4707,7 @@ function SFRATestRecordForm({
                 }
               />
             </td>
-            <td>
-              <input
-                type="text"
-                value={formData.bushing11_10kv_dielectricLoss}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    bushing11_10kv_dielectricLoss: e.target.value,
-                  })
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.bushing11_10kv_dielectricLoss}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    bushing11_10kv_dielectricLoss: e.target.value,
-                  })
-                }
-              />
-            </td>
+            
           </tr>
         </tbody>
       </table>
@@ -5049,9 +5021,9 @@ function IRVoltageRatioMagnetisingTestForm({
     timeMag: initialData.timeMag || "",
     meterMakeSrNoMag: initialData.meterMakeSrNoMag || "",
     magnetisingTests: initialData.magnetisingTests || [
-      { appliedVoltage: "1.1 –1.2", measuredCurrent: "1.1 – 1.2" },
-      { appliedVoltage: "1.1 – 2.1", measuredCurrent: "1.1 – 2.1" },
-      { appliedVoltage: "2.1 – 1.2", measuredCurrent: "2.1 – 1.2" },
+      { appliedVoltage: "1.1 –1.2", measuredCurrent: "" },
+      { appliedVoltage: "1.1 – 2.1", measuredCurrent: "" },
+      { appliedVoltage: "2.1 – 1.2", measuredCurrent: "" },
     ],
     ...initialData,
   });
