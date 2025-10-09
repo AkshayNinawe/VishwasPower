@@ -260,6 +260,39 @@ export const generatePDF = async (req, res) => {
     }
     doc.lineWidth(1.2).strokeColor(colors.border).fillColor(colors.text)
 
+    // Form titles mapping
+    const formTitles = {
+      stage1: {
+        form1: "Name Plate Details Transformer",
+        form2: "Protocol for Accessories Checking",
+        form3: "Core Insulation Check",
+        form4: "Pre-Erection Tan Delta and Capacitance Test on Bushing",
+        form5: "Record of Measurement of IR Values"
+      },
+      stage2: {
+        form1: "Record of Oil Handling",
+        form2: "IR After Erection"
+      },
+      stage3: {
+        form1: "Before Oil Filling and Pressure Test Report",
+        form2: "Record for Oil Filtration - Main Tank",
+        form3: "Oil Filtration of Radiator and Combine"
+      },
+      stage4: {
+        form1: "SFRA Test Record",
+        form2: "Record of Measurement of IR Values & Voltage Ratio Test",
+        form3: "Short Circuit Test",
+        form4: "Winding Resistance Test and Record of Measurement of IR & PI Values"
+      },
+      stage5: {
+        form1: "Pre-Charging Check List",
+        form2: "Pre-Charging Check List - Part 2"
+      },
+      stage6: {
+        form1: "Work Completion Report"
+      }
+    }
+
     // Add cover page using the FirstPage.jpg image
     const addCoverPage = () => {
       try {
@@ -505,30 +538,32 @@ export const generatePDF = async (req, res) => {
       return y
     }
 
-    // Render Stage/Form headers with header bands and reset striping
+    // Render content with proper form titles
     doc.fontSize(20).font("Helvetica-Bold").text(`Project: ${projectName}`, { align: "center" })
     doc.moveDown(0.5)
 
+    let isFirstForm = true
     Object.keys(formData).forEach((stageKey, stageIndex) => {
-      if (stageIndex > 0) {
-        doc.addPage()
-        // Add header to new page
-        addHeaderImage()
-      }
-
-      let y = doc.y
-      y = drawHeaderBand(`Stage: ${formatLabel(stageKey)}`, y)
-      stripe = false
-
       const forms = formData[stageKey]
       Object.entries(forms).forEach(([formKey, formValue], formIndex) => {
-        if (formIndex > 0) {
+        if (!isFirstForm) {
           doc.addPage()
-          y = addHeaderImage() // Add header and get adjusted margin
-          y = drawHeaderBand(`Stage: ${formatLabel(stageKey)}`, y)
+          addHeaderImage() // Add header to new page
         }
+        isFirstForm = false
 
-        y = drawHeaderBand(`Form: ${formatLabel(formKey)}`, y)
+        let y = doc.y
+        
+        // Get the proper form title from the mapping
+        const stageNumber = stageKey.toLowerCase()
+        const formNumber = formKey.toLowerCase()
+        const formTitle = formTitles[stageNumber] && formTitles[stageNumber][formNumber] 
+          ? formTitles[stageNumber][formNumber] 
+          : `${formatLabel(formKey)}`
+
+        // Create the header with stage and form title
+        const headerTitle = `${formatLabel(stageKey)} - ${formTitle}`
+        y = drawHeaderBand(headerTitle, y)
         y = drawColumnHeader(y)
         stripe = false
 
