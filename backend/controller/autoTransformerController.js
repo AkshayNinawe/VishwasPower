@@ -561,9 +561,8 @@ export const generatePDF = async (req, res) => {
           ? formTitles[stageNumber][formNumber] 
           : `${formatLabel(formKey)}`
 
-        // Create the header with stage and form title
-        const headerTitle = `${formatLabel(stageKey)} - ${formTitle}`
-        y = drawHeaderBand(headerTitle, y)
+        // Create the header with just the form title
+        y = drawHeaderBand(formTitle, y)
         y = drawColumnHeader(y)
         stripe = false
 
