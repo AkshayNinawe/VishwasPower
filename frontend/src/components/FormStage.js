@@ -5254,7 +5254,7 @@ function IRVoltageRatioMagnetisingTestForm({
             <th colSpan="2">Measured Voltage</th>
           </tr>
           <tr>
-            <th></th>
+            <th>1.1 – 1.2</th>
             <th>1.1 – 2.1</th>
             <th>1.2 – 2.1</th>
           </tr>
@@ -5263,8 +5263,20 @@ function IRVoltageRatioMagnetisingTestForm({
           {formData.voltageRatioTests.map((test, index) => (
             <tr key={index}>
               <td>
-                <strong>{test.appliedVoltage}</strong>
+                <input
+                  type="text"
+                  value={test.measuredVoltage11_21}
+                  onChange={(e) =>
+                    handleVoltageRatioTestChange(
+                      index,
+                      "measuredVoltage11_21",
+                      e.target.value
+                    )
+                  }
+                />
+                
               </td>
+              
               <td>
                 <input
                   type="text"
@@ -5523,7 +5535,17 @@ function ShortCircuitTestForm({
             </td>
           </tr>
           <tr>
-            <td></td>
+            <td>  <input
+                type="text"
+                value={formData.test11_12_measuredCurrent11_23}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    test11_12_measuredCurrent11_22: e.target.value,
+                  })
+                }
+              /></td>
+            
             <td>
               <input
                 type="text"
@@ -5561,7 +5583,16 @@ function ShortCircuitTestForm({
             </td>
           </tr>
           <tr>
-            <td></td>
+            <td><input
+                type="text"
+                value={formData.test12_21_measuredCurrent12_21}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    test12_21_measuredCurrent12_11: e.target.value,
+                  })
+                }
+              /></td>
             <td>
               <input
                 type="text"
