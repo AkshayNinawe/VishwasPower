@@ -503,7 +503,7 @@ export const generatePDF = async (req, res) => {
       for (const [key, value] of Object.entries(data)) {
         if (y + rowHeight > pageHeight - margin) {
           doc.addPage()
-          y = margin
+          y = addHeaderImage() // Add header and get adjusted margin
         }
 
         if (value && typeof value === "object" && !Array.isArray(value)) {
@@ -523,8 +523,36 @@ export const generatePDF = async (req, res) => {
           stripe = false
           value.forEach((item, i) => {
             if (typeof item === "object") {
-              y = drawSubHeader(`Item ${i + 1}`, y)
+              const serialNumber = i + 1
+              
+              // Add space before each numbered section (except the first one)
+              if (i > 0) {
+                y += 20 // Add space between complete numbered sections
+              }
+              
+              // Check if we need a new page
+              if (y + rowHeight > pageHeight - margin) {
+                doc.addPage()
+                y = addHeaderImage()
+              }
+
+              // Draw the serial number as a regular row (no separate table)
+              const serialRowHeight = 30
+              doc.save().rect(leftX, y, tableWidth, serialRowHeight).fill("#E8F4FD").restore()
+              doc.rect(leftX, y, tableWidth, serialRowHeight).stroke()
+              
+              doc
+                .font("Helvetica-Bold")
+                .fontSize(12)
+                .fillColor(colors.text)
+                .text(`${serialNumber}`, leftX + 15, y + 8)
+              
+              y += serialRowHeight
+
+              // Reset stripe for the item data (no column headers, continuous table)
               stripe = false
+              
+              // Draw the item data directly after serial number (continuous table)
               y = drawTable(item, y)
             } else {
               y = drawRow(`Item ${i + 1}`, item, y)
