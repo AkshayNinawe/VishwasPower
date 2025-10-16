@@ -273,10 +273,9 @@ const Stage3Form3SubSchema = new mongoose.Schema(
 // Sub-schema for voltage ratio test records
 const VoltageRatioTestSubSchema = new mongoose.Schema(
   {
-    appliedVoltage: { type: String, trim: true, default: "" },
+    appliedVoltage11_12: { type: String, trim: true, default: "" },
     measuredVoltage11_21: { type: String, trim: true, default: "" },
     measuredVoltage12_21: { type: String, trim: true, default: "" },
-    measuredVoltage11_12: { type: String, trim: true, default: "" },
   },
   { _id: false }
 );

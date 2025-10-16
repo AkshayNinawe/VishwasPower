@@ -5265,11 +5265,11 @@ function IRVoltageRatioMagnetisingTestForm({
               <td>
                 <input
                   type="text"
-                  value={test.measuredVoltage11_21}
+                  value={test.appliedVoltage11_12}
                   onChange={(e) =>
                     handleVoltageRatioTestChange(
                       index,
-                      "measuredVoltage11_21",
+                      "appliedVoltage11_12",
                       e.target.value
                     )
                   }
