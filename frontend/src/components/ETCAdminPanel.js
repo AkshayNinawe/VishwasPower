@@ -1250,6 +1250,19 @@ const ETCAdminPanel = ({ user, selectedCompany, onLogout, onCompanySelect, onPro
   }, [])
 
   const handleCreateCompany = async () => {
+    // Check if company with same name already exists
+    const existingCompany = Companys.find(company => 
+      company.companyName.toLowerCase() === newCompany.name.toLowerCase()
+    )
+    
+    if (existingCompany) {
+      showNotification(
+        `Company with name "${newCompany.name}" is already there. Please choose another name.`,
+        "error"
+      )
+      return
+    }
+
     if(selectedDepartment?.name == 'Auto Transformer'){
       if (newCompany.name && newCompany.description && selectedDepartment) {
       const CompanyId = Math.max(...Companys.map((p) => p.id), 0) + 1
