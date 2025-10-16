@@ -6266,6 +6266,7 @@ function PreChargingChecklistForm({
   });
 
   const valveStatusItems = [
+    { id: "I", description: "Valve Status" },
     { id: "A", description: "Bucholz to Conservator" },
     { id: "B", description: "Main Tank to Bucholz" },
     { id: "C", description: "Radiator Top Valves" },
@@ -6366,17 +6367,6 @@ function PreChargingChecklistForm({
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <strong>I</strong>
-            </td>
-            <td>
-              <strong>Valve Status</strong>
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
           {valveStatusItems.map((item) => (
             <tr key={item.id}>
               <td>
