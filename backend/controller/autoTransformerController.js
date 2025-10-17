@@ -338,41 +338,41 @@ export const generatePDF = async (req, res) => {
 
             // Customer Information (adjust coordinates based on your LastPage.jpg layout)
             if (stage6Data.customerName) {
-              doc.text(stage6Data.customerName, 150, 200, { width: 200 })
+              doc.text(stage6Data.customerName, 128, 232, { width: 200 })
             }
             if (stage6Data.orderNumber) {
-              doc.text(stage6Data.orderNumber, 400, 200, { width: 150 })
+              doc.text(stage6Data.orderNumber, 122, 245, { width: 150 })
             }
             if (stage6Data.location) {
-              doc.text(stage6Data.location, 150, 230, { width: 200 })
+              doc.text(stage6Data.location, 90, 258, { width: 200 })
             }
 
             // Transformer Details
             if (stage6Data.type) {
-              doc.text(stage6Data.type, 150, 280, { width: 150 })
+              doc.text(stage6Data.type, 78, 313, { width: 150 })
             }
             if (stage6Data.capacity) {
-              doc.text(stage6Data.capacity, 350, 280, { width: 100 })
+              doc.text(stage6Data.capacity, 90, 325, { width: 100 })
             }
             if (stage6Data.voltageRating) {
-              doc.text(stage6Data.voltageRating, 150, 310, { width: 100 })
+              doc.text(stage6Data.voltageRating, 122, 338, { width: 100 })
             }
             if (stage6Data.make) {
-              doc.text(stage6Data.make, 350, 310, { width: 150 })
+              doc.text(stage6Data.make, 76, 351, { width: 150 })
             }
             if (stage6Data.serialNumber) {
-              doc.text(stage6Data.serialNumber, 150, 340, { width: 200 })
+              doc.text(stage6Data.serialNumber, 120, 364, { width: 200 })
             }
 
             // Dates
             if (stage6Data.completionDate) {
-              doc.text(stage6Data.completionDate, 150, 400, { width: 150 })
+              doc.text(stage6Data.completionDate, 350, 440, { width: 150 })
             }
             if (stage6Data.chargingDate) {
-              doc.text(stage6Data.chargingDate, 350, 400, { width: 150 })
+              doc.text(stage6Data.chargingDate, 350, 456, { width: 150 })
             }
             if (stage6Data.commissioningDate) {
-              doc.text(stage6Data.commissioningDate, 150, 430, { width: 150 })
+              doc.text(stage6Data.commissioningDate, 420, 455, { width: 150 })
             }
 
             // Signatures section
@@ -381,44 +381,42 @@ export const generatePDF = async (req, res) => {
               
               // VPES section (left side)
               if (signatures.vpesName) {
-                doc.text(signatures.vpesName, 100, 500, { width: 150 })
+                doc.text(signatures.vpesName, 78, 537, { width: 150 })
               }
               if (signatures.vpesDesignation) {
-                doc.text(signatures.vpesDesignation, 100, 520, { width: 150 })
+                doc.text(signatures.vpesDesignation, 103, 550, { width: 150 })
               }
-              if (signatures.vpesDate) {
-                doc.text(signatures.vpesDate, 100, 580, { width: 150 })
-              }
-
-              // Customer section (right side)
-              if (signatures.customerName) {
-                doc.text(signatures.customerName, 350, 500, { width: 150 })
-              }
-              if (signatures.customerDesignation) {
-                doc.text(signatures.customerDesignation, 350, 520, { width: 150 })
-              }
-              if (signatures.customerDate) {
-                doc.text(signatures.customerDate, 350, 580, { width: 150 })
-              }
-
               // Add signature images if they exist (base64 format)
               if (signatures.vpesSignature && signatures.vpesSignature.startsWith('data:image/')) {
                 try {
                   // Convert base64 to buffer and add to PDF
                   const base64Data = signatures.vpesSignature.replace(/^data:image\/[a-z]+;base64,/, '')
                   const signatureBuffer = Buffer.from(base64Data, 'base64')
-                  doc.image(signatureBuffer, 100, 540, { width: 120, height: 30 })
+                  doc.image(signatureBuffer, 55, 553, { width: 120, height: 30 })
                 } catch (error) {
                   console.error('Error adding VPES signature:', error)
                 }
               }
+              if (signatures.vpesDate) {
+                doc.text(signatures.vpesDate, 73, 576, { width: 150 })
+              }
 
+              // Customer section (right side)
+              if (signatures.customerName) {
+                doc.text(signatures.customerName, 369, 537, { width: 150 })
+              }
+              if (signatures.customerDesignation) {
+                doc.text(signatures.customerDesignation, 398, 550, { width: 150 })
+              }
+              if (signatures.customerDate) {
+                doc.text(signatures.customerDate, 365, 576, { width: 150 })
+              }
               if (signatures.customerSignature && signatures.customerSignature.startsWith('data:image/')) {
                 try {
                   // Convert base64 to buffer and add to PDF
                   const base64Data = signatures.customerSignature.replace(/^data:image\/[a-z]+;base64,/, '')
                   const signatureBuffer = Buffer.from(base64Data, 'base64')
-                  doc.image(signatureBuffer, 350, 540, { width: 120, height: 30 })
+                  doc.image(signatureBuffer, 355, 547, { width: 120, height: 30 })
                 } catch (error) {
                   console.error('Error adding customer signature:', error)
                 }
