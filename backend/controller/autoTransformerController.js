@@ -313,7 +313,7 @@ export const generatePDF = async (req, res) => {
       }
     }
 
-    // Add last page using the LastPage.jpg image
+    // Add last page using the LastPage.jpg image with stage6 data overlay
     const addLastPage = () => {
       try {
         const lastPageImagePath = path.join(process.cwd(), 'src/LastPage.jpg')
@@ -326,6 +326,105 @@ export const generatePDF = async (req, res) => {
             align: 'center',
             valign: 'center'
           })
+
+          // Overlay stage6 data if it exists
+          if (formData.stage6 && formData.stage6.form1) {
+            const stage6Data = formData.stage6.form1
+            
+            // Set font and color for overlay text
+            doc.fillColor('#000000')
+            doc.fontSize(10)
+            doc.font('Helvetica')
+
+            // Customer Information (adjust coordinates based on your LastPage.jpg layout)
+            if (stage6Data.customerName) {
+              doc.text(stage6Data.customerName, 150, 200, { width: 200 })
+            }
+            if (stage6Data.orderNumber) {
+              doc.text(stage6Data.orderNumber, 400, 200, { width: 150 })
+            }
+            if (stage6Data.location) {
+              doc.text(stage6Data.location, 150, 230, { width: 200 })
+            }
+
+            // Transformer Details
+            if (stage6Data.type) {
+              doc.text(stage6Data.type, 150, 280, { width: 150 })
+            }
+            if (stage6Data.capacity) {
+              doc.text(stage6Data.capacity, 350, 280, { width: 100 })
+            }
+            if (stage6Data.voltageRating) {
+              doc.text(stage6Data.voltageRating, 150, 310, { width: 100 })
+            }
+            if (stage6Data.make) {
+              doc.text(stage6Data.make, 350, 310, { width: 150 })
+            }
+            if (stage6Data.serialNumber) {
+              doc.text(stage6Data.serialNumber, 150, 340, { width: 200 })
+            }
+
+            // Dates
+            if (stage6Data.completionDate) {
+              doc.text(stage6Data.completionDate, 150, 400, { width: 150 })
+            }
+            if (stage6Data.chargingDate) {
+              doc.text(stage6Data.chargingDate, 350, 400, { width: 150 })
+            }
+            if (stage6Data.commissioningDate) {
+              doc.text(stage6Data.commissioningDate, 150, 430, { width: 150 })
+            }
+
+            // Signatures section
+            if (stage6Data.signatures) {
+              const signatures = stage6Data.signatures
+              
+              // VPES section (left side)
+              if (signatures.vpesName) {
+                doc.text(signatures.vpesName, 100, 500, { width: 150 })
+              }
+              if (signatures.vpesDesignation) {
+                doc.text(signatures.vpesDesignation, 100, 520, { width: 150 })
+              }
+              if (signatures.vpesDate) {
+                doc.text(signatures.vpesDate, 100, 580, { width: 150 })
+              }
+
+              // Customer section (right side)
+              if (signatures.customerName) {
+                doc.text(signatures.customerName, 350, 500, { width: 150 })
+              }
+              if (signatures.customerDesignation) {
+                doc.text(signatures.customerDesignation, 350, 520, { width: 150 })
+              }
+              if (signatures.customerDate) {
+                doc.text(signatures.customerDate, 350, 580, { width: 150 })
+              }
+
+              // Add signature images if they exist (base64 format)
+              if (signatures.vpesSignature && signatures.vpesSignature.startsWith('data:image/')) {
+                try {
+                  // Convert base64 to buffer and add to PDF
+                  const base64Data = signatures.vpesSignature.replace(/^data:image\/[a-z]+;base64,/, '')
+                  const signatureBuffer = Buffer.from(base64Data, 'base64')
+                  doc.image(signatureBuffer, 100, 540, { width: 120, height: 30 })
+                } catch (error) {
+                  console.error('Error adding VPES signature:', error)
+                }
+              }
+
+              if (signatures.customerSignature && signatures.customerSignature.startsWith('data:image/')) {
+                try {
+                  // Convert base64 to buffer and add to PDF
+                  const base64Data = signatures.customerSignature.replace(/^data:image\/[a-z]+;base64,/, '')
+                  const signatureBuffer = Buffer.from(base64Data, 'base64')
+                  doc.image(signatureBuffer, 350, 540, { width: 120, height: 30 })
+                } catch (error) {
+                  console.error('Error adding customer signature:', error)
+                }
+              }
+            }
+          }
         }
       } catch (error) {
         console.error('Error adding last page:', error)
