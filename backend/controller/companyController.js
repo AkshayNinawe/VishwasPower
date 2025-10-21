@@ -1,5 +1,7 @@
 import express from "express";
 import Company from "../model/Company.js";
+import TractionCompany from "../model/TractionCompany.js";
+import VConnectCompany from "../model/VConnectCompany.js";
 
 const router = express.Router();
 
@@ -45,14 +47,19 @@ export const setCompanyData = async (req, res) => {
 
 export const deleteProjectByName = async (req, res) => {
   try {
-    const { companyName, projectName } = req.body; 
+    const { companyName, projectName } = req.body;
     if (!companyName || !projectName) {
-      return res.status(400).json({ message: "companyName and projectName are required." });
+      return res
+        .status(400)
+        .json({ message: "companyName and projectName are required." });
     }
-  
+
     const updatedCompany = await Company.findOneAndUpdate(
       { companyName: companyName },
-      { $pull: { companyProjects: { name: projectName } }, updatedAt: Date.now() },
+      {
+        $pull: { companyProjects: { name: projectName } },
+        updatedAt: Date.now(),
+      },
       { new: true }
     );
 
@@ -74,11 +81,11 @@ export const deleteProjectByName = async (req, res) => {
 
 export const deleteCompanyByName = async (req, res) => {
   try {
-    const { companyName } = req.body; 
+    const { companyName } = req.body;
     if (!companyName) {
       return res.status(400).json({ message: "companyName are required." });
     }
-  
+
     const deletedCompany = await Company.findOneAndDelete({ companyName });
 
     if (!deletedCompany) {
@@ -99,20 +106,36 @@ export const deleteCompanyByName = async (req, res) => {
 
 // Get all Company
 export const getAllCompanyData = async (req, res) => {
-  console.log("Get all Company");
+  console.log("Get all Company for ", req.query.departmentType);
   try {
-    const Companies = await Company.find();
-    res.json(Companies);
+    if (req.query.departmentType === "Traction Transformer") {
+      const tractionCompanies = await TractionCompany.find();
+      return res.json(tractionCompanies);
+    } else {
+      if (req.query.departmentType === "Auto Transformer") {
+        const autoCompanies = await Company.find();
+        return res.json(autoCompanies);
+      } else {
+        if (req.query.departmentType === "V Connect") {
+          const vConnectCompanies = await VConnectCompany.find();
+          return res.json(vConnectCompanies);
+        } else {
+          return res
+            .status(400)
+            .json({ message: "Invalid departmentType parameter." });
+        }
+      }
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-export const setapproveCompanyStage =  async(req, res) =>{
+export const setapproveCompanyStage = async (req, res) => {
   try {
     const { companyName, projectName, stage } = req.body;
     const stageNumber = Number(stage);
-    console.log(companyName, projectName, stageNumber)
+    console.log(companyName, projectName, stageNumber);
     const updateOperation = {
       $set: {
         [`companyProjects.$.stageApprovals.${stageNumber}`]: true,
@@ -124,10 +147,10 @@ export const setapproveCompanyStage =  async(req, res) =>{
       updateOperation.$inc = { "companyProjects.$.stage": 1 };
       updateOperation.$set["companyProjects.$.status"] = "in-progress";
     } else {
-      console.log("white house")
+      console.log("white house");
       updateOperation.$set["companyProjects.$.status"] = "completed";
     }
-  
+
     const updatedCompany = await Company.findOneAndUpdate(
       {
         companyName: companyName,
@@ -138,16 +161,16 @@ export const setapproveCompanyStage =  async(req, res) =>{
         new: true, // Return the updated document
       }
     );
-  
+
     if (!updatedCompany) {
       return res.status(404).json({
         message: `Company with name '${companyName}' or project with name '${projectName}' not found.`,
       });
     }
-  
+
     res.status(200).json({
       message:
-      stageNumber !== 6
+        stageNumber !== 6
           ? `Stage '${stageNumber}' for project '${projectName}' successfully approved.`
           : `Stage '${stageNumber}' for project '${projectName}' marked as completed.`,
       project: updatedCompany.companyProjects.find(
@@ -161,22 +184,28 @@ export const setapproveCompanyStage =  async(req, res) =>{
       error: error.message,
     });
   }
-}
+};
 
 export const rejectCompanyStage = async (req, res) => {
-  console.log("Rejecting stage:")
+  console.log("Rejecting stage:");
   try {
     const { companyName, projectName, stage, rejectionReason } = req.body;
     const stageNumber = Number(stage);
 
-    console.log("Rejecting stage:", { companyName, projectName, stageNumber, rejectionReason });
+    console.log("Rejecting stage:", {
+      companyName,
+      projectName,
+      stageNumber,
+      rejectionReason,
+    });
 
     const updateOperation = {
       $set: {
         [`companyProjects.$.stageApprovals.${stageNumber}`]: false, // explicitly false
         [`companyProjects.$.submittedStages.${stageNumber}`]: false, // explicitly false
         "companyProjects.$.status": "rejected",
-        "companyProjects.$.rejectionReason": rejectionReason || "No reason provided",
+        "companyProjects.$.rejectionReason":
+          rejectionReason || "No reason provided",
       },
     };
 
@@ -206,12 +235,12 @@ export const rejectCompanyStage = async (req, res) => {
   } catch (error) {
     console.error("Error rejecting company stage:", error);
     res.status(500).json({
-      message: "An internal server error occurred while rejecting the project stage.",
+      message:
+        "An internal server error occurred while rejecting the project stage.",
       error: error.message,
     });
   }
 };
-
 
 // Delete a Company by ID
 export const deleteCompanyByID = async (req, res) => {
@@ -226,7 +255,8 @@ export const deleteCompanyByID = async (req, res) => {
 export const setFormsCompleted = async (req, res) => {
   try {
     // Added 'totalForms' to the destructuring to make the logic dynamic
-    const { companyName, projectName, formsCompleted, status, stage } = req.body;
+    const { companyName, projectName, formsCompleted, status, stage } =
+      req.body;
 
     // Build the update object dynamically
     const updateFields = {};
@@ -239,7 +269,7 @@ export const setFormsCompleted = async (req, res) => {
     if (status) {
       updateSets["companyProjects.$.status"] = status;
     }
-    
+
     // Corrected logic: Dynamically create a Map object instead of an Array
     if (Number(stage) && 6) {
       const submittedStagesMap = {};
@@ -248,7 +278,7 @@ export const setFormsCompleted = async (req, res) => {
       }
       updateSets["companyProjects.$.submittedStages"] = submittedStagesMap;
     }
-    
+
     updateFields["$set"] = updateSets;
     console.log(updateSets);
 
