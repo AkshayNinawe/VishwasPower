@@ -1,17 +1,17 @@
 import express from "express";
-import Company from "../model/Company.js";
+import AutoTransformerCompany from "../model/AutoTransformerCompany.js";
 import TractionCompany from "../model/TractionCompany.js";
 import VConnectCompany from "../model/VConnectCompany.js";
 
 const router = express.Router();
 
-// Add a new Company
+// Add a new AutoTransformerCompany
 export const setNewCompanyData = async (req, res) => {
   try {
-    console.log("Add new company");
+    console.log("Add new AutoTransformerCompany");
     const { companyName, companyDescription } = req.body;
-    console.log("Adding company with detail", companyName, companyDescription);
-    const newCompany = new Company({
+    console.log("Adding AutoTransformerCompany with detail", companyName, companyDescription);
+    const newCompany = new AutoTransformerCompany({
       companyName,
       companyDescription,
     });
@@ -22,11 +22,11 @@ export const setNewCompanyData = async (req, res) => {
   }
 };
 
-// Add a new project to exisiting company
+// Add a new project to exisiting AutoTransformerCompany
 export const setCompanyData = async (req, res) => {
   try {
     const { companyName, projectName, companyProjects } = req.body;
-    const updatedCompany = await Company.findOneAndUpdate(
+    const updatedCompany = await AutoTransformerCompany.findOneAndUpdate(
       { companyName: companyName },
       { $push: { companyProjects: companyProjects }, updatedAt: Date.now() },
       { new: true }
@@ -37,7 +37,7 @@ export const setCompanyData = async (req, res) => {
         .json({ message: `Project with name '${projectName}' not found.` });
     }
     res.status(200).json({
-      message: `Project '${projectName}' added and linked to company '${companyName}'.`,
+      message: `Project '${projectName}' added and linked to AutoTransformerCompany '${companyName}'.`,
       project: updatedCompany,
     });
   } catch (error) {
@@ -54,7 +54,7 @@ export const deleteProjectByName = async (req, res) => {
         .json({ message: "companyName and projectName are required." });
     }
 
-    const updatedCompany = await Company.findOneAndUpdate(
+    const updatedCompany = await AutoTransformerCompany.findOneAndUpdate(
       { companyName: companyName },
       {
         $pull: { companyProjects: { name: projectName } },
@@ -65,13 +65,13 @@ export const deleteProjectByName = async (req, res) => {
 
     if (!updatedCompany) {
       return res.status(404).json({
-        message: `Company '${companyName}' not found or project '${projectName}' not deleted.`,
+        message: `AutoTransformerCompany '${companyName}' not found or project '${projectName}' not deleted.`,
       });
     }
 
     res.status(200).json({
-      message: `Project '${projectName}' deleted successfully from company '${companyName}'.`,
-      company: updatedCompany,
+      message: `Project '${projectName}' deleted successfully from AutoTransformerCompany '${companyName}'.`,
+      AutoTransformerCompany: updatedCompany,
     });
   } catch (error) {
     console.error("Error deleting project:", error);
@@ -86,34 +86,34 @@ export const deleteCompanyByName = async (req, res) => {
       return res.status(400).json({ message: "companyName are required." });
     }
 
-    const deletedCompany = await Company.findOneAndDelete({ companyName });
+    const deletedCompany = await AutoTransformerCompany.findOneAndDelete({ companyName });
 
     if (!deletedCompany) {
       return res.status(404).json({
-        message: `Company '${companyName}' not found.`,
+        message: `AutoTransformerCompany '${companyName}' not found.`,
       });
     }
 
     res.status(200).json({
-      message: `Company '${companyName}' deleted successfully.`,
-      company: deletedCompany,
+      message: `AutoTransformerCompany '${companyName}' deleted successfully.`,
+      AutoTransformerCompany: deletedCompany,
     });
   } catch (error) {
-    console.error("Error deleting company:", error);
+    console.error("Error deleting AutoTransformerCompany:", error);
     res.status(500).json({ message: "An internal server error occurred." });
   }
 };
 
 // Get all Company
 export const getAllCompanyData = async (req, res) => {
-  console.log("Get all Company for ", req.query.departmentType);
+  console.log("Get all AutoTransformerCompany for ", req.query.departmentType);
   try {
     if (req.query.departmentType === "Traction Transformer") {
       const tractionCompanies = await TractionCompany.find();
       return res.json(tractionCompanies);
     } else {
       if (req.query.departmentType === "Auto Transformer") {
-        const autoCompanies = await Company.find();
+        const autoCompanies = await AutoTransformerCompany.find();
         return res.json(autoCompanies);
       } else {
         if (req.query.departmentType === "V Connect") {
@@ -151,7 +151,7 @@ export const setapproveCompanyStage = async (req, res) => {
       updateOperation.$set["companyProjects.$.status"] = "completed";
     }
 
-    const updatedCompany = await Company.findOneAndUpdate(
+    const updatedCompany = await AutoTransformerCompany.findOneAndUpdate(
       {
         companyName: companyName,
         "companyProjects.name": projectName,
@@ -164,7 +164,7 @@ export const setapproveCompanyStage = async (req, res) => {
 
     if (!updatedCompany) {
       return res.status(404).json({
-        message: `Company with name '${companyName}' or project with name '${projectName}' not found.`,
+        message: `AutoTransformerCompany with name '${companyName}' or project with name '${projectName}' not found.`,
       });
     }
 
@@ -178,7 +178,7 @@ export const setapproveCompanyStage = async (req, res) => {
       ),
     });
   } catch (error) {
-    console.error("Error approving company stage:", error);
+    console.error("Error approving AutoTransformerCompany stage:", error);
     res.status(500).json({
       message: "An internal server error occurred.",
       error: error.message,
@@ -209,7 +209,7 @@ export const rejectCompanyStage = async (req, res) => {
       },
     };
 
-    const updatedCompany = await Company.findOneAndUpdate(
+    const updatedCompany = await AutoTransformerCompany.findOneAndUpdate(
       {
         companyName: companyName,
         "companyProjects.name": projectName,
@@ -222,7 +222,7 @@ export const rejectCompanyStage = async (req, res) => {
 
     if (!updatedCompany) {
       return res.status(404).json({
-        message: `Company '${companyName}' or project '${projectName}' not found.`,
+        message: `AutoTransformerCompany '${companyName}' or project '${projectName}' not found.`,
       });
     }
 
@@ -233,7 +233,7 @@ export const rejectCompanyStage = async (req, res) => {
       ),
     });
   } catch (error) {
-    console.error("Error rejecting company stage:", error);
+    console.error("Error rejecting AutoTransformerCompany stage:", error);
     res.status(500).json({
       message:
         "An internal server error occurred while rejecting the project stage.",
@@ -242,11 +242,11 @@ export const rejectCompanyStage = async (req, res) => {
   }
 };
 
-// Delete a Company by ID
+// Delete a AutoTransformerCompany by ID
 export const deleteCompanyByID = async (req, res) => {
   try {
-    await Company.findByIdAndDelete(req.params.id);
-    res.json({ message: "Company deleted successfully" });
+    await AutoTransformerCompany.findByIdAndDelete(req.params.id);
+    res.json({ message: "AutoTransformerCompany deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -282,8 +282,8 @@ export const setFormsCompleted = async (req, res) => {
     updateFields["$set"] = updateSets;
     console.log(updateSets);
 
-    // Find the company and the specific project within its array
-    const updatedCompany = await Company.findOneAndUpdate(
+    // Find the AutoTransformerCompany and the specific project within its array
+    const updatedCompany = await AutoTransformerCompany.findOneAndUpdate(
       {
         companyName: companyName,
         "companyProjects.name": projectName,
@@ -294,10 +294,10 @@ export const setFormsCompleted = async (req, res) => {
       }
     );
 
-    // If no company or project was found, return an error
+    // If no AutoTransformerCompany or project was found, return an error
     if (!updatedCompany) {
       return res.status(404).json({
-        message: `Company with name '${companyName}' or project with name '${projectName}' not found.`,
+        message: `AutoTransformerCompany with name '${companyName}' or project with name '${projectName}' not found.`,
       });
     }
 

@@ -47,7 +47,7 @@ const projectSchema = {
   },
 };
 
-const companySchema = new mongoose.Schema(
+const AutoTransformerCompanySchema = new mongoose.Schema(
   {
     companyName: {
       type: String,
@@ -65,4 +65,4 @@ const companySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Company", companySchema);
+export default mongoose.model("AutoTransformerCompany", AutoTransformerCompanySchema);
