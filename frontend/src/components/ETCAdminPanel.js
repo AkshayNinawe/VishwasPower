@@ -2820,7 +2820,7 @@ const ETCAdminPanel = ({
           (() => {
             if (selectedDepartment?.name === "V Connected 63 MVA Transformer") {
               console.log(
-                "selectedDepartment?.name:",
+                "Load form for : ",
                 selectedDepartment?.name
               );
               return (
@@ -2838,7 +2838,7 @@ const ETCAdminPanel = ({
               );
             } else {
               console.log(
-                "selectedDepartment?.name:",
+                "Load form for : ",
                 selectedDepartment?.name
               );
               return (

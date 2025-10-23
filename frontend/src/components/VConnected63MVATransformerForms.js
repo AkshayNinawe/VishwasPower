@@ -6660,7 +6660,7 @@ function ShortCircuitWindingResistanceTestForm({
                 );
               }
 
-              export function IRValuesTransformerForm({
+export function IRValuesTransformerForm({
   onSubmit,
   onPrevious,
   initialData,
@@ -7205,8 +7205,8 @@ function ShortCircuitWindingResistanceTestForm({
     </form>
   )
 }
-              // Stage 6 Form Components - Based on provided images
-             // Stage 6 Form 1: Pre-Commissioning Checklist
+// Stage 6 Form Components - Based on provided images
+// Stage 6 Form 1: Pre-Commissioning Checklist
 export function PreCommissioningChecklistForm({
   onSubmit,
   onPrevious,
@@ -9881,15 +9881,107 @@ const VConnected63MVATransformerForms = ({
   const currentStageForms = stageFormsMapping[stage] || []
   const CurrentFormComponent = currentStageForms[currentFormIndex]?.component
 
-  const handleFormSubmit = (data) => {
-    const updatedFormData = { ...formData, [`form${currentFormIndex + 1}`]: data }
-    setFormData(updatedFormData)
+  const handleFormSubmit = async (data) => {
+    console.log("VConnected63MVA: handleFormSubmit → saving form data", data);
 
-    if (currentFormIndex < currentStageForms.length - 1) {
-      setCurrentFormIndex(currentFormIndex + 1)
-    } else {
-      // All forms completed for this stage
-      onFormSubmit(stage, updatedFormData, selectedProjectForReview)
+    try {
+      // Build FormData for API submission
+      const formDataToSend = new FormData();
+      formDataToSend.append("projectName", projectName);
+      formDataToSend.append("companyName", companyName);
+      formDataToSend.append("stage", stage);
+      formDataToSend.append("formNumber", currentFormIndex + 1);
+
+      // Process form data
+      Object.entries(data).forEach(([key, value]) => {
+        if (key === "photos" && typeof value === "object") {
+          Object.entries(value).forEach(([photoKey, file]) => {
+            if (file instanceof File) {
+              formDataToSend.append(`photos[${photoKey}]`, file);
+            }
+          });
+        } else if (typeof value === "object") {
+          formDataToSend.append(key, JSON.stringify(value));
+        } else {
+          formDataToSend.append(key, value ?? "");
+        }
+      });
+
+      // Submit to API
+      await axios.post(
+        `${BACKEND_API_BASE_URL}/api/data/setTable`,
+        formDataToSend,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+
+      // Update form completion status
+      const isLastFormOfStage = currentFormIndex === currentStageForms.length - 1;
+      
+      if (isLastFormOfStage) {
+        await axios.post(
+          `${BACKEND_API_BASE_URL}/api/company/updateFormsCompleted`,
+          {
+            projectName,
+            companyName,
+            formsCompleted: currentFormIndex + 1,
+            status: "pending-approval",
+            stage,
+          }
+        );
+
+        // Update local state
+        if (setSelectedMainCompany) {
+          setSelectedMainCompany((prevCompany) => {
+            if (prevCompany.companyName === companyName) {
+              return {
+                ...prevCompany,
+                companyProjects: prevCompany.companyProjects.map((project) => {
+                  if (project.name === projectName) {
+                    const submittedStagesMap = {};
+                    for (let i = 1; i <= 7; i++) {
+                      submittedStagesMap[i.toString()] = i <= stage;
+                    }
+                    return {
+                      ...project,
+                      submittedStages: submittedStagesMap,
+                      status: "pending-approval",
+                    };
+                  }
+                  return project;
+                }),
+              };
+            }
+            return prevCompany;
+          });
+        }
+      } else {
+        await axios.post(
+          `${BACKEND_API_BASE_URL}/api/company/updateFormsCompleted`,
+          {
+            projectName,
+            companyName,
+            formsCompleted: currentFormIndex + 1,
+          }
+        );
+      }
+
+      // Update local form data
+      const updatedFormData = { ...formData, [`form${currentFormIndex + 1}`]: data }
+      setFormData(updatedFormData)
+
+      // Navigate to next form or complete stage
+      if (currentFormIndex < currentStageForms.length - 1) {
+        setCurrentFormIndex(currentFormIndex + 1)
+      } else {
+        // All forms completed for this stage
+        onFormSubmit(stage, updatedFormData, selectedProjectForReview)
+      }
+
+    } catch (error) {
+      console.error("Error saving form:", error);
+      alert("Failed to save form. Please try again.");
     }
   }
 
@@ -9931,11 +10023,14 @@ const VConnected63MVATransformerForms = ({
             ></div>
           </div>
         </div>
+         <button onClick={onBack} className="back-btn">
+          ← Back to Dashboard
+        </button>
       </div>
 
       <CurrentFormComponent
         onSubmit={handleFormSubmit}
-        onPrevious={currentFormIndex > 0 || stage > 1 ? handlePreviousForm : null}
+        onPrevious={handlePreviousForm}
         initialData={formData[`form${currentFormIndex + 1}`] || {}}
         isLastFormOfStage={currentFormIndex === currentStageForms.length - 1}
         companyData={ProjectData}
