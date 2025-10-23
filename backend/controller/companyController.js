@@ -47,31 +47,55 @@ export const setCompanyData = async (req, res) => {
 
 export const deleteProjectByName = async (req, res) => {
   try {
-    const { companyName, projectName } = req.body;
+    const { companyName, projectName, department } = req.body;
     if (!companyName || !projectName) {
       return res
         .status(400)
         .json({ message: "companyName and projectName are required." });
     }
 
-    const updatedCompany = await AutoTransformerCompany.findOneAndUpdate(
-      { companyName: companyName },
-      {
-        $pull: { companyProjects: { name: projectName } },
-        updatedAt: Date.now(),
-      },
-      { new: true }
-    );
+    let updatedCompany;
+
+    if (department === "Traction Transformer") {
+      updatedCompany = await TractionCompany.findOneAndUpdate(
+        { companyName: companyName },
+        {
+          $pull: { companyProjects: { name: projectName } },
+          updatedAt: Date.now(),
+        },
+        { new: true }
+      );
+    } else if (department === "Auto Transformer") {
+      updatedCompany = await AutoTransformerCompany.findOneAndUpdate(
+        { companyName: companyName },
+        {
+          $pull: { companyProjects: { name: projectName } },
+          updatedAt: Date.now(),
+        },
+        { new: true }
+      );
+    } else if (department === "V Connected 63 MVA Transformer") {
+      updatedCompany = await VConnectCompany.findOneAndUpdate(
+        { companyName: companyName },
+        {
+          $pull: { companyProjects: { name: projectName } },
+          updatedAt: Date.now(),
+        },
+        { new: true }
+      );
+    } else {
+      return res.status(400).json({ message: "Invalid department type." });
+    }
 
     if (!updatedCompany) {
       return res.status(404).json({
-        message: `AutoTransformerCompany '${companyName}' not found or project '${projectName}' not deleted.`,
+        message: `${department} '${companyName}' not found or project '${projectName}' not deleted.`,
       });
     }
 
     res.status(200).json({
-      message: `Project '${projectName}' deleted successfully from AutoTransformerCompany '${companyName}'.`,
-      AutoTransformerCompany: updatedCompany,
+      message: `Project '${projectName}' deleted successfully from ${department} '${companyName}'.`,
+      company: updatedCompany,
     });
   } catch (error) {
     console.error("Error deleting project:", error);
@@ -81,25 +105,34 @@ export const deleteProjectByName = async (req, res) => {
 
 export const deleteCompanyByName = async (req, res) => {
   try {
-    const { companyName } = req.body;
+    const { companyName, department } = req.body;
     if (!companyName) {
-      return res.status(400).json({ message: "companyName are required." });
+      return res.status(400).json({ message: "companyName is required." });
     }
 
-    const deletedCompany = await AutoTransformerCompany.findOneAndDelete({ companyName });
+    let deletedCompany;
+    if (department === "Traction Transformer") {
+      deletedCompany = await TractionCompany.findOneAndDelete({ companyName });
+    } else if (department === "Auto Transformer") {
+      deletedCompany = await AutoTransformerCompany.findOneAndDelete({ companyName });
+    } else if (department === "V Connected 63 MVA Transformer") {
+      deletedCompany = await VConnectCompany.findOneAndDelete({ companyName });
+    } else {
+      return res.status(400).json({ message: "Invalid department type." });
+    }
 
     if (!deletedCompany) {
       return res.status(404).json({
-        message: `AutoTransformerCompany '${companyName}' not found.`,
+        message: `${department} '${companyName}' not found.`,
       });
     }
 
     res.status(200).json({
-      message: `AutoTransformerCompany '${companyName}' deleted successfully.`,
-      AutoTransformerCompany: deletedCompany,
+      message: `${department} '${companyName}' deleted successfully.`,
+      company: deletedCompany,
     });
   } catch (error) {
-    console.error("Error deleting AutoTransformerCompany:", error);
+    console.error("Error deleting company:", error);
     res.status(500).json({ message: "An internal server error occurred." });
   }
 };

@@ -1828,6 +1828,19 @@ const ETCAdminPanel = ({
         "Enter Project name...",
         async (ProjectName) => {
           if (ProjectName.trim()) {
+            // Check if project with same name already exists in this company
+            const existingProject = selectedMainCompany.companyProjects?.find(
+              (project) => project.name.toLowerCase() === ProjectName.toLowerCase()
+            );
+
+            if (existingProject) {
+              showNotification(
+                `Project with name "${ProjectName}" already exists in this company. Please choose a different name.`,
+                "error"
+              );
+              return;
+            }
+
             const newProject = {
               id: Math.max(...companies.map((c) => c.id), 0) + 1,
               name: ProjectName,
@@ -1904,6 +1917,19 @@ const ETCAdminPanel = ({
           "Enter Project name...",
           async (ProjectName) => {
             if (ProjectName.trim()) {
+              // Check if project with same name already exists in this company
+              const existingProject = selectedMainCompany.companyProjects?.find(
+                (project) => project.name.toLowerCase() === ProjectName.toLowerCase()
+              );
+
+              if (existingProject) {
+                showNotification(
+                  `Project with name "${ProjectName}" already exists in this company. Please choose a different name.`,
+                  "error"
+                );
+                return;
+              }
+
               const newProject = {
                 id: Math.max(...companies.map((c) => c.id), 0) + 1,
                 name: ProjectName,
@@ -1972,6 +1998,19 @@ const ETCAdminPanel = ({
           "Enter Project name...",
           async (ProjectName) => {
             if (ProjectName.trim()) {
+              // Check if project with same name already exists in this company
+              const existingProject = selectedMainCompany.companyProjects?.find(
+                (project) => project.name.toLowerCase() === ProjectName.toLowerCase()
+              );
+
+              if (existingProject) {
+                showNotification(
+                  `Project with name "${ProjectName}" already exists in this company. Please choose a different name.`,
+                  "error"
+                );
+                return;
+              }
+
               const newProject = {
                 id: Math.max(...companies.map((c) => c.id), 0) + 1,
                 name: ProjectName,
@@ -2487,6 +2526,7 @@ const ETCAdminPanel = ({
           data: {
             projectName: Project.name,
             companyName: Project.companyName,
+            department: selectedDepartment.name,
           },
         }
       );
@@ -2549,7 +2589,7 @@ const ETCAdminPanel = ({
       const response = await axios.delete(
         `${BACKEND_API_BASE_URL}/api/company/deleteCompany`,
         {
-          data: { companyName: company.companyName },
+          data: { companyName: company.companyName, department: selectedDepartment.name },
         }
       );
 
