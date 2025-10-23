@@ -9851,6 +9851,8 @@ const VConnected63MVATransformerForms = ({
   const stageFormsMapping = {
     1: [
       { component: NamePlateDetailsReactorForm, name: "Name Plate Details Transformer/Reactor" },
+      { component: PreErectionRatioTestPhase3Form, name: "Pre Erection Ratio Test of Turret CTs - Phase 3" },
+      { component: TanDeltaCapacitanceTestForm, name: "Tan Delta and Capacitance Test on Bushing" },
     ],
     2: [
       { component: RecordOilHandlingV63Form, name: "Record of Oil Handling" },
@@ -9866,6 +9868,11 @@ const VConnected63MVATransformerForms = ({
       { component: IRPIValueAfterFiltrationForm, name: "IR & PI Value After Filtration" },
     ],
     5: [
+      { component: SFRATestRecordV63Form, name: "SFRA Test Record" },
+      { component: MagnetizingCurrentTestForm, name: "Magnetizing Current Test" },
+      { component: PolarityTestForm, name: "Polarity Test" },
+      { component: ShortCircuitTestV63Form, name: "Short Circuit Test" },
+      { component: ShortCircuitWindingResistanceTestForm, name: "Short Circuit and Winding Resistance Test" },
       { component: IRValuesTransformerForm, name: "IR Values of Transformer" },
     ],
     6: [
