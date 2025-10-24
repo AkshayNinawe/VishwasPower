@@ -209,7 +209,7 @@ const FormStage = ({
 
       // 🔹 POST request
       await axios.post(
-        `${BACKEND_API_BASE_URL}/api/data/setTable`,
+        `${BACKEND_API_BASE_URL}/api/autoData/setTable`,
         formDataToSend,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -884,7 +884,7 @@ function NamePlateDetailsForm({
     const fetchFormData = async () => {
       try {
         const response = await axios.post(
-          `${BACKEND_API_BASE_URL}/api/data/getTable`,
+          `${BACKEND_API_BASE_URL}/api/autoData/getTable`,
           {
             companyName: companyName,
             projectName: projectName,
@@ -1191,7 +1191,7 @@ function ProtocolAccessoriesForm({
     const fetchFormData = async () => {
       try {
         const response = await axios.post(
-          `${BACKEND_API_BASE_URL}/api/data/getTable`,
+          `${BACKEND_API_BASE_URL}/api/autoData/getTable`,
           {
             companyName: companyName,
             projectName: projectName,
@@ -1421,7 +1421,7 @@ function CoreInsulationCheckForm({
     const fetchFormData = async () => {
       try {
         const response = await axios.post(
-          `${BACKEND_API_BASE_URL}/api/data/getTable`,
+          `${BACKEND_API_BASE_URL}/api/autoData/getTable`,
           {
             companyName: companyName,
             projectName: projectName,
@@ -1923,7 +1923,7 @@ function PreErectionTanDeltaTestForm({
     const fetchFormData = async () => {
       try {
         const response = await axios.post(
-          `${BACKEND_API_BASE_URL}/api/data/getTable`,
+          `${BACKEND_API_BASE_URL}/api/autoData/getTable`,
           {
             companyName: companyName,
             projectName: projectName,
@@ -2427,7 +2427,7 @@ function RecordMeasurementIRValuesForm({
     const fetchFormData = async () => {
       try {
         const response = await axios.post(
-          `${BACKEND_API_BASE_URL}/api/data/getTable`,
+          `${BACKEND_API_BASE_URL}/api/autoData/getTable`,
           {
             companyName: companyName,
             projectName: projectName,

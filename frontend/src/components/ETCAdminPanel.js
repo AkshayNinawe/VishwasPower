@@ -589,7 +589,7 @@ const ETCAdminPanel = ({
   const handleViewForm = async (project, stage, formIndex) => {
     try {
       const response = await axios.get(
-        `${BACKEND_API_BASE_URL}/api/data/getFormData`,
+        `${BACKEND_API_BASE_URL}/api/autoData/getFormData`,
         {
           params: {
             projectName: project.name,
@@ -2097,7 +2097,7 @@ const ETCAdminPanel = ({
     }
     try {
       const response = await axios.post(
-        `${BACKEND_API_BASE_URL}/api/data/getStageTable`,
+        `${BACKEND_API_BASE_URL}/api/autoData/getStageTable`,
         {
           projectName: Project.name,
           companyName: Project.companyName,
@@ -2296,7 +2296,7 @@ const ETCAdminPanel = ({
         );
       }
       const response = await axios.post(
-        `${BACKEND_API_BASE_URL}/api/data/getCompleteTable`,
+        `${BACKEND_API_BASE_URL}/api/autoData/getCompleteTable`,
         {
           projectName: Project.name,
           companyName: Project.companyName,
@@ -2629,7 +2629,7 @@ const ETCAdminPanel = ({
 
       // Send request to backend
       const response = await axios.post(
-        `${BACKEND_API_BASE_URL}/api/data/download-all-forms`,
+        `${BACKEND_API_BASE_URL}/api/autoData/download-all-forms`,
         {
           projectName: selectedProjectForReview?.name,
           formData: formDataFromDB,

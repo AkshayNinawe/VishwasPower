@@ -35,9 +35,9 @@ app.use("/uploads", express.static(uploadsPath));
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/company", companyRoute);
-app.use("/api/VConnectCompany", VConnectCompanyRoute);
-app.use("/api/TractionCompany", TractionCompanyRoute);
-app.use("/api/data/", autoTransformerRoute);
+app.use("/api/autoData/", autoTransformerRoute);
+app.use("/api/vconnectData/", VConnectCompanyRoute);
+app.use("/api/tractionData/", TractionCompanyRoute);
 
 const PORT = process.env.PORT || 7000;
 app.listen(PORT, () => {
