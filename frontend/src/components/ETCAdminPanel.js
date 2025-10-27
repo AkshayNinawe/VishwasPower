@@ -2911,55 +2911,73 @@ const ETCAdminPanel = ({
                   </div>
 
                   <div className="form-layout-preview">
-                    <div className="form-grid-preview">
+                    <div className="form-grid-preview" style={{
+                      display: "grid",
+                      gridTemplateColumns: "1fr",
+                      gap: "20px"
+                    }}>
                       {Object.entries(formData).map(
-                        ([fieldKey, fieldValue], idx) => (
-                          <div
-                            className="form-group-preview"
-                            key={fieldKey || idx}
-                          >
-                            <label className="form-label-preview">
-                              {formatLabel(fieldKey)}:
-                            </label>
-
-                            {/* Handle different field types with proper form styling */}
-                            {fieldKey.toLowerCase() === "photos" &&
+                        ([fieldKey, fieldValue]) => {
+                          // Handle photos specially
+                          if (
+                            fieldKey === "photos" &&
                             fieldValue &&
-                            typeof fieldValue === "object" ? (
-                              <div className="photo-display-grid">
-                                {Object.entries(fieldValue).map(
-                                  ([photoKey, url]) => {
-                                    const fullUrl = url.startsWith("http")
-                                      ? url
-                                      : `${BACKEND_API_BASE_URL}/${url}`;
-                                    return (
-                                      <div
-                                        key={photoKey}
-                                        className="photo-item"
-                                      >
-                                        <span className="photo-label">
-                                          {photoKey}
-                                        </span>
-                                        <img
-                                          src={fullUrl || "/placeholder.svg"}
-                                          alt={photoKey}
-                                          className="photo-preview-img"
-                                        />
-                                      </div>
-                                    );
-                                  }
-                                )}
-                              </div>
-                            ) : typeof fieldValue === "string" ? (
-                              fieldValue.startsWith("data:image/") ? (
-                                <div className="image-field-display">
-                                  <img
-                                    src={fieldValue || "/placeholder.svg"}
-                                    alt={fieldKey}
-                                    className="form-image-preview"
-                                  />
+                            typeof fieldValue === "object"
+                          ) {
+                            return (
+                              <div
+                                key={`photos-${fieldKey}`}
+                                className="form-group-preview photo-group"
+                                style={{
+                                  width: "100%"
+                                }}
+                              >
+                                <label className="form-label-preview">
+                                  📸{" "}
+                                  {fieldKey.charAt(0).toUpperCase() +
+                                    fieldKey.slice(1)}
+                                </label>
+                                <div className="photo-display-grid">
+                                  {Object.entries(fieldValue).map(
+                                    ([photoKey, url]) => {
+                                      const fullUrl = url.startsWith("http")
+                                        ? url
+                                        : `${BACKEND_API_BASE_URL}/${url}`;
+                                      return (
+                                        <div
+                                          key={photoKey}
+                                          className="photo-item"
+                                        >
+                                          <span className="photo-label">
+                                            {photoKey}
+                                          </span>
+                                          <img
+                                            src={fullUrl || "/placeholder.svg"}
+                                            alt={photoKey}
+                                            className="photo-preview-img"
+                                          />
+                                        </div>
+                                      );
+                                    }
+                                  )}
                                 </div>
-                              ) : (
+                              </div>
+                            );
+                          }
+
+                          // Handle strings & numbers with form input styling
+                          if (
+                            typeof fieldValue === "string" ||
+                            typeof fieldValue === "number"
+                          ) {
+                            return (
+                              <div
+                                key={`field-${fieldKey}`}
+                                className="form-group-preview"
+                              >
+                                <label className="form-label-preview">
+                                  {formatLabel(fieldKey)}
+                                </label>
                                 <div className="form-input-display">
                                   <input
                                     type="text"
@@ -2968,109 +2986,175 @@ const ETCAdminPanel = ({
                                     className="form-input disabled preview"
                                   />
                                 </div>
-                              )
-                            ) : Array.isArray(fieldValue) ? (
-                              fieldValue.length === 0 ? (
-                                <div className="form-input-display">
-                                  <input
-                                    type="text"
-                                    value="No data"
-                                    disabled
-                                    className="form-input disabled preview"
-                                  />
+                              </div>
+                            );
+                          }
+
+                          // Handle nested objects (like accessories)
+                          if (
+                            typeof fieldValue === "object" &&
+                            fieldValue !== null &&
+                            !Array.isArray(fieldValue) &&
+                            fieldKey !== "photos"
+                          ) {
+                            return (
+                              <div
+                                key={`nested-${fieldKey}`}
+                                className="form-group-preview nested-object-group"
+                              >
+                                <label className="form-label-preview">
+                                  📋 {formatLabel(fieldKey)}
+                                </label>
+                                <div className="nested-object-display" style={{
+                                  display: "grid",
+                                  gridTemplateColumns: "repeat(2, 1fr)",
+                                  gap: "15px",
+                                  marginTop: "10px"
+                                }}>
+                                  {Object.entries(fieldValue).map(
+                                    ([nestedKey, nestedValue]) => (
+                                      <div
+                                        key={`${fieldKey}-${nestedKey}`}
+                                        className="nested-item"
+                                        style={{
+                                          padding: "12px",
+                                          border: "1px solid #e5e7eb",
+                                          borderRadius: "8px",
+                                          backgroundColor: "#f9fafb"
+                                        }}
+                                      >
+                                        <h5 style={{
+                                          margin: "0 0 10px 0",
+                                          color: "#374151",
+                                          fontSize: "0.9rem",
+                                          fontWeight: "600"
+                                        }}>
+                                          {formatLabel(fieldKey)} - {nestedKey}
+                                        </h5>
+                                        {typeof nestedValue === "object" && nestedValue !== null ? (
+                                          <div className="nested-fields-grid" style={{
+                                            display: "grid",
+                                            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                                            gap: "10px"
+                                          }}>
+                                            {Object.entries(nestedValue).map(
+                                              ([subKey, subValue]) => (
+                                                <div
+                                                  key={`${nestedKey}-${subKey}`}
+                                                  className="nested-field"
+                                                >
+                                                  <label className="nested-field-label" style={{
+                                                    fontSize: "0.8rem",
+                                                    color: "#6b7280",
+                                                    fontWeight: "500"
+                                                  }}>
+                                                    {formatLabel(subKey)}:
+                                                  </label>
+                                                  <div className="nested-field-value">
+                                                    <input
+                                                      type="text"
+                                                      value={subValue || ""}
+                                                      disabled
+                                                      className="form-input disabled preview"
+                                                      style={{
+                                                        fontSize: "0.85rem",
+                                                        padding: "6px 8px"
+                                                      }}
+                                                    />
+                                                  </div>
+                                                </div>
+                                              )
+                                            )}
+                                          </div>
+                                        ) : (
+                                          <div className="form-input-display">
+                                            <input
+                                              type="text"
+                                              value={nestedValue || ""}
+                                              disabled
+                                              className="form-input disabled preview"
+                                            />
+                                          </div>
+                                        )}
+                                      </div>
+                                    )
+                                  )}
                                 </div>
-                              ) : typeof fieldValue[0] === "object" &&
-                                fieldValue[0] !== null ? (
-                                <div className="array-data-display">
-                                  {fieldValue.map((row, i) => (
-                                    <div key={i} className="array-item-form">
-                                      <h5 className="array-item-title">
-                                        {capitalizeFirst(fieldKey)} {i + 1}
-                                      </h5>
-                                      <div className="array-item-grid">
-                                        {Object.entries(row).map(([k, v]) => (
-                                          <div
-                                            key={k}
-                                            className="array-field-group"
-                                          >
-                                            <label className="array-field-label">
-                                              {capitalizeFirst(k)}:
-                                            </label>
-                                            <div className="array-field-value">
-                                              {typeof v === "string" &&
-                                              v.startsWith("data:image/") ? (
-                                                <img
-                                                  src={v || "/placeholder.svg"}
-                                                  alt={k}
-                                                  className="array-image-preview"
-                                                />
-                                              ) : (
+                              </div>
+                            );
+                          }
+
+                          // Handle arrays
+                          if (Array.isArray(fieldValue)) {
+                            return (
+                              <div
+                                key={`array-${fieldKey}`}
+                                className="form-group-preview array-group"
+                              >
+                                <label className="form-label-preview">
+                                  📝 {formatLabel(fieldKey)}
+                                </label>
+                                <div className="array-display">
+                                  {fieldValue.length === 0 ? (
+                                    <div className="form-input-display">
+                                      <input
+                                        type="text"
+                                        value="No data"
+                                        disabled
+                                        className="form-input disabled preview"
+                                      />
+                                    </div>
+                                  ) : (
+                                    fieldValue.map((item, index) => (
+                                      <div
+                                        key={`${fieldKey}-${index}`}
+                                        className="array-item"
+                                        style={{
+                                          marginBottom: "10px",
+                                          padding: "10px",
+                                          border: "1px solid #e5e7eb",
+                                          borderRadius: "6px",
+                                          backgroundColor: "#f9fafb"
+                                        }}
+                                      >
+                                        {typeof item === "object" && item !== null ? (
+                                          <div>
+                                            <h6 style={{ margin: "0 0 8px 0", fontSize: "0.85rem" }}>
+                                              Item {index + 1}
+                                            </h6>
+                                            {Object.entries(item).map(([itemKey, itemValue]) => (
+                                              <div key={itemKey} style={{ marginBottom: "5px" }}>
+                                                <span style={{ fontSize: "0.8rem", color: "#6b7280" }}>
+                                                  {formatLabel(itemKey)}:
+                                                </span>
                                                 <input
                                                   type="text"
-                                                  value={String(v)}
+                                                  value={itemValue || ""}
                                                   disabled
-                                                  className="form-input disabled preview small"
+                                                  className="form-input disabled preview"
+                                                  style={{ marginLeft: "8px", fontSize: "0.8rem" }}
                                                 />
-                                              )}
-                                            </div>
+                                              </div>
+                                            ))}
                                           </div>
-                                        ))}
-                                      </div>
-                                    </div>
-                                  ))}
-                                </div>
-                              ) : (
-                                <div className="form-input-display">
-                                  <textarea
-                                    value={fieldValue.join(", ")}
-                                    disabled
-                                    className="form-textarea disabled preview"
-                                    rows="2"
-                                  />
-                                </div>
-                              )
-                            ) : typeof fieldValue === "object" &&
-                              fieldValue !== null ? (
-                              <div className="object-data-display">
-                                <div className="object-fields-grid">
-                                  {Object.entries(fieldValue).map(([k, v]) => (
-                                    <div key={k} className="object-field-group">
-                                      <label className="object-field-label">
-                                        {capitalizeFirst(k)}:
-                                      </label>
-                                      <div className="object-field-value">
-                                        {typeof v === "string" &&
-                                        v.startsWith("data:image/") ? (
-                                          <img
-                                            src={v || "/placeholder.svg"}
-                                            alt={k}
-                                            className="object-image-preview"
-                                          />
                                         ) : (
                                           <input
                                             type="text"
-                                            value={String(v)}
+                                            value={item || ""}
                                             disabled
-                                            className="form-input disabled preview small"
+                                            className="form-input disabled preview"
                                           />
                                         )}
                                       </div>
-                                    </div>
-                                  ))}
+                                    ))
+                                  )}
                                 </div>
                               </div>
-                            ) : (
-                              <div className="form-input-display">
-                                <input
-                                  type="text"
-                                  value={String(fieldValue)}
-                                  disabled
-                                  className="form-input disabled preview"
-                                />
-                              </div>
-                            )}
-                          </div>
-                        )
+                            );
+                          }
+
+                          return null;
+                        }
                       )}
                     </div>
                   </div>
@@ -3248,7 +3332,11 @@ const ETCAdminPanel = ({
                           </h4>
 
                           <div className="form-layout-preview">
-                            <div className="form-grid-preview">
+                            <div className="form-grid-preview" style={{
+                              display: "grid",
+                              gridTemplateColumns: "1fr",
+                              gap: "20px"
+                            }}>
                               {Object.entries(formData).map(
                                 ([fieldKey, fieldValue]) => {
                                   // Handle photos specially
@@ -3261,6 +3349,9 @@ const ETCAdminPanel = ({
                                       <div
                                         key={`${stageKey}-${formKey}-photos`}
                                         className="form-group-preview photo-group"
+                                        style={{
+                                          width: "100%"
+                                        }}
                                       >
                                         <label className="form-label-preview">
                                           📸{" "}
@@ -3325,12 +3416,175 @@ const ETCAdminPanel = ({
                                     );
                                   }
 
+                                  // Handle nested objects (like accessories)
+                                  if (
+                                    typeof fieldValue === "object" &&
+                                    fieldValue !== null &&
+                                    !Array.isArray(fieldValue) &&
+                                    fieldKey !== "photos"
+                                  ) {
+                                    return (
+                                      <div
+                                        key={`${stageKey}-${formKey}-${fieldKey}`}
+                                        className="form-group-preview nested-object-group"
+                                      >
+                                        <label className="form-label-preview">
+                                          📋 {formatLabel(fieldKey)}
+                                        </label>
+                                        <div className="nested-object-display" style={{
+                                          display: "grid",
+                                          gridTemplateColumns: "repeat(2, 1fr)",
+                                          gap: "15px",
+                                          marginTop: "10px"
+                                        }}>
+                                          {Object.entries(fieldValue).map(
+                                            ([nestedKey, nestedValue]) => (
+                                              <div
+                                                key={`${fieldKey}-${nestedKey}`}
+                                                className="nested-item"
+                                                style={{
+                                                  padding: "12px",
+                                                  border: "1px solid #e5e7eb",
+                                                  borderRadius: "8px",
+                                                  backgroundColor: "#f9fafb"
+                                                }}
+                                              >
+                                                <h5 style={{
+                                                  margin: "0 0 10px 0",
+                                                  color: "#374151",
+                                                  fontSize: "0.9rem",
+                                                  fontWeight: "600"
+                                                }}>
+                                                  {formatLabel(fieldKey)} - {nestedKey}
+                                                </h5>
+                                                {typeof nestedValue === "object" && nestedValue !== null ? (
+                                                  <div className="nested-fields-grid" style={{
+                                                    display: "grid",
+                                                    gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                                                    gap: "10px"
+                                                  }}>
+                                                    {Object.entries(nestedValue).map(
+                                                      ([subKey, subValue]) => (
+                                                        <div
+                                                          key={`${nestedKey}-${subKey}`}
+                                                          className="nested-field"
+                                                        >
+                                                          <label className="nested-field-label" style={{
+                                                            fontSize: "0.8rem",
+                                                            color: "#6b7280",
+                                                            fontWeight: "500"
+                                                          }}>
+                                                            {formatLabel(subKey)}:
+                                                          </label>
+                                                          <div className="nested-field-value">
+                                                            <input
+                                                              type="text"
+                                                              value={subValue || ""}
+                                                              disabled
+                                                              className="form-input disabled preview"
+                                                              style={{
+                                                                fontSize: "0.85rem",
+                                                                padding: "6px 8px"
+                                                              }}
+                                                            />
+                                                          </div>
+                                                        </div>
+                                                      )
+                                                    )}
+                                                  </div>
+                                                ) : (
+                                                  <div className="form-input-display">
+                                                    <input
+                                                      type="text"
+                                                      value={nestedValue || ""}
+                                                      disabled
+                                                      className="form-input disabled preview"
+                                                    />
+                                                  </div>
+                                                )}
+                                              </div>
+                                            )
+                                          )}
+                                        </div>
+                                      </div>
+                                    );
+                                  }
+
+                                  // Handle arrays
+                                  if (Array.isArray(fieldValue)) {
+                                    return (
+                                      <div
+                                        key={`${stageKey}-${formKey}-${fieldKey}`}
+                                        className="form-group-preview array-group"
+                                      >
+                                        <label className="form-label-preview">
+                                          📝 {formatLabel(fieldKey)}
+                                        </label>
+                                        <div className="array-display">
+                                          {fieldValue.length === 0 ? (
+                                            <div className="form-input-display">
+                                              <input
+                                                type="text"
+                                                value="No data"
+                                                disabled
+                                                className="form-input disabled preview"
+                                              />
+                                            </div>
+                                          ) : (
+                                            fieldValue.map((item, index) => (
+                                              <div
+                                                key={`${fieldKey}-${index}`}
+                                                className="array-item"
+                                                style={{
+                                                  marginBottom: "10px",
+                                                  padding: "10px",
+                                                  border: "1px solid #e5e7eb",
+                                                  borderRadius: "6px",
+                                                  backgroundColor: "#f9fafb"
+                                                }}
+                                              >
+                                                {typeof item === "object" && item !== null ? (
+                                                  <div>
+                                                    <h6 style={{ margin: "0 0 8px 0", fontSize: "0.85rem" }}>
+                                                      Item {index + 1}
+                                                    </h6>
+                                                    {Object.entries(item).map(([itemKey, itemValue]) => (
+                                                      <div key={itemKey} style={{ marginBottom: "5px" }}>
+                                                        <span style={{ fontSize: "0.8rem", color: "#6b7280" }}>
+                                                          {formatLabel(itemKey)}:
+                                                        </span>
+                                                        <input
+                                                          type="text"
+                                                          value={itemValue || ""}
+                                                          disabled
+                                                          className="form-input disabled preview"
+                                                          style={{ marginLeft: "8px", fontSize: "0.8rem" }}
+                                                        />
+                                                      </div>
+                                                    ))}
+                                                  </div>
+                                                ) : (
+                                                  <input
+                                                    type="text"
+                                                    value={item || ""}
+                                                    disabled
+                                                    className="form-input disabled preview"
+                                                  />
+                                                )}
+                                              </div>
+                                            ))
+                                          )}
+                                        </div>
+                                      </div>
+                                    );
+                                  }
+
                                   return null;
                                 }
                               )}
                             </div>
 
-                            <div className="form-preview-container">
+                            {/* <div className="form-preview-container">
                               {(() => {
                                 const stageNumber = Number.parseInt(
                                   stageKey.replace("stage", "")
@@ -3405,7 +3659,7 @@ const ETCAdminPanel = ({
                                   </div>
                                 );
                               })()}
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                       ))}
