@@ -1334,29 +1334,6 @@ function ProtocolAccessoriesForm({
               </td>
             </tr>
           ))}
-          {[...Array(5)].map((_, index) => (
-            <tr key={`empty-${index}`}>
-              <td></td>
-              <td>
-                <input type="text" />
-              </td>
-              <td>
-                <input type="text" />
-              </td>
-              <td>
-                <input type="text" />
-              </td>
-              <td>
-                <input type="text" />
-              </td>
-              <td>
-                <input type="text" />
-              </td>
-              <td>
-                <input type="text" />
-              </td>
-            </tr>
-          ))}
         </tbody>
       </table>
 
