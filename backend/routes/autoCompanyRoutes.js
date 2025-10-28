@@ -3,13 +3,12 @@ import {
   setCompanyData,
   setNewCompanyData,
   getAllCompanyData,
-  deleteCompanyByID,
   setFormsCompleted,
   setapproveCompanyStage,
   deleteProjectByName,
   deleteCompanyByName,
   rejectCompanyStage
-} from "../controller/companyController.js";
+} from "../controller/autoCompanyController.js";
 
 
 const router = express.Router();

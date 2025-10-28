@@ -11,9 +11,9 @@ import userRoutes from "./routes/userRoute.js";
 import AutoCompanyRoute from "./routes/autoCompanyRoutes.js";
 import AutoDataRoute from "./routes/autoDataRoutes.js";
 import VConnectCompanyRoute from "./routes/vConnectCompanyRoutes.js"
-import VConnectDataRoute from "./routes/VConnectDataRoute.js";
+import VConnectDataRoute from "./routes/vConnectDataRoute.js"
 import TractionCompanyRoute from "./routes/tractionCompanyRoutes.js"
-import TractionDataRoute from "./routes/TractionDataRoute.js"
+import TractionDataRoute from "./routes/tractionDataRoute.js"
 
 dotenv.config();
 connectDB();
