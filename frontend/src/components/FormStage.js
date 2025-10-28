@@ -219,7 +219,7 @@ const FormStage = ({
       // 🔹 formsCompleted + project status logic
       if (isLastFormOfStage) {
         await axios.post(
-          `${BACKEND_API_BASE_URL}/api/company/updateFormsCompleted`,
+          `${BACKEND_API_BASE_URL}/api/autocompany/updateFormsCompleted`,
           {
             projectName,
             companyName,
@@ -253,7 +253,7 @@ const FormStage = ({
         });
       } else {
         await axios.post(
-          `${BACKEND_API_BASE_URL}/api/company/updateFormsCompleted`,
+          `${BACKEND_API_BASE_URL}/api/autocompany/updateFormsCompleted`,
           {
             projectName,
             companyName,

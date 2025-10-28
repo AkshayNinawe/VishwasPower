@@ -5,6 +5,7 @@ import axios from "axios";
 import { BACKEND_API_BASE_URL, additionalLogging } from "./constant";
 import FormStage from "./FormStage"; // Import FormStage
 import VConnected63MVATransformerForms from "./VConnected63MVATransformerForms";
+import TractionTransformerForms from "./TractionTransformerForms";
 import "./stage-review-styles.css";
 import "./form-styles.css";
 import html2pdf from "html2pdf.js";
@@ -1713,7 +1714,7 @@ const ETCAdminPanel = ({
 
         try {
           const response = await axios.post(
-            `${BACKEND_API_BASE_URL}/api/company`,
+            `${BACKEND_API_BASE_URL}/api/autocompany`,
             {
               companyName: newCompany.name,
               companyDescription: newCompany.description,
@@ -1754,7 +1755,7 @@ const ETCAdminPanel = ({
 
           try {
             const response = await axios.post(
-              `${BACKEND_API_BASE_URL}/api/vConnectCompany`,
+              `${BACKEND_API_BASE_URL}/api/vconnectcompany`,
               {
                 companyName: newCompany.name,
                 companyDescription: newCompany.description,
@@ -1793,7 +1794,7 @@ const ETCAdminPanel = ({
 
           try {
             const response = await axios.post(
-              `${BACKEND_API_BASE_URL}/api/TractionCompany`,
+              `${BACKEND_API_BASE_URL}/api/tractioncompany`,
               {
                 companyName: newCompany.name,
                 companyDescription: newCompany.description,
@@ -1830,7 +1831,8 @@ const ETCAdminPanel = ({
           if (ProjectName.trim()) {
             // Check if project with same name already exists in this company
             const existingProject = selectedMainCompany.companyProjects?.find(
-              (project) => project.name.toLowerCase() === ProjectName.toLowerCase()
+              (project) =>
+                project.name.toLowerCase() === ProjectName.toLowerCase()
             );
 
             if (existingProject) {
@@ -1876,7 +1878,7 @@ const ETCAdminPanel = ({
                 );
               }
               const response = await axios.post(
-                `${BACKEND_API_BASE_URL}/api/company/addCompany`,
+                `${BACKEND_API_BASE_URL}/api/autocompany/addCompany`,
                 {
                   projectName: ProjectName,
                   companyName: CompanyName, // Pass the CompanyId to the backend
@@ -1919,7 +1921,8 @@ const ETCAdminPanel = ({
             if (ProjectName.trim()) {
               // Check if project with same name already exists in this company
               const existingProject = selectedMainCompany.companyProjects?.find(
-                (project) => project.name.toLowerCase() === ProjectName.toLowerCase()
+                (project) =>
+                  project.name.toLowerCase() === ProjectName.toLowerCase()
               );
 
               if (existingProject) {
@@ -1946,6 +1949,7 @@ const ETCAdminPanel = ({
                   4: false,
                   5: false,
                   6: false,
+                  7: false,
                 },
                 submittedStages: {
                   1: false,
@@ -1954,11 +1958,12 @@ const ETCAdminPanel = ({
                   4: false,
                   5: false,
                   6: false,
+                  7: false,
                 },
               };
               try {
                 const response = await axios.post(
-                  `${BACKEND_API_BASE_URL}/api/VConnectCompany/addCompany`,
+                  `${BACKEND_API_BASE_URL}/api/vconnectcompany/addCompany`,
                   {
                     projectName: ProjectName,
                     companyName: CompanyName, // Pass the CompanyId to the backend
@@ -2000,7 +2005,8 @@ const ETCAdminPanel = ({
             if (ProjectName.trim()) {
               // Check if project with same name already exists in this company
               const existingProject = selectedMainCompany.companyProjects?.find(
-                (project) => project.name.toLowerCase() === ProjectName.toLowerCase()
+                (project) =>
+                  project.name.toLowerCase() === ProjectName.toLowerCase()
               );
 
               if (existingProject) {
@@ -2039,7 +2045,7 @@ const ETCAdminPanel = ({
               };
               try {
                 const response = await axios.post(
-                  `${BACKEND_API_BASE_URL}/api/TractionCompany/addCompany`,
+                  `${BACKEND_API_BASE_URL}/api/tractioncompany/addCompany`,
                   {
                     projectName: ProjectName,
                     companyName: CompanyName, // Pass the CompanyId to the backend
@@ -2127,8 +2133,22 @@ const ETCAdminPanel = ({
           "Frontend : From handleApproveStage post call to api/company/approveCompanyStage"
         );
       }
+
+      // If-else block for three departments
+      let apiEndpoint;
+      if (selectedDepartment.name === 'Auto Transformer') {
+        apiEndpoint = '/api/autocompany/approveCompanyStage';
+      } else if (selectedDepartment.name === 'Traction Transformer') {
+        apiEndpoint = '/api/tractioncompany/approveCompanyStage';
+      } else if (selectedDepartment.name === 'V Connected 63 MVA Transformer') {
+        apiEndpoint = '/api/vconnectcompany/approveCompanyStage';
+      } else {
+        // Fallback to original API
+        apiEndpoint = '/api/company/approveCompanyStage';
+      }
+
       const response = await axios.post(
-        `${BACKEND_API_BASE_URL}/api/company/approveCompanyStage`,
+        `${BACKEND_API_BASE_URL}${apiEndpoint}`,
         {
           companyName: selectedProjectForReview.companyName,
           projectName: selectedProjectForReview.name,
@@ -2520,8 +2540,22 @@ const ETCAdminPanel = ({
       }
 
       // ✅ Axios DELETE requires "data" wrapper for body
+      let apiEndpoint;
+      
+      // If-else block for three departments
+      if (selectedDepartment.name === 'Auto Transformer') {
+        apiEndpoint = '/api/autocompany/deleteProject';
+      } else if (selectedDepartment.name === 'Traction Transformer') {
+        apiEndpoint = '/api/tractioncompany/deleteProject';
+      } else if (selectedDepartment.name === 'V Connected 63 MVA Transformer') {
+        apiEndpoint = '/api/vconnectcompany/deleteProject';
+      } else {
+        // Fallback to original API
+        apiEndpoint = '/api/company/deleteProject';
+      }
+
       const response = await axios.delete(
-        `${BACKEND_API_BASE_URL}/api/company/deleteProject`,
+        `${BACKEND_API_BASE_URL}${apiEndpoint}`,
         {
           data: {
             projectName: Project.name,
@@ -2586,10 +2620,27 @@ const ETCAdminPanel = ({
       }
 
       // ✅ Axios DELETE requires "data" wrapper for body
+      let apiEndpoint;
+      
+      // If-else block for three departments
+      if (selectedDepartment.name === 'Auto Transformer') {
+        apiEndpoint = '/api/autocompany/deleteCompany';
+      } else if (selectedDepartment.name === 'Traction Transformer') {
+        apiEndpoint = '/api/tractioncompany/deleteCompany';
+      } else if (selectedDepartment.name === 'V Connected 63 MVA Transformer') {
+        apiEndpoint = '/api/vconnectcompany/deleteCompany';
+      } else {
+        // Fallback to original API
+        apiEndpoint = '/api/company/deleteCompany';
+      }
+
       const response = await axios.delete(
-        `${BACKEND_API_BASE_URL}/api/company/deleteCompany`,
+        `${BACKEND_API_BASE_URL}${apiEndpoint}`,
         {
-          data: { companyName: company.companyName, department: selectedDepartment.name },
+          data: {
+            companyName: company.companyName,
+            department: selectedDepartment.name,
+          },
         }
       );
 
@@ -2664,7 +2715,7 @@ const ETCAdminPanel = ({
     if (department?.name === "Auto Transformer") {
       let backendSavedCompanys = []; // Corrected redeclaration
       axios
-        .get(`${BACKEND_API_BASE_URL}/api/company`, {
+        .get(`${BACKEND_API_BASE_URL}/api/autocompany`, {
           params: {
             departmentType: "Auto Transformer",
           },
@@ -2682,7 +2733,7 @@ const ETCAdminPanel = ({
       if (department?.name === "Traction Transformer") {
         let backendSavedCompanys = [];
         axios
-          .get(`${BACKEND_API_BASE_URL}/api/company`, {
+          .get(`${BACKEND_API_BASE_URL}/api/tractioncompany`, {
             params: {
               departmentType: "Traction Transformer",
             },
@@ -2702,7 +2753,7 @@ const ETCAdminPanel = ({
       } else {
         let backendSavedCompanys = []; // Corrected redeclaration
         axios
-          .get(`${BACKEND_API_BASE_URL}/api/company`, {
+          .get(`${BACKEND_API_BASE_URL}/api/vconnectcompany`, {
             params: {
               departmentType: "V Connect",
             },
@@ -2819,10 +2870,7 @@ const ETCAdminPanel = ({
         ) : showFormStage && formStageProject ? (
           (() => {
             if (selectedDepartment?.name === "V Connected 63 MVA Transformer") {
-              console.log(
-                "Load form for : ",
-                selectedDepartment?.name
-              );
+              console.log("Load form for : ", selectedDepartment?.name);
               return (
                 <VConnected63MVATransformerForms
                   firstFormDataFromDB={formDataFromDB}
@@ -2837,23 +2885,37 @@ const ETCAdminPanel = ({
                 />
               );
             } else {
-              console.log(
-                "Load form for : ",
-                selectedDepartment?.name
-              );
-              return (
-                <FormStage
-                  firstFormDataFromDB={formDataFromDB}
-                  projectName={projectName}
-                  companyName={companyName}
-                  stage={formStageStage}
-                  onFormSubmit={handleFormStageSubmit}
-                  onBack={handleBackFromFormStage}
-                  ProjectData={formStageProject}
-                  setSelectedMainCompany={setSelectedMainCompany}
-                  selectedProjectForReview={selectedProjectForReview}
-                />
-              );
+              if (selectedDepartment?.name === "Traction Transformer") {
+                console.log("Load form for : ", selectedDepartment?.name);
+                return (
+                  <TractionTransformerForms
+                    firstFormDataFromDB={formDataFromDB}
+                    projectName={projectName}
+                    companyName={companyName}
+                    stage={formStageStage}
+                    onFormSubmit={handleFormStageSubmit}
+                    onBack={handleBackFromFormStage}
+                    ProjectData={formStageProject}
+                    setSelectedMainCompany={setSelectedMainCompany}
+                    selectedProjectForReview={selectedProjectForReview}
+                  />
+                );
+              } else if (selectedDepartment?.name === "Auto Transformer") {
+                console.log("Load form for : ", selectedDepartment?.name);
+                return (
+                  <FormStage
+                    firstFormDataFromDB={formDataFromDB}
+                    projectName={projectName}
+                    companyName={companyName}
+                    stage={formStageStage}
+                    onFormSubmit={handleFormStageSubmit}
+                    onBack={handleBackFromFormStage}
+                    ProjectData={formStageProject}
+                    setSelectedMainCompany={setSelectedMainCompany}
+                    selectedProjectForReview={selectedProjectForReview}
+                  />
+                );
+              }
             }
           })()
         ) : reviewMode ? (
@@ -2911,11 +2973,14 @@ const ETCAdminPanel = ({
                   </div>
 
                   <div className="form-layout-preview">
-                    <div className="form-grid-preview" style={{
-                      display: "grid",
-                      gridTemplateColumns: "1fr",
-                      gap: "20px"
-                    }}>
+                    <div
+                      className="form-grid-preview"
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr",
+                        gap: "20px",
+                      }}
+                    >
                       {Object.entries(formData).map(
                         ([fieldKey, fieldValue]) => {
                           // Handle photos specially
@@ -2929,7 +2994,7 @@ const ETCAdminPanel = ({
                                 key={`photos-${fieldKey}`}
                                 className="form-group-preview photo-group"
                                 style={{
-                                  width: "100%"
+                                  width: "100%",
                                 }}
                               >
                                 <label className="form-label-preview">
@@ -3005,12 +3070,15 @@ const ETCAdminPanel = ({
                                 <label className="form-label-preview">
                                   📋 {formatLabel(fieldKey)}
                                 </label>
-                                <div className="nested-object-display" style={{
-                                  display: "grid",
-                                  gridTemplateColumns: "repeat(2, 1fr)",
-                                  gap: "15px",
-                                  marginTop: "10px"
-                                }}>
+                                <div
+                                  className="nested-object-display"
+                                  style={{
+                                    display: "grid",
+                                    gridTemplateColumns: "repeat(2, 1fr)",
+                                    gap: "15px",
+                                    marginTop: "10px",
+                                  }}
+                                >
                                   {Object.entries(fieldValue).map(
                                     ([nestedKey, nestedValue]) => (
                                       <div
@@ -3020,34 +3088,44 @@ const ETCAdminPanel = ({
                                           padding: "12px",
                                           border: "1px solid #e5e7eb",
                                           borderRadius: "8px",
-                                          backgroundColor: "#f9fafb"
+                                          backgroundColor: "#f9fafb",
                                         }}
                                       >
-                                        <h5 style={{
-                                          margin: "0 0 10px 0",
-                                          color: "#374151",
-                                          fontSize: "0.9rem",
-                                          fontWeight: "600"
-                                        }}>
+                                        <h5
+                                          style={{
+                                            margin: "0 0 10px 0",
+                                            color: "#374151",
+                                            fontSize: "0.9rem",
+                                            fontWeight: "600",
+                                          }}
+                                        >
                                           {formatLabel(fieldKey)} - {nestedKey}
                                         </h5>
-                                        {typeof nestedValue === "object" && nestedValue !== null ? (
-                                          <div className="nested-fields-grid" style={{
-                                            display: "grid",
-                                            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-                                            gap: "10px"
-                                          }}>
+                                        {typeof nestedValue === "object" &&
+                                        nestedValue !== null ? (
+                                          <div
+                                            className="nested-fields-grid"
+                                            style={{
+                                              display: "grid",
+                                              gridTemplateColumns:
+                                                "repeat(auto-fit, minmax(200px, 1fr))",
+                                              gap: "10px",
+                                            }}
+                                          >
                                             {Object.entries(nestedValue).map(
                                               ([subKey, subValue]) => (
                                                 <div
                                                   key={`${nestedKey}-${subKey}`}
                                                   className="nested-field"
                                                 >
-                                                  <label className="nested-field-label" style={{
-                                                    fontSize: "0.8rem",
-                                                    color: "#6b7280",
-                                                    fontWeight: "500"
-                                                  }}>
+                                                  <label
+                                                    className="nested-field-label"
+                                                    style={{
+                                                      fontSize: "0.8rem",
+                                                      color: "#6b7280",
+                                                      fontWeight: "500",
+                                                    }}
+                                                  >
                                                     {formatLabel(subKey)}:
                                                   </label>
                                                   <div className="nested-field-value">
@@ -3058,7 +3136,7 @@ const ETCAdminPanel = ({
                                                       className="form-input disabled preview"
                                                       style={{
                                                         fontSize: "0.85rem",
-                                                        padding: "6px 8px"
+                                                        padding: "6px 8px",
                                                       }}
                                                     />
                                                   </div>
@@ -3114,28 +3192,49 @@ const ETCAdminPanel = ({
                                           padding: "10px",
                                           border: "1px solid #e5e7eb",
                                           borderRadius: "6px",
-                                          backgroundColor: "#f9fafb"
+                                          backgroundColor: "#f9fafb",
                                         }}
                                       >
-                                        {typeof item === "object" && item !== null ? (
+                                        {typeof item === "object" &&
+                                        item !== null ? (
                                           <div>
-                                            <h6 style={{ margin: "0 0 8px 0", fontSize: "0.85rem" }}>
+                                            <h6
+                                              style={{
+                                                margin: "0 0 8px 0",
+                                                fontSize: "0.85rem",
+                                              }}
+                                            >
                                               Item {index + 1}
                                             </h6>
-                                            {Object.entries(item).map(([itemKey, itemValue]) => (
-                                              <div key={itemKey} style={{ marginBottom: "5px" }}>
-                                                <span style={{ fontSize: "0.8rem", color: "#6b7280" }}>
-                                                  {formatLabel(itemKey)}:
-                                                </span>
-                                                <input
-                                                  type="text"
-                                                  value={itemValue || ""}
-                                                  disabled
-                                                  className="form-input disabled preview"
-                                                  style={{ marginLeft: "8px", fontSize: "0.8rem" }}
-                                                />
-                                              </div>
-                                            ))}
+                                            {Object.entries(item).map(
+                                              ([itemKey, itemValue]) => (
+                                                <div
+                                                  key={itemKey}
+                                                  style={{
+                                                    marginBottom: "5px",
+                                                  }}
+                                                >
+                                                  <span
+                                                    style={{
+                                                      fontSize: "0.8rem",
+                                                      color: "#6b7280",
+                                                    }}
+                                                  >
+                                                    {formatLabel(itemKey)}:
+                                                  </span>
+                                                  <input
+                                                    type="text"
+                                                    value={itemValue || ""}
+                                                    disabled
+                                                    className="form-input disabled preview"
+                                                    style={{
+                                                      marginLeft: "8px",
+                                                      fontSize: "0.8rem",
+                                                    }}
+                                                  />
+                                                </div>
+                                              )
+                                            )}
                                           </div>
                                         ) : (
                                           <input
@@ -3332,11 +3431,14 @@ const ETCAdminPanel = ({
                           </h4>
 
                           <div className="form-layout-preview">
-                            <div className="form-grid-preview" style={{
-                              display: "grid",
-                              gridTemplateColumns: "1fr",
-                              gap: "20px"
-                            }}>
+                            <div
+                              className="form-grid-preview"
+                              style={{
+                                display: "grid",
+                                gridTemplateColumns: "1fr",
+                                gap: "20px",
+                              }}
+                            >
                               {Object.entries(formData).map(
                                 ([fieldKey, fieldValue]) => {
                                   // Handle photos specially
@@ -3350,7 +3452,7 @@ const ETCAdminPanel = ({
                                         key={`${stageKey}-${formKey}-photos`}
                                         className="form-group-preview photo-group"
                                         style={{
-                                          width: "100%"
+                                          width: "100%",
                                         }}
                                       >
                                         <label className="form-label-preview">
@@ -3431,12 +3533,16 @@ const ETCAdminPanel = ({
                                         <label className="form-label-preview">
                                           📋 {formatLabel(fieldKey)}
                                         </label>
-                                        <div className="nested-object-display" style={{
-                                          display: "grid",
-                                          gridTemplateColumns: "repeat(2, 1fr)",
-                                          gap: "15px",
-                                          marginTop: "10px"
-                                        }}>
+                                        <div
+                                          className="nested-object-display"
+                                          style={{
+                                            display: "grid",
+                                            gridTemplateColumns:
+                                              "repeat(2, 1fr)",
+                                            gap: "15px",
+                                            marginTop: "10px",
+                                          }}
+                                        >
                                           {Object.entries(fieldValue).map(
                                             ([nestedKey, nestedValue]) => (
                                               <div
@@ -3446,45 +3552,67 @@ const ETCAdminPanel = ({
                                                   padding: "12px",
                                                   border: "1px solid #e5e7eb",
                                                   borderRadius: "8px",
-                                                  backgroundColor: "#f9fafb"
+                                                  backgroundColor: "#f9fafb",
                                                 }}
                                               >
-                                                <h5 style={{
-                                                  margin: "0 0 10px 0",
-                                                  color: "#374151",
-                                                  fontSize: "0.9rem",
-                                                  fontWeight: "600"
-                                                }}>
-                                                  {formatLabel(fieldKey)} - {nestedKey}
+                                                <h5
+                                                  style={{
+                                                    margin: "0 0 10px 0",
+                                                    color: "#374151",
+                                                    fontSize: "0.9rem",
+                                                    fontWeight: "600",
+                                                  }}
+                                                >
+                                                  {formatLabel(fieldKey)} -{" "}
+                                                  {nestedKey}
                                                 </h5>
-                                                {typeof nestedValue === "object" && nestedValue !== null ? (
-                                                  <div className="nested-fields-grid" style={{
-                                                    display: "grid",
-                                                    gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-                                                    gap: "10px"
-                                                  }}>
-                                                    {Object.entries(nestedValue).map(
+                                                {typeof nestedValue ===
+                                                  "object" &&
+                                                nestedValue !== null ? (
+                                                  <div
+                                                    className="nested-fields-grid"
+                                                    style={{
+                                                      display: "grid",
+                                                      gridTemplateColumns:
+                                                        "repeat(auto-fit, minmax(200px, 1fr))",
+                                                      gap: "10px",
+                                                    }}
+                                                  >
+                                                    {Object.entries(
+                                                      nestedValue
+                                                    ).map(
                                                       ([subKey, subValue]) => (
                                                         <div
                                                           key={`${nestedKey}-${subKey}`}
                                                           className="nested-field"
                                                         >
-                                                          <label className="nested-field-label" style={{
-                                                            fontSize: "0.8rem",
-                                                            color: "#6b7280",
-                                                            fontWeight: "500"
-                                                          }}>
-                                                            {formatLabel(subKey)}:
+                                                          <label
+                                                            className="nested-field-label"
+                                                            style={{
+                                                              fontSize:
+                                                                "0.8rem",
+                                                              color: "#6b7280",
+                                                              fontWeight: "500",
+                                                            }}
+                                                          >
+                                                            {formatLabel(
+                                                              subKey
+                                                            )}
+                                                            :
                                                           </label>
                                                           <div className="nested-field-value">
                                                             <input
                                                               type="text"
-                                                              value={subValue || ""}
+                                                              value={
+                                                                subValue || ""
+                                                              }
                                                               disabled
                                                               className="form-input disabled preview"
                                                               style={{
-                                                                fontSize: "0.85rem",
-                                                                padding: "6px 8px"
+                                                                fontSize:
+                                                                  "0.85rem",
+                                                                padding:
+                                                                  "6px 8px",
                                                               }}
                                                             />
                                                           </div>
@@ -3540,28 +3668,59 @@ const ETCAdminPanel = ({
                                                   padding: "10px",
                                                   border: "1px solid #e5e7eb",
                                                   borderRadius: "6px",
-                                                  backgroundColor: "#f9fafb"
+                                                  backgroundColor: "#f9fafb",
                                                 }}
                                               >
-                                                {typeof item === "object" && item !== null ? (
+                                                {typeof item === "object" &&
+                                                item !== null ? (
                                                   <div>
-                                                    <h6 style={{ margin: "0 0 8px 0", fontSize: "0.85rem" }}>
+                                                    <h6
+                                                      style={{
+                                                        margin: "0 0 8px 0",
+                                                        fontSize: "0.85rem",
+                                                      }}
+                                                    >
                                                       Item {index + 1}
                                                     </h6>
-                                                    {Object.entries(item).map(([itemKey, itemValue]) => (
-                                                      <div key={itemKey} style={{ marginBottom: "5px" }}>
-                                                        <span style={{ fontSize: "0.8rem", color: "#6b7280" }}>
-                                                          {formatLabel(itemKey)}:
-                                                        </span>
-                                                        <input
-                                                          type="text"
-                                                          value={itemValue || ""}
-                                                          disabled
-                                                          className="form-input disabled preview"
-                                                          style={{ marginLeft: "8px", fontSize: "0.8rem" }}
-                                                        />
-                                                      </div>
-                                                    ))}
+                                                    {Object.entries(item).map(
+                                                      ([
+                                                        itemKey,
+                                                        itemValue,
+                                                      ]) => (
+                                                        <div
+                                                          key={itemKey}
+                                                          style={{
+                                                            marginBottom: "5px",
+                                                          }}
+                                                        >
+                                                          <span
+                                                            style={{
+                                                              fontSize:
+                                                                "0.8rem",
+                                                              color: "#6b7280",
+                                                            }}
+                                                          >
+                                                            {formatLabel(
+                                                              itemKey
+                                                            )}
+                                                            :
+                                                          </span>
+                                                          <input
+                                                            type="text"
+                                                            value={
+                                                              itemValue || ""
+                                                            }
+                                                            disabled
+                                                            className="form-input disabled preview"
+                                                            style={{
+                                                              marginLeft: "8px",
+                                                              fontSize:
+                                                                "0.8rem",
+                                                            }}
+                                                          />
+                                                        </div>
+                                                      )
+                                                    )}
                                                   </div>
                                                 ) : (
                                                   <input

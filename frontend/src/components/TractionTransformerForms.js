@@ -9833,7 +9833,7 @@ export function WorkCompletionReportForm({
 }
 
 // Main V Connected 63 MVA Transformer Forms Component
-const VConnected63MVATransformerForms = ({
+const TractionTransformerForms = ({
   firstFormDataFromDB,
   projectName,
   companyName,
@@ -9928,7 +9928,7 @@ const VConnected63MVATransformerForms = ({
       
       if (isLastFormOfStage) {
         // await axios.post(
-        //   `${BACKEND_API_BASE_URL}/api/vconnectData/updateFormsCompleted`,
+        //   `${BACKEND_API_BASE_URL}/api/tractionData/updateFormsCompleted`,
         //   {
         //     projectName,
         //     companyName,
@@ -9965,7 +9965,7 @@ const VConnected63MVATransformerForms = ({
         }
       } else {
         // await axios.post(
-        //   `${BACKEND_API_BASE_URL}/api/vconnectData/updateFormsCompleted`,
+        //   `${BACKEND_API_BASE_URL}/api/tractionData/updateFormsCompleted`,
         //   {
         //     projectName,
         //     companyName,
@@ -10050,7 +10050,7 @@ const VConnected63MVATransformerForms = ({
 }
 
 // Export all forms for V Connected 63 MVA Transformer department
-export const VConnected63MVATransformerFormsConfig = {
+export const TractionTransformerFormsConfig = {
   // Stage 5 forms
   5: [
     {
@@ -10087,4 +10087,4 @@ export const VConnected63MVATransformerFormsConfig = {
   ],
 }
 
-export default VConnected63MVATransformerForms
+export default TractionTransformerForms

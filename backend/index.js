@@ -8,10 +8,12 @@ import { fileURLToPath } from "url";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoute.js";
-import autoTransformerRoute from "./routes/autoTransformerRoutes.js";
-import companyRoute from "./routes/companyRoutes.js";
-import VConnectCompanyRoute from "./routes/VConnectCompanyRoute.js";
-import TractionCompanyRoute from "./routes/TractionCompanyRoute.js"
+import AutoCompanyRoute from "./routes/autoCompanyRoutes.js";
+import AutoDataRoute from "./routes/autoDataRoutes.js";
+import VConnectCompanyRoute from "./routes/vConnectCompanyRoutes.js"
+import VConnectDataRoute from "./routes/VConnectDataRoute.js";
+import TractionCompanyRoute from "./routes/tractionCompanyRoutes.js"
+import TractionDataRoute from "./routes/TractionDataRoute.js"
 
 dotenv.config();
 connectDB();
@@ -34,10 +36,12 @@ app.use("/uploads", express.static(uploadsPath));
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/company", companyRoute);
-app.use("/api/autoData/", autoTransformerRoute);
-app.use("/api/vconnectData/", VConnectCompanyRoute);
-app.use("/api/tractionData/", TractionCompanyRoute);
+app.use("/api/autocompany", AutoCompanyRoute);
+app.use("/api/autoData/", AutoDataRoute);
+app.use("/api/vconnectcompany", VConnectCompanyRoute);
+app.use("/api/vconnectData/", VConnectDataRoute);
+app.use("/api/tractioncompany", TractionCompanyRoute);
+app.use("/api/tractionData/", TractionDataRoute);
 
 const PORT = process.env.PORT || 7000;
 app.listen(PORT, () => {
