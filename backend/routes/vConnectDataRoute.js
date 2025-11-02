@@ -9,7 +9,7 @@ import {
   getCompleteTableData,
   getStageTableData,
   generatePDF,
-} from "../controller/vConnectDataController.js";
+} from "../controller/VConnectDataController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();

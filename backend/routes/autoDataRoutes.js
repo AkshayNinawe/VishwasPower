@@ -9,7 +9,7 @@ import {
   getCompleteTableData,
   getStageTableData,
   generatePDF,
-} from "../controller/autoDataController.js";
+} from "../controller/AutoDataController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
