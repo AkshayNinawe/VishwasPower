@@ -9,7 +9,7 @@ import {
   deleteProjectByName,
   deleteCompanyByName,
   rejectCompanyStage
-} from "../controller/vConnectCompanyController.js";
+} from "../controller/VConnectCompanyController.js";
 
 
 const router = express.Router();
