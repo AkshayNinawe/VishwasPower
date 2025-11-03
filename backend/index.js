@@ -7,13 +7,13 @@ import { fileURLToPath } from "url";
 
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
-import userRoutes from "./routes/userRoute.js";
+import userRoutes from "./routes/userRoutes.js";
 import AutoCompanyRoute from "./routes/autoCompanyRoutes.js";
 import AutoDataRoute from "./routes/autoDataRoutes.js";
 import VConnectCompanyRoute from "./routes/vConnectCompanyRoutes.js"
-import VConnectDataRoute from "./routes/vConnectDataRoute.js"
+import VConnectDataRoute from "./routes/vConnectDataRoutes.js"
 import TractionCompanyRoute from "./routes/tractionCompanyRoutes.js"
-import TractionDataRoute from "./routes/tractionDataRoute.js"
+import TractionDataRoute from "./routes/tractionDataRoutes.js"
 
 dotenv.config();
 connectDB();
