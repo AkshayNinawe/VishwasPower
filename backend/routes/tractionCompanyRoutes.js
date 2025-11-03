@@ -9,7 +9,7 @@ import {
   deleteProjectByName,
   deleteCompanyByName,
   rejectCompanyStage
-} from "../controller/TractionController.js";
+} from "../controller/tractionController.js";
 
 
 const router = express.Router();

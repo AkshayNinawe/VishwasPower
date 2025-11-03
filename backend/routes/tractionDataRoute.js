@@ -9,8 +9,8 @@ import {
   getCompleteTableData,
   getStageTableData,
   generatePDF,
-} from "../controller/TractionDataController.js";
-import { protect } from "../middleware/AuthMiddleware.js";
+} from "../controller/tractionDataController.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 

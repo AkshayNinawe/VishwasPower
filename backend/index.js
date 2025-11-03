@@ -6,14 +6,14 @@ import fs from "fs";
 import { fileURLToPath } from "url";
 
 import connectDB from "./config/db.js";
-import authRoutes from "./routes/AuthRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoute.js";
-import AutoCompanyRoute from "./routes/AutoCompanyRoutes.js";
-import AutoDataRoute from "./routes/AutoDataRoutes.js";
-import VConnectCompanyRoute from "./routes/VConnectCompanyRoutes.js"
-import VConnectDataRoute from "./routes/VConnectDataRoute.js"
-import TractionCompanyRoute from "./routes/TractionCompanyRoutes.js"
-import TractionDataRoute from "./routes/TractionDataRoute.js"
+import AutoCompanyRoute from "./routes/autoCompanyRoutes.js";
+import AutoDataRoute from "./routes/autoDataRoutes.js";
+import VConnectCompanyRoute from "./routes/vConnectCompanyRoutes.js"
+import VConnectDataRoute from "./routes/vConnectDataRoute.js"
+import TractionCompanyRoute from "./routes/tractionCompanyRoutes.js"
+import TractionDataRoute from "./routes/tractionDataRoute.js"
 
 dotenv.config();
 connectDB();

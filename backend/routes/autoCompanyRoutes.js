@@ -8,7 +8,7 @@ import {
   deleteProjectByName,
   deleteCompanyByName,
   rejectCompanyStage
-} from "../controller/AutoCompanyController.js";
+} from "../controller/autoCompanyController.js";
 
 
 const router = express.Router();
