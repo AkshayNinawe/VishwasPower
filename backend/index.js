@@ -6,8 +6,8 @@ import fs from "fs";
 import { fileURLToPath } from "url";
 
 import connectDB from "./config/db.js";
-import authRoutes from "./routes/authRoutes.js";
-import userRoutes from "./routes/UserRoute.js";
+import authRoutes from "./routes/AuthRoutes.js";
+import userRoutes from "./routes/userRoute.js";
 import AutoCompanyRoute from "./routes/AutoCompanyRoutes.js";
 import AutoDataRoute from "./routes/AutoDataRoutes.js";
 import VConnectCompanyRoute from "./routes/VConnectCompanyRoutes.js"
