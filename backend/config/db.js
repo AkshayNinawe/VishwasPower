@@ -2,14 +2,16 @@ import mongoose from 'mongoose';
 
 const connectDB = async () => {
   try {
-    const PORT = process.env.PORT || 7000;
     const MONGOURL = process.env.MONGO_URL;
 
+    if (!MONGOURL) {
+      throw new Error('MONGO_URL environment variable is not defined');
+    }
+
     const conn = await mongoose.connect(MONGOURL);
-    console.log(`Backend is connected to Port: ${PORT} and MongoURL: ${MONGOURL}`)
-    console.log(`MongoDB Connected with DB : ${MONGOURL}`);
+    console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
-    console.error(`Error: ${error.message}`);
+    console.error(`❌ Database connection error: ${error.message}`);
     process.exit(1);
   }
 };

@@ -8,16 +8,32 @@ const router = express.Router();
 // Add a new AutoTransformerCompany
 export const setNewCompanyData = async (req, res) => {
   try {
-    console.log("Add new AutoTransformerCompany");
     const { companyName, companyDescription } = req.body;
-    console.log("Adding AutoTransformerCompany with detail", companyName, companyDescription);
+
+    // Validate required fields
+    if (!companyName || !companyDescription) {
+      return res.status(400).json({ 
+        message: "Company name and description are required" 
+      });
+    }
+
+    // Check if company already exists
+    const existingCompany = await AutoTransformerCompany.findOne({ companyName });
+    if (existingCompany) {
+      return res.status(400).json({ 
+        message: "Company with this name already exists" 
+      });
+    }
+
     const newCompany = new AutoTransformerCompany({
       companyName,
       companyDescription,
     });
+    
     await newCompany.save();
     res.status(201).json(newCompany);
   } catch (error) {
+    console.error("Error creating company:", error.message);
     res.status(500).json({ message: error.message });
   }
 };
@@ -48,44 +64,32 @@ export const setCompanyData = async (req, res) => {
 export const deleteProjectByName = async (req, res) => {
   try {
     const { companyName, projectName, department } = req.body;
-    if (!companyName || !projectName) {
-      return res
-        .status(400)
-        .json({ message: "companyName and projectName are required." });
+    
+    if (!companyName || !projectName || !department) {
+      return res.status(400).json({ 
+        message: "Company name, project name, and department are required." 
+      });
     }
 
-    let updatedCompany;
+    const departmentModels = {
+      "Traction Transformer": TractionCompany,
+      "Auto Transformer": AutoTransformerCompany,
+      "V Connected 63 MVA Transformer": VConnectCompany
+    };
 
-    if (department === "Traction Transformer") {
-      updatedCompany = await TractionCompany.findOneAndUpdate(
-        { companyName: companyName },
-        {
-          $pull: { companyProjects: { name: projectName } },
-          updatedAt: Date.now(),
-        },
-        { new: true }
-      );
-    } else if (department === "Auto Transformer") {
-      updatedCompany = await AutoTransformerCompany.findOneAndUpdate(
-        { companyName: companyName },
-        {
-          $pull: { companyProjects: { name: projectName } },
-          updatedAt: Date.now(),
-        },
-        { new: true }
-      );
-    } else if (department === "V Connected 63 MVA Transformer") {
-      updatedCompany = await VConnectCompany.findOneAndUpdate(
-        { companyName: companyName },
-        {
-          $pull: { companyProjects: { name: projectName } },
-          updatedAt: Date.now(),
-        },
-        { new: true }
-      );
-    } else {
+    const Model = departmentModels[department];
+    if (!Model) {
       return res.status(400).json({ message: "Invalid department type." });
     }
+
+    const updatedCompany = await Model.findOneAndUpdate(
+      { companyName },
+      {
+        $pull: { companyProjects: { name: projectName } },
+        updatedAt: Date.now(),
+      },
+      { new: true }
+    );
 
     if (!updatedCompany) {
       return res.status(404).json({
@@ -98,7 +102,7 @@ export const deleteProjectByName = async (req, res) => {
       company: updatedCompany,
     });
   } catch (error) {
-    console.error("Error deleting project:", error);
+    console.error("Error deleting project:", error.message);
     res.status(500).json({ message: "An internal server error occurred." });
   }
 };
@@ -106,20 +110,25 @@ export const deleteProjectByName = async (req, res) => {
 export const deleteCompanyByName = async (req, res) => {
   try {
     const { companyName, department } = req.body;
-    if (!companyName) {
-      return res.status(400).json({ message: "companyName is required." });
+    
+    if (!companyName || !department) {
+      return res.status(400).json({ 
+        message: "Company name and department are required." 
+      });
     }
 
-    let deletedCompany;
-    if (department === "Traction Transformer") {
-      deletedCompany = await TractionCompany.findOneAndDelete({ companyName });
-    } else if (department === "Auto Transformer") {
-      deletedCompany = await AutoTransformerCompany.findOneAndDelete({ companyName });
-    } else if (department === "V Connected 63 MVA Transformer") {
-      deletedCompany = await VConnectCompany.findOneAndDelete({ companyName });
-    } else {
+    const departmentModels = {
+      "Traction Transformer": TractionCompany,
+      "Auto Transformer": AutoTransformerCompany,
+      "V Connected 63 MVA Transformer": VConnectCompany
+    };
+
+    const Model = departmentModels[department];
+    if (!Model) {
       return res.status(400).json({ message: "Invalid department type." });
     }
+
+    const deletedCompany = await Model.findOneAndDelete({ companyName });
 
     if (!deletedCompany) {
       return res.status(404).json({
@@ -132,34 +141,33 @@ export const deleteCompanyByName = async (req, res) => {
       company: deletedCompany,
     });
   } catch (error) {
-    console.error("Error deleting company:", error);
+    console.error("Error deleting company:", error.message);
     res.status(500).json({ message: "An internal server error occurred." });
   }
 };
 
 // Get all Company
 export const getAllCompanyData = async (req, res) => {
-  console.log("Get all AutoTransformerCompany for ", req.query.departmentType);
   try {
-    if (req.query.departmentType === "Traction Transformer") {
-      const tractionCompanies = await TractionCompany.find();
-      return res.json(tractionCompanies);
-    } else {
-      if (req.query.departmentType === "Auto Transformer") {
-        const autoCompanies = await AutoTransformerCompany.find();
-        return res.json(autoCompanies);
-      } else {
-        if (req.query.departmentType === "V Connect") {
-          const vConnectCompanies = await VConnectCompany.find();
-          return res.json(vConnectCompanies);
-        } else {
-          return res
-            .status(400)
-            .json({ message: "Invalid departmentType parameter." });
-        }
-      }
+    const { departmentType } = req.query;
+
+    const departmentQueries = {
+      "Traction Transformer": () => TractionCompany.find(),
+      "Auto Transformer": () => AutoTransformerCompany.find(),
+      "V Connect": () => VConnectCompany.find()
+    };
+
+    const queryFunction = departmentQueries[departmentType];
+    if (!queryFunction) {
+      return res.status(400).json({ 
+        message: "Invalid departmentType parameter." 
+      });
     }
+
+    const companies = await queryFunction();
+    res.json(companies);
   } catch (error) {
+    console.error("Error fetching companies:", error.message);
     res.status(500).json({ message: error.message });
   }
 };
@@ -168,7 +176,13 @@ export const setapproveCompanyStage = async (req, res) => {
   try {
     const { companyName, projectName, stage } = req.body;
     const stageNumber = Number(stage);
-    console.log(companyName, projectName, stageNumber);
+    
+    if (!companyName || !projectName || !stage) {
+      return res.status(400).json({
+        message: "Company name, project name, and stage are required."
+      });
+    }
+
     const updateOperation = {
       $set: {
         [`companyProjects.$.stageApprovals.${stageNumber}`]: true,
@@ -180,7 +194,6 @@ export const setapproveCompanyStage = async (req, res) => {
       updateOperation.$inc = { "companyProjects.$.stage": 1 };
       updateOperation.$set["companyProjects.$.status"] = "in-progress";
     } else {
-      console.log("white house");
       updateOperation.$set["companyProjects.$.status"] = "completed";
     }
 
@@ -211,7 +224,7 @@ export const setapproveCompanyStage = async (req, res) => {
       ),
     });
   } catch (error) {
-    console.error("Error approving AutoTransformerCompany stage:", error);
+    console.error("Error approving AutoTransformerCompany stage:", error.message);
     res.status(500).json({
       message: "An internal server error occurred.",
       error: error.message,
@@ -220,17 +233,15 @@ export const setapproveCompanyStage = async (req, res) => {
 };
 
 export const rejectCompanyStage = async (req, res) => {
-  console.log("Rejecting stage:");
   try {
     const { companyName, projectName, stage, rejectionReason } = req.body;
     const stageNumber = Number(stage);
 
-    console.log("Rejecting stage:", {
-      companyName,
-      projectName,
-      stageNumber,
-      rejectionReason,
-    });
+    if (!companyName || !projectName || !stage) {
+      return res.status(400).json({
+        message: "Company name, project name, and stage are required."
+      });
+    }
 
     const updateOperation = {
       $set: {
@@ -266,10 +277,9 @@ export const rejectCompanyStage = async (req, res) => {
       ),
     });
   } catch (error) {
-    console.error("Error rejecting AutoTransformerCompany stage:", error);
+    console.error("Error rejecting AutoTransformerCompany stage:", error.message);
     res.status(500).json({
-      message:
-        "An internal server error occurred while rejecting the project stage.",
+      message: "An internal server error occurred while rejecting the project stage.",
       error: error.message,
     });
   }
@@ -313,7 +323,6 @@ export const setFormsCompleted = async (req, res) => {
     }
 
     updateFields["$set"] = updateSets;
-    console.log(updateSets);
 
     // Find the AutoTransformerCompany and the specific project within its array
     const updatedCompany = await AutoTransformerCompany.findOneAndUpdate(
@@ -341,7 +350,7 @@ export const setFormsCompleted = async (req, res) => {
       ),
     });
   } catch (error) {
-    console.error("Error updating forms completed and status:", error);
+    console.error("Error updating forms completed and status:", error.message);
     res.status(500).json({
       message: "An internal server error occurred.",
       error: error.message,

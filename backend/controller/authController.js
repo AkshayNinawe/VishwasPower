@@ -12,13 +12,18 @@ const generateToken = (user) =>
 // @desc   Register new user
 // @route  POST /api/auth/register
 export const register = async (req, res) => {
-  console.log("API : AUTH, CALL : Register");
   const { name, email, password, role } = req.body;
 
   try {
+    // Validate required fields
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "Name, email, and password are required" });
+    }
+
     const userExists = await User.findOne({ email });
-    if (userExists)
+    if (userExists) {
       return res.status(400).json({ message: "User already exists" });
+    }
 
     const user = await User.create({ name, email, password, role });
 
@@ -27,22 +32,25 @@ export const register = async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
-      token: generateToken(user), // Updated to include full user info
+      token: generateToken(user),
     });
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Registration failed", error: err.message });
+    console.error("Registration error:", err.message);
+    res.status(500).json({ message: "Registration failed", error: err.message });
   }
 };
 
 // @desc   Login user
 // @route  POST /api/auth/login
 export const login = async (req, res) => {
-  console.log("API : AUTH, CALL : Login");
   const { email, password } = req.body;
 
   try {
+    // Validate required fields
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required" });
+    }
+
     const user = await User.findOne({ email });
 
     if (!user || !(await user.matchPassword(password))) {
@@ -54,9 +62,10 @@ export const login = async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
-      token: generateToken(user), // Updated to include full user info
+      token: generateToken(user),
     });
   } catch (err) {
+    console.error("Login error:", err.message);
     res.status(500).json({ message: "Login failed", error: err.message });
   }
 };
@@ -64,11 +73,11 @@ export const login = async (req, res) => {
 // @desc   Get all users (for admin)
 // @route  GET /api/auth/users
 export const allUsers = async (req, res) => {
-  console.log("API : AUTH, CALL : user");
   try {
-    const allUsers = await User.find();
+    const allUsers = await User.find().select('-password');
     res.status(200).json(allUsers);
   } catch (error) {
-    res.status(500).json({ message: "Failed to fetch users" });
+    console.error("Fetch users error:", error.message);
+    res.status(500).json({ message: "Failed to fetch users", error: error.message });
   }
 };

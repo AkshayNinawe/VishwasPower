@@ -30,17 +30,23 @@ function formatLabel(raw) {
 }
 
 export const getStageTableData = async (req, res) => {
-  console.log("Backend API for getStageTableData")
   try {
-    const { projectName, companyName, stage } = req.body
-    const queryPath = `autoTransformerData.stage${stage}`
+    const { projectName, companyName, stage } = req.body;
+    
+    if (!projectName || !companyName || !stage) {
+      return res.status(400).json({ 
+        message: "Project name, company name, and stage are required." 
+      });
+    }
+
+    const queryPath = `autoTransformerData.stage${stage}`;
     const document = await AutoTransformer.findOne(
       { projectName, companyName },
       { [queryPath]: 1, projectName: 1, companyName: 1 },
-    ).lean()
+    ).lean();
 
     if (!document) {
-      return res.status(404).json({ message: "Project document not found." })
+      return res.status(404).json({ message: "Project document not found." });
     }
 
     const getNestedObject = (obj, path) => {
@@ -88,23 +94,29 @@ export const getStageTableData = async (req, res) => {
       data: responseData,
     })
   } catch (error) {
-    console.error("Error retrieving form data:", error)
+    console.error("Error retrieving stage table data:", error.message);
     res.status(500).json({
       message: "Failed to retrieve form data",
       error: error.message,
-    })
+    });
   }
 }
 
 export const getTableData = async (req, res) => {
-  console.log("Backend API for getTableData")
   try {
-    const { projectName, companyName, stage, formNumber } = req.body
-    const queryPath = `autoTransformerData.stage${stage}.form${formNumber}`
-    const document = await AutoTransformer.findOne({ projectName, companyName }, { [queryPath]: 1 }).lean()
+    const { projectName, companyName, stage, formNumber } = req.body;
+    
+    if (!projectName || !companyName || !stage || !formNumber) {
+      return res.status(400).json({ 
+        message: "Project name, company name, stage, and form number are required." 
+      });
+    }
+
+    const queryPath = `autoTransformerData.stage${stage}.form${formNumber}`;
+    const document = await AutoTransformer.findOne({ projectName, companyName }, { [queryPath]: 1 }).lean();
 
     if (!document) {
-      return res.status(404).json({ message: "Project document not found." })
+      return res.status(404).json({ message: "Project document not found." });
     }
 
     const getNestedObject = (obj, path) => {
@@ -122,28 +134,33 @@ export const getTableData = async (req, res) => {
       data: nestedData,
     })
   } catch (error) {
-    console.error("Error retrieving form data:", error)
+    console.error("Error retrieving table data:", error.message);
     res.status(500).json({
       message: "Failed to retrieve form data",
       error: error.message,
-    })
+    });
   }
 }
 
 export const getCompleteTableData = async (req, res) => {
-  console.log("Backend API for getCompleteTable")
   try {
-    const { projectName, companyName } = req.body
+    const { projectName, companyName } = req.body;
+
+    if (!projectName || !companyName) {
+      return res.status(400).json({ 
+        message: "Project name and company name are required." 
+      });
+    }
 
     const document = await AutoTransformer.findOne({
       projectName,
       companyName,
-    }).lean()
+    }).lean();
 
     if (!document) {
       return res.status(404).json({
         message: "Project document not found.",
-      })
+      });
     }
 
     // Send the retrieved data back to the client.
@@ -152,21 +169,25 @@ export const getCompleteTableData = async (req, res) => {
       data: document,
     })
   } catch (error) {
-    console.error("Error retrieving form data:", error)
+    console.error("Error retrieving complete table data:", error.message);
     res.status(500).json({
       message: "Failed to retrieve form data",
       error: error.message,
-    })
+    });
   }
 }
 
 export const setTableData = async (req, res) => {
-  console.log("Backend API for setTableData")
-
   try {
-    const { projectName, companyName, formNumber, stage } = req.body
+    const { projectName, companyName, formNumber, stage } = req.body;
 
-    const parsedData = {}
+    if (!projectName || !companyName || !formNumber || !stage) {
+      return res.status(400).json({ 
+        message: "Project name, company name, form number, and stage are required." 
+      });
+    }
+
+    const parsedData = {};
 
     // ✅ parse all body fields
     for (const [key, value] of Object.entries(req.body)) {
@@ -221,11 +242,11 @@ export const setTableData = async (req, res) => {
       data: updatedForm,
     })
   } catch (error) {
-    console.error("Error saving form data:", error)
+    console.error("Error saving form data:", error.message);
     res.status(500).json({
       message: "Failed to save form data",
       error: error.message,
-    })
+    });
   }
 }
 
