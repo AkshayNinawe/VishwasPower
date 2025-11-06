@@ -430,7 +430,7 @@ export function NamePlateDetailsReactorForm({
   useEffect(() => {
     const fetchFormData = async () => {
       try {
-        const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form1`, {
+        const response = await axios.get(`${BACKEND_API_BASE_URL}/api/vconnectData/getTable/Stage1Form1`, {
           params: {
             companyName: companyName,
             projectName: projectName,
@@ -9891,15 +9891,17 @@ const VConnected63MVATransformerForms = ({
   const handleFormSubmit = async (data) => {
     console.log("VConnected63MVA: handleFormSubmit → saving form data", data);
 
+    const updatedFormData = { ...formData, [`form${currentFormIndex + 1}`]: data };
+
     try {
-      // Build FormData for API submission
+      // 🔹 Always build FormData
       const formDataToSend = new FormData();
       formDataToSend.append("projectName", projectName);
       formDataToSend.append("companyName", companyName);
       formDataToSend.append("stage", stage);
       formDataToSend.append("formNumber", currentFormIndex + 1);
 
-      // Process form data
+      // loop through keys of `data`
       Object.entries(data).forEach(([key, value]) => {
         if (key === "photos" && typeof value === "object") {
           Object.entries(value).forEach(([photoKey, file]) => {
@@ -9908,37 +9910,37 @@ const VConnected63MVATransformerForms = ({
             }
           });
         } else if (typeof value === "object") {
+          // 🔹 make sure objects are stringified before sending
           formDataToSend.append(key, JSON.stringify(value));
         } else {
           formDataToSend.append(key, value ?? "");
         }
       });
 
-      // Submit to API
-      // await axios.post(
-      //   `${BACKEND_API_BASE_URL}/api/vconnectData/setTable`,
-      //   formDataToSend,
-      //   {
-      //     headers: { "Content-Type": "multipart/form-data" },
-      //   }
-      // );
+      // 🔹 POST request
+      await axios.post(
+        `${BACKEND_API_BASE_URL}/api/vconnectData/setTable`,
+        formDataToSend,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
 
-      // Update form completion status
+      // 🔹 formsCompleted + project status logic
       const isLastFormOfStage = currentFormIndex === currentStageForms.length - 1;
       
       if (isLastFormOfStage) {
-        // await axios.post(
-        //   `${BACKEND_API_BASE_URL}/api/vconnectData/updateFormsCompleted`,
-        //   {
-        //     projectName,
-        //     companyName,
-        //     formsCompleted: currentFormIndex + 1,
-        //     status: "pending-approval",
-        //     stage,
-        //   }
-        // );
+        await axios.post(
+          `${BACKEND_API_BASE_URL}/api/vconnectcompany/updateFormsCompleted`,
+          {
+            projectName,
+            companyName,
+            formsCompleted: currentFormIndex + 1,
+            status: "pending-approval",
+            stage,
+          }
+        );
 
-        // Update local state
         if (setSelectedMainCompany) {
           setSelectedMainCompany((prevCompany) => {
             if (prevCompany.companyName === companyName) {
@@ -9964,31 +9966,28 @@ const VConnected63MVATransformerForms = ({
           });
         }
       } else {
-        // await axios.post(
-        //   `${BACKEND_API_BASE_URL}/api/vconnectData/updateFormsCompleted`,
-        //   {
-        //     projectName,
-        //     companyName,
-        //     formsCompleted: currentFormIndex + 1,
-        //   }
-        // );
+        await axios.post(
+          `${BACKEND_API_BASE_URL}/api/vconnectcompany/updateFormsCompleted`,
+          {
+            projectName,
+            companyName,
+            formsCompleted: currentFormIndex + 1,
+          }
+        );
       }
-
-      // Update local form data
-      const updatedFormData = { ...formData, [`form${currentFormIndex + 1}`]: data }
-      setFormData(updatedFormData)
-
-      // Navigate to next form or complete stage
-      if (currentFormIndex < currentStageForms.length - 1) {
-        setCurrentFormIndex(currentFormIndex + 1)
-      } else {
-        // All forms completed for this stage
-        onFormSubmit(stage, updatedFormData, selectedProjectForReview)
-      }
-
     } catch (error) {
       console.error("Error saving form:", error);
       alert("Failed to save form. Please try again.");
+      return;
+    }
+
+    // 🔹 Local update + move forward
+    setFormData(updatedFormData);
+
+    if (currentFormIndex < currentStageForms.length - 1) {
+      setCurrentFormIndex(currentFormIndex + 1);
+    } else {
+      onFormSubmit(stage, updatedFormData, selectedProjectForReview);
     }
   }
 

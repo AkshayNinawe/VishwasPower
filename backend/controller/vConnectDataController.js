@@ -1,4 +1,4 @@
-import AutoTransformer from "../model/AutoTransformer.js"
+import VConnect from "../model/VConnect.js"
 import multer from "multer"
 import path from "path"
 import fs from "fs"
@@ -33,8 +33,8 @@ export const getStageTableData = async (req, res) => {
   console.log("Backend API for getStageTableData")
   try {
     const { projectName, companyName, stage } = req.body
-    const queryPath = `autoTransformerData.stage${stage}`
-    const document = await AutoTransformer.findOne(
+    const queryPath = `VConnectData.stage${stage}`
+    const document = await VConnect.findOne(
       { projectName, companyName },
       { [queryPath]: 1, projectName: 1, companyName: 1 },
     ).lean()
@@ -100,8 +100,8 @@ export const getTableData = async (req, res) => {
   console.log("Backend API for getTableData")
   try {
     const { projectName, companyName, stage, formNumber } = req.body
-    const queryPath = `autoTransformerData.stage${stage}.form${formNumber}`
-    const document = await AutoTransformer.findOne({ projectName, companyName }, { [queryPath]: 1 }).lean()
+    const queryPath = `VConnectData.stage${stage}.form${formNumber}`
+    const document = await VConnect.findOne({ projectName, companyName }, { [queryPath]: 1 }).lean()
 
     if (!document) {
       return res.status(404).json({ message: "Project document not found." })
@@ -135,7 +135,7 @@ export const getCompleteTableData = async (req, res) => {
   try {
     const { projectName, companyName } = req.body
 
-    const document = await AutoTransformer.findOne({
+    const document = await VConnect.findOne({
       projectName,
       companyName,
     }).lean()
@@ -206,11 +206,11 @@ export const setTableData = async (req, res) => {
     }
 
     // ✅ Save into Mongo
-    const updatedForm = await AutoTransformer.findOneAndUpdate(
+    const updatedForm = await VConnect.findOneAndUpdate(
       { projectName, companyName },
       {
         $set: {
-          [`autoTransformerData.stage${stage}.form${formNumber}`]: parsedData,
+          [`VConnect.stage${stage}.form${formNumber}`]: parsedData,
         },
       },
       { new: true, upsert: true, runValidators: true },
