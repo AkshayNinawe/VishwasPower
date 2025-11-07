@@ -1,5 +1,6 @@
 import express from "express";
 import VConnectCompany from "../model/VConnectCompany.js";
+import VConnect from "../model/VConnect.js";
 
 const router = express.Router();
 
@@ -50,6 +51,7 @@ export const deleteProjectByName = async (req, res) => {
       return res.status(400).json({ message: "companyName and projectName are required." });
     }
   
+    // Delete from the VConnectCompany model (existing functionality)
     const updatedCompany = await VConnectCompany.findOneAndUpdate(
       { companyName: companyName },
       { $pull: { companyProjects: { name: projectName } }, updatedAt: Date.now() },
@@ -62,8 +64,23 @@ export const deleteProjectByName = async (req, res) => {
       });
     }
 
+    // Also delete from VConnect collection if it exists (case-insensitive)
+    try {
+      const deletedVConnect = await VConnect.findOneAndDelete({
+        companyName: { $regex: new RegExp(`^${companyName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') },
+        projectName: { $regex: new RegExp(`^${projectName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') }
+      });
+
+      if (deletedVConnect) {
+        console.log(`VConnect data for project '${projectName}' in company '${companyName}' deleted successfully.`);
+      }
+    } catch (vConnectError) {
+      console.error("Error deleting from VConnect collection:", vConnectError.message);
+      // Don't fail the entire operation if VConnect deletion fails
+    }
+
     res.status(200).json({
-      message: `Project '${projectName}' deleted successfully from company '${companyName}'.`,
+      message: `Project '${projectName}' deleted successfully from company '${companyName}' and associated VConnect data.`,
       company: updatedCompany,
     });
   } catch (error) {

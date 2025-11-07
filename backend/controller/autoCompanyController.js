@@ -2,6 +2,7 @@ import express from "express";
 import AutoTransformerCompany from "../model/AutoTransformerCompany.js";
 import TractionCompany from "../model/TractionCompany.js";
 import VConnectCompany from "../model/VConnectCompany.js";
+import AutoTransformer from "../model/AutoTransformer.js";
 
 const router = express.Router();
 
@@ -82,6 +83,7 @@ export const deleteProjectByName = async (req, res) => {
       return res.status(400).json({ message: "Invalid department type." });
     }
 
+    // Delete from the department model (existing functionality)
     const updatedCompany = await Model.findOneAndUpdate(
       { companyName },
       {
@@ -97,8 +99,23 @@ export const deleteProjectByName = async (req, res) => {
       });
     }
 
+    // Also delete from AutoTransformer collection if it exists (case-insensitive)
+    try {
+      const deletedAutoTransformer = await AutoTransformer.findOneAndDelete({
+        companyName: { $regex: new RegExp(`^${companyName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') },
+        projectName: { $regex: new RegExp(`^${projectName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') }
+      });
+
+      if (deletedAutoTransformer) {
+        console.log(`AutoTransformer data for project '${projectName}' in company '${companyName}' deleted successfully.`);
+      }
+    } catch (autoTransformerError) {
+      console.error("Error deleting from AutoTransformer collection:", autoTransformerError.message);
+      // Don't fail the entire operation if AutoTransformer deletion fails
+    }
+
     res.status(200).json({
-      message: `Project '${projectName}' deleted successfully from ${department} '${companyName}'.`,
+      message: `Project '${projectName}' deleted successfully from ${department} '${companyName}' and associated AutoTransformer data.`,
       company: updatedCompany,
     });
   } catch (error) {
