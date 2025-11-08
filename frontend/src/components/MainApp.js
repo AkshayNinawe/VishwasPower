@@ -5,6 +5,7 @@ import LoginForm from "./LoginForm"
 import RegisterForm from "./RegisterForm"
 import ETCAdminPanel from "./ETCAdminPanel"
 import SiteEngineerDashboard from "./SiteEngineerDashboard"
+import { getUserInfo, logout, isAuthenticated } from "../utils/auth"
 
 const MainApp = () => {
   const [currentUser, setCurrentUser] = useState(null)
@@ -12,36 +13,32 @@ const MainApp = () => {
   const [selectedProject, setSelectedProject] = useState(null)
 
   useEffect(() => {
-    // Check if user is already logged in
-    const savedUser = localStorage.getItem("currentUser")
-    if (savedUser) {
-      setCurrentUser(JSON.parse(savedUser))
+    // Check if user is already authenticated using secure method
+    if (isAuthenticated()) {
+      const userInfo = getUserInfo()
+      setCurrentUser(userInfo)
+      console.log("User already authenticated:", userInfo)
     }
   }, [])
 
   const handleLogin = (user) => {
     console.log("User logged in:", user)
     setCurrentUser(user)
-    localStorage.setItem("currentUser", JSON.stringify(user))
+    // Auth data is already stored securely in LoginForm
   }
 
   const handleRegister = (newUser) => {
     console.log("New user registered:", newUser)
-
-    // Save to registered users
-    const registeredUsers = JSON.parse(localStorage.getItem("registeredUsers") || "[]")
-    registeredUsers.push(newUser)
-    localStorage.setItem("registeredUsers", JSON.stringify(registeredUsers))
-
+    // Auth data is already stored securely in RegisterForm
     // Auto login after registration
-    handleLogin(newUser)
+    setCurrentUser(newUser)
     setShowRegister(false)
   }
 
   const handleLogout = () => {
     setCurrentUser(null)
     setSelectedProject(null)
-    localStorage.removeItem("currentUser")
+    logout() // Use secure logout function
   }
 
   const handleProjectSelect = (project) => {
@@ -67,8 +64,8 @@ const MainApp = () => {
 
   // Route to appropriate dashboard based on user role
   switch (currentUser.role) {
-    case "etc-admin":
-    case "main-admin":
+    case "etcadmin":
+    case "admin":
       return (
         <ETCAdminPanel
           user={currentUser}
@@ -79,7 +76,7 @@ const MainApp = () => {
           onBackToMain={handleBackToMain}
         />
       )
-    case "site-engineer":
+    case "chef":
       return (
         <SiteEngineerDashboard
           user={currentUser}

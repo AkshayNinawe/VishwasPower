@@ -2147,12 +2147,21 @@ const ETCAdminPanel = ({
         apiEndpoint = '/api/company/approveCompanyStage';
       }
 
+      // Get the auth token from localStorage
+      const authToken = localStorage.getItem('authToken');
+      
       const response = await axios.post(
         `${BACKEND_API_BASE_URL}${apiEndpoint}`,
         {
           companyName: selectedProjectForReview.companyName,
           projectName: selectedProjectForReview.name,
           stage: selectedProjectForReview.stage,
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json'
+          }
         }
       );
       console.log(
@@ -2160,8 +2169,16 @@ const ETCAdminPanel = ({
         response.data
       );
     } catch (error) {
-      console.error("Error creating company on the backend:", error);
-      alert("Failed to create company. Please try again.");
+      console.error("Error approving stage:", error);
+      
+      // Check if the error is due to unauthorized access (401 or 403)
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        showNotification("Please consult to ETC admin to approve the page", "error");
+        return;
+      }
+      
+      // For other errors, show generic message
+      showNotification("Failed to approve stage. Please try again.", "error");
       return;
     }
 

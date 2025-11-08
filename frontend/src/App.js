@@ -7,6 +7,7 @@ import RegisterForm from "./components/RegisterForm"
 import MainAdminDashboard from "./components/MainAdminDashboard"
 import ETCAdminPanel from "./components/ETCAdminPanel"
 import CompanyWorkflow from "./components/CompanyWorkflow"
+import { getUserInfo, logout, isAuthenticated } from "./utils/auth"
 
 const App = () => {
   const [currentView, setCurrentView] = useState("login")
@@ -14,19 +15,27 @@ const App = () => {
   const [selectedProject, setSelectedProject] = useState(null)
   const [selectedCompany, setSelectedCompany] = useState(null)
 
-  // Load data from localStorage on component mount
+  // Load data from secure storage on component mount
   useEffect(() => {
-    const savedUser = localStorage.getItem("currentUser")
-    const savedView = localStorage.getItem("currentView")
+    if (isAuthenticated()) {
+      const userInfo = getUserInfo()
+      setUser(userInfo)
+      console.log("User already authenticated:", userInfo)
+      
+      // Set appropriate view based on user role
+      if (userInfo.role === "admin") {
+        setCurrentView("main-dashboard")
+      } else if (userInfo.role === "etcadmin") {
+        setCurrentView("etc-panel")
+      } else {
+        setCurrentView("etc-panel")
+      }
+    }
+
+    // Load project and company data (these are not sensitive)
     const savedProject = localStorage.getItem("selectedProject")
     const savedCompany = localStorage.getItem("selectedCompany")
-
-    if (savedUser) {
-      setUser(JSON.parse(savedUser))
-    }
-    if (savedView && savedUser) {
-      setCurrentView(savedView)
-    }
+    
     if (savedProject) {
       setSelectedProject(JSON.parse(savedProject))
     }
@@ -35,14 +44,7 @@ const App = () => {
     }
   }, [])
 
-  // Save data to localStorage whenever state changes
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem("currentUser", JSON.stringify(user))
-      localStorage.setItem("currentView", currentView)
-    }
-  }, [user, currentView])
-
+  // Save non-sensitive data to localStorage
   useEffect(() => {
     if (selectedProject) {
       localStorage.setItem("selectedProject", JSON.stringify(selectedProject))
@@ -57,21 +59,21 @@ const App = () => {
 
   const handleLogin = (userData) => {
     setUser(userData)
-    if (userData.role === "main-admin") {
+    console.log("User logged in with role:", userData.role)
+    
+    // Route based on new role names
+    if (userData.role === "admin") {
       setCurrentView("main-dashboard")
-    } else if (userData.role === "etc-admin") {
+    } else if (userData.role === "etcadmin") {
       setCurrentView("etc-panel")
-    } else if (userData.role === "company-admin") {
+    } else {
       setCurrentView("etc-panel")
     }
   }
 
   const handleRegister = (userData) => {
-    // Save registered user to localStorage
-    const existingUsers = JSON.parse(localStorage.getItem("registeredUsers") || "[]")
-    existingUsers.push(userData)
-    localStorage.setItem("registeredUsers", JSON.stringify(existingUsers))
-
+    console.log("User registered:", userData)
+    // Auth data is already stored securely in RegisterForm
     // Auto login after registration
     handleLogin(userData)
   }
@@ -82,9 +84,10 @@ const App = () => {
     setSelectedCompany(null)
     setCurrentView("login")
 
-    // Clear localStorage
-    localStorage.removeItem("currentUser")
-    localStorage.removeItem("currentView")
+    // Use secure logout
+    logout()
+    
+    // Clear non-sensitive localStorage
     localStorage.removeItem("selectedProject")
     localStorage.removeItem("selectedCompany")
   }
@@ -143,7 +146,7 @@ const App = () => {
         <RegisterForm onRegister={handleRegister} onSwitchToLogin={() => setCurrentView("login")} />
       )}
 
-      {currentView === "main-dashboard" && user?.role === "main-admin" && (
+      {currentView === "main-dashboard" && user?.role === "admin" && (
         <MainAdminDashboard
           user={user}
           onLogout={handleLogout}

@@ -9,13 +9,14 @@ import {
   deleteCompanyByName,
   rejectCompanyStage
 } from "../controller/autoCompanyController.js";
+import { protect, authorize } from "../middleware/authMiddleware.js";
 
 
 const router = express.Router();
 
 router.post("/", setNewCompanyData);
 router.post("/addCompany", setCompanyData);
-router.post("/approveCompanyStage", setapproveCompanyStage);
+router.post("/approveCompanyStage", protect, authorize("etcadmin"), setapproveCompanyStage);
 router.get("/", getAllCompanyData);
 router.post("/rejectStage", rejectCompanyStage)
 router.post("/updateFormsCompleted", setFormsCompleted);

@@ -1,76 +1,83 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { BACKEND_API_BASE_URL, additionalLogging } from "./constant"
 
 const LoginForm = ({ onLogin, onSwitchToRegister }) => {
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    roleAndDept: "",
   })
   const [error, setError] = useState("")
-  const [departments, setDepartments] = useState([])
-  const [adminOptions, setAdminOptions] = useState([])
+  const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    const savedDepartments = JSON.parse(localStorage.getItem("departments") || "[]")
-    setDepartments(savedDepartments)
-
-    const options = [
-      { value: "main-admin", label: "🛡️ Main Admin" },
-      { value: "etc-admin", label: "🏢 ETC Admin" },
-      { value: "company-admin", label: "👥 Company Admin" },
-      { value: "site-engineer", label: "🔧 Site Engineer" },
-    ]
-
-    savedDepartments.forEach((dept) => {
-      options.push({ value: `dept-${dept}`, label: `🏛️ ${dept} Department Admin` })
-    })
-
-    setAdminOptions(options)
-  }, [])
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setError("")
+    setLoading(true)
 
-    let role, department
-    if (formData.roleAndDept.startsWith("dept-")) {
-      role = "department-admin"
-      department = formData.roleAndDept.substring(5)
-    } else {
-      role = formData.roleAndDept
-      department = ""
-    }
+    console.log('Login form submitted with email:', formData.email)
 
-    // Check for registered users first
-    const registeredUsers = JSON.parse(localStorage.getItem("registeredUsers") || "[]")
-    const user = registeredUsers.find(
-      (u) =>
-        u.email === formData.email &&
-        u.password === formData.password &&
-        (u.role === role || (u.role === "department-admin" && u.department === department)),
-    )
-
-    if (user) {
-      console.log("User found in registered users:", user)
-      onLogin(user)
-    } else {
-      // Allow login with any credentials for demo purposes
-      if (formData.email && formData.password && formData.roleAndDept) {
-        const demoUser = {
-          id: Date.now(),
+    try {
+      console.log('Making API call to login endpoint...')
+      
+      // Make API call to backend for authentication
+      const response = await fetch(`${BACKEND_API_BASE_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           email: formData.email,
-          role,
-          department,
-          name: formData.email.split("@")[0],
+          password: formData.password,
+        }),
+      })
+
+      console.log('Login API response status:', response.status)
+      
+      const data = await response.json()
+      console.log('Login API response data:', data)
+
+      if (response.ok) {
+        console.log('Login successful, storing auth data...')
+        
+        // Store only the JWT token securely (not the password)
+        localStorage.setItem('authToken', data.token)
+        localStorage.setItem('userInfo', JSON.stringify({
+          id: data._id,
+          name: data.name,
+          email: data.email,
+          role: data.role,
+        }))
+
+        // Clear form data for security
+        setFormData({ email: "", password: "" })
+
+        console.log('Calling onLogin callback...')
+        
+        // Call onLogin with user data (without password)
+        if (onLogin && typeof onLogin === 'function') {
+          onLogin({
+            id: data._id,
+            name: data.name,
+            email: data.email,
+            role: data.role,
+            token: data.token,
+          })
+        } else {
+          console.error('onLogin callback is not a function:', onLogin)
+          setError('Login successful but navigation failed. Please refresh the page.')
         }
-        console.log("Demo login for user:", demoUser)
-        onLogin(demoUser)
       } else {
-        setError("Please fill in all required fields")
+        console.error('Login failed:', data)
+        setError(data.message || 'Login failed. Please check your credentials.')
       }
+    } catch (error) {
+      console.error('Login error:', error)
+      setError(`Network error: ${error.message}. Please check if the server is running.`)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -87,25 +94,7 @@ const LoginForm = ({ onLogin, onSwitchToRegister }) => {
 
         {error && <div className="error-message">{error}</div>}
 
-        <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-group">
-            <label>
-              Admin Type <span className="required">*</span>
-            </label>
-            <select
-              value={formData.roleAndDept}
-              onChange={(e) => setFormData({ ...formData, roleAndDept: e.target.value })}
-              required
-            >
-              <option value="">Select admin type</option>
-              {adminOptions.map((option, index) => (
-                <option key={index} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
+        <form onSubmit={handleSubmit} className="auth-form" autoComplete="off">
           <div className="form-group">
             <label>
               Email <span className="required">*</span>
@@ -115,6 +104,7 @@ const LoginForm = ({ onLogin, onSwitchToRegister }) => {
               placeholder="admin@vishvaspower.com"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              autoComplete="username"
               required
             />
           </div>
@@ -129,6 +119,7 @@ const LoginForm = ({ onLogin, onSwitchToRegister }) => {
                 placeholder="Enter your password"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                autoComplete="current-password"
                 required
               />
               <button type="button" className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
@@ -140,9 +131,9 @@ const LoginForm = ({ onLogin, onSwitchToRegister }) => {
           <button
             type="submit"
             className="auth-btn primary"
-            disabled={!formData.email || !formData.password || !formData.roleAndDept}
+            disabled={!formData.email || !formData.password || loading}
           >
-            Sign In
+            {loading ? "Signing In..." : "Sign In"}
           </button>
         </form>
 
