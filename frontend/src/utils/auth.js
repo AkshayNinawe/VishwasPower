@@ -12,6 +12,34 @@ export const getUserInfo = () => {
   return userInfo ? JSON.parse(userInfo) : null
 }
 
+// Validate token with backend
+export const validateTokenWithBackend = async () => {
+  const token = getAuthToken()
+  if (!token) return false
+
+  try {
+    const response = await fetch(`${BACKEND_API_BASE_URL}/api/auth/validate-token`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+
+    if (response.ok) {
+      return true
+    } else {
+      // Token is invalid, clear auth data
+      logout()
+      return false
+    }
+  } catch (error) {
+    console.error('Token validation failed:', error)
+    logout()
+    return false
+  }
+}
+
 // Check if user is authenticated
 export const isAuthenticated = () => {
   const token = getAuthToken()
@@ -115,7 +143,13 @@ export const cleanupOldData = () => {
     'registeredUsers',
     'departments',
     'userData',
-    'userPassword'
+    'userPassword',
+    'currentUser',
+    'user',
+    'loginData',
+    'authData',
+    'isLoggedIn',
+    'userCredentials'
   ]
   
   keysToRemove.forEach(key => {

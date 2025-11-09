@@ -7,7 +7,7 @@ import RegisterForm from "./components/RegisterForm"
 import MainAdminDashboard from "./components/MainAdminDashboard"
 import ETCAdminPanel from "./components/ETCAdminPanel"
 import CompanyWorkflow from "./components/CompanyWorkflow"
-import { getUserInfo, logout, isAuthenticated } from "./utils/auth"
+import { getUserInfo, logout, isAuthenticated, initAuth, cleanupOldData } from "./utils/auth"
 
 const App = () => {
   const [currentView, setCurrentView] = useState("login")
@@ -17,6 +17,9 @@ const App = () => {
 
   // Load data from secure storage on component mount
   useEffect(() => {
+    // Initialize auth and cleanup old data
+    initAuth()
+    
     if (isAuthenticated()) {
       const userInfo = getUserInfo()
       setUser(userInfo)

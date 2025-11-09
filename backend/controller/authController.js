@@ -81,3 +81,24 @@ export const allUsers = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch users", error: error.message });
   }
 };
+
+// @desc   Validate JWT token
+// @route  GET /api/auth/validate-token
+export const validateToken = async (req, res) => {
+  try {
+    // If we reach here, the protect middleware has already validated the token
+    // and attached the user to req.user
+    res.status(200).json({
+      valid: true,
+      user: {
+        id: req.user._id,
+        name: req.user.name,
+        email: req.user.email,
+        role: req.user.role
+      }
+    });
+  } catch (error) {
+    console.error("Token validation error:", error.message);
+    res.status(401).json({ valid: false, message: "Invalid token" });
+  }
+};
