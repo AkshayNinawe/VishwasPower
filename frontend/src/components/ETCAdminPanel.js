@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { BACKEND_API_BASE_URL, additionalLogging } from "./constant";
+import { BACKEND_API_BASE_URL, BACKEND_IMG_API_BASE_URL, additionalLogging } from "./constant";
 import FormStage from "./FormStage"; // Import FormStage
 import VConnected63MVATransformerForms from "./VConnected63MVATransformerForms";
 import TractionTransformerForms from "./TractionTransformerForms";
@@ -3000,52 +3000,106 @@ const ETCAdminPanel = ({
                     >
                       {Object.entries(formData).map(
                         ([fieldKey, fieldValue]) => {
-                          // Handle photos specially
-                          if (
-                            fieldKey === "photos" &&
-                            fieldValue &&
-                            typeof fieldValue === "object"
-                          ) {
-                            return (
-                              <div
-                                key={`photos-${fieldKey}`}
-                                className="form-group-preview photo-group"
-                                style={{
-                                  width: "100%",
-                                }}
-                              >
-                                <label className="form-label-preview">
-                                  📸{" "}
-                                  {fieldKey.charAt(0).toUpperCase() +
-                                    fieldKey.slice(1)}
-                                </label>
-                                <div className="photo-display-grid">
-                                  {Object.entries(fieldValue).map(
-                                    ([photoKey, url]) => {
-                                      const fullUrl = url.startsWith("http")
-                                        ? url
-                                        : `${BACKEND_API_BASE_URL}/${url}`;
-                                      return (
-                                        <div
-                                          key={photoKey}
-                                          className="photo-item"
-                                        >
-                                          <span className="photo-label">
-                                            {photoKey}
-                                          </span>
-                                          <img
-                                            src={fullUrl || "/placeholder.svg"}
-                                            alt={photoKey}
-                                            className="photo-preview-img"
-                                          />
+                                  // Handle photos specially
+                                  if (
+                                    fieldKey === "photos" &&
+                                    fieldValue &&
+                                    typeof fieldValue === "object"
+                                  ) {
+                                    return (
+                                      <div
+                                        key={`photos-${fieldKey}`}
+                                        className="form-group-preview photo-group"
+                                        style={{
+                                          width: "100%",
+                                        }}
+                                      >
+                                        <label className="form-label-preview">
+                                          📸{" "}
+                                          {fieldKey.charAt(0).toUpperCase() +
+                                            fieldKey.slice(1)}
+                                        </label>
+                                        <div className="photo-display-grid" style={{
+                                          display: "grid",
+                                          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                                          gap: "15px",
+                                          marginTop: "10px"
+                                        }}>
+                                          {Object.entries(fieldValue).map(
+                                            ([photoKey, url]) => {
+                                              // Handle different URL formats
+                                              let fullUrl;
+                                              if (typeof url === 'string') {
+                                                if (url.startsWith("data:image/")) {
+                                                  // Base64 image
+                                                  fullUrl = url;
+                                                } else if (url.startsWith("http")) {
+                                                  // Full URL (already complete)
+                                                  fullUrl = url;
+                                                } else if (url.includes("cloudinary.com") || url.startsWith("v1")) {
+                                                  // Cloudinary image path - use BACKEND_IMG_API_BASE_URL
+                                                  fullUrl = `${BACKEND_IMG_API_BASE_URL}${url}`;
+                                                } else if (url.startsWith("/")) {
+                                                  // Absolute path for local files
+                                                  fullUrl = `${BACKEND_API_BASE_URL}${url}`;
+                                                } else {
+                                                  // Relative path for local files
+                                                  fullUrl = `${BACKEND_API_BASE_URL}/${url}`;
+                                                }
+                                              } else {
+                                                fullUrl = "/placeholder.svg";
+                                              }
+                                              
+                                              return (
+                                                <div
+                                                  key={photoKey}
+                                                  className="photo-item"
+                                                  style={{
+                                                    border: "1px solid #e5e7eb",
+                                                    borderRadius: "8px",
+                                                    padding: "10px",
+                                                    backgroundColor: "#f9fafb"
+                                                  }}
+                                                >
+                                                  <span className="photo-label" style={{
+                                                    display: "block",
+                                                    fontSize: "0.85rem",
+                                                    fontWeight: "600",
+                                                    color: "#374151",
+                                                    marginBottom: "8px",
+                                                    textAlign: "center"
+                                                  }}>
+                                                    {photoKey}
+                                                  </span>
+                                                  <img
+                                                    src={fullUrl}
+                                                    alt={photoKey}
+                                                    className="photo-preview-img"
+                                                    style={{
+                                                      width: "100%",
+                                                      height: "150px",
+                                                      objectFit: "cover",
+                                                      borderRadius: "6px",
+                                                      border: "1px solid #d1d5db",
+                                                      cursor: "pointer"
+                                                    }}
+                                                    onError={(e) => {
+                                                      console.error(`Failed to load image: ${fullUrl}`);
+                                                      e.target.src = "/placeholder.svg";
+                                                    }}
+                                                    onClick={() => {
+                                                      // Open image in new tab for better viewing
+                                                      window.open(fullUrl, '_blank');
+                                                    }}
+                                                  />
+                                                </div>
+                                              );
+                                            }
+                                          )}
                                         </div>
-                                      );
-                                    }
-                                  )}
-                                </div>
-                              </div>
-                            );
-                          }
+                                      </div>
+                                    );
+                                  }
 
                           // Handle strings & numbers with form input styling
                           if (
@@ -3480,26 +3534,70 @@ const ETCAdminPanel = ({
                                         <div className="photo-display-grid">
                                           {Object.entries(fieldValue).map(
                                             ([photoKey, url]) => {
-                                              const fullUrl = url.startsWith(
-                                                "http"
-                                              )
-                                                ? url
-                                                : `${BACKEND_API_BASE_URL}/${url}`;
+                                              // Handle different URL formats
+                                              let fullUrl;
+                                              if (typeof url === 'string') {
+                                                if (url.startsWith("data:image/")) {
+                                                  // Base64 image
+                                                  fullUrl = url;
+                                                } else if (url.startsWith("http")) {
+                                                  // Full URL (including Cloudinary URLs)
+                                                  fullUrl = url;
+                                                } else if (url.includes("cloudinary.com")) {
+                                                  // Cloudinary URL without protocol
+                                                  fullUrl = url.startsWith("//") ? `https:${url}` : `https://${url}`;
+                                                } else if (url.startsWith("/")) {
+                                                  // Absolute path for local files
+                                                  fullUrl = `${BACKEND_API_BASE_URL}${url}`;
+                                                } else {
+                                                  // Relative path for local files
+                                                  fullUrl = `${BACKEND_API_BASE_URL}/${url}`;
+                                                }
+                                              } else {
+                                                fullUrl = "/placeholder.svg";
+                                              }
+                                              
                                               return (
                                                 <div
                                                   key={photoKey}
                                                   className="photo-item"
+                                                  style={{
+                                                    border: "1px solid #e5e7eb",
+                                                    borderRadius: "8px",
+                                                    padding: "10px",
+                                                    backgroundColor: "#f9fafb"
+                                                  }}
                                                 >
-                                                  <span className="photo-label">
+                                                  <span className="photo-label" style={{
+                                                    display: "block",
+                                                    fontSize: "0.85rem",
+                                                    fontWeight: "600",
+                                                    color: "#374151",
+                                                    marginBottom: "8px",
+                                                    textAlign: "center"
+                                                  }}>
                                                     {photoKey}
                                                   </span>
                                                   <img
-                                                    src={
-                                                      fullUrl ||
-                                                      "/placeholder.svg"
-                                                    }
+                                                    src={fullUrl}
                                                     alt={photoKey}
                                                     className="photo-preview-img"
+                                                    style={{
+                                                      width: "100%",
+                                                      height: "150px",
+                                                      objectFit: "cover",
+                                                      borderRadius: "6px",
+                                                      border: "1px solid #d1d5db",
+                                                      cursor: "pointer"
+                                                    }}
+                                                    onError={(e) => {
+                                                      console.error(`Failed to load image: ${fullUrl}`);
+                                                      e.target.src = "/placeholder.svg";
+                                                    }}
+                                                    onClick={() => {
+                                                      // Open image in new tab for better viewing
+                                                      window.open(fullUrl, '_blank');
+                                                    }}
                                                   />
                                                 </div>
                                               );

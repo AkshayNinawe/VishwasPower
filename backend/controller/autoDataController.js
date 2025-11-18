@@ -69,9 +69,23 @@ export const getStageTableData = async (req, res) => {
         const newPhotos = {}
         for (const [key, value] of Object.entries(data.photos)) {
           if (typeof value === "string") {
-            newPhotos[key] = `${baseUrl}/${value}`
+            // Only prepend baseUrl if the value doesn't already start with http/https
+            if (value.startsWith("http://") || value.startsWith("https://")) {
+              newPhotos[key] = value; // Use the URL as-is
+            } else {
+              newPhotos[key] = `${baseUrl}/${value}`;
+            }
           } else if (Array.isArray(value)) {
-            newPhotos[key] = value.map((v) => (typeof v === "string" ? `${baseUrl}/${v}` : v))
+            newPhotos[key] = value.map((v) => {
+              if (typeof v === "string") {
+                if (v.startsWith("http://") || v.startsWith("https://")) {
+                  return v; // Use the URL as-is
+                } else {
+                  return `${baseUrl}/${v}`;
+                }
+              }
+              return v;
+            });
           }
         }
         data.photos = newPhotos

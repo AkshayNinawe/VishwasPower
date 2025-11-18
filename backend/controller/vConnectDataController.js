@@ -210,7 +210,7 @@ export const setTableData = async (req, res) => {
       { projectName, companyName },
       {
         $set: {
-          [`VConnect.stage${stage}.form${formNumber}`]: parsedData,
+          [`vConnectData.stage${stage}.form${formNumber}`]: parsedData,
         },
       },
       { new: true, upsert: true, runValidators: true },
