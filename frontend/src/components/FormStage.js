@@ -1624,14 +1624,16 @@ function CoreInsulationCheckForm({
               <strong>Whether the Filter Machine is Available</strong>
             </td>
             <td>
-              <input
-                type="text"
+              <select
                 value={formData.filterMachine}
                 onChange={(e) =>
                   setFormData({ ...formData, filterMachine: e.target.value })
                 }
-                placeholder="(Yes/No)"
-              />
+              >
+                <option value="">(Yes/No)</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
             </td>
             <td>
               <input
@@ -1781,14 +1783,16 @@ function CoreInsulationCheckForm({
               <strong>Hose Pipes for the Filtration Process.</strong>
             </td>
             <td>
-              <input
-                type="text"
+              <select
                 value={formData.hosePipes}
                 onChange={(e) =>
                   setFormData({ ...formData, hosePipes: e.target.value })
                 }
-                placeholder="(Yes/No)"
-              />
+              >
+                <option value="">(Yes/No)</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
             </td>
             <td>
               <input
@@ -3086,8 +3090,8 @@ function IRAfterErectionStage2Form({
         <thead>
           <tr>
             <th></th>
-            <th>15 Sec</th>
-            <th>60 Sec</th>
+            <th>15 Sec MΩ</th>
+            <th>60 Sec MΩ</th>
             <th>Ratio of IR 60/IR 15</th>
           </tr>
         </thead>
@@ -3343,8 +3347,8 @@ function BeforeOilFillingPressureTestForm({
         <thead>
           <tr>
             <th></th>
-            <th>15 Sec</th>
-            <th>60 Sec</th>
+            <th>15 Sec MΩ</th>
+            <th>60 Sec MΩ</th>
             <th>Ratio of IR 60/IR 15</th>
           </tr>
         </thead>
@@ -3707,8 +3711,8 @@ function RecordOilFiltrationMainTankForm({
         <thead>
           <tr>
             <th></th>
-            <th>15 Sec</th>
-            <th>60 Sec</th>
+            <th>15 Sec MΩ</th>
+            <th>60 Sec MΩ</th>
             <th>Ratio of IR 60/IR 15</th>
           </tr>
         </thead>
@@ -4108,10 +4112,10 @@ function OilFiltrationRadiatorCombineForm({
         <thead>
           <tr>
             <th></th>
-            <th>15 Sec</th>
-            <th>60 Sec</th>
-            <th>600 sec</th>
-            <th>60/600 sec</th>
+            <th>15 Sec MΩ</th>
+            <th>60 Sec MΩ</th>
+            <th>600 sec MΩ</th>
+            <th>600/60 sec MΩ</th>
           </tr>
         </thead>
         <tbody>
