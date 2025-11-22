@@ -2677,8 +2677,8 @@ function RecordMeasurementIRValuesForm({
         <thead>
           <tr>
             <th></th>
-            <th>15 Sec</th>
-            <th>60 Sec</th>
+            <th>15 Sec MΩ</th>
+            <th>60 Sec MΩ</th>
             <th>Ratio of IR 60/IR 15</th>
           </tr>
         </thead>
