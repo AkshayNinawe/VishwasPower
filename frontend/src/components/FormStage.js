@@ -2894,8 +2894,8 @@ function RecordOilHandlingForm({
             <th>Date</th>
             <th>Time</th>
             <th>Vacuum Level (mm/hg or torr)</th>
-            <th>Inlet Temp.</th>
-            <th>Outlet Temp.</th>
+            <th>Inlet Temp°C</th>
+            <th>Outlet Temp°C</th>
             <th>Remark</th>
           </tr>
         </thead>
@@ -3572,9 +3572,9 @@ function RecordOilFiltrationMainTankForm({
             <th>Date</th>
             <th>Time</th>
             <th>Vacuum Level (mm/hg or torr)</th>
-            <th>M/C Outlet Temp.</th>
-            <th>OTI Temp.</th>
-            <th>WTI Temp.</th>
+            <th>M/C Outlet Temp°C</th>
+            <th>OTI Temp°C</th>
+            <th>WTI Temp°C</th>
             <th>Remark</th>
           </tr>
         </thead>
@@ -3861,9 +3861,9 @@ function OilFiltrationRadiatorCombineForm({
             <th>Date</th>
             <th>Time</th>
             <th>Vacuum Level (mm/hg or torr)</th>
-            <th>M/C Outlet Temp.</th>
-            <th>OTI Temp.</th>
-            <th>WTI Temp.</th>
+            <th>M/C Outlet Temp°C</th>
+            <th>OTI Temp°C</th>
+            <th>WTI Temp°C</th>
             <th>Remark</th>
           </tr>
         </thead>
@@ -3956,9 +3956,9 @@ function OilFiltrationRadiatorCombineForm({
             <th>Date</th>
             <th>Time</th>
             <th>Vacuum Level (mm/hg or torr)</th>
-            <th>M/C Outlet Temp.</th>
-            <th>OTI Temp.</th>
-            <th>WTI Temp.</th>
+            <th>M/C Outlet Temp°C</th>
+            <th>OTI Temp°C</th>
+            <th>WTI Temp°C</th>
             <th>Remark</th>
           </tr>
         </thead>
@@ -4857,9 +4857,9 @@ function SFRATestRecordForm({
           <tr>
             <th></th>
             <th>AT 05 KV IN BETWEEN</th>
-            <th>TAN DELTA</th>
-            <th>CAPACITANCE</th>
-            <th>EXCITATION CURRENT</th>
+            <th>TAN DELTA %</th>
+            <th>CAPACITANCE (PF)</th>
+            <th>EXCITATION CURRENT (mA)</th>
             <th>DIELECTRIC LOSS</th>
           </tr>
         </thead>
@@ -4937,9 +4937,9 @@ function SFRATestRecordForm({
           <tr>
             <th></th>
             <th>AT 10 KV IN BETWEEN</th>
-            <th>TAN DELTA</th>
-            <th>CAPACITANCE</th>
-            <th>EXCITATION CURRENT</th>
+            <th>TAN DELTA %</th>
+            <th>CAPACITANCE (PF)</th>
+            <th>EXCITATION CURRENT (mA)</th>
             <th>DIELECTRIC LOSS</th>
           </tr>
         </thead>
@@ -5254,8 +5254,8 @@ function IRVoltageRatioMagnetisingTestForm({
         <thead>
           <tr>
             <th></th>
-            <th>10 Sec</th>
-            <th>60 Sec</th>
+            <th>10 Sec MΩ</th>
+            <th>60 Sec MΩ</th>
             <th>Ratio of IR 60/10</th>
           </tr>
         </thead>
@@ -5571,7 +5571,7 @@ function ShortCircuitTestForm({
         <thead>
           <tr>
             <th>APPLIED VOLTAGE</th>
-            <th colSpan="2">Measured Current</th>
+            <th colSpan="2">Measured Current (mA)</th>
           </tr>
         </thead>
         <tbody>
@@ -5717,15 +5717,7 @@ function ShortCircuitTestForm({
               <div
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                <input
-                  type="text"
-                  value={formData.percentZ}
-                  onChange={(e) =>
-                    setFormData({ ...formData, percentZ: e.target.value })
-                  }
-                  placeholder="%Z ="
-                  style={{ width: "80px" }}
-                />
+                
                 <span>
                   <strong>Rated voltage HV</strong>
                 </span>
@@ -5750,6 +5742,15 @@ function ShortCircuitTestForm({
                     })
                   }
                   style={{ width: "120px" }}
+                />
+                <input
+                  type="text"
+                  value={formData.percentZ}
+                  onChange={(e) =>
+                    setFormData({ ...formData, percentZ: e.target.value })
+                  }
+                  placeholder="%Z ="
+                  style={{ width: "80px" }}
                 />
               </div>
             </td>
@@ -5989,15 +5990,7 @@ function WindingResistanceIRPITestForm({
                 }
               />
             </td>
-            <td>
-              <input
-                type="text"
-                value={formData.winding11_12}
-                onChange={(e) =>
-                  setFormData({ ...formData, winding11_12: e.target.value })
-                }
-              />
-            </td>
+            
           </tr>
           <tr>
             <td>
@@ -6012,15 +6005,7 @@ function WindingResistanceIRPITestForm({
                 }
               />
             </td>
-            <td>
-              <input
-                type="text"
-                value={formData.winding11_21}
-                onChange={(e) =>
-                  setFormData({ ...formData, winding11_21: e.target.value })
-                }
-              />
-            </td>
+            
           </tr>
           <tr>
             <td>
@@ -6035,15 +6020,7 @@ function WindingResistanceIRPITestForm({
                 }
               />
             </td>
-            <td>
-              <input
-                type="text"
-                value={formData.winding21_12}
-                onChange={(e) =>
-                  setFormData({ ...formData, winding21_12: e.target.value })
-                }
-              />
-            </td>
+            
           </tr>
         </tbody>
       </table>
@@ -6206,11 +6183,11 @@ function WindingResistanceIRPITestForm({
         <thead>
           <tr>
             <th></th>
-            <th>10 Sec</th>
-            <th>60 Sec</th>
-            <th>600 Sec</th>
-            <th>Ratio of IR 60 IR 10</th>
-            <th>Ratio of IR 600/ 60</th>
+            <th>10 Sec MΩ</th>
+            <th>60 Sec MΩ</th>
+            <th>600 Sec MΩ</th>
+            <th>Ratio of IR 60/IR 10</th>
+            <th>Ratio of IR 600/60</th>
           </tr>
         </thead>
         <tbody>
