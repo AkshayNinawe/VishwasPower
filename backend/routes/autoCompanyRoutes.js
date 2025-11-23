@@ -16,7 +16,7 @@ const router = express.Router();
 
 router.post("/", setNewCompanyData);
 router.post("/addCompany", setCompanyData);
-router.post("/approveCompanyStage", protect, authorize("etcadmin"), setapproveCompanyStage);
+router.post("/approveCompanyStage", protect, authorize("etcadmin", "admin"), setapproveCompanyStage);
 router.get("/", getAllCompanyData);
 router.post("/rejectStage", rejectCompanyStage)
 router.post("/updateFormsCompleted", setFormsCompleted);
