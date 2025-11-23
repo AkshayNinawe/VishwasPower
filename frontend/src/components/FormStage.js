@@ -2144,7 +2144,7 @@ function PreErectionTanDeltaTestForm({
             <th rowSpan="2">AT 05 KV PHASE</th>
             <th>TAN DELTA %</th>
             <th>CAPACITANCE (PF)</th>
-            <th>EXCITATION CURRENT</th>
+            <th>EXCITATION CURRENT (mA)</th>
             <th>DIELECTRIC LOSS</th>
           </tr>
         </thead>
@@ -2289,7 +2289,7 @@ function PreErectionTanDeltaTestForm({
             <th rowSpan="2">AT 10 KV PHASE</th>
             <th>TAN DELTA %</th>
             <th>CAPACITANCE (PF)</th>
-            <th>EXCITATION CURRENT</th>
+            <th>EXCITATION CURRENT (mA)</th>
             <th>DIELECTRIC LOSS</th>
           </tr>
         </thead>
@@ -4478,7 +4478,7 @@ function SFRATestRecordForm({
             <th rowSpan="2">AT 05 KV PHASE</th>
             <th>TAN DELTA %</th>
             <th>CAPACITANCE (PF)</th>
-            <th>EXCITATION CURRENT</th>
+            <th>EXCITATION CURRENT (mA)</th>
             <th>DIELECTRIC LOSS</th>
           </tr>
         </thead>
@@ -4555,11 +4555,11 @@ function SFRATestRecordForm({
             <td>
               <input
                 type="text"
-                value={formData.bushing11_05kv_phase}
+                value={formData.bushing12_05kv_phase}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    bushing11_10kv_dielectricLoss: e.target.value,
+                    bushing12_05kv_phase: e.target.value,
                   })
                 }
               />
@@ -4603,11 +4603,11 @@ function SFRATestRecordForm({
             <td>
               <input
                 type="text"
-                value={formData.excCurrent_05kv_12 || ""}
+                value={formData.bushing12_05kv_dielectricLoss || ""}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    excCurrent_05kv_12: e.target.value,
+                    bushing12_05kv_dielectricLoss: e.target.value,
                   })
                 }
               />
@@ -4624,7 +4624,7 @@ function SFRATestRecordForm({
             <th rowSpan="2">AT 10 KV PHASE</th>
             <th>TAN DELTA %</th>
             <th>CAPACITANCE (PF)</th>
-            <th>EXCITATION CURRENT</th>
+            <th>EXCITATION CURRENT (mA)</th>
             <th>DIELECTRIC LOSS</th>
           </tr>
         </thead>
@@ -4672,11 +4672,11 @@ function SFRATestRecordForm({
             <td>
               <input
                 type="text"
-                value={formData.bushing11_10kv_dielectricLoss}
+                value={formData.bushing11_10kv_excitationCurrent}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    bushing11_10kv_dielectricLoss: e.target.value,
+                    bushing11_10kv_excitationCurrent: e.target.value,
                   })
                 }
               />
@@ -4685,7 +4685,7 @@ function SFRATestRecordForm({
             <td>
               <input
                 type="text"
-                value={formData.dielLoss_10kv_11 || ""}
+                value={formData.bushing11_10kv_dielectricLoss || ""}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
@@ -4702,11 +4702,11 @@ function SFRATestRecordForm({
             <td>
               <input
                 type="text"
-                value={formData.bushing11_10kv_dielectricLoss}
+                value={formData.bushing12_10kv_phase}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    bushing11_10kv_dielectricLoss: e.target.value,
+                    bushing12_10kv_phase: e.target.value,
                   })
                 }
               />
@@ -4750,11 +4750,11 @@ function SFRATestRecordForm({
             <td>
               <input
                 type="text"
-                value={formData.excCurrent_10kv_12 || ""}
+                value={formData.bushing12_10kv_dielectricLoss || ""}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    excCurrent_10kv_12: e.target.value,
+                    bushing12_10kv_dielectricLoss: e.target.value,
                   })
                 }
               />
@@ -5743,6 +5743,10 @@ function ShortCircuitTestForm({
                   }
                   style={{ width: "120px" }}
                 />
+              </div>
+              <div
+                style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", marginTop: "10px" }}
+              >
                 <input
                   type="text"
                   value={formData.percentZ}
