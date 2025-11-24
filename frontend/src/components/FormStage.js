@@ -5296,6 +5296,221 @@ function IRVoltageRatioMagnetisingTestForm({
       </table>
 
       <h4 style={{ marginTop: "40px", textAlign: "center" }}>
+        RATIO TEST 2
+      </h4>
+
+      <table className="form-table" style={{ marginTop: "20px" }}>
+        <thead>
+          <tr>
+            <th>1.1 - 1.2</th>
+            <th>1.1 - 2.1</th>
+            <th>1.2 - 2.1</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <input
+                type="text"
+                value={formData.hvEarth10Sec}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth10Sec: e.target.value })
+                }
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.hvEarth60Sec}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth60Sec: e.target.value })
+                }
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.ratioIR60IR10}
+                onChange={(e) =>
+                  setFormData({ ...formData, ratioIR60IR10: e.target.value })
+                }
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table className="form-table" style={{ marginTop: "20px" }}>
+        <thead>
+          <tr>
+            <th>1.1 - 2.1</th>
+            <th>1.1 - 1.2</th>
+            <th>2.1 - 1.2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <input
+                type="text"
+                value={formData.hvEarth10Sec}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth10Sec: e.target.value })
+                }
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.hvEarth60Sec}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth60Sec: e.target.value })
+                }
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.ratioIR60IR10}
+                onChange={(e) =>
+                  setFormData({ ...formData, ratioIR60IR10: e.target.value })
+                }
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table className="form-table" style={{ marginTop: "20px" }}>
+        <thead>
+          <tr>
+            <th>2.1 - 1.2</th>
+            <th>1.1 - 1.2</th>
+            <th>1.1 - 2.1</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <input
+                type="text"
+                value={formData.hvEarth10Sec}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth10Sec: e.target.value })
+                }
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.hvEarth60Sec}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth60Sec: e.target.value })
+                }
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.ratioIR60IR10}
+                onChange={(e) =>
+                  setFormData({ ...formData, ratioIR60IR10: e.target.value })
+                }
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4 style={{ marginTop: "40px", textAlign: "center" }}>
+        SHORT CIRCUIT
+      </h4>
+
+      <table className="form-table" style={{ marginTop: "20px" }}>
+        <thead>
+          <tr>
+            <th>Applied</th>
+            <th>Measured Current</th>
+            <th>Measured Current</th>
+          </tr>
+          <tr>
+            <th>1.1 - 1.2</th>
+            <th>1.1</th>
+            <th>1.2 - 2.1</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <input
+                type="text"
+                value={formData.hvEarth10Sec}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth10Sec: e.target.value })
+                }
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.hvEarth60Sec}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth60Sec: e.target.value })
+                }
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.ratioIR60IR10}
+                onChange={(e) =>
+                  setFormData({ ...formData, ratioIR60IR10: e.target.value })
+                }
+              />
+            </td>
+          </tr>
+        </tbody>
+        <thead>
+          <tr>
+            <th>1.2 - 2.1</th>
+            <th>1.2</th>
+            <th>1.1 - 2.1</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <input
+                type="text"
+                value={formData.hvEarth10Sec}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth10Sec: e.target.value })
+                }
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.hvEarth60Sec}
+                onChange={(e) =>
+                  setFormData({ ...formData, hvEarth60Sec: e.target.value })
+                }
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.ratioIR60IR10}
+                onChange={(e) =>
+                  setFormData({ ...formData, ratioIR60IR10: e.target.value })
+                }
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4 style={{ marginTop: "40px", textAlign: "center" }}>
         TYPE OF TEST – VOLTAGE RATIO TEST
       </h4>
 
