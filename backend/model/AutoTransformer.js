@@ -372,6 +372,32 @@ const Stage4Form2SubSchema = new mongoose.Schema(
     hvEarth10Sec: { type: String, trim: true, default: "" },
     hvEarth60Sec: { type: String, trim: true, default: "" },
     ratioIR60IR10: { type: String, trim: true, default: "" },
+    
+    // RATIO TEST 2 - Table 1 (1.1 - 1.2, 1.1 - 2.1, 1.2 - 2.1)
+    ratioTest2_table1_11_12: { type: String, trim: true, default: "" },
+    ratioTest2_table1_11_21: { type: String, trim: true, default: "" },
+    ratioTest2_table1_12_21: { type: String, trim: true, default: "" },
+    
+    // RATIO TEST 2 - Table 2 (1.1 - 2.1, 1.1 - 1.2, 2.1 - 1.2)
+    ratioTest2_table2_11_21: { type: String, trim: true, default: "" },
+    ratioTest2_table2_11_12: { type: String, trim: true, default: "" },
+    ratioTest2_table2_21_12: { type: String, trim: true, default: "" },
+    
+    // RATIO TEST 2 - Table 3 (2.1 - 1.2, 1.1 - 1.2, 1.1 - 2.1)
+    ratioTest2_table3_21_12: { type: String, trim: true, default: "" },
+    ratioTest2_table3_11_12: { type: String, trim: true, default: "" },
+    ratioTest2_table3_11_21: { type: String, trim: true, default: "" },
+    
+    // SHORT CIRCUIT - Table 1 (Applied, Measured Current 1.1, Measured Current 1.2 - 2.1)
+    shortCircuit_table1_applied: { type: String, trim: true, default: "" },
+    shortCircuit_table1_measured11: { type: String, trim: true, default: "" },
+    shortCircuit_table1_measured12_21: { type: String, trim: true, default: "" },
+    
+    // SHORT CIRCUIT - Table 2 (1.2 - 2.1, 1.2, 1.1 - 2.1)
+    shortCircuit_table2_12_21: { type: String, trim: true, default: "" },
+    shortCircuit_table2_measured12: { type: String, trim: true, default: "" },
+    shortCircuit_table2_measured11_21: { type: String, trim: true, default: "" },
+    
     voltageRatioTests: { type: [VoltageRatioTestSubSchema], default: [] },
     appliedVoltageMag: { type: String, trim: true, default: "" },
     dateMag: { type: String, trim: true, default: "" },

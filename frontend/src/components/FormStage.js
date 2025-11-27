@@ -5049,6 +5049,32 @@ function IRVoltageRatioMagnetisingTestForm({
     hvEarth10Sec: initialData.hvEarth10Sec || "",
     hvEarth60Sec: initialData.hvEarth60Sec || "",
     ratioIR60IR10: initialData.ratioIR60IR10 || "",
+    
+    // RATIO TEST 2 - Table 1 (1.1 - 1.2, 1.1 - 2.1, 1.2 - 2.1)
+    ratioTest2_table1_11_12: initialData.ratioTest2_table1_11_12 || "",
+    ratioTest2_table1_11_21: initialData.ratioTest2_table1_11_21 || "",
+    ratioTest2_table1_12_21: initialData.ratioTest2_table1_12_21 || "",
+    
+    // RATIO TEST 2 - Table 2 (1.1 - 2.1, 1.1 - 1.2, 2.1 - 1.2)
+    ratioTest2_table2_11_21: initialData.ratioTest2_table2_11_21 || "",
+    ratioTest2_table2_11_12: initialData.ratioTest2_table2_11_12 || "",
+    ratioTest2_table2_21_12: initialData.ratioTest2_table2_21_12 || "",
+    
+    // RATIO TEST 2 - Table 3 (2.1 - 1.2, 1.1 - 1.2, 1.1 - 2.1)
+    ratioTest2_table3_21_12: initialData.ratioTest2_table3_21_12 || "",
+    ratioTest2_table3_11_12: initialData.ratioTest2_table3_11_12 || "",
+    ratioTest2_table3_11_21: initialData.ratioTest2_table3_11_21 || "",
+    
+    // SHORT CIRCUIT - Table 1 (Applied, Measured Current 1.1, Measured Current 1.2 - 2.1)
+    shortCircuit_table1_applied: initialData.shortCircuit_table1_applied || "",
+    shortCircuit_table1_measured11: initialData.shortCircuit_table1_measured11 || "",
+    shortCircuit_table1_measured12_21: initialData.shortCircuit_table1_measured12_21 || "",
+    
+    // SHORT CIRCUIT - Table 2 (1.2 - 2.1, 1.2, 1.1 - 2.1)
+    shortCircuit_table2_12_21: initialData.shortCircuit_table2_12_21 || "",
+    shortCircuit_table2_measured12: initialData.shortCircuit_table2_measured12 || "",
+    shortCircuit_table2_measured11_21: initialData.shortCircuit_table2_measured11_21 || "",
+    
     // Voltage Ratio Test
     voltageRatioTests: initialData.voltageRatioTests || [
       {
@@ -5312,27 +5338,27 @@ function IRVoltageRatioMagnetisingTestForm({
             <td>
               <input
                 type="text"
-                value={formData.hvEarth10Sec}
+                value={formData.ratioTest2_table1_11_12}
                 onChange={(e) =>
-                  setFormData({ ...formData, hvEarth10Sec: e.target.value })
+                  setFormData({ ...formData, ratioTest2_table1_11_12: e.target.value })
                 }
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.hvEarth60Sec}
+                value={formData.ratioTest2_table1_11_21}
                 onChange={(e) =>
-                  setFormData({ ...formData, hvEarth60Sec: e.target.value })
+                  setFormData({ ...formData, ratioTest2_table1_11_21: e.target.value })
                 }
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.ratioIR60IR10}
+                value={formData.ratioTest2_table1_12_21}
                 onChange={(e) =>
-                  setFormData({ ...formData, ratioIR60IR10: e.target.value })
+                  setFormData({ ...formData, ratioTest2_table1_12_21: e.target.value })
                 }
               />
             </td>
@@ -5353,27 +5379,27 @@ function IRVoltageRatioMagnetisingTestForm({
             <td>
               <input
                 type="text"
-                value={formData.hvEarth10Sec}
+                value={formData.ratioTest2_table2_11_21}
                 onChange={(e) =>
-                  setFormData({ ...formData, hvEarth10Sec: e.target.value })
+                  setFormData({ ...formData, ratioTest2_table2_11_21: e.target.value })
                 }
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.hvEarth60Sec}
+                value={formData.ratioTest2_table2_11_12}
                 onChange={(e) =>
-                  setFormData({ ...formData, hvEarth60Sec: e.target.value })
+                  setFormData({ ...formData, ratioTest2_table2_11_12: e.target.value })
                 }
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.ratioIR60IR10}
+                value={formData.ratioTest2_table2_21_12}
                 onChange={(e) =>
-                  setFormData({ ...formData, ratioIR60IR10: e.target.value })
+                  setFormData({ ...formData, ratioTest2_table2_21_12: e.target.value })
                 }
               />
             </td>
@@ -5394,27 +5420,27 @@ function IRVoltageRatioMagnetisingTestForm({
             <td>
               <input
                 type="text"
-                value={formData.hvEarth10Sec}
+                value={formData.ratioTest2_table3_21_12}
                 onChange={(e) =>
-                  setFormData({ ...formData, hvEarth10Sec: e.target.value })
+                  setFormData({ ...formData, ratioTest2_table3_21_12: e.target.value })
                 }
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.hvEarth60Sec}
+                value={formData.ratioTest2_table3_11_12}
                 onChange={(e) =>
-                  setFormData({ ...formData, hvEarth60Sec: e.target.value })
+                  setFormData({ ...formData, ratioTest2_table3_11_12: e.target.value })
                 }
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.ratioIR60IR10}
+                value={formData.ratioTest2_table3_11_21}
                 onChange={(e) =>
-                  setFormData({ ...formData, ratioIR60IR10: e.target.value })
+                  setFormData({ ...formData, ratioTest2_table3_11_21: e.target.value })
                 }
               />
             </td>
@@ -5444,27 +5470,27 @@ function IRVoltageRatioMagnetisingTestForm({
             <td>
               <input
                 type="text"
-                value={formData.hvEarth10Sec}
+                value={formData.shortCircuit_table1_applied}
                 onChange={(e) =>
-                  setFormData({ ...formData, hvEarth10Sec: e.target.value })
+                  setFormData({ ...formData, shortCircuit_table1_applied: e.target.value })
                 }
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.hvEarth60Sec}
+                value={formData.shortCircuit_table1_measured11}
                 onChange={(e) =>
-                  setFormData({ ...formData, hvEarth60Sec: e.target.value })
+                  setFormData({ ...formData, shortCircuit_table1_measured11: e.target.value })
                 }
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.ratioIR60IR10}
+                value={formData.shortCircuit_table1_measured12_21}
                 onChange={(e) =>
-                  setFormData({ ...formData, ratioIR60IR10: e.target.value })
+                  setFormData({ ...formData, shortCircuit_table1_measured12_21: e.target.value })
                 }
               />
             </td>
@@ -5482,27 +5508,27 @@ function IRVoltageRatioMagnetisingTestForm({
             <td>
               <input
                 type="text"
-                value={formData.hvEarth10Sec}
+                value={formData.shortCircuit_table2_12_21}
                 onChange={(e) =>
-                  setFormData({ ...formData, hvEarth10Sec: e.target.value })
+                  setFormData({ ...formData, shortCircuit_table2_12_21: e.target.value })
                 }
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.hvEarth60Sec}
+                value={formData.shortCircuit_table2_measured12}
                 onChange={(e) =>
-                  setFormData({ ...formData, hvEarth60Sec: e.target.value })
+                  setFormData({ ...formData, shortCircuit_table2_measured12: e.target.value })
                 }
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.ratioIR60IR10}
+                value={formData.shortCircuit_table2_measured11_21}
                 onChange={(e) =>
-                  setFormData({ ...formData, ratioIR60IR10: e.target.value })
+                  setFormData({ ...formData, shortCircuit_table2_measured11_21: e.target.value })
                 }
               />
             </td>
