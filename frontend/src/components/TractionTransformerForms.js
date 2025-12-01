@@ -390,7 +390,7 @@ const SignatureBox = ({
 // V Connected 63 MVA Transformer Forms
 
 // Stage 1 Forms
-export function NamePlateDetailsReactorForm({
+export function Stage1Form1({
   onSubmit,
   onPrevious,
   initialData,
@@ -657,14 +657,14 @@ export function NamePlateDetailsReactorForm({
           </tr>
           <tr>
             <td>
-              <strong>NO OF OIL PUMP</strong>
+              {/* <strong>NO OF OIL PUMP</strong> */}
             </td>
             <td>
-              <input
+              {/* <input
                 type="text"
                 value={formData.noOfOilPump}
                 onChange={(e) => setFormData({ ...formData, noOfOilPump: e.target.value })}
-              />
+              /> */}
             </td>
             <td>
               <strong>NO. OF RADIATORS</strong>
@@ -726,6 +726,3489 @@ export function NamePlateDetailsReactorForm({
 
       <PhotoUploadSection
         title="Transformer, Oil Level gauge, Wheel Locking, Transformer Foundation Level condition."
+        photos={photoRequirements}
+        onPhotoChange={handlePhotoChange}
+      />
+
+      <div className="form-actions">
+        {onPrevious && (
+          <button type="button" onClick={onPrevious} className="prev-btn">
+            Previous Form
+          </button>
+        )}
+        <button type="submit" className="submit-btn">
+          Next Form
+        </button>
+      </div>
+    </form>
+  )
+}
+
+function Stage1Form2({
+  onSubmit,
+  onPrevious,
+  initialData,
+  isLastFormOfStage,
+  companyName,
+  projectName,
+}) {
+  const [formData, setFormData] = useState({
+    accessories: {},
+    photos: {},
+    ...initialData,
+  });
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.post(
+          `${BACKEND_API_BASE_URL}/api/autoData/getTable`,
+          {
+            companyName: companyName,
+            projectName: projectName,
+            stage: 1,
+            formNumber: 2,
+          }
+        );
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage1Form2");
+          console.log(response.data.data);
+          setFormData(response.data.data);
+        } else {
+          console.log("There is no data in DB.");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchFormData();
+  }, [projectName, companyName]);
+
+  const accessoryItems = [
+    { id: 1, description: "HV bushing" },
+    { id: 2, description: "LV Bushing" },
+    { id: 3, description: "Radiators" },
+    { id: 4, description: "Buchholz" },
+    { id: 5, description: "PRV" },
+    { id: 6, description: "CPR" },
+    { id: 7, description: "Breather" },
+    { id: 8, description: "Bushing Connector" },
+    { id: 9, description: "FAN" },
+    { id: 10, description: "Turrents" },
+    { id: 11, description: "Valves" },
+  ];
+
+  const handleAccessoryChange = (id, field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      accessories: {
+        ...prev.accessories,
+        [id]: {
+          ...prev.accessories[id],
+          [field]: value,
+        },
+      },
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(formData);
+  };
+
+  const handlePhotoChange = (key, file) => {
+    setFormData((prev) => ({
+      ...prev,
+      photos: { ...prev.photos, [key]: file },
+    }));
+  };
+
+  const photoRequirements = [
+    { key: "transformerAccessories", label: "Transformer Accessories" },
+  ];
+
+  return (
+    <form onSubmit={handleSubmit} className="form-container">
+      <div className="company-header">
+        <h2>PROTOCOL FOR ACCESSORIES CHECKING.</h2>
+      </div>
+
+      <table className="form-table">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Packing case Number</th>
+            <th>Material Description</th>
+            <th>Qty as per P. L.</th>
+            <th>Qty. Received</th>
+            <th>Short Qty</th>
+            <th>Damaged Qty.</th>
+          </tr>
+        </thead>
+        <tbody>
+          {accessoryItems.map((item) => (
+            <tr key={item.id}>
+              <td>{item.id}</td>
+              <td>
+                <input
+                  type="text"
+                  value={formData?.accessories[item.id]?.packingCase || ""}
+                  onChange={(e) =>
+                    handleAccessoryChange(
+                      item.id,
+                      "packingCase",
+                      e.target.value
+                    )
+                  }
+                />
+              </td>
+              <td>
+                <strong>{item.description}</strong>
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={formData?.accessories[item.id]?.qtyPerPL || ""}
+                  onChange={(e) =>
+                    handleAccessoryChange(item.id, "qtyPerPL", e.target.value)
+                  }
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={formData?.accessories[item.id]?.qtyReceived || ""}
+                  onChange={(e) =>
+                    handleAccessoryChange(
+                      item.id,
+                      "qtyReceived",
+                      e.target.value
+                    )
+                  }
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={formData?.accessories[item.id]?.shortQty || ""}
+                  onChange={(e) =>
+                    handleAccessoryChange(item.id, "shortQty", e.target.value)
+                  }
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={formData?.accessories[item.id]?.damagedQty || ""}
+                  onChange={(e) =>
+                    handleAccessoryChange(item.id, "damagedQty", e.target.value)
+                  }
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <PhotoUploadSection
+        title="Transformer Accessories"
+        photos={photoRequirements}
+        onPhotoChange={handlePhotoChange}
+      />
+
+      <div className="form-actions">
+        {onPrevious && (
+          <button type="button" onClick={onPrevious} className="prev-btn">
+            Previous Form
+          </button>
+        )}
+        <button type="submit" className="submit-btn">
+          Next Form
+        </button>
+      </div>
+    </form>
+  );
+}
+
+function Stage1Form3({
+  onSubmit,
+  onPrevious,
+  initialData,
+  isLastFormOfStage,
+  companyName,
+  projectName,
+}) {
+  const [formData, setFormData] = useState({
+    meterUsed: "",
+    date: "",
+    time: "",
+    modelSrNo: "",
+    wti: "",
+    oti: "",
+    // HV Bushing SR. NO
+    hvBushing11: "",
+    hvBushing12: "",
+    // HV Bushing AT 05 KV PHASE
+    hv11_05kv_tanDelta: "",
+    hv11_05kv_capacitance: "",
+    hv11_05kv_excitationCurrent: "",
+    hv11_05kv_dielectricLoss: "",
+    hv12_05kv_tanDelta: "",
+    hv12_05kv_capacitance: "",
+    hv12_05kv_excitationCurrent: "",
+    hv12_05kv_dielectricLoss: "",
+    // HV Bushing AT 10 KV PHASE
+    hv11_10kv_tanDelta: "",
+    hv11_10kv_capacitance: "",
+    hv11_10kv_excitationCurrent: "",
+    hv11_10kv_dielectricLoss: "",
+    hv12_10kv_tanDelta: "",
+    hv12_10kv_capacitance: "",
+    hv12_10kv_excitationCurrent: "",
+    hv12_10kv_dielectricLoss: "",
+    // LV Bushing SR. NO
+    lvBushing21: "",
+    lvBushing22: "",
+    lvBushing31: "",
+    lvBushing32: "",
+    // LV Bushing AT 05 KV PHASE
+    lv21_05kv_tanDelta: "",
+    lv21_05kv_capacitance: "",
+    lv21_05kv_excitationCurrent: "",
+    lv21_05kv_dielectricLoss: "",
+    lv22_05kv_tanDelta: "",
+    lv22_05kv_capacitance: "",
+    lv22_05kv_excitationCurrent: "",
+    lv22_05kv_dielectricLoss: "",
+    lv31_05kv_tanDelta: "",
+    lv31_05kv_capacitance: "",
+    lv31_05kv_excitationCurrent: "",
+    lv31_05kv_dielectricLoss: "",
+    lv32_05kv_tanDelta: "",
+    lv32_05kv_capacitance: "",
+    lv32_05kv_excitationCurrent: "",
+    lv32_05kv_dielectricLoss: "",
+    // LV Bushing AT 10 KV PHASE
+    lv21_10kv_tanDelta: "",
+    lv21_10kv_capacitance: "",
+    lv21_10kv_excitationCurrent: "",
+    lv21_10kv_dielectricLoss: "",
+    lv22_10kv_tanDelta: "",
+    lv22_10kv_capacitance: "",
+    lv22_10kv_excitationCurrent: "",
+    lv22_10kv_dielectricLoss: "",
+    lv31_10kv_tanDelta: "",
+    lv31_10kv_capacitance: "",
+    lv31_10kv_excitationCurrent: "",
+    lv31_10kv_dielectricLoss: "",
+    lv32_10kv_tanDelta: "",
+    lv32_10kv_capacitance: "",
+    lv32_10kv_excitationCurrent: "",
+    lv32_10kv_dielectricLoss: "",
+    photos: {},
+    ...initialData,
+  })
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form6`, {
+          params: {
+            companyName: companyName,
+            projectName: projectName,
+          },
+        })
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage1Form6")
+          setFormData(response.data.data)
+        } else {
+          console.log("There is no data in DB.")
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error)
+      }
+    }
+    fetchFormData()
+  }, [projectName, companyName])
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    onSubmit(formData)
+  }
+
+  const handlePhotoChange = (key, file) => {
+    setFormData((prev) => ({
+      ...prev,
+      photos: { ...prev.photos, [key]: file },
+    }))
+  }
+
+  const photoRequirements = [
+    { key: "tenDeltaKit", label: "Ten delta kit" },
+    { key: "calibrationReport", label: "calibration report" },
+    { key: "duringTenDeltaBushing", label: "during tendelta of bushing photo" },
+  ]
+
+  return (
+    <form onSubmit={handleSubmit} className="form-container">
+      <div className="company-header">
+        <h2>CORE INSULATION CHECK: At 1KV > 500 MΩ </h2>
+      </div>
+
+      <table className="form-table">
+        <thead>
+          <tr>
+            <th> </th>
+            <th>Obtained Value</th>
+            <th>Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>Between Core - Frame</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.lv21_05kv_tanDelta}
+                onChange={(e) => setFormData({ ...formData, lv21_05kv_tanDelta: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.lv21_05kv_capacitance}
+                onChange={(e) => setFormData({ ...formData, lv21_05kv_capacitance: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Between Frame - Tank</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.lv22_05kv_tanDelta}
+                onChange={(e) => setFormData({ ...formData, lv22_05kv_tanDelta: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.lv22_05kv_capacitance}
+                onChange={(e) => setFormData({ ...formData, lv22_05kv_capacitance: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Between Core - Tank</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.lv31_05kv_tanDelta}
+                onChange={(e) => setFormData({ ...formData, lv31_05kv_tanDelta: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.lv31_05kv_capacitance}
+                onChange={(e) => setFormData({ ...formData, lv31_05kv_capacitance: e.target.value })}
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <strong>CHECKLIST FOR CONFORMING AVAILABILITY OF EQUIPMENT AT SITE</strong>
+      <table className="form-table" style={{ marginTop: "20px" }}>
+        <thead>
+          <tr>
+            <th> </th>
+            <th>Decription</th>
+            <th>Rating/Capacity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>1</strong>
+            </td>
+            <td>
+              <strong>Whether the Filter Machine is Available </strong>
+            </td>
+            
+            <td>
+              <select
+                value={formData.filterMachine}
+                onChange={(e) =>
+                  setFormData({ ...formData, filterMachine: e.target.value })
+                }
+              >
+                <option value="">(Yes/No)</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>2</strong>
+            </td>
+            <td>
+              <strong>Capacity of Filter Machine</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.lv32_10kv_dielectricLoss}
+                onChange={(e) => setFormData({ ...formData, lv32_10kv_dielectricLoss: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>3</strong>
+            </td>
+            <td>
+              <strong>Capacity of the Vacuum Pump to be used. </strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.lv32_10kv_dielectricLoss}
+                onChange={(e) => setFormData({ ...formData, lv32_10kv_dielectricLoss: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>4</strong>
+            </td>
+            <td>
+              <strong>Whether the Reservoir is Available with valves and a breather. </strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.lv32_10kv_dielectricLoss}
+                onChange={(e) => setFormData({ ...formData, lv32_10kv_dielectricLoss: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>5</strong>
+            </td>
+            <td>
+              <strong>Capacity of Reservoirs </strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.lv32_10kv_dielectricLoss}
+                onChange={(e) => setFormData({ ...formData, lv32_10kv_dielectricLoss: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>6</strong>
+            </td>
+            <td>
+              <strong>Hose Pipes for the Filtration Process.  </strong>
+            </td>
+            <td>
+              <select
+                value={formData.filterMachine}
+                onChange={(e) =>
+                  setFormData({ ...formData, filterMachine: e.target.value })
+                }
+              >
+                <option value="">(Yes/No)</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>7</strong>
+            </td>
+            <td>
+              <strong>Whether Crane is Available in good condition </strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.lv32_10kv_dielectricLoss}
+                onChange={(e) => setFormData({ ...formData, lv32_10kv_dielectricLoss: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>8</strong>
+            </td>
+            <td>
+              <strong>Dry air  </strong>
+            </td>
+            <td>
+              <select
+                value={formData.filterMachine}
+                onChange={(e) =>
+                  setFormData({ ...formData, filterMachine: e.target.value })
+                }
+              >
+                <option value="">(Yes/No)</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>9</strong>
+            </td>
+            <td>
+              <strong>Dew point meter </strong>
+            </td>
+            <td>
+              <select
+                value={formData.filterMachine}
+                onChange={(e) =>
+                  setFormData({ ...formData, filterMachine: e.target.value })
+                }
+              >
+                <option value="">(Yes/No)</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>10</strong>
+            </td>
+            <td>
+              <strong>Mec Leod gauge  </strong>
+            </td>
+            <td>
+              <select
+                value={formData.filterMachine}
+                onChange={(e) =>
+                  setFormData({ ...formData, filterMachine: e.target.value })
+                }
+              >
+                <option value="">(Yes/No)</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+
+      <strong>SAFETY EQUIPMENT</strong>
+      <table className="form-table" style={{ marginTop: "20px" }}>
+        <thead>
+          <tr>
+            <th>Decription</th>
+            <th>Confirmation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>Fire extinguisher/Fire sand bucket</strong>
+            </td>
+            
+            <td>
+              <select
+                value={formData.filterMachine}
+                onChange={(e) =>
+                  setFormData({ ...formData, filterMachine: e.target.value })
+                }
+              >
+                <option value="">(Yes/No)</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>First aid kit</strong>
+            </td>
+            <td>
+              <select
+                value={formData.filterMachine}
+                onChange={(e) =>
+                  setFormData({ ...formData, filterMachine: e.target.value })
+                }
+              >
+                <option value="">(Yes/No)</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>PPE for the working team of ETC agency, like - Safety shoes, Helmet, etc</strong>
+            </td>
+           <td>
+              <select
+                value={formData.filterMachine}
+                onChange={(e) =>
+                  setFormData({ ...formData, filterMachine: e.target.value })
+                }
+              >
+                <option value="">(Yes/No)</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <PhotoUploadSection
+        title="Ten delta kit, calibration report, during ten delta of bushing photo"
+        photos={photoRequirements}
+        onPhotoChange={handlePhotoChange}
+      />
+
+      <div className="form-actions">
+        {onPrevious && (
+          <button type="button" onClick={onPrevious} className="prev-btn">
+            Previous Form
+          </button>
+        )}
+        <button type="submit" className="submit-btn">
+          Next Form
+        </button>
+      </div>
+    </form>
+  )
+}
+
+function Stage1Form4({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
+  const [formData, setFormData] = useState({
+    makeOfMeter: "",
+    modelSrNo: "",
+    date: "",
+    ambient: "",
+    wtiTemp: "",
+    testReportReviewedBy: "",
+    acceptanceOfTest: "",
+
+    // IR Values measurements
+    irDate: "",
+    irTime: "",
+    irAmbTemp: "",
+    irOilTemp: "",
+    irWdgTemp: "",
+    irRelativeHumidity: "",
+    irMake: "",
+    irSrNo: "",
+    irRange: "",
+    irVoltageLevel: "",
+
+    // IR measurements
+    hvEarth_15sec: "",
+    hvEarth_60sec: "",
+    hvEarth_ratio: "",
+    lv1Earth_15sec: "",
+    lv1Earth_60sec: "",
+    lv1Earth_ratio: "",
+    lv2Earth_15sec: "",
+    lv2Earth_60sec: "",
+    lv2Earth_ratio: "",
+    hvLv1_15sec: "",
+    hvLv1_60sec: "",
+    hvLv1_ratio: "",
+    hvLv2_15sec: "",
+    hvLv2_60sec: "",
+    hvLv2_ratio: "",
+    lv1Lv2_15sec: "",
+    lv1Lv2_60sec: "",
+    lv1Lv2_ratio: "",
+
+    photos: {},
+    ...initialData,
+  })
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage5Form1`, {
+          params: {
+            companyName: companyName,
+            projectName: projectName,
+          },
+        })
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage5Form1")
+          setFormData(response.data.data)
+        } else {
+          console.log("There is no data in DB.")
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error)
+      }
+    }
+    fetchFormData()
+  }, [projectName, companyName])
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    onSubmit(formData)
+  }
+
+  const handlePhotoChange = (key, file) => {
+    setFormData((prev) => ({
+      ...prev,
+      photos: { ...prev.photos, [key]: file },
+    }))
+  }
+
+  const photoRequirements = [{ key: "ctRatioKit", label: "CT Ratio kit calibration" }]
+
+  return (
+    <form onSubmit={handleSubmit} className="form-container">
+      <div className="company-header">
+        <h2>Pre erection Ratio test of turret CTs</h2>
+      </div>
+
+      {/* Phase 3.1 Section */}
+      <h3 style={{ textAlign: "center", marginTop: "30px" }}>CT Ratio CORE - S1-S2,S1-S3 Phase 1.1</h3>
+
+      <h4></h4>
+      <table className="form-table">
+        <thead>
+          <tr>
+            <th>Current %</th>
+            <th>Applied primary Current (A) S1-S2</th>
+            <th>Applied primary Current (A) S1-S3</th>
+            <th>Measured secondary current (A) S1-S2</th>
+            <th>Measured secondary current (A) S1-S3</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>20%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_20percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_20percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+             <td>
+              <input
+                type="text"
+                value={formData.phase31_20percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_20percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>40%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_40percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_40percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_40percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_40percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>60%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_60percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_60percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_60percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_60percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>80%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_80percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_80percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_80percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_80percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>100%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_100percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_100percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_100percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_100percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Knee point Voltage</h4>
+      <table className="form-table">
+        <thead>
+          <tr>
+            <th>Voltage %</th>
+            <th>Applied voltage S1-S2</th>
+            <th>Applied voltage S1-S3</th>
+            <th>Measured current (A) S1-S2</th>
+            <th>Measured current (A) S1-S3</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>20%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_20percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>40%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_40percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_40percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_40percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_40percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_40percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_40percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_40percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_40percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>60%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_60percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_60percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_60percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_60percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_60percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_60percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_60percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_60percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>80%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_80percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_80percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_80percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_80percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_80percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_80percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_80percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_80percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>100%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_100percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_100percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_100percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_100percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_100percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_100percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_100percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_100percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>110%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_110percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_110percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_110percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_110percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_110percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_110percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_110percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_110percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* Phase 3.2 Section */}
+      <h3 style={{ textAlign: "center", marginTop: "40px" }}>Phase 1.2</h3>
+
+      <h4>CT Ratio CORE – S1-S2, S1-S3</h4>
+      <table className="form-table">
+        <thead>
+          <tr>
+            <th>Current %</th>
+            <th>Applied primary Current (A) S1-S2</th>
+            <th>Applied primary Current (A) S1-S3</th>
+            <th>Measured secondary current (A) S1-S2</th>
+            <th>Measured secondary current (A) S1-S3</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>20%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_20percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_20percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_20percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_20percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>40%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_40percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_40percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_40percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_40percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_40percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_40percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_40percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_40percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>60%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_60percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_60percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_60percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_60percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_40percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_40percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_40percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_40percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>80%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_80percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_80percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_80percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_80percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_40percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_40percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_40percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_40percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>100%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_100percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_100percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_100percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_100percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_40percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_40percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_40percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_40percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Knee point Voltage</h4>
+      <table className="form-table">
+        <thead>
+          <tr>
+            <th>Voltage %</th>
+            <th>Applied voltage S1-S2</th>
+            <th>Applied voltage S1-S3</th>
+            <th>Measured current (A) S1-S2</th>
+            <th>Measured current (A) S1-S3</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>20%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>40%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_40percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_40percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_40percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_40percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>60%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_60percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_60percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_60percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_60percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>80%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_80percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_80percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_80percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_80percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>100%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_100percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_100percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_100percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_100percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>110%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_110percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_110percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_110percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_110percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      
+
+      <PhotoUploadSection
+        title="CT Ratio kit calibration"
+        photos={photoRequirements}
+        onPhotoChange={handlePhotoChange}
+      />
+
+      <div className="form-actions">
+        {onPrevious && (
+          <button type="button" onClick={onPrevious} className="prev-btn">
+            Previous Form
+          </button>
+        )}
+        <button type="submit" className="submit-btn">
+          Next Form
+        </button>
+      </div>
+    </form>
+  )
+}
+
+function Stage1Form5({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
+  const [formData, setFormData] = useState({
+    makeOfMeter: "",
+    modelSrNo: "",
+    date: "",
+    ambient: "",
+    wtiTemp: "",
+    testReportReviewedBy: "",
+    acceptanceOfTest: "",
+
+    // IR Values measurements
+    irDate: "",
+    irTime: "",
+    irAmbTemp: "",
+    irOilTemp: "",
+    irWdgTemp: "",
+    irRelativeHumidity: "",
+    irMake: "",
+    irSrNo: "",
+    irRange: "",
+    irVoltageLevel: "",
+
+    // IR measurements
+    hvEarth_15sec: "",
+    hvEarth_60sec: "",
+    hvEarth_ratio: "",
+    lv1Earth_15sec: "",
+    lv1Earth_60sec: "",
+    lv1Earth_ratio: "",
+    lv2Earth_15sec: "",
+    lv2Earth_60sec: "",
+    lv2Earth_ratio: "",
+    hvLv1_15sec: "",
+    hvLv1_60sec: "",
+    hvLv1_ratio: "",
+    hvLv2_15sec: "",
+    hvLv2_60sec: "",
+    hvLv2_ratio: "",
+    lv1Lv2_15sec: "",
+    lv1Lv2_60sec: "",
+    lv1Lv2_ratio: "",
+
+    photos: {},
+    ...initialData,
+  })
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage5Form1`, {
+          params: {
+            companyName: companyName,
+            projectName: projectName,
+          },
+        })
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage5Form1")
+          setFormData(response.data.data)
+        } else {
+          console.log("There is no data in DB.")
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error)
+      }
+    }
+    fetchFormData()
+  }, [projectName, companyName])
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    onSubmit(formData)
+  }
+
+  const handlePhotoChange = (key, file) => {
+    setFormData((prev) => ({
+      ...prev,
+      photos: { ...prev.photos, [key]: file },
+    }))
+  }
+
+  const photoRequirements = [{ key: "ctRatioKit", label: "CT Ratio kit calibration" }]
+
+  return (
+    <form onSubmit={handleSubmit} className="form-container">
+      <div className="company-header">
+        <h2>Pre erection Ratio test of turret CTs</h2>
+      </div>
+
+      {/* Phase 3.1 Section */}
+      <h3 style={{ textAlign: "center", marginTop: "30px" }}>Phase 2.1</h3>
+
+      <h4>CT Ratio CORE – S1-S2, S1-S3</h4>
+      <table className="form-table">
+        <thead>
+          <tr>
+            <th>Current %</th>
+            <th>Applied primary Current (A) S1-S2</th>
+            <th>Applied primary Current (A) S1-S3</th>
+            <th>Measured secondary current (A) S1-S2</th>
+            <th>Measured secondary current (A) S1-S3</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>20%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_20percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_20percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_20percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_20percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>40%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_40percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_40percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_40percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_40percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_40percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_40percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_40percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_40percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>60%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_60percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_60percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_60percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_60percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_60percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_60percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_60percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_60percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>80%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_80percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_80percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_80percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_80percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_80percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_80percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_80percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_80percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>100%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_100percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_100percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_100percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_100percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_100percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_100percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_100percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_100percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Knee point Voltage</h4>
+      <table className="form-table">
+        <thead>
+          <tr>
+            <th>Voltage %</th>
+            <th>Applied Voltage S1-S2</th>
+            <th>Applied Voltage S1-S3</th>
+            <th>Measured current (A) S1-S2</th>
+            <th>Measured current (A) S1-S3</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>20%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_20percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_20percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>40%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_40percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_40percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_40percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_40percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_20percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>60%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_60percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_60percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_60percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_60percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_20percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>80%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_80percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_80percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_80percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_80percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_20percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>100%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_100percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_100percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_100percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_100percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_20percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>110%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_110percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_110percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_110percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_110percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_20percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* Phase 3.2 Section */}
+      <h3 style={{ textAlign: "center", marginTop: "40px" }}>Phase 2.2</h3>
+
+      <h4>CT Ratio CORE – S1-S2, S1-S3</h4>
+      <table className="form-table">
+        <thead>
+          <tr>
+            <th>Current %</th>
+            <th>Applied primary Current (A) S1-S2</th>
+            <th>Applied primary Current (A) S1-S3</th>
+            <th>Measured secondary current (A) S1-S2</th>
+            <th>Measured secondary current (A) S1-S3</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>20%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_20percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_20percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_20percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_20percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>40%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_40percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_40percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_40percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_40percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_40percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_40percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_40percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_40percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>60%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_60percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_60percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_60percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_60percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_40percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_40percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_40percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_40percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>80%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_80percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_80percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_80percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_80percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_40percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_40percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_40percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_40percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>100%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_100percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_100percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_100percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_100percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_40percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_40percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_40percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_40percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Knee point Voltage</h4>
+      <table className="form-table">
+        <thead>
+          <tr>
+            <th>Voltage %</th>
+            <th>Applied voltage S1-S2</th>
+            <th>Applied voltage S1-S3</th>
+            <th>Measured current (A) S1-S2</th>
+            <th>Measured current (A) S1-S3</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>20%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>40%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_40percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_40percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_40percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_40percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>60%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_60percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_60percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_60percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_60percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>80%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_80percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_80percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_80percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_80percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>100%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_100percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_100percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_100percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_100percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>110%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_110percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_110percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_110percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_110percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* WTI Section */}
+      <h3 style={{ textAlign: "center", marginTop: "40px" }}>WTI</h3>
+
+      <h4>CT Ratio CORE - S1-S2, S1-S3, S1-S4, S1-S5, S1-S6, S1-S7</h4>
+      <table className="form-table">
+        <thead>
+          <tr>
+            <th>Current %</th>
+            <th>Applied primary Current (A) S1-S2</th>
+            <th>Applied primary Current (A) S1-S3</th>
+            <th>Applied primary Current (A) S1-S4</th>
+            <th>Measured secondary current (A) S1-S2</th>
+            <th>Measured secondary current (A) S1-S3</th>
+            <th>Measured secondary current (A) S1-S4</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>20%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_20percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_20percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_20percent_s1s2_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_20percent_s1s2_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_20percent_s1s3_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_20percent_s1s3_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_20percent_s1s4_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_20percent_s1s4_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_20percent_s1s4_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_20percent_s1s4_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_20percent_s1s4_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_20percent_s1s4_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>40%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_40percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_40percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_40percent_s1s2_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s2_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_40percent_s1s3_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s3_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_40percent_s1s4_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s4_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_40percent_s1s3_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s3_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_40percent_s1s4_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s4_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>60%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_60percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_60percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_60percent_s1s2_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_60percent_s1s2_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_60percent_s1s3_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_60percent_s1s3_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_60percent_s1s4_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_60percent_s1s4_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_40percent_s1s3_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s3_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_40percent_s1s4_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s4_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>80%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_80percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_80percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_80percent_s1s2_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_80percent_s1s2_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_80percent_s1s3_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_80percent_s1s3_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_80percent_s1s4_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_80percent_s1s4_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_40percent_s1s3_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s3_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_40percent_s1s4_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s4_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>100%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_100percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_100percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_100percent_s1s2_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_100percent_s1s2_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_100percent_s1s3_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_100percent_s1s3_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_100percent_s1s4_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_100percent_s1s4_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_40percent_s1s3_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s3_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_40percent_s1s4_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s4_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <PhotoUploadSection
+        title="CT Ratio kit calibration"
+        photos={photoRequirements}
+        onPhotoChange={handlePhotoChange}
+      />
+
+      <div className="form-actions">
+        {onPrevious && (
+          <button type="button" onClick={onPrevious} className="prev-btn">
+            Previous Form
+          </button>
+        )}
+        <button type="submit" className="submit-btn">
+          Next Form
+        </button>
+      </div>
+    </form>
+  )
+}
+
+function Stage1Form6({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
+  const [formData, setFormData] = useState({
+    makeOfMeter: "",
+    modelSrNo: "",
+    date: "",
+    ambient: "",
+    wtiTemp: "",
+    testReportReviewedBy: "",
+    acceptanceOfTest: "",
+
+    // IR Values measurements
+    irDate: "",
+    irTime: "",
+    irAmbTemp: "",
+    irOilTemp: "",
+    irWdgTemp: "",
+    irRelativeHumidity: "",
+    irMake: "",
+    irSrNo: "",
+    irRange: "",
+    irVoltageLevel: "",
+
+    // IR measurements
+    hvEarth_15sec: "",
+    hvEarth_60sec: "",
+    hvEarth_ratio: "",
+    lv1Earth_15sec: "",
+    lv1Earth_60sec: "",
+    lv1Earth_ratio: "",
+    lv2Earth_15sec: "",
+    lv2Earth_60sec: "",
+    lv2Earth_ratio: "",
+    hvLv1_15sec: "",
+    hvLv1_60sec: "",
+    hvLv1_ratio: "",
+    hvLv2_15sec: "",
+    hvLv2_60sec: "",
+    hvLv2_ratio: "",
+    lv1Lv2_15sec: "",
+    lv1Lv2_60sec: "",
+    lv1Lv2_ratio: "",
+
+    photos: {},
+    ...initialData,
+  })
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage5Form1`, {
+          params: {
+            companyName: companyName,
+            projectName: projectName,
+          },
+        })
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage5Form1")
+          setFormData(response.data.data)
+        } else {
+          console.log("There is no data in DB.")
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error)
+      }
+    }
+    fetchFormData()
+  }, [projectName, companyName])
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    onSubmit(formData)
+  }
+
+  const handlePhotoChange = (key, file) => {
+    setFormData((prev) => ({
+      ...prev,
+      photos: { ...prev.photos, [key]: file },
+    }))
+  }
+
+  const photoRequirements = [{ key: "ctRatioKit", label: "CT Ratio kit calibration" }]
+
+  return (
+    <form onSubmit={handleSubmit} className="form-container">
+      <div className="company-header">
+        <h2>TAN DELTA AND CAPACITANCE TEST ON BUSHING </h2>
+      </div>
+
+      {/* Phase 3.1 Section */}
+      <h3 style={{ textAlign: "center", marginTop: "30px" }}>Phase 3.1</h3>
+
+      <h4>CT Ratio CORE – S1-S2</h4>
+      <table className="form-table">
+        <thead>
+          <tr>
+            <th>Current %</th>
+            <th>Applied primary Current (A)</th>
+            <th>Measured secondary current (A)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>20%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_20percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_20percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>40%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_40percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_40percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_40percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_40percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>60%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_60percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_60percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_60percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_60percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>80%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_80percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_80percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_80percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_80percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>100%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_100percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_100percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_100percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_100percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Knee point Voltage</h4>
+      <table className="form-table">
+        <thead>
+          <tr>
+            <th>Voltage %</th>
+            <th>Applied voltage</th>
+            <th>Measured current (A)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>20%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_20percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>40%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_40percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_40percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_40percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_40percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>60%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_60percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_60percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_60percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_60percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>80%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_80percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_80percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_80percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_80percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>100%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_100percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_100percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_100percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_100percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>110%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_110percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_110percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase31_knee_110percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase31_knee_110percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* Phase 3.2 Section */}
+      <h3 style={{ textAlign: "center", marginTop: "40px" }}>Phase 3.2</h3>
+
+      <h4>CT Ratio CORE – S1-S2</h4>
+      <table className="form-table">
+        <thead>
+          <tr>
+            <th>Current %</th>
+            <th>Applied primary Current (A)</th>
+            <th>Measured secondary current (A)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>20%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_20percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_20percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>40%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_40percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_40percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_40percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_40percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>60%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_60percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_60percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_60percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_60percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>80%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_80percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_80percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_80percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_80percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>100%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_100percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_100percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_100percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_100percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Knee point Voltage</h4>
+      <table className="form-table">
+        <thead>
+          <tr>
+            <th>Voltage %</th>
+            <th>Applied voltage</th>
+            <th>Measured current (A)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>20%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_20percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>40%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_40percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_40percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_40percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_40percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>60%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_60percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_60percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_60percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_60percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>80%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_80percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_80percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_80percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_80percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>100%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_100percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_100percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_100percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_100percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>110%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_110percent_appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_110percent_appliedVoltage: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.phase32_knee_110percent_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, phase32_knee_110percent_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* WTI Section */}
+      <h3 style={{ textAlign: "center", marginTop: "40px" }}>WTI</h3>
+
+      <h4>CT Ratio CORE - S1-S2, S1-S3, S1-S4</h4>
+      <table className="form-table">
+        <thead>
+          <tr>
+            <th>Current %</th>
+            <th>Applied primary Current (A)</th>
+            <th colSpan="3">Measured secondary current (A)</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th></th>
+            <th>S1-S2</th>
+            <th>S1-S3</th>
+            <th>S1-S4</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>20%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_20percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_20percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_20percent_s1s2_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_20percent_s1s2_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_20percent_s1s3_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_20percent_s1s3_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_20percent_s1s4_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_20percent_s1s4_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>40%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_40percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_40percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_40percent_s1s2_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s2_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_40percent_s1s3_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s3_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_40percent_s1s4_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s4_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>60%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_60percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_60percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_60percent_s1s2_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_60percent_s1s2_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_60percent_s1s3_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_60percent_s1s3_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_60percent_s1s4_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_60percent_s1s4_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>80%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_80percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_80percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_80percent_s1s2_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_80percent_s1s2_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_80percent_s1s3_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_80percent_s1s3_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_80percent_s1s4_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_80percent_s1s4_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>100%</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_100percent_appliedCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_100percent_appliedCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_100percent_s1s2_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_100percent_s1s2_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_100percent_s1s3_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_100percent_s1s3_measuredCurrent: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti_100percent_s1s4_measuredCurrent}
+                onChange={(e) => setFormData({ ...formData, wti_100percent_s1s4_measuredCurrent: e.target.value })}
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <PhotoUploadSection
+        title="CT Ratio kit calibration"
         photos={photoRequirements}
         onPhotoChange={handlePhotoChange}
       />
@@ -3426,2134 +6909,6 @@ export function IRPIValueAfterFiltrationForm({
         )}
         <button type="submit" className="submit-btn">
           Submit Stage 4
-        </button>
-      </div>
-    </form>
-  )
-}
-
-// Stage 5 Forms - Based on provided images
-function SFRATestRecordV63Form({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
-  const [formData, setFormData] = useState({
-    makeOfMeter: "",
-    modelSrNo: "",
-    date: "",
-    ambient: "",
-    wtiTemp: "",
-    testReportReviewedBy: "",
-    acceptanceOfTest: "",
-
-    // IR Values measurements
-    irDate: "",
-    irTime: "",
-    irAmbTemp: "",
-    irOilTemp: "",
-    irWdgTemp: "",
-    irRelativeHumidity: "",
-    irMake: "",
-    irSrNo: "",
-    irRange: "",
-    irVoltageLevel: "",
-
-    // IR measurements
-    hvEarth_15sec: "",
-    hvEarth_60sec: "",
-    hvEarth_ratio: "",
-    lv1Earth_15sec: "",
-    lv1Earth_60sec: "",
-    lv1Earth_ratio: "",
-    lv2Earth_15sec: "",
-    lv2Earth_60sec: "",
-    lv2Earth_ratio: "",
-    hvLv1_15sec: "",
-    hvLv1_60sec: "",
-    hvLv1_ratio: "",
-    hvLv2_15sec: "",
-    hvLv2_60sec: "",
-    hvLv2_ratio: "",
-    lv1Lv2_15sec: "",
-    lv1Lv2_60sec: "",
-    lv1Lv2_ratio: "",
-
-    photos: {},
-    ...initialData,
-  })
-
-  useEffect(() => {
-    const fetchFormData = async () => {
-      try {
-        const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage5Form1`, {
-          params: {
-            companyName: companyName,
-            projectName: projectName,
-          },
-        })
-        if (response.data && response.data.data) {
-          console.log("Data fetched from DB for stage5Form1")
-          setFormData(response.data.data)
-        } else {
-          console.log("There is no data in DB.")
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error)
-      }
-    }
-    fetchFormData()
-  }, [projectName, companyName])
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    onSubmit(formData)
-  }
-
-  const handlePhotoChange = (key, file) => {
-    setFormData((prev) => ({
-      ...prev,
-      photos: { ...prev.photos, [key]: file },
-    }))
-  }
-
-  const photoRequirements = [{ key: "ctRatioKit", label: "CT Ratio kit calibration" }]
-
-  return (
-    <form onSubmit={handleSubmit} className="form-container">
-      <div className="company-header">
-        <h2>VISHVAS POWER ENGINEERING SERVICES PVT. LTD. NAGPUR</h2>
-        <h3>Pre erection Ratio test of turret CTs</h3>
-      </div>
-
-      {/* Phase 3.1 Section */}
-      <h3 style={{ textAlign: "center", marginTop: "30px" }}>Phase 3.1</h3>
-
-      <h4>CT Ratio CORE – S1-S2</h4>
-      <table className="form-table">
-        <thead>
-          <tr>
-            <th>Current %</th>
-            <th>Applied primary Current (A)</th>
-            <th>Measured secondary current (A)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <strong>20%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_20percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_20percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_20percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_20percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>40%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_40percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_40percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_40percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_40percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>60%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_60percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_60percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_60percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_60percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>80%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_80percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_80percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_80percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_80percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>100%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_100percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_100percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_100percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_100percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h4>Knee point Voltage</h4>
-      <table className="form-table">
-        <thead>
-          <tr>
-            <th>Voltage %</th>
-            <th>Applied voltage</th>
-            <th>Measured current (A)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <strong>20%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_20percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_20percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>40%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_40percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_40percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_40percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_40percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>60%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_60percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_60percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_60percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_60percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>80%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_80percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_80percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_80percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_80percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>100%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_100percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_100percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_100percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_100percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>110%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_110percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_110percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_110percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_110percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      {/* Phase 3.2 Section */}
-      <h3 style={{ textAlign: "center", marginTop: "40px" }}>Phase 3.2</h3>
-
-      <h4>CT Ratio CORE – S1-S2</h4>
-      <table className="form-table">
-        <thead>
-          <tr>
-            <th>Current %</th>
-            <th>Applied primary Current (A)</th>
-            <th>Measured secondary current (A)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <strong>20%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_20percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_20percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_20percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_20percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>40%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_40percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_40percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_40percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_40percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>60%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_60percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_60percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_60percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_60percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>80%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_80percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_80percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_80percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_80percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>100%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_100percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_100percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_100percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_100percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h4>Knee point Voltage</h4>
-      <table className="form-table">
-        <thead>
-          <tr>
-            <th>Voltage %</th>
-            <th>Applied voltage</th>
-            <th>Measured current (A)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <strong>20%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_20percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_20percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>40%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_40percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_40percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_40percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_40percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>60%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_60percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_60percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_60percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_60percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>80%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_80percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_80percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_80percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_80percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>100%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_100percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_100percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_100percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_100percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>110%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_110percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_110percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_110percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_110percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      {/* WTI Section */}
-      <h3 style={{ textAlign: "center", marginTop: "40px" }}>WTI</h3>
-
-      <h4>CT Ratio CORE - S1-S2, S1-S3, S1-S4</h4>
-      <table className="form-table">
-        <thead>
-          <tr>
-            <th>Current %</th>
-            <th>Applied primary Current (A)</th>
-            <th colSpan="3">Measured secondary current (A)</th>
-          </tr>
-          <tr>
-            <th></th>
-            <th></th>
-            <th>S1-S2</th>
-            <th>S1-S3</th>
-            <th>S1-S4</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <strong>20%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_20percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_20percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_20percent_s1s2_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_20percent_s1s2_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_20percent_s1s3_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_20percent_s1s3_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_20percent_s1s4_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_20percent_s1s4_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>40%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_40percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_40percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_40percent_s1s2_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s2_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_40percent_s1s3_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s3_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_40percent_s1s4_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s4_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>60%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_60percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_60percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_60percent_s1s2_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_60percent_s1s2_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_60percent_s1s3_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_60percent_s1s3_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_60percent_s1s4_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_60percent_s1s4_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>80%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_80percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_80percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_80percent_s1s2_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_80percent_s1s2_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_80percent_s1s3_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_80percent_s1s3_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_80percent_s1s4_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_80percent_s1s4_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>100%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_100percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_100percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_100percent_s1s2_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_100percent_s1s2_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_100percent_s1s3_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_100percent_s1s3_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_100percent_s1s4_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_100percent_s1s4_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <PhotoUploadSection
-        title="CT Ratio kit calibration"
-        photos={photoRequirements}
-        onPhotoChange={handlePhotoChange}
-      />
-
-      <div className="form-actions">
-        {onPrevious && (
-          <button type="button" onClick={onPrevious} className="prev-btn">
-            Previous Form
-          </button>
-        )}
-        <button type="submit" className="submit-btn">
-          Next Form
-        </button>
-      </div>
-    </form>
-  )
-}
-
-// Form 6: Tan Delta and Capacitance Test on Bushing (V Connected 63 MVA)
-function TanDeltaCapacitanceTestForm({
-  onSubmit,
-  onPrevious,
-  initialData,
-  isLastFormOfStage,
-  companyName,
-  projectName,
-}) {
-  const [formData, setFormData] = useState({
-    meterUsed: "",
-    date: "",
-    time: "",
-    modelSrNo: "",
-    wti: "",
-    oti: "",
-    // HV Bushing SR. NO
-    hvBushing11: "",
-    hvBushing12: "",
-    // HV Bushing AT 05 KV PHASE
-    hv11_05kv_tanDelta: "",
-    hv11_05kv_capacitance: "",
-    hv11_05kv_excitationCurrent: "",
-    hv11_05kv_dielectricLoss: "",
-    hv12_05kv_tanDelta: "",
-    hv12_05kv_capacitance: "",
-    hv12_05kv_excitationCurrent: "",
-    hv12_05kv_dielectricLoss: "",
-    // HV Bushing AT 10 KV PHASE
-    hv11_10kv_tanDelta: "",
-    hv11_10kv_capacitance: "",
-    hv11_10kv_excitationCurrent: "",
-    hv11_10kv_dielectricLoss: "",
-    hv12_10kv_tanDelta: "",
-    hv12_10kv_capacitance: "",
-    hv12_10kv_excitationCurrent: "",
-    hv12_10kv_dielectricLoss: "",
-    // LV Bushing SR. NO
-    lvBushing21: "",
-    lvBushing22: "",
-    lvBushing31: "",
-    lvBushing32: "",
-    // LV Bushing AT 05 KV PHASE
-    lv21_05kv_tanDelta: "",
-    lv21_05kv_capacitance: "",
-    lv21_05kv_excitationCurrent: "",
-    lv21_05kv_dielectricLoss: "",
-    lv22_05kv_tanDelta: "",
-    lv22_05kv_capacitance: "",
-    lv22_05kv_excitationCurrent: "",
-    lv22_05kv_dielectricLoss: "",
-    lv31_05kv_tanDelta: "",
-    lv31_05kv_capacitance: "",
-    lv31_05kv_excitationCurrent: "",
-    lv31_05kv_dielectricLoss: "",
-    lv32_05kv_tanDelta: "",
-    lv32_05kv_capacitance: "",
-    lv32_05kv_excitationCurrent: "",
-    lv32_05kv_dielectricLoss: "",
-    // LV Bushing AT 10 KV PHASE
-    lv21_10kv_tanDelta: "",
-    lv21_10kv_capacitance: "",
-    lv21_10kv_excitationCurrent: "",
-    lv21_10kv_dielectricLoss: "",
-    lv22_10kv_tanDelta: "",
-    lv22_10kv_capacitance: "",
-    lv22_10kv_excitationCurrent: "",
-    lv22_10kv_dielectricLoss: "",
-    lv31_10kv_tanDelta: "",
-    lv31_10kv_capacitance: "",
-    lv31_10kv_excitationCurrent: "",
-    lv31_10kv_dielectricLoss: "",
-    lv32_10kv_tanDelta: "",
-    lv32_10kv_capacitance: "",
-    lv32_10kv_excitationCurrent: "",
-    lv32_10kv_dielectricLoss: "",
-    photos: {},
-    ...initialData,
-  })
-
-  useEffect(() => {
-    const fetchFormData = async () => {
-      try {
-        const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form6`, {
-          params: {
-            companyName: companyName,
-            projectName: projectName,
-          },
-        })
-        if (response.data && response.data.data) {
-          console.log("Data fetched from DB for stage1Form6")
-          setFormData(response.data.data)
-        } else {
-          console.log("There is no data in DB.")
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error)
-      }
-    }
-    fetchFormData()
-  }, [projectName, companyName])
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    onSubmit(formData)
-  }
-
-  const handlePhotoChange = (key, file) => {
-    setFormData((prev) => ({
-      ...prev,
-      photos: { ...prev.photos, [key]: file },
-    }))
-  }
-
-  const photoRequirements = [
-    { key: "tenDeltaKit", label: "Ten delta kit" },
-    { key: "calibrationReport", label: "calibration report" },
-    { key: "duringTenDeltaBushing", label: "during tendelta of bushing photo" },
-  ]
-
-  return (
-    <form onSubmit={handleSubmit} className="form-container">
-      <div className="company-header">
-        <h2>VISHVAS POWER ENGINEERING SERVICES PVT. LTD. NAGPUR</h2>
-        <h3>TEST REPORT</h3>
-        <h4>TAN DELTA AND CAPACITANCE TEST ON BUSHING</h4>
-      </div>
-
-      <table className="form-table">
-        <tbody>
-          <tr>
-            <td>
-              <strong>METER USED</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.meterUsed}
-                onChange={(e) => setFormData({ ...formData, meterUsed: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>DATE:</strong>
-            </td>
-            <td>
-              <input
-                type="date"
-                value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>TIME:</strong>
-            </td>
-            <td>
-              <input
-                type="time"
-                value={formData.time}
-                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>MODEL & S. NO.</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.modelSrNo}
-                onChange={(e) => setFormData({ ...formData, modelSrNo: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>WTI:</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti}
-                onChange={(e) => setFormData({ ...formData, wti: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>OTI:</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.oti}
-                onChange={(e) => setFormData({ ...formData, oti: e.target.value })}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <table className="form-table" style={{ marginTop: "20px" }}>
-        <thead>
-          <tr>
-            <th rowSpan="2">BUSHING SR. NO HV</th>
-            <th>1.1</th>
-            <th>1.2</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td></td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvBushing11}
-                onChange={(e) => setFormData({ ...formData, hvBushing11: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvBushing12}
-                onChange={(e) => setFormData({ ...formData, hvBushing12: e.target.value })}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h4 style={{ marginTop: "30px", textAlign: "center" }}>STATUS:</h4>
-      <table className="form-table">
-        <thead>
-          <tr>
-            <th>AT 05 KV PHASE</th>
-            <th>TAN DELTA in %</th>
-            <th>CAPACITANCE (PF)</th>
-            <th>EXCITATION CURRENT</th>
-            <th>DIELECTRIC LOSS</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <strong>2.1</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv21_05kv_tanDelta}
-                onChange={(e) => setFormData({ ...formData, lv21_05kv_tanDelta: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv21_05kv_capacitance}
-                onChange={(e) => setFormData({ ...formData, lv21_05kv_capacitance: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv21_05kv_excitationCurrent}
-                onChange={(e) => setFormData({ ...formData, lv21_05kv_excitationCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv21_05kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, lv21_05kv_dielectricLoss: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>2.2</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv22_05kv_tanDelta}
-                onChange={(e) => setFormData({ ...formData, lv22_05kv_tanDelta: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv22_05kv_capacitance}
-                onChange={(e) => setFormData({ ...formData, lv22_05kv_capacitance: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv22_05kv_excitationCurrent}
-                onChange={(e) => setFormData({ ...formData, lv22_05kv_excitationCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv22_05kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, lv22_05kv_dielectricLoss: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>3.1</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv31_05kv_tanDelta}
-                onChange={(e) => setFormData({ ...formData, lv31_05kv_tanDelta: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv31_05kv_capacitance}
-                onChange={(e) => setFormData({ ...formData, lv31_05kv_capacitance: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv31_05kv_excitationCurrent}
-                onChange={(e) => setFormData({ ...formData, lv31_05kv_excitationCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv31_05kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, lv31_05kv_dielectricLoss: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>3.2</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv32_05kv_tanDelta}
-                onChange={(e) => setFormData({ ...formData, lv32_05kv_tanDelta: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv32_05kv_capacitance}
-                onChange={(e) => setFormData({ ...formData, lv32_05kv_capacitance: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv32_05kv_excitationCurrent}
-                onChange={(e) => setFormData({ ...formData, lv32_05kv_excitationCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv32_05kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, lv32_05kv_dielectricLoss: e.target.value })}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <table className="form-table" style={{ marginTop: "20px" }}>
-        <thead>
-          <tr>
-            <th>AT 10 KV PHASE</th>
-            <th>TAN DELTA in %</th>
-            <th>CAPACITANCE</th>
-            <th>EXCITATION CURRENT</th>
-            <th>DIELECTRIC LOSS</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <strong>2.1</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv21_10kv_tanDelta}
-                onChange={(e) => setFormData({ ...formData, lv21_10kv_tanDelta: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv21_10kv_capacitance}
-                onChange={(e) => setFormData({ ...formData, lv21_10kv_capacitance: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv21_10kv_excitationCurrent}
-                onChange={(e) => setFormData({ ...formData, lv21_10kv_excitationCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv21_10kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, lv21_10kv_dielectricLoss: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>2.2</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv22_10kv_tanDelta}
-                onChange={(e) => setFormData({ ...formData, lv22_10kv_tanDelta: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv22_10kv_capacitance}
-                onChange={(e) => setFormData({ ...formData, lv22_10kv_capacitance: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv22_10kv_excitationCurrent}
-                onChange={(e) => setFormData({ ...formData, lv22_10kv_excitationCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv22_10kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, lv22_10kv_dielectricLoss: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>3.1</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv31_10kv_tanDelta}
-                onChange={(e) => setFormData({ ...formData, lv31_10kv_tanDelta: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv31_10kv_capacitance}
-                onChange={(e) => setFormData({ ...formData, lv31_10kv_capacitance: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv31_10kv_excitationCurrent}
-                onChange={(e) => setFormData({ ...formData, lv31_10kv_excitationCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv31_10kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, lv31_10kv_dielectricLoss: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>3.2</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv32_10kv_tanDelta}
-                onChange={(e) => setFormData({ ...formData, lv32_10kv_tanDelta: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv32_10kv_capacitance}
-                onChange={(e) => setFormData({ ...formData, lv32_10kv_capacitance: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv32_10kv_excitationCurrent}
-                onChange={(e) => setFormData({ ...formData, lv32_10kv_excitationCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv32_10kv_dielectricLoss}
-                onChange={(e) => setFormData({ ...formData, lv32_10kv_dielectricLoss: e.target.value })}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <PhotoUploadSection
-        title="Ten delta kit, calibration report, during ten delta of bushing photo"
-        photos={photoRequirements}
-        onPhotoChange={handlePhotoChange}
-      />
-
-      <div className="form-actions">
-        {onPrevious && (
-          <button type="button" onClick={onPrevious} className="prev-btn">
-            Previous Form
-          </button>
-        )}
-        <button type="submit" className="submit-btn">
-          Next Form
-        </button>
-      </div>
-    </form>
-  )
-}
-
-// Form 5: Pre Erection Ratio Test of Turret CTs - Phase 3 (V Connected 63 MVA)
-function PreErectionRatioTestPhase3Form({
-  onSubmit,
-  onPrevious,
-  initialData,
-  isLastFormOfStage,
-  companyName,
-  projectName,
-}) {
-  const [formData, setFormData] = useState({
-    // Phase 3.1 CT Ratio CORE - S1-S2
-    phase31_20percent_appliedCurrent: "",
-    phase31_20percent_measuredCurrent: "",
-    phase31_40percent_appliedCurrent: "",
-    phase31_40percent_measuredCurrent: "",
-    phase31_60percent_appliedCurrent: "",
-    phase31_60percent_measuredCurrent: "",
-    phase31_80percent_appliedCurrent: "",
-    phase31_80percent_measuredCurrent: "",
-    phase31_100percent_appliedCurrent: "",
-    phase31_100percent_measuredCurrent: "",
-
-    // Phase 3.1 Knee point Voltage
-    phase31_knee_20percent_appliedVoltage: "",
-    phase31_knee_20percent_measuredCurrent: "",
-    phase31_knee_40percent_appliedVoltage: "",
-    phase31_knee_40percent_measuredCurrent: "",
-    phase31_knee_60percent_appliedVoltage: "",
-    phase31_knee_60percent_measuredCurrent: "",
-    phase31_knee_80percent_appliedVoltage: "",
-    phase31_knee_80percent_measuredCurrent: "",
-    phase31_knee_100percent_appliedVoltage: "",
-    phase31_knee_100percent_measuredCurrent: "",
-    phase31_knee_110percent_appliedVoltage: "",
-    phase31_knee_110percent_measuredCurrent: "",
-
-    // Phase 3.2 CT Ratio CORE - S1-S2
-    phase32_20percent_appliedCurrent: "",
-    phase32_20percent_measuredCurrent: "",
-    phase32_40percent_appliedCurrent: "",
-    phase32_40percent_measuredCurrent: "",
-    phase32_60percent_appliedCurrent: "",
-    phase32_60percent_measuredCurrent: "",
-    phase32_80percent_appliedCurrent: "",
-    phase32_80percent_measuredCurrent: "",
-    phase32_100percent_appliedCurrent: "",
-    phase32_100percent_measuredCurrent: "",
-
-    // Phase 3.2 Knee point Voltage
-    phase32_knee_20percent_appliedVoltage: "",
-    phase32_knee_20percent_measuredCurrent: "",
-    phase32_knee_40percent_appliedVoltage: "",
-    phase32_knee_40percent_measuredCurrent: "",
-    phase32_knee_60percent_appliedVoltage: "",
-    phase32_knee_60percent_measuredCurrent: "",
-    phase32_knee_80percent_appliedVoltage: "",
-    phase32_knee_80percent_measuredCurrent: "",
-    phase32_knee_100percent_appliedVoltage: "",
-    phase32_knee_100percent_measuredCurrent: "",
-    phase32_knee_110percent_appliedVoltage: "",
-    phase32_knee_110percent_measuredCurrent: "",
-
-    // WTI CT Ratio CORE - S1-S2, S1-S3, S1-S4
-    wti_20percent_appliedCurrent: "",
-    wti_20percent_s1s2_measuredCurrent: "",
-    wti_20percent_s1s3_measuredCurrent: "",
-    wti_20percent_s1s4_measuredCurrent: "",
-    wti_40percent_appliedCurrent: "",
-    wti_40percent_s1s2_measuredCurrent: "",
-    wti_40percent_s1s3_measuredCurrent: "",
-    wti_40percent_s1s4_measuredCurrent: "",
-    wti_60percent_appliedCurrent: "",
-    wti_60percent_s1s2_measuredCurrent: "",
-    wti_60percent_s1s3_measuredCurrent: "",
-    wti_60percent_s1s4_measuredCurrent: "",
-    wti_80percent_appliedCurrent: "",
-    wti_80percent_s1s2_measuredCurrent: "",
-    wti_80percent_s1s3_measuredCurrent: "",
-    wti_80percent_s1s4_measuredCurrent: "",
-    wti_100percent_appliedCurrent: "",
-    wti_100percent_s1s2_measuredCurrent: "",
-    wti_100percent_s1s3_measuredCurrent: "",
-    wti_100percent_s1s4_measuredCurrent: "",
-
-    photos: {},
-    ...initialData,
-  })
-
-  useEffect(() => {
-    const fetchFormData = async () => {
-      try {
-        const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form5`, {
-          params: {
-            companyName: companyName,
-            projectName: projectName,
-          },
-        })
-        if (response.data && response.data.data) {
-          console.log("Data fetched from DB for stage1Form5")
-          setFormData(response.data.data)
-        } else {
-          console.log("There is no data in DB.")
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error)
-      }
-    }
-    fetchFormData()
-  }, [projectName, companyName])
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    onSubmit(formData)
-  }
-
-  const handlePhotoChange = (key, file) => {
-    setFormData((prev) => ({
-      ...prev,
-      photos: { ...prev.photos, [key]: file },
-    }))
-  }
-
-  const photoRequirements = [{ key: "ctRatioKit", label: "CT Ratio kit calibration" }]
-
-  return (
-    <form onSubmit={handleSubmit} className="form-container">
-      <div className="company-header">
-        <h2>VISHVAS POWER ENGINEERING SERVICES PVT. LTD. NAGPUR</h2>
-        <h3>Pre erection Ratio test of turret CTs</h3>
-      </div>
-
-      {/* Phase 3.1 Section */}
-      <h3 style={{ textAlign: "center", marginTop: "30px" }}>Phase 3.1</h3>
-
-      <h4>CT Ratio CORE – S1-S2</h4>
-      <table className="form-table">
-        <thead>
-          <tr>
-            <th>Current %</th>
-            <th>Applied primary Current (A)</th>
-            <th>Measured secondary current (A)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <strong>20%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_20percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_20percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_20percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_20percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>40%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_40percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_40percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_40percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_40percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>60%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_60percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_60percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_60percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_60percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>80%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_80percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_80percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_80percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_80percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>100%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_100percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_100percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_100percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_100percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h4>Knee point Voltage</h4>
-      <table className="form-table">
-        <thead>
-          <tr>
-            <th>Voltage %</th>
-            <th>Applied voltage</th>
-            <th>Measured current (A)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <strong>20%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_20percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_20percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>40%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_40percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_40percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_40percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_40percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>60%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_60percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_60percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_60percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_60percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>80%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_80percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_80percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_80percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_80percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>100%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_100percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_100percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_100percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_100percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>110%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_110percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_110percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_110percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_110percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      {/* Phase 3.2 Section */}
-      <h3 style={{ textAlign: "center", marginTop: "40px" }}>Phase 3.2</h3>
-
-      <h4>CT Ratio CORE – S1-S2</h4>
-      <table className="form-table">
-        <thead>
-          <tr>
-            <th>Current %</th>
-            <th>Applied primary Current (A)</th>
-            <th>Measured secondary current (A)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <strong>20%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_20percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_20percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_20percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_20percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>40%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_40percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_40percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_40percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_40percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>60%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_60percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_60percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_60percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_60percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>80%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_80percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_80percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_80percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_80percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>100%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_100percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_100percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_100percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_100percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h4>Knee point Voltage</h4>
-      <table className="form-table">
-        <thead>
-          <tr>
-            <th>Voltage %</th>
-            <th>Applied voltage</th>
-            <th>Measured current (A)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <strong>20%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_20percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_20percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>40%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_40percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_40percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_40percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_40percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>60%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_60percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_60percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_60percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_60percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>80%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_80percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_80percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_80percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_80percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>100%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_100percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_100percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_100percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_100percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>110%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_110percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_110percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_110percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_110percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      {/* WTI Section */}
-      <h3 style={{ textAlign: "center", marginTop: "40px" }}>WTI</h3>
-
-      <h4>CT Ratio CORE - S1-S2, S1-S3, S1-S4</h4>
-      <table className="form-table">
-        <thead>
-          <tr>
-            <th>Current %</th>
-            <th>Applied primary Current (A)</th>
-            <th colSpan="3">Measured secondary current (A)</th>
-          </tr>
-          <tr>
-            <th></th>
-            <th></th>
-            <th>S1-S2</th>
-            <th>S1-S3</th>
-            <th>S1-S4</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <strong>20%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_20percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_20percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_20percent_s1s2_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_20percent_s1s2_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_20percent_s1s3_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_20percent_s1s3_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_20percent_s1s4_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_20percent_s1s4_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>40%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_40percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_40percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_40percent_s1s2_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s2_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_40percent_s1s3_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s3_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_40percent_s1s4_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s4_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>60%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_60percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_60percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_60percent_s1s2_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_60percent_s1s2_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_60percent_s1s3_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_60percent_s1s3_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_60percent_s1s4_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_60percent_s1s4_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>80%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_80percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_80percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_80percent_s1s2_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_80percent_s1s2_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_80percent_s1s3_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_80percent_s1s3_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_80percent_s1s4_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_80percent_s1s4_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>100%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_100percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_100percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_100percent_s1s2_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_100percent_s1s2_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_100percent_s1s3_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_100percent_s1s3_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_100percent_s1s4_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_100percent_s1s4_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <PhotoUploadSection
-        title="CT Ratio kit calibration"
-        photos={photoRequirements}
-        onPhotoChange={handlePhotoChange}
-      />
-
-      <div className="form-actions">
-        {onPrevious && (
-          <button type="button" onClick={onPrevious} className="prev-btn">
-            Previous Form
-          </button>
-        )}
-        <button type="submit" className="submit-btn">
-          Next Form
         </button>
       </div>
     </form>
@@ -9850,10 +11205,14 @@ const TractionTransformerForms = ({
   // Define stage forms mapping
   const stageFormsMapping = {
     1: [
-      { component: NamePlateDetailsReactorForm, name: "Name Plate Details Transformer/Reactor" },
-      { component: PreErectionRatioTestPhase3Form, name: "Pre Erection Ratio Test of Turret CTs - Phase 3" },
-      { component: TanDeltaCapacitanceTestForm, name: "Tan Delta and Capacitance Test on Bushing" },
-    ],
+      { component: Stage1Form1, name: "Name Plate Details Transformer/Reactor" },
+      { component: Stage1Form2, name: "Pre Erection Ratio Test of Turret CTs - Phase 3" },
+      { component: Stage1Form3, name: "Tan Delta and Capacitance Test on Bushing" },
+      { component: Stage1Form4, name: "SFRA Test Record" },
+      { component: Stage1Form5, name: "SFRA Test Record" },
+      { component: Stage1Form6, name: "SFRA Test Record" },
+      
+      ],
     2: [
       { component: RecordOilHandlingV63Form, name: "Record of Oil Handling" },
       { component: IRAfterErectionStage2V63Form, name: "IR After Erection" },
@@ -9868,7 +11227,6 @@ const TractionTransformerForms = ({
       { component: IRPIValueAfterFiltrationForm, name: "IR & PI Value After Filtration" },
     ],
     5: [
-      { component: SFRATestRecordV63Form, name: "SFRA Test Record" },
       { component: MagnetizingCurrentTestForm, name: "Magnetizing Current Test" },
       { component: PolarityTestForm, name: "Polarity Test" },
       { component: ShortCircuitTestV63Form, name: "Short Circuit Test" },
