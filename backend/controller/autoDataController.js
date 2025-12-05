@@ -319,7 +319,7 @@ export const generatePDF = async (req, res) => {
     const html = generateHTMLTemplate(completeData, projectName, companyName);
     console.log("HTML template generated successfully");
 
-    // Launch Puppeteer
+    // Launch Puppeteer with enhanced configuration for Render.com
     console.log("Launching Puppeteer browser...");
     const browser = await puppeteer.launch({
       headless: true,
@@ -327,8 +327,16 @@ export const generatePDF = async (req, res) => {
         '--no-sandbox',
         '--disable-setuid-sandbox',
         '--disable-dev-shm-usage',
-        '--disable-gpu'
-      ]
+        '--disable-gpu',
+        '--disable-software-rasterizer',
+        '--disable-extensions',
+        '--disable-web-security',
+        '--no-first-run',
+        '--no-zygote',
+        '--single-process'
+      ],
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || puppeteer.executablePath(),
+      timeout: 60000
     });
 
     const page = await browser.newPage();

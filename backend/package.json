@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "npx nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "node -e \"try { require('puppeteer').executablePath() } catch(e) { require('child_process').execSync('npx puppeteer browsers install chrome', {stdio: 'inherit'}) }\""
   },
   "author": "",
   "type": "module",
