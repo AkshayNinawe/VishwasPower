@@ -2700,6 +2700,7 @@ const ETCAdminPanel = ({
         `${BACKEND_API_BASE_URL}/api/autoData/download-all-forms`,
         {
           projectName: selectedProjectForReview?.name,
+          companyName: selectedProjectForReview?.companyName,
           formData: formDataFromDB,
         },
         { responseType: "blob" } // VERY IMPORTANT for PDFs

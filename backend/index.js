@@ -20,7 +20,8 @@ connectDB();
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' })); // Increase limit for large payloads
+app.use(express.urlencoded({ extended: true, limit: '50mb' })); // Parse URL-encoded bodies
 
 // ✅ Ensure uploads folder exists
 const __filename = fileURLToPath(import.meta.url);

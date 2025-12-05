@@ -3,6 +3,8 @@ import multer from "multer"
 import path from "path"
 import fs from "fs"
 import PDFDocument from "pdfkit"
+import puppeteer from "puppeteer"
+import { generateHTMLTemplate } from "../utils/pdfTemplateGenerator.js"
 
 // Setup multer storage
 const storage = multer.diskStorage({
@@ -265,6 +267,120 @@ export const setTableData = async (req, res) => {
 }
 
 export const generatePDF = async (req, res) => {
+  try {
+    console.log("=== PDF Generation Request received ===");
+    console.log("Full request body:", JSON.stringify(req.body, null, 2));
+    console.log("Request body keys:", Object.keys(req.body));
+    console.log("Request headers:", req.headers);
+    
+    // Try different possible field names
+    const projectName = req.body.projectName || req.body.ProjectName || req.body.project_name;
+    const companyName = req.body.companyName || req.body.CompanyName || req.body.company_name;
+
+    console.log("Extracted values:");
+    console.log("  projectName:", projectName);
+    console.log("  companyName:", companyName);
+
+    if (!projectName || !companyName) {
+      console.error("❌ Missing required fields!");
+      console.error("  projectName:", projectName);
+      console.error("  companyName:", companyName);
+      console.error("  Available keys in body:", Object.keys(req.body));
+      console.error("  Full body:", req.body);
+      return res.status(400).json({ 
+        message: "Project name and company name are required.",
+        received: { projectName, companyName },
+        availableKeys: Object.keys(req.body),
+        fullBody: req.body
+      });
+    }
+
+    console.log(`Generating PDF for project: ${projectName}, company: ${companyName}`);
+
+    // Fetch complete data from MongoDB
+    console.log("Fetching data from MongoDB...");
+    const completeData = await AutoTransformer.findOne({
+      projectName,
+      companyName,
+    }).lean();
+
+    if (!completeData) {
+      console.error("No data found in MongoDB for:", { projectName, companyName });
+      return res.status(404).json({
+        message: "Project data not found.",
+        searchedFor: { projectName, companyName }
+      });
+    }
+
+    console.log("Data fetched successfully from MongoDB");
+
+    // Generate HTML with exact UI styling
+    console.log("Generating HTML template...");
+    const html = generateHTMLTemplate(completeData, projectName, companyName);
+    console.log("HTML template generated successfully");
+
+    // Launch Puppeteer
+    console.log("Launching Puppeteer browser...");
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu'
+      ]
+    });
+
+    const page = await browser.newPage();
+    console.log("Browser page created");
+    
+    // Set content and wait for resources to load
+    console.log("Setting HTML content...");
+    await page.setContent(html, { 
+      waitUntil: 'networkidle0',
+      timeout: 30000 
+    });
+    console.log("HTML content loaded");
+
+    // Generate PDF with styling preserved
+    console.log("Generating PDF...");
+    const pdfBuffer = await page.pdf({
+      format: 'A4',
+      printBackground: true,
+      margin: {
+        top: '20px',
+        right: '20px',
+        bottom: '20px',
+        left: '20px'
+      },
+      preferCSSPageSize: false
+    });
+
+    console.log("PDF generated successfully");
+    await browser.close();
+    console.log("Browser closed");
+
+    // Send PDF to client
+    const filename = `${projectName}_complete_report_${new Date().toISOString().split("T")[0]}.pdf`;
+    res.setHeader("Content-disposition", `attachment; filename="${filename}"`);
+    res.setHeader("Content-type", "application/pdf");
+    console.log("Sending PDF to client...");
+    res.send(pdfBuffer);
+    console.log("PDF sent successfully");
+
+  } catch (err) {
+    console.error("Error generating PDF:", err);
+    console.error("Error stack:", err.stack);
+    res.status(500).json({ 
+      error: "Failed to generate PDF",
+      details: err.message,
+      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    });
+  }
+};
+
+// Keep the old PDFKit implementation as backup (renamed)
+export const generatePDFOld = async (req, res) => {
   try {
     const { projectName, formData } = req.body
 
