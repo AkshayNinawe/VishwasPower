@@ -2101,9 +2101,23 @@ const ETCAdminPanel = ({
       showNotification(`No forms submitted for Stage ${stage} yet.`, "warning");
       return;
     }
+    
     try {
+      // Determine API endpoint based on department name
+      let apiEndpoint;
+      if (selectedDepartment.name === 'Traction Transformer') {
+        apiEndpoint = `${BACKEND_API_BASE_URL}/api/tractionData/getStageTable`;
+      } else if (selectedDepartment.name === 'Auto Transformer') {
+        apiEndpoint = `${BACKEND_API_BASE_URL}/api/autoData/getStageTable`;
+      } else if (selectedDepartment.name === 'V Connected 63 MVA Transformer') {
+        apiEndpoint = `${BACKEND_API_BASE_URL}/api/vconnectData/getStageTable`;
+      } else {
+        // Fallback to auto transformer API
+        apiEndpoint = `${BACKEND_API_BASE_URL}/api/autoData/getStageTable`;
+      }
+
       const response = await axios.post(
-        `${BACKEND_API_BASE_URL}/api/autoData/getStageTable`,
+        apiEndpoint,
         {
           projectName: Project.name,
           companyName: Project.companyName,

@@ -33,7 +33,7 @@ export const getStageTableData = async (req, res) => {
   console.log("Backend API for getStageTableData")
   try {
     const { projectName, companyName, stage } = req.body
-    const queryPath = `vConnectData.stage${stage}`
+    const queryPath = `TractionData.stage${stage}`
     const document = await Traction.findOne(
       { projectName, companyName },
       { [queryPath]: 1, projectName: 1, companyName: 1 },
@@ -100,7 +100,7 @@ export const getTableData = async (req, res) => {
   console.log("Backend API for getTableData")
   try {
     const { projectName, companyName, stage, formNumber } = req.body
-    const queryPath = `vConnectData.stage${stage}.form${formNumber}`
+    const queryPath = `TractionData.stage${stage}.form${formNumber}`
     const document = await Traction.findOne({ projectName, companyName }, { [queryPath]: 1 }).lean()
 
     if (!document) {
@@ -210,7 +210,7 @@ export const setTableData = async (req, res) => {
       { projectName, companyName },
       {
         $set: {
-          [`vConnectData.stage${stage}.form${formNumber}`]: parsedData,
+          [`TractionData.stage${stage}.form${formNumber}`]: parsedData,
         },
       },
       { new: true, upsert: true, runValidators: true },

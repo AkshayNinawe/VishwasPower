@@ -605,7 +605,7 @@ const TractionSchema = new mongoose.Schema(
       trim: true,
       required: true,
     },
-    vConnectData: {
+    TractionData: {
       stage1: {
         form1: { type: Stage1Form1SubSchema, default: () => ({}) },
         form2: { type: Stage1Form2SubSchema, default: () => ({}) },

@@ -4601,7 +4601,7 @@ function Stage1Form7({ onSubmit, onPrevious, initialData, isLastFormOfStage, com
 }
 
 // Stage 2 Forms
-export function RecordOilHandlingV63Form({
+export function Stage2Form1({
   onSubmit,
   onPrevious,
   initialData,
@@ -4707,6 +4707,7 @@ export function RecordOilHandlingV63Form({
       <table className="form-table">
         <thead>
           <tr>
+            <th></th>
             <th>No of barrels</th>
             <th>Started on Date & time</th>
             <th>Completed on Date & time</th>
@@ -4721,28 +4722,16 @@ export function RecordOilHandlingV63Form({
             </td>
             <td>
               <input
-                type="date"
-                value={formData.tank1_startedDate}
-                onChange={(e) => setFormData({ ...formData, tank1_startedDate: e.target.value })}
-                style={{ marginRight: "10px" }}
-              />
-              <input
-                type="time"
-                value={formData.tank1_startedTime}
-                onChange={(e) => setFormData({ ...formData, tank1_startedTime: e.target.value })}
+                type="text"
+                value={formData.tank1_bdv}
+                onChange={(e) => setFormData({ ...formData, tank1_bdv: e.target.value })}
               />
             </td>
             <td>
               <input
-                type="date"
-                value={formData.tank1_completedDate}
-                onChange={(e) => setFormData({ ...formData, tank1_completedDate: e.target.value })}
-                style={{ marginRight: "10px" }}
-              />
-              <input
-                type="time"
-                value={formData.tank1_completedTime}
-                onChange={(e) => setFormData({ ...formData, tank1_completedTime: e.target.value })}
+                type="text"
+                value={formData.tank1_bdv}
+                onChange={(e) => setFormData({ ...formData, tank1_bdv: e.target.value })}
               />
             </td>
             <td>
@@ -4759,35 +4748,30 @@ export function RecordOilHandlingV63Form({
                 onChange={(e) => setFormData({ ...formData, tank1_ppm: e.target.value })}
               />
             </td>
+            <td>
+              <input
+                type="text"
+                value={formData.tank1_bdv}
+                onChange={(e) => setFormData({ ...formData, tank1_bdv: e.target.value })}
+              />
+            </td>
           </tr>
           <tr>
             <td>
               <strong>Tank2</strong>
             </td>
-            <td>
+             <td>
               <input
-                type="date"
-                value={formData.tank2_startedDate}
-                onChange={(e) => setFormData({ ...formData, tank2_startedDate: e.target.value })}
-                style={{ marginRight: "10px" }}
-              />
-              <input
-                type="time"
-                value={formData.tank2_startedTime}
-                onChange={(e) => setFormData({ ...formData, tank2_startedTime: e.target.value })}
+                type="text"
+                value={formData.tank1_bdv}
+                onChange={(e) => setFormData({ ...formData, tank1_bdv: e.target.value })}
               />
             </td>
             <td>
               <input
-                type="date"
-                value={formData.tank2_completedDate}
-                onChange={(e) => setFormData({ ...formData, tank2_completedDate: e.target.value })}
-                style={{ marginRight: "10px" }}
-              />
-              <input
-                type="time"
-                value={formData.tank2_completedTime}
-                onChange={(e) => setFormData({ ...formData, tank2_completedTime: e.target.value })}
+                type="text"
+                value={formData.tank1_bdv}
+                onChange={(e) => setFormData({ ...formData, tank1_bdv: e.target.value })}
               />
             </td>
             <td>
@@ -4804,35 +4788,30 @@ export function RecordOilHandlingV63Form({
                 onChange={(e) => setFormData({ ...formData, tank2_ppm: e.target.value })}
               />
             </td>
+            <td>
+              <input
+                type="text"
+                value={formData.tank1_bdv}
+                onChange={(e) => setFormData({ ...formData, tank1_bdv: e.target.value })}
+              />
+            </td>
           </tr>
           <tr>
             <td>
-              <strong>TANK3</strong>
+              <strong>Tank3</strong>
             </td>
             <td>
               <input
-                type="date"
-                value={formData.tank3_startedDate}
-                onChange={(e) => setFormData({ ...formData, tank3_startedDate: e.target.value })}
-                style={{ marginRight: "10px" }}
-              />
-              <input
-                type="time"
-                value={formData.tank3_startedTime}
-                onChange={(e) => setFormData({ ...formData, tank3_startedTime: e.target.value })}
+                type="text"
+                value={formData.tank3_bdv}
+                onChange={(e) => setFormData({ ...formData, tank3_bdv: e.target.value })}
               />
             </td>
             <td>
               <input
-                type="date"
-                value={formData.tank3_completedDate}
-                onChange={(e) => setFormData({ ...formData, tank3_completedDate: e.target.value })}
-                style={{ marginRight: "10px" }}
-              />
-              <input
-                type="time"
-                value={formData.tank3_completedTime}
-                onChange={(e) => setFormData({ ...formData, tank3_completedTime: e.target.value })}
+                type="text"
+                value={formData.tank3_bdv}
+                onChange={(e) => setFormData({ ...formData, tank3_bdv: e.target.value })}
               />
             </td>
             <td>
@@ -4847,6 +4826,13 @@ export function RecordOilHandlingV63Form({
                 type="text"
                 value={formData.tank3_ppm}
                 onChange={(e) => setFormData({ ...formData, tank3_ppm: e.target.value })}
+              />
+            </td>
+             <td>
+              <input
+                type="text"
+                value={formData.tank3_bdv}
+                onChange={(e) => setFormData({ ...formData, tank3_bdv: e.target.value })}
               />
             </td>
           </tr>
@@ -4927,7 +4913,7 @@ export function RecordOilHandlingV63Form({
   )
 }
 
-export function IRAfterErectionStage2V63Form({
+export function Stage2Form2({
   onSubmit,
   onPrevious,
   initialData,
@@ -5083,25 +5069,6 @@ export function IRAfterErectionStage2V63Form({
               />
             </td>
           </tr>
-          <tr>
-            <td>
-              <strong>LV 2 with respect to earth</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2_earth_31}
-                onChange={(e) => setFormData({ ...formData, lv2_earth_31: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2_earth_32}
-                onChange={(e) => setFormData({ ...formData, lv2_earth_32: e.target.value })}
-              />
-            </td>
-          </tr>
         </tbody>
       </table>
 
@@ -5113,115 +5080,37 @@ export function IRAfterErectionStage2V63Form({
         <tbody>
           <tr>
             <td>
-              <strong>Date :</strong>
-            </td>
-            <td>
-              <input
-                type="date"
-                value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Time:</strong>
-            </td>
-            <td>
-              <input
-                type="time"
-                value={formData.time}
-                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Details of Insulation tester</strong>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Amb. Temp :</strong>
+              <strong>Temp OTI °C</strong>
             </td>
             <td>
               <input
                 type="text"
-                value={formData.ambTemp}
-                onChange={(e) => setFormData({ ...formData, ambTemp: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Make :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.make}
-                onChange={(e) => setFormData({ ...formData, make: e.target.value })}
-              />
-            </td>
-            <td rowSpan="4"></td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Oil Temp. :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.oilTemp}
-                onChange={(e) => setFormData({ ...formData, oilTemp: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Sr. No. :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.srNo}
-                onChange={(e) => setFormData({ ...formData, srNo: e.target.value })}
+                value={formData.bdv}
+                onChange={(e) => setFormData({ ...formData, bdv: e.target.value })}
               />
             </td>
           </tr>
           <tr>
             <td>
-              <strong>Wdg. Temp. :</strong>
+              <strong>Temp WTI °C</strong>
             </td>
             <td>
               <input
                 type="text"
-                value={formData.wdgTemp}
-                onChange={(e) => setFormData({ ...formData, wdgTemp: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Range :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.range}
-                onChange={(e) => setFormData({ ...formData, range: e.target.value })}
+                value={formData.waterContent}
+                onChange={(e) => setFormData({ ...formData, waterContent: e.target.value })}
               />
             </td>
           </tr>
           <tr>
             <td>
-              <strong>Relative Humidity :</strong>
+              <strong>Temp AMB °C</strong>
             </td>
             <td>
               <input
                 type="text"
-                value={formData.relativeHumidity}
-                onChange={(e) => setFormData({ ...formData, relativeHumidity: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Voltage Level :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.voltageLevel}
-                onChange={(e) => setFormData({ ...formData, voltageLevel: e.target.value })}
+                value={formData.waterContent}
+                onChange={(e) => setFormData({ ...formData, waterContent: e.target.value })}
               />
             </td>
           </tr>
@@ -5232,9 +5121,9 @@ export function IRAfterErectionStage2V63Form({
         <thead>
           <tr>
             <th></th>
-            <th>15 Sec (MΩ)</th>
+            <th>10 Sec (MΩ)</th>
             <th>60 Sec (MΩ)</th>
-            <th>Ratio of IR 60/IR 15</th>
+            <th>Ratio of IR 60/IR 10</th>
           </tr>
         </thead>
         <tbody>
@@ -5266,7 +5155,7 @@ export function IRAfterErectionStage2V63Form({
           </tr>
           <tr>
             <td>
-              <strong>LV1-Earth</strong>
+              <strong>LV-Earth</strong>
             </td>
             <td>
               <input
@@ -5292,33 +5181,7 @@ export function IRAfterErectionStage2V63Form({
           </tr>
           <tr>
             <td>
-              <strong>LV2-Earth</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_15sec}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_60sec}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_ratio}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>HV-LV1</strong>
+              <strong>HV-LV</strong>
             </td>
             <td>
               <input
@@ -5342,58 +5205,6 @@ export function IRAfterErectionStage2V63Form({
               />
             </td>
           </tr>
-          <tr>
-            <td>
-              <strong>HV-LV2</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_15sec}
-                onChange={(e) => setFormData({ ...formData, hvLv2_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_60sec}
-                onChange={(e) => setFormData({ ...formData, hvLv2_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_ratio}
-                onChange={(e) => setFormData({ ...formData, hvLv2_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>LV1-LV2</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_15sec}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_60sec}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_ratio}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
         </tbody>
       </table>
 
@@ -5402,7 +5213,7 @@ export function IRAfterErectionStage2V63Form({
         <tbody>
           <tr>
             <td>
-              <strong>BDV: _______ KV</strong>
+              <strong>BDV (KV)</strong>
             </td>
             <td>
               <input
@@ -5414,7 +5225,7 @@ export function IRAfterErectionStage2V63Form({
           </tr>
           <tr>
             <td>
-              <strong>Water Content: _______ PPM</strong>
+              <strong>Water Content (PPM)</strong>
             </td>
             <td>
               <input
@@ -5448,7 +5259,7 @@ export function IRAfterErectionStage2V63Form({
 }
 
 // Stage 3 Forms
-export function VacuumCycleRecordingForm({
+export function Stage3Form1({
   onSubmit,
   onPrevious,
   initialData,
@@ -5686,115 +5497,37 @@ export function VacuumCycleRecordingForm({
         <tbody>
           <tr>
             <td>
-              <strong>Date :</strong>
-            </td>
-            <td>
-              <input
-                type="date"
-                value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Time:</strong>
-            </td>
-            <td>
-              <input
-                type="time"
-                value={formData.time}
-                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Details of Insulation tester</strong>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Amb. Temp :</strong>
+              <strong>Temp OTI °C</strong>
             </td>
             <td>
               <input
                 type="text"
-                value={formData.ambTemp}
-                onChange={(e) => setFormData({ ...formData, ambTemp: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Make :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.make}
-                onChange={(e) => setFormData({ ...formData, make: e.target.value })}
-              />
-            </td>
-            <td rowSpan="4"></td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Oil Temp. :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.oilTemp}
-                onChange={(e) => setFormData({ ...formData, oilTemp: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Sr. No. :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.srNo}
-                onChange={(e) => setFormData({ ...formData, srNo: e.target.value })}
+                value={formData.bdv}
+                onChange={(e) => setFormData({ ...formData, bdv: e.target.value })}
               />
             </td>
           </tr>
           <tr>
             <td>
-              <strong>Wdg. Temp. :</strong>
+              <strong>Temp WTI °C</strong>
             </td>
             <td>
               <input
                 type="text"
-                value={formData.wdgTemp}
-                onChange={(e) => setFormData({ ...formData, wdgTemp: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Range :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.range}
-                onChange={(e) => setFormData({ ...formData, range: e.target.value })}
+                value={formData.waterContent}
+                onChange={(e) => setFormData({ ...formData, waterContent: e.target.value })}
               />
             </td>
           </tr>
           <tr>
             <td>
-              <strong>Relative Humidity :</strong>
+              <strong>Temp AMB °C</strong>
             </td>
             <td>
               <input
                 type="text"
-                value={formData.relativeHumidity}
-                onChange={(e) => setFormData({ ...formData, relativeHumidity: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Voltage Level :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.voltageLevel}
-                onChange={(e) => setFormData({ ...formData, voltageLevel: e.target.value })}
+                value={formData.waterContent}
+                onChange={(e) => setFormData({ ...formData, waterContent: e.target.value })}
               />
             </td>
           </tr>
@@ -5805,9 +5538,9 @@ export function VacuumCycleRecordingForm({
         <thead>
           <tr>
             <th></th>
-            <th>15 Sec (MΩ)</th>
+            <th>10 Sec (MΩ)</th>
             <th>60 Sec (MΩ)</th>
-            <th>Ratio of IR 60/IR 15</th>
+            <th>Ratio of IR 60/IR 10</th>
           </tr>
         </thead>
         <tbody>
@@ -5839,7 +5572,7 @@ export function VacuumCycleRecordingForm({
           </tr>
           <tr>
             <td>
-              <strong>LV1-Earth</strong>
+              <strong>LV-Earth</strong>
             </td>
             <td>
               <input
@@ -5865,33 +5598,7 @@ export function VacuumCycleRecordingForm({
           </tr>
           <tr>
             <td>
-              <strong>LV2-Earth</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_15sec}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_60sec}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_ratio}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>HV-LV1</strong>
+              <strong>HV-LV</strong>
             </td>
             <td>
               <input
@@ -5912,58 +5619,6 @@ export function VacuumCycleRecordingForm({
                 type="text"
                 value={formData.hvLv1_ratio}
                 onChange={(e) => setFormData({ ...formData, hvLv1_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>HV-LV2</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_15sec}
-                onChange={(e) => setFormData({ ...formData, hvLv2_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_60sec}
-                onChange={(e) => setFormData({ ...formData, hvLv2_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_ratio}
-                onChange={(e) => setFormData({ ...formData, hvLv2_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>LV1-LV2</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_15sec}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_60sec}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_ratio}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_ratio: e.target.value })}
               />
             </td>
           </tr>
@@ -6058,7 +5713,7 @@ export function VacuumCycleRecordingForm({
 }
 
 // Stage 4 Forms
-export function RecordOilFiltrationMainTankV63Form({
+export function Stage4Form1({
   onSubmit,
   onPrevious,
   initialData,
@@ -6212,7 +5867,7 @@ export function RecordOilFiltrationMainTankV63Form({
   )
 }
 
-export function IRValueBeforeRadiatorFiltrationForm({
+export function Stage4Form2({
   onSubmit,
   onPrevious,
   initialData,
@@ -6328,115 +5983,37 @@ export function IRValueBeforeRadiatorFiltrationForm({
         <tbody>
           <tr>
             <td>
-              <strong>Date :</strong>
-            </td>
-            <td>
-              <input
-                type="date"
-                value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Time:</strong>
-            </td>
-            <td>
-              <input
-                type="time"
-                value={formData.time}
-                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Details of Insulation tester</strong>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Amb. Temp :</strong>
+              <strong>Temp OTI °C</strong>
             </td>
             <td>
               <input
                 type="text"
-                value={formData.ambTemp}
-                onChange={(e) => setFormData({ ...formData, ambTemp: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Make :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.make}
-                onChange={(e) => setFormData({ ...formData, make: e.target.value })}
-              />
-            </td>
-            <td rowSpan="4"></td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Oil Temp. :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.oilTemp}
-                onChange={(e) => setFormData({ ...formData, oilTemp: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Sr. No. :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.srNo}
-                onChange={(e) => setFormData({ ...formData, srNo: e.target.value })}
+                value={formData.bdv}
+                onChange={(e) => setFormData({ ...formData, bdv: e.target.value })}
               />
             </td>
           </tr>
           <tr>
             <td>
-              <strong>Wdg. Temp. :</strong>
+              <strong>Temp WTI °C</strong>
             </td>
             <td>
               <input
                 type="text"
-                value={formData.wdgTemp}
-                onChange={(e) => setFormData({ ...formData, wdgTemp: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Range :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.range}
-                onChange={(e) => setFormData({ ...formData, range: e.target.value })}
+                value={formData.waterContent}
+                onChange={(e) => setFormData({ ...formData, waterContent: e.target.value })}
               />
             </td>
           </tr>
           <tr>
             <td>
-              <strong>Relative Humidity :</strong>
+              <strong>Temp AMB °C</strong>
             </td>
             <td>
               <input
                 type="text"
-                value={formData.relativeHumidity}
-                onChange={(e) => setFormData({ ...formData, relativeHumidity: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Voltage Level :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.voltageLevel}
-                onChange={(e) => setFormData({ ...formData, voltageLevel: e.target.value })}
+                value={formData.waterContent}
+                onChange={(e) => setFormData({ ...formData, waterContent: e.target.value })}
               />
             </td>
           </tr>
@@ -6447,9 +6024,9 @@ export function IRValueBeforeRadiatorFiltrationForm({
         <thead>
           <tr>
             <th></th>
-            <th>15 Sec (MΩ)</th>
+            <th>10 Sec (MΩ)</th>
             <th>60 Sec (MΩ)</th>
-            <th>Ratio of IR 60/IR 15</th>
+            <th>Ratio of IR 60/IR 10</th>
           </tr>
         </thead>
         <tbody>
@@ -6481,7 +6058,7 @@ export function IRValueBeforeRadiatorFiltrationForm({
           </tr>
           <tr>
             <td>
-              <strong>LV1-Earth</strong>
+              <strong>LV-Earth</strong>
             </td>
             <td>
               <input
@@ -6507,33 +6084,7 @@ export function IRValueBeforeRadiatorFiltrationForm({
           </tr>
           <tr>
             <td>
-              <strong>LV2-Earth</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_15sec}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_60sec}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_ratio}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>HV-LV1</strong>
+              <strong>HV-LV</strong>
             </td>
             <td>
               <input
@@ -6554,58 +6105,6 @@ export function IRValueBeforeRadiatorFiltrationForm({
                 type="text"
                 value={formData.hvLv1_ratio}
                 onChange={(e) => setFormData({ ...formData, hvLv1_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>HV-LV2</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_15sec}
-                onChange={(e) => setFormData({ ...formData, hvLv2_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_60sec}
-                onChange={(e) => setFormData({ ...formData, hvLv2_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_ratio}
-                onChange={(e) => setFormData({ ...formData, hvLv2_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>LV1-LV2</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_15sec}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_60sec}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_ratio}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_ratio: e.target.value })}
               />
             </td>
           </tr>
@@ -6694,7 +6193,7 @@ export function IRValueBeforeRadiatorFiltrationForm({
   )
 }
 
-export function OilFiltrationCombineV63Form({
+export function Stage4Form3({
   onSubmit,
   onPrevious,
   initialData,
@@ -6850,7 +6349,7 @@ export function OilFiltrationCombineV63Form({
   )
 }
 
-export function IRPIValueAfterFiltrationForm({
+export function Stage4Form4({
   onSubmit,
   onPrevious,
   initialData,
@@ -6954,115 +6453,37 @@ export function IRPIValueAfterFiltrationForm({
         <tbody>
           <tr>
             <td>
-              <strong>Date :</strong>
-            </td>
-            <td>
-              <input
-                type="date"
-                value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Time:</strong>
-            </td>
-            <td>
-              <input
-                type="time"
-                value={formData.time}
-                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Details of Insulation tester</strong>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Amb. Temp :</strong>
+              <strong>Temp OTI °C</strong>
             </td>
             <td>
               <input
                 type="text"
-                value={formData.ambTemp}
-                onChange={(e) => setFormData({ ...formData, ambTemp: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Make :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.make}
-                onChange={(e) => setFormData({ ...formData, make: e.target.value })}
-              />
-            </td>
-            <td rowSpan="4"></td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Oil Temp. :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.oilTemp}
-                onChange={(e) => setFormData({ ...formData, oilTemp: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Sr. No. :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.srNo}
-                onChange={(e) => setFormData({ ...formData, srNo: e.target.value })}
+                value={formData.bdv}
+                onChange={(e) => setFormData({ ...formData, bdv: e.target.value })}
               />
             </td>
           </tr>
           <tr>
             <td>
-              <strong>Wdg. Temp. :</strong>
+              <strong>Temp WTI °C</strong>
             </td>
             <td>
               <input
                 type="text"
-                value={formData.wdgTemp}
-                onChange={(e) => setFormData({ ...formData, wdgTemp: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Range :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.range}
-                onChange={(e) => setFormData({ ...formData, range: e.target.value })}
+                value={formData.waterContent}
+                onChange={(e) => setFormData({ ...formData, waterContent: e.target.value })}
               />
             </td>
           </tr>
           <tr>
             <td>
-              <strong>Relative Humidity :</strong>
+              <strong>Temp AMB °C</strong>
             </td>
             <td>
               <input
                 type="text"
-                value={formData.relativeHumidity}
-                onChange={(e) => setFormData({ ...formData, relativeHumidity: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Voltage Level :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.voltageLevel}
-                onChange={(e) => setFormData({ ...formData, voltageLevel: e.target.value })}
+                value={formData.waterContent}
+                onChange={(e) => setFormData({ ...formData, waterContent: e.target.value })}
               />
             </td>
           </tr>
@@ -7073,8 +6494,9 @@ export function IRPIValueAfterFiltrationForm({
         <thead>
           <tr>
             <th></th>
-            <th>15 Sec (MΩ)</th>
+            <th>10 Sec (MΩ)</th>
             <th>60 Sec (MΩ)</th>
+            <th>600 Sec (MΩ)</th>
             <th>PI 600/60 Sec</th>
           </tr>
         </thead>
@@ -7095,6 +6517,13 @@ export function IRPIValueAfterFiltrationForm({
                 type="text"
                 value={formData.hvEarth_60sec}
                 onChange={(e) => setFormData({ ...formData, hvEarth_60sec: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.hvEarth_ratio}
+                onChange={(e) => setFormData({ ...formData, hvEarth_ratio: e.target.value })}
               />
             </td>
             <td>
@@ -7130,30 +6559,11 @@ export function IRPIValueAfterFiltrationForm({
                 onChange={(e) => setFormData({ ...formData, lv1Earth_ratio: e.target.value })}
               />
             </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>LV2-Earth</strong>
-            </td>
             <td>
               <input
                 type="text"
-                value={formData.lv2Earth_15sec}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_60sec}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_ratio}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_ratio: e.target.value })}
+                value={formData.lv1Earth_ratio}
+                onChange={(e) => setFormData({ ...formData, lv1Earth_ratio: e.target.value })}
               />
             </td>
           </tr>
@@ -7182,56 +6592,11 @@ export function IRPIValueAfterFiltrationForm({
                 onChange={(e) => setFormData({ ...formData, hvLv1_ratio: e.target.value })}
               />
             </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>HV-LV2</strong>
-            </td>
             <td>
               <input
                 type="text"
-                value={formData.hvLv2_15sec}
-                onChange={(e) => setFormData({ ...formData, hvLv2_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_60sec}
-                onChange={(e) => setFormData({ ...formData, hvLv2_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_ratio}
-                onChange={(e) => setFormData({ ...formData, hvLv2_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>LV1-LV2</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_15sec}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_60sec}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_ratio}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_ratio: e.target.value })}
+                value={formData.hvLv1_ratio}
+                onChange={(e) => setFormData({ ...formData, hvLv1_ratio: e.target.value })}
               />
             </td>
           </tr>
@@ -7243,7 +6608,7 @@ export function IRPIValueAfterFiltrationForm({
         <tbody>
           <tr>
             <td>
-              <strong>BDV: _______ KV</strong>
+              <strong>BDV (KV)</strong>
             </td>
             <td>
               <input
@@ -7255,7 +6620,7 @@ export function IRPIValueAfterFiltrationForm({
           </tr>
           <tr>
             <td>
-              <strong>Water Content: _______ PPM</strong>
+              <strong>Water Content (PPM)</strong>
             </td>
             <td>
               <input
@@ -7289,7 +6654,7 @@ export function IRPIValueAfterFiltrationForm({
 }
 
 // Form 7: Magnetizing Current Test (V Connected 63 MVA)
-function MagnetizingCurrentTestForm({
+function Stage5Form1({
   onSubmit,
   onPrevious,
   initialData,
@@ -7352,25 +6717,25 @@ function MagnetizingCurrentTestForm({
   return (
     <form onSubmit={handleSubmit} className="form-container">
       <div className="company-header">
-        <h2>TYPE OF TEST – MAGNETISING CURRENT TEST</h2>
+        <h2>Test Record of Erection for Traction Transformer</h2>
       </div>
 
       <table className="form-table">
         <tbody>
           <tr>
             <td>
-              <strong>APPLIED VOLTAGE:</strong>
+              <strong>Make Of Meter</strong>
             </td>
             <td>
               <input
                 type="text"
                 value={formData.appliedVoltage}
                 onChange={(e) => setFormData({ ...formData, appliedVoltage: e.target.value })}
-                placeholder="VOLTS"
+                placeholder=""
               />
             </td>
             <td>
-              <strong>DATE:</strong>
+              <strong>Date</strong>
             </td>
             <td>
               <input
@@ -7379,22 +6744,66 @@ function MagnetizingCurrentTestForm({
                 onChange={(e) => setFormData({ ...formData, date: e.target.value })}
               />
             </td>
+          </tr>
+          <tr>
             <td>
-              <strong>TIME :</strong>
+              <strong>Model & S. No.</strong>
+            </td>
+            <td >
+              <input
+                type="text"
+                value={formData.meterMakeSrNo}
+                onChange={(e) => setFormData({ ...formData, meterMakeSrNo: e.target.value })}
+              />
+            </td>
+            <td>
+              <strong>Ambient</strong>
             </td>
             <td>
               <input
-                type="time"
-                value={formData.time}
-                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                type="text"
+                value={formData.meterMakeSrNo}
+                onChange={(e) => setFormData({ ...formData, meterMakeSrNo: e.target.value })}
               />
             </td>
           </tr>
           <tr>
             <td>
-              <strong>METER MAKE SR. NO.</strong>
+              <strong>OTI in ⁰C </strong>
             </td>
-            <td colSpan="5">
+            <td >
+              <input
+                type="text"
+                value={formData.meterMakeSrNo}
+                onChange={(e) => setFormData({ ...formData, meterMakeSrNo: e.target.value })}
+              />
+            </td>
+            <td>
+              <strong>WTI in ⁰C</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.meterMakeSrNo}
+                onChange={(e) => setFormData({ ...formData, meterMakeSrNo: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Test report reviewed by </strong>
+            </td>
+            <td >
+              <input
+                type="text"
+                value={formData.meterMakeSrNo}
+                onChange={(e) => setFormData({ ...formData, meterMakeSrNo: e.target.value })}
+              />
+            </td>
+            <td>
+              <strong>Acceptance of the test </strong>
+            </td>
+            <td>
               <input
                 type="text"
                 value={formData.meterMakeSrNo}
@@ -7405,73 +6814,269 @@ function MagnetizingCurrentTestForm({
         </tbody>
       </table>
 
-      <table className="form-table" style={{ marginTop: "20px" }}>
-        <thead>
-          <tr>
-            <th>APPLIED VOLTAGE</th>
-            <th colSpan="2">Measured Current</th>
-          </tr>
-        </thead>
+      <table className="form-table">
         <tbody>
           <tr>
             <td>
-              <strong>1.1 – 1.2</strong>
+              <strong>TR Sr. No.</strong>
             </td>
-            <td>
-              <strong>1.1</strong>
-            </td>
-            <td>
-              <strong>1.2 – 2.1 SHORTED</strong>
-            </td>
-          </tr>
-          <tr>
-            <td></td>
             <td>
               <input
                 type="text"
-                value={formData.test11_12_measuredCurrent11}
-                onChange={(e) => setFormData({ ...formData, test11_12_measuredCurrent11: e.target.value })}
+                value={formData.appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, appliedVoltage: e.target.value })}
+                placeholder=""
               />
             </td>
             <td>
+              <strong>Location</strong>
+            </td>
+            <td>
               <input
                 type="text"
-                value={formData.test11_12_measuredCurrent12_21}
-                onChange={(e) => setFormData({ ...formData, test11_12_measuredCurrent12_21: e.target.value })}
+                value={formData.date}
+                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
               />
             </td>
           </tr>
           <tr>
             <td>
-              <strong>1.2 – 2.1</strong>
+              <strong>Customer</strong>
             </td>
-            <td>
-              <strong>1.2</strong>
-            </td>
-            <td>
-              <strong>1.1 – 2.1 SHORTED</strong>
-            </td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>
+            <td >
               <input
                 type="text"
-                value={formData.test12_21_measuredCurrent12}
-                onChange={(e) => setFormData({ ...formData, test12_21_measuredCurrent12: e.target.value })}
+                value={formData.meterMakeSrNo}
+                onChange={(e) => setFormData({ ...formData, meterMakeSrNo: e.target.value })}
               />
             </td>
             <td>
+              <strong>Date</strong>
+            </td>
+            <td>
+              <input
+                type="date"
+                value={formData.meterMakeSrNo}
+                onChange={(e) => setFormData({ ...formData, meterMakeSrNo: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Time </strong>
+            </td>
+            <td >
+              <input
+                type="time"
+                value={formData.meterMakeSrNo}
+                onChange={(e) => setFormData({ ...formData, meterMakeSrNo: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Amb. Temp ⁰C</strong>
+            </td>
+            <td>
               <input
                 type="text"
-                value={formData.test12_21_measuredCurrent11_21}
-                onChange={(e) => setFormData({ ...formData, test12_21_measuredCurrent11_21: e.target.value })}
+                value={formData.meterMakeSrNo}
+                onChange={(e) => setFormData({ ...formData, meterMakeSrNo: e.target.value })}
+              />
+            </td>
+            <td>
+              <strong>Make</strong>
+            </td>
+            <td >
+              <input
+                type="text"
+                value={formData.meterMakeSrNo}
+                onChange={(e) => setFormData({ ...formData, meterMakeSrNo: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Oil. Temp ⁰C</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.meterMakeSrNo}
+                onChange={(e) => setFormData({ ...formData, meterMakeSrNo: e.target.value })}
+              />
+            </td>
+            <td>
+              <strong>Sr. No</strong>
+            </td>
+            <td >
+              <input
+                type="text"
+                value={formData.meterMakeSrNo}
+                onChange={(e) => setFormData({ ...formData, meterMakeSrNo: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Wdg. Temp ⁰C</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.meterMakeSrNo}
+                onChange={(e) => setFormData({ ...formData, meterMakeSrNo: e.target.value })}
+              />
+            </td>
+            <td>
+              <strong>Voltage Level</strong>
+            </td>
+            <td >
+              <input
+                type="text"
+                value={formData.meterMakeSrNo}
+                onChange={(e) => setFormData({ ...formData, meterMakeSrNo: e.target.value })}
               />
             </td>
           </tr>
         </tbody>
       </table>
 
+      <table className="form-table" style={{ marginTop: "30px" }}>
+        <thead>
+          <tr>
+            <th></th>
+            <th>15 Sec (MΩ)</th>
+            <th>60 Sec (MΩ)</th>
+            <th>600 Sec (MΩ)</th>
+            <th>Ratio of IR 60/15 </th>
+            <th>Ratio of IR 600/60  </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>HV-Earth</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.hvEarth_15sec}
+                onChange={(e) => setFormData({ ...formData, hvEarth_15sec: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.hvEarth_60sec}
+                onChange={(e) => setFormData({ ...formData, hvEarth_60sec: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.hvEarth_ratio}
+                onChange={(e) => setFormData({ ...formData, hvEarth_ratio: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.hvEarth_ratio}
+                onChange={(e) => setFormData({ ...formData, hvEarth_ratio: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.hvEarth_ratio}
+                onChange={(e) => setFormData({ ...formData, hvEarth_ratio: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>LV-Earth</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.lv1Earth_15sec}
+                onChange={(e) => setFormData({ ...formData, lv1Earth_15sec: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.lv1Earth_60sec}
+                onChange={(e) => setFormData({ ...formData, lv1Earth_60sec: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.lv1Earth_ratio}
+                onChange={(e) => setFormData({ ...formData, lv1Earth_ratio: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.lv1Earth_ratio}
+                onChange={(e) => setFormData({ ...formData, lv1Earth_ratio: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.hvEarth_ratio}
+                onChange={(e) => setFormData({ ...formData, hvEarth_ratio: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>HV-LV</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.hvLv1_15sec}
+                onChange={(e) => setFormData({ ...formData, hvLv1_15sec: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.hvLv1_60sec}
+                onChange={(e) => setFormData({ ...formData, hvLv1_60sec: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.hvLv1_ratio}
+                onChange={(e) => setFormData({ ...formData, hvLv1_ratio: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.hvLv1_ratio}
+                onChange={(e) => setFormData({ ...formData, hvLv1_ratio: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.hvEarth_ratio}
+                onChange={(e) => setFormData({ ...formData, hvEarth_ratio: e.target.value })}
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
       <PhotoUploadSection
         title="Magnetizing Current Test"
         photos={photoRequirements}
@@ -11587,20 +11192,20 @@ const TractionTransformerForms = ({
       { component: Stage1Form7, name: "SFRA Test Record" },
       ],
     2: [
-      { component: RecordOilHandlingV63Form, name: "Record of Oil Handling" },
-      { component: IRAfterErectionStage2V63Form, name: "IR After Erection" },
+      { component: Stage2Form1, name: "Record of Oil Handling" },
+      { component: Stage2Form2, name: "IR After Erection" },
     ],
     3: [
-      { component: VacuumCycleRecordingForm, name: "Vacuum Cycle Recording" },
+      { component: Stage3Form1, name: "Vacuum Cycle Recording" },
     ],
     4: [
-      { component: RecordOilFiltrationMainTankV63Form, name: "Record Oil Filtration Main Tank" },
-      { component: IRValueBeforeRadiatorFiltrationForm, name: "IR Value Before Radiator Filtration" },
-      { component: OilFiltrationCombineV63Form, name: "Oil Filtration Combine" },
-      { component: IRPIValueAfterFiltrationForm, name: "IR & PI Value After Filtration" },
+      { component: Stage4Form1, name: "Record Oil Filtration Main Tank" },
+      { component: Stage4Form2, name: "IR Value Before Radiator Filtration" },
+      { component: Stage4Form3, name: "Oil Filtration Combine" },
+      { component: Stage4Form4, name: "IR & PI Value After Filtration" },
     ],
     5: [
-      { component: MagnetizingCurrentTestForm, name: "Magnetizing Current Test" },
+      { component: Stage5Form1, name: "Magnetizing Current Test" },
       { component: PolarityTestForm, name: "Polarity Test" },
       { component: ShortCircuitTestV63Form, name: "Short Circuit Test" },
       { component: ShortCircuitWindingResistanceTestForm, name: "Short Circuit and Winding Resistance Test" },
@@ -11645,29 +11250,29 @@ const TractionTransformerForms = ({
         }
       });
 
-      // Submit to API
-      // await axios.post(
-      //   `${BACKEND_API_BASE_URL}/api/vconnectData/setTable`,
-      //   formDataToSend,
-      //   {
-      //     headers: { "Content-Type": "multipart/form-data" },
-      //   }
-      // );
+      //Submit to API
+      await axios.post(
+        `${BACKEND_API_BASE_URL}/api/tractionData/setTable`,
+        formDataToSend,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
 
       // Update form completion status
       const isLastFormOfStage = currentFormIndex === currentStageForms.length - 1;
       
       if (isLastFormOfStage) {
-        // await axios.post(
-        //   `${BACKEND_API_BASE_URL}/api/tractionData/updateFormsCompleted`,
-        //   {
-        //     projectName,
-        //     companyName,
-        //     formsCompleted: currentFormIndex + 1,
-        //     status: "pending-approval",
-        //     stage,
-        //   }
-        // );
+        await axios.post(
+          `${BACKEND_API_BASE_URL}/api/tractioncompany/updateFormsCompleted`,
+          {
+            projectName,
+            companyName,
+            formsCompleted: currentFormIndex + 1,
+            status: "pending-approval",
+            stage,
+          }
+        );
 
         // Update local state
         if (setSelectedMainCompany) {
@@ -11695,14 +11300,14 @@ const TractionTransformerForms = ({
           });
         }
       } else {
-        // await axios.post(
-        //   `${BACKEND_API_BASE_URL}/api/tractionData/updateFormsCompleted`,
-        //   {
-        //     projectName,
-        //     companyName,
-        //     formsCompleted: currentFormIndex + 1,
-        //   }
-        // );
+        await axios.post(
+          `${BACKEND_API_BASE_URL}/api/tractioncompany/updateFormsCompleted`,
+          {
+            projectName,
+            companyName,
+            formsCompleted: currentFormIndex + 1,
+          }
+        );
       }
 
       // Update local form data
