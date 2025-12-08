@@ -21,7 +21,6 @@ const Stage1Form1SubSchema = new mongoose.Schema(
     transportingWeight: { type: String, trim: true, default: "" },
     noOfCoolingFan: { type: String, trim: true, default: "" },
     totalWeight: { type: String, trim: true, default: "" },
-    noOfOilPump: { type: String, trim: true, default: "" },
     noOfRadiators: { type: String, trim: true, default: "" },
     noOfTaps: { type: String, trim: true, default: "" },
     mfgOfOctc: { type: String, trim: true, default: "" },
@@ -52,44 +51,104 @@ const Stage1Form2SubSchema = new mongoose.Schema(
   { _id: false }
 );
 
-// Sub-schema for Stage 1 Form 3 (Safety and Equipment Checklist)
+// Sub-schema for Stage 1 Form 3 (Core Insulation Check and Equipment Checklist)
 const Stage1Form3SubSchema = new mongoose.Schema(
   {
-    betweenCoreFrame: { type: String, trim: true, default: "" },
-    betweenCoreFrameRemarks: { type: String, trim: true, default: "" },
-    betweenFrameTank: { type: String, trim: true, default: "" },
-    betweenFrameTankRemarks: { type: String, trim: true, default: "" },
-    betweenCoreTank: { type: String, trim: true, default: "" },
-    betweenCoreTankRemarks: { type: String, trim: true, default: "" },
+    // Core Insulation Check fields
+    coreFrame_obtainedValue: { type: String, trim: true, default: "" },
+    coreFrame_remarks: { type: String, trim: true, default: "" },
+    frameTank_obtainedValue: { type: String, trim: true, default: "" },
+    frameTank_remarks: { type: String, trim: true, default: "" },
+    coreTank_obtainedValue: { type: String, trim: true, default: "" },
+    coreTank_remarks: { type: String, trim: true, default: "" },
+    
+    // Equipment checklist fields
     filterMachine: { type: String, trim: true, default: "" },
-    filterMachineChecked: { type: String, default: "" },
-    filterCapacity: { type: String, trim: true, default: "" },
-    filterCapacityChecked: { type: String, default: "" },
+    filterMachineCapacity: { type: String, trim: true, default: "" },
     vacuumPumpCapacity: { type: String, trim: true, default: "" },
-    vacuumPumpCapacityChecked: { type: String, default: "" },
     reservoirAvailable: { type: String, trim: true, default: "" },
-    reservoirAvailableChecked: { type: String, default: "" },
     reservoirCapacity: { type: String, trim: true, default: "" },
-    reservoirCapacityChecked: { type: String, default: "" },
     hosePipes: { type: String, trim: true, default: "" },
-    hosePipesChecked: { type: String, default: "" },
     craneAvailable: { type: String, trim: true, default: "" },
-    craneAvailableChecked: { type: String, default: "" },
+    dryAir: { type: String, trim: true, default: "" },
+    dewPointMeter: { type: String, trim: true, default: "" },
+    mecLeodGauge: { type: String, trim: true, default: "" },
+    
+    // Safety equipment fields
     fireExtinguisher: { type: String, trim: true, default: "" },
     firstAidKit: { type: String, trim: true, default: "" },
-    ppeEquipment: { type: String, trim: true, default: "" },
+    ppeEquipment: { type: String, trim: true, default: "" },  
     photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );
 
-// Sub-schema for Stage 1 Form 4 (Measurement Details)
+// Sub-schema for Stage 1 Form 4 (Pre erection Ratio test of turret CTs)
 const Stage1Form4SubSchema = new mongoose.Schema(
   {
-    meterUsed: { type: String, trim: true, default: "" },
-    date: { type: String, trim: true, default: "" },
-    time: { type: String, trim: true, default: "" },
+    makeOfMeter: { type: String, trim: true, default: "" },
     modelSrNo: { type: String, trim: true, default: "" },
+    date: { type: String, trim: true, default: "" },
+    ambient: { type: String, trim: true, default: "" },
+    wtiTemp: { type: String, trim: true, default: "" },
+    testReportReviewedBy: { type: String, trim: true, default: "" },
+    acceptanceOfTest: { type: String, trim: true, default: "" },
+
+    // Phase 1.1 - CT Ratio test fields
+    phase31_20percent_appliedCurrent: { type: String, trim: true, default: "" },
+    phase31_20percent_measuredCurrent: { type: String, trim: true, default: "" },
+    phase31_40percent_appliedCurrent: { type: String, trim: true, default: "" },
+    phase31_40percent_measuredCurrent: { type: String, trim: true, default: "" },
+    phase31_60percent_appliedCurrent: { type: String, trim: true, default: "" },
+    phase31_60percent_measuredCurrent: { type: String, trim: true, default: "" },
+    phase31_80percent_appliedCurrent: { type: String, trim: true, default: "" },
+    phase31_80percent_measuredCurrent: { type: String, trim: true, default: "" },
+    phase31_100percent_appliedCurrent: { type: String, trim: true, default: "" },
+    phase31_100percent_measuredCurrent: { type: String, trim: true, default: "" },
+
+    // Phase 1.1 - Knee point voltage fields
+    phase31_knee_20percent_appliedVoltage: { type: String, trim: true, default: "" },
+    phase31_knee_20percent_measuredCurrent: { type: String, trim: true, default: "" },
+    phase31_knee_40percent_appliedVoltage: { type: String, trim: true, default: "" },
+    phase31_knee_40percent_measuredCurrent: { type: String, trim: true, default: "" },
+    phase31_knee_60percent_appliedVoltage: { type: String, trim: true, default: "" },
+    phase31_knee_60percent_measuredCurrent: { type: String, trim: true, default: "" },
+    phase31_knee_80percent_appliedVoltage: { type: String, trim: true, default: "" },
+    phase31_knee_80percent_measuredCurrent: { type: String, trim: true, default: "" },
+    phase31_knee_100percent_appliedVoltage: { type: String, trim: true, default: "" },
+    phase31_knee_100percent_measuredCurrent: { type: String, trim: true, default: "" },
+    phase31_knee_110percent_appliedVoltage: { type: String, trim: true, default: "" },
+    phase31_knee_110percent_measuredCurrent: { type: String, trim: true, default: "" },
+
+    // Phase 1.2 - CT Ratio test fields
+    phase32_20percent_appliedCurrent: { type: String, trim: true, default: "" },
+    phase32_20percent_measuredCurrent: { type: String, trim: true, default: "" },
+    phase32_40percent_appliedCurrent: { type: String, trim: true, default: "" },
+    phase32_40percent_measuredCurrent: { type: String, trim: true, default: "" },
+    phase32_60percent_appliedCurrent: { type: String, trim: true, default: "" },
+    phase32_60percent_measuredCurrent: { type: String, trim: true, default: "" },
+    phase32_80percent_appliedCurrent: { type: String, trim: true, default: "" },
+    phase32_80percent_measuredCurrent: { type: String, trim: true, default: "" },
+    phase32_100percent_appliedCurrent: { type: String, trim: true, default: "" },
+    phase32_100percent_measuredCurrent: { type: String, trim: true, default: "" },
+
+    // Phase 1.2 - Knee point voltage fields
+    phase32_knee_20percent_appliedVoltage: { type: String, trim: true, default: "" },
+    phase32_knee_20percent_measuredCurrent: { type: String, trim: true, default: "" },
+    phase32_knee_40percent_appliedVoltage: { type: String, trim: true, default: "" },
+    phase32_knee_40percent_measuredCurrent: { type: String, trim: true, default: "" },
+    phase32_knee_60percent_appliedVoltage: { type: String, trim: true, default: "" },
+    phase32_knee_60percent_measuredCurrent: { type: String, trim: true, default: "" },
+    phase32_knee_80percent_appliedVoltage: { type: String, trim: true, default: "" },
+    phase32_knee_80percent_measuredCurrent: { type: String, trim: true, default: "" },
+    phase32_knee_100percent_appliedVoltage: { type: String, trim: true, default: "" },
+    phase32_knee_100percent_measuredCurrent: { type: String, trim: true, default: "" },
+    phase32_knee_110percent_appliedVoltage: { type: String, trim: true, default: "" },
+    phase32_knee_110percent_measuredCurrent: { type: String, trim: true, default: "" },
+
+    // Legacy bushing fields (keeping for backward compatibility)
+    meterUsed: { type: String, trim: true, default: "" },
+    time: { type: String, trim: true, default: "" },
     wti: { type: String, trim: true, default: "" },
     oti: { type: String, trim: true, default: "" },
     bushing11: { type: String, trim: true, default: "" },
@@ -114,6 +173,7 @@ const Stage1Form4SubSchema = new mongoose.Schema(
     bushing12_10kv_capacitance: { type: String, trim: true, default: "" },
     bushing12_10kv_excitationCurrent: { type: String, trim: true, default: "" },
     bushing12_10kv_dielectricLoss: { type: String, trim: true, default: "" },
+    
     photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
