@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
 import fs from 'fs';
 import path from 'path';
 
@@ -59,13 +59,8 @@ for (const chromePath of possiblePaths) {
 
 // Try to get Puppeteer's default executable path
 console.log('\n=== Puppeteer Configuration ===');
-try {
-  const defaultPath = puppeteer.executablePath();
-  console.log('Default Puppeteer executable path:', defaultPath);
-  console.log('Default path exists:', fs.existsSync(defaultPath));
-} catch (error) {
-  console.log('Error getting default Puppeteer path:', error.message);
-}
+console.log('Using puppeteer-core - no default executable path available');
+console.log('Must specify executablePath in launch options');
 
 // Try to launch Puppeteer
 console.log('\n=== Testing Puppeteer Launch ===');

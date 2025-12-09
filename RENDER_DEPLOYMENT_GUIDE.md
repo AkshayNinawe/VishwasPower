@@ -6,20 +6,23 @@ The error "Browser was not found at the configured executablePath" occurs becaus
 ## Solution Implemented
 
 ### 1. Updated Package Configuration
-- Added `chrome-aws-lambda` as a fallback dependency
-- Updated postinstall script to handle Chrome installation gracefully
+- Switched from `puppeteer` to `puppeteer-core` for better control
+- Removed problematic postinstall scripts that interfere with Docker builds
 - Added debug scripts for troubleshooting
 
 ### 2. Enhanced Puppeteer Configuration
 - Updated `autoDataController.js` with intelligent Chrome detection
+- Prioritizes system Chrome over Puppeteer cache
 - Added support for multiple Chrome installation paths
-- Implemented fallback mechanisms for different environments
-- Added comprehensive error handling
+- Implemented comprehensive fallback mechanisms
+- Added detailed logging for debugging
 
-### 3. Docker Configuration
-- Created `Dockerfile` with proper Chrome installation
+### 3. Docker Configuration (Recommended)
+- Created `Dockerfile` with proper Google Chrome installation
+- Uses updated Chrome repository key method
 - Includes all necessary Chrome dependencies
 - Sets correct environment variables
+- Verifies Chrome installation during build
 
 ### 4. Render Configuration
 - Created `render.yaml` for proper deployment settings
