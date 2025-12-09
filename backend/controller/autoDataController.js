@@ -321,6 +321,32 @@ export const generatePDF = async (req, res) => {
 
     // Launch Puppeteer with enhanced configuration for Render.com
     console.log("Launching Puppeteer browser...");
+    
+    // Get the correct executable path from the project's cache directory
+    let executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+    
+    if (!executablePath) {
+      // Try to find Chrome in the project's cache directory
+      const cacheDir = path.join(process.cwd(), '.cache', 'puppeteer', 'chrome');
+      if (fs.existsSync(cacheDir)) {
+        // Find the Chrome version directory
+        const versionDirs = fs.readdirSync(cacheDir).filter(dir => dir.startsWith('win64-'));
+        if (versionDirs.length > 0) {
+          const chromeExePath = path.join(cacheDir, versionDirs[0], 'chrome-win64', 'chrome.exe');
+          if (fs.existsSync(chromeExePath)) {
+            executablePath = chromeExePath;
+          }
+        }
+      }
+      
+      // Fallback to default Puppeteer path
+      if (!executablePath) {
+        executablePath = puppeteer.executablePath();
+      }
+    }
+    
+    console.log("Using Chrome executable at:", executablePath);
+    
     const browser = await puppeteer.launch({
       headless: true,
       args: [
@@ -328,15 +354,20 @@ export const generatePDF = async (req, res) => {
         '--disable-setuid-sandbox',
         '--disable-dev-shm-usage',
         '--disable-gpu',
-        '--disable-software-rasterizer',
         '--disable-extensions',
         '--disable-web-security',
         '--no-first-run',
-        '--no-zygote',
-        '--single-process'
+        '--disable-features=VizDisplayCompositor',
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-renderer-backgrounding'
       ],
-      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || puppeteer.executablePath(),
-      timeout: 60000
+      executablePath: executablePath,
+      timeout: 60000,
+      ignoreDefaultArgs: ['--disable-extensions'],
+      handleSIGINT: false,
+      handleSIGTERM: false,
+      handleSIGHUP: false
     });
 
     const page = await browser.newPage();

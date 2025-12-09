@@ -3402,7 +3402,7 @@ const ETCAdminPanel = ({
               </div>
             </div>
 
-            <div className="submitter-review-summary">
+            {/* <div className="submitter-review-summary">
               <div className="review-stats">
                 <div className="stat-card">
                   <h4>Total Forms</h4>
@@ -3437,7 +3437,7 @@ const ETCAdminPanel = ({
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div className="stages-review-container">
               {Object.entries(formDataFromDB).map(([stageKey, forms]) => (
