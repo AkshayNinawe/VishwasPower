@@ -366,7 +366,10 @@ export const generatePDF = async (req, res) => {
         '/usr/bin/google-chrome',
         '/usr/bin/chromium-browser',
         '/usr/bin/chromium',
-        '/opt/google/chrome/chrome'
+        '/opt/google/chrome/chrome',
+        '/snap/bin/chromium',
+        '/usr/local/bin/google-chrome-stable',
+        '/usr/local/bin/google-chrome'
       ];
 
       // Check system paths first
@@ -448,10 +451,15 @@ export const generatePDF = async (req, res) => {
     
     console.log("Using Chrome executable at:", executablePath);
     
-    // Set the executable path in launch options
-    if (executablePath) {
-      launchOptions.executablePath = executablePath;
+    // Ensure we have a valid executable path for puppeteer-core
+    if (!executablePath) {
+      const errorMessage = "No Chrome executable found. Please ensure Chrome is installed or set PUPPETEER_EXECUTABLE_PATH environment variable.";
+      console.error(errorMessage);
+      throw new Error(errorMessage);
     }
+    
+    // Set the executable path in launch options
+    launchOptions.executablePath = executablePath;
     
     const browser = await puppeteer.launch(launchOptions);
 
