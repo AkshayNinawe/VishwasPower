@@ -319,17 +319,111 @@ export const generatePDF = async (req, res) => {
     // Launch Puppeteer with enhanced configuration for Render.com
     console.log("Launching Puppeteer browser...");
     
-    // Get the correct executable path from the project's cache directory
+    // Determine the correct executable path based on environment
     let executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
-    
-    if (!executablePath) {
-      // Try to find Chrome in the project's cache directory
+    let launchOptions = {
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--disable-extensions',
+        '--disable-web-security',
+        '--no-first-run',
+        '--disable-features=VizDisplayCompositor',
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-renderer-backgrounding',
+        '--disable-ipc-flooding-protection',
+        '--disable-background-networking',
+        '--disable-default-apps',
+        '--disable-sync',
+        '--disable-translate',
+        '--hide-scrollbars',
+        '--metrics-recording-only',
+        '--mute-audio',
+        '--no-default-browser-check',
+        '--no-pings',
+        '--password-store=basic',
+        '--use-mock-keychain',
+        '--disable-blink-features=AutomationControlled'
+      ],
+      timeout: 60000,
+      ignoreDefaultArgs: ['--disable-extensions'],
+      handleSIGINT: false,
+      handleSIGTERM: false,
+      handleSIGHUP: false
+    };
+
+    // Check if we're running on Render or similar cloud platform
+    if (process.env.RENDER || process.env.NODE_ENV === 'production') {
+      console.log("Detected cloud environment, using system Chrome");
+      
+      // Try multiple possible Chrome locations on Linux
+      const possiblePaths = [
+        '/usr/bin/google-chrome-stable',
+        '/usr/bin/google-chrome',
+        '/usr/bin/chromium-browser',
+        '/usr/bin/chromium',
+        '/opt/google/chrome/chrome',
+        '/opt/render/.cache/puppeteer/chrome/linux-*/chrome-linux64/chrome'
+      ];
+
+      for (const chromePath of possiblePaths) {
+        if (chromePath.includes('*')) {
+          // Handle wildcard path for Puppeteer cache
+          try {
+            const baseDir = '/opt/render/.cache/puppeteer/chrome';
+            if (fs.existsSync(baseDir)) {
+              const versionDirs = fs.readdirSync(baseDir).filter(dir => dir.startsWith('linux-'));
+              if (versionDirs.length > 0) {
+                const fullPath = path.join(baseDir, versionDirs[0], 'chrome-linux64', 'chrome');
+                if (fs.existsSync(fullPath)) {
+                  executablePath = fullPath;
+                  break;
+                }
+              }
+            }
+          } catch (error) {
+            console.log(`Could not check wildcard path: ${error.message}`);
+          }
+        } else if (fs.existsSync(chromePath)) {
+          executablePath = chromePath;
+          break;
+        }
+      }
+
+      // If no Chrome found, try to use chrome-aws-lambda for compatibility
+      if (!executablePath) {
+        try {
+          const chromium = await import('chrome-aws-lambda');
+          executablePath = await chromium.default.executablePath;
+          launchOptions.args = [...launchOptions.args, ...chromium.default.args];
+          console.log("Using chrome-aws-lambda executable");
+        } catch (error) {
+          console.log("chrome-aws-lambda not available, falling back to Puppeteer default");
+          // Last resort: use Puppeteer's default
+          executablePath = puppeteer.executablePath();
+        }
+      }
+    } else {
+      // Local development - try to find Chrome in the project's cache directory
       const cacheDir = path.join(process.cwd(), '.cache', 'puppeteer', 'chrome');
       if (fs.existsSync(cacheDir)) {
-        // Find the Chrome version directory
-        const versionDirs = fs.readdirSync(cacheDir).filter(dir => dir.startsWith('win64-'));
+        const versionDirs = fs.readdirSync(cacheDir).filter(dir => 
+          dir.startsWith('win64-') || dir.startsWith('linux-') || dir.startsWith('mac-')
+        );
         if (versionDirs.length > 0) {
-          const chromeExePath = path.join(cacheDir, versionDirs[0], 'chrome-win64', 'chrome.exe');
+          let chromeExePath;
+          if (process.platform === 'win32') {
+            chromeExePath = path.join(cacheDir, versionDirs[0], 'chrome-win64', 'chrome.exe');
+          } else if (process.platform === 'darwin') {
+            chromeExePath = path.join(cacheDir, versionDirs[0], 'chrome-mac64', 'Google Chrome for Testing.app', 'Contents', 'MacOS', 'Google Chrome for Testing');
+          } else {
+            chromeExePath = path.join(cacheDir, versionDirs[0], 'chrome-linux64', 'chrome');
+          }
+          
           if (fs.existsSync(chromeExePath)) {
             executablePath = chromeExePath;
           }
@@ -344,28 +438,12 @@ export const generatePDF = async (req, res) => {
     
     console.log("Using Chrome executable at:", executablePath);
     
-    const browser = await puppeteer.launch({
-      headless: true,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-        '--disable-extensions',
-        '--disable-web-security',
-        '--no-first-run',
-        '--disable-features=VizDisplayCompositor',
-        '--disable-background-timer-throttling',
-        '--disable-backgrounding-occluded-windows',
-        '--disable-renderer-backgrounding'
-      ],
-      executablePath: executablePath,
-      timeout: 60000,
-      ignoreDefaultArgs: ['--disable-extensions'],
-      handleSIGINT: false,
-      handleSIGTERM: false,
-      handleSIGHUP: false
-    });
+    // Set the executable path in launch options
+    if (executablePath) {
+      launchOptions.executablePath = executablePath;
+    }
+    
+    const browser = await puppeteer.launch(launchOptions);
 
     const page = await browser.newPage();
     console.log("Browser page created");
