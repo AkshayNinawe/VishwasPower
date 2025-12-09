@@ -1043,190 +1043,437 @@ function generateStage3Form3(formData) {
   `;
 }
 
-// Generate Stage 4 Form 1 - SFRA Test Report
+// Generate Stage 4 Form 1 - SFRA Test Record (matching frontend UI exactly)
 function generateStage4Form1(formData) {
   if (!formData) return "";
 
   return `
     <div class="form-container" style="page-break-before: always;">
       <div class="company-header">
-        <h2>SFRA TEST REPORT</h2>
+        <h2>SFRA TEST RECORD</h2>
       </div>
 
       <table class="form-table">
         <tbody>
           <tr>
-            <td><strong>Date:</strong></td>
+            <td><strong>MAKE OF METER</strong></td>
+            <td>${formData.makeOfMeter || ""}</td>
+            <td><strong>DATE</strong></td>
             <td>${formData.date || ""}</td>
-            <td><strong>Time:</strong></td>
-            <td>${formData.time || ""}</td>
           </tr>
           <tr>
-            <td><strong>Instrument Make:</strong></td>
-            <td>${formData.instrumentMake || ""}</td>
-            <td><strong>Model:</strong></td>
-            <td>${formData.model || ""}</td>
+            <td><strong>MODEL & S. NO.</strong></td>
+            <td>${formData.modelSrNo || ""}</td>
+            <td><strong>AMBIENT:</strong></td>
+            <td>${formData.ambient || ""}</td>
           </tr>
           <tr>
-            <td><strong>Serial No:</strong></td>
-            <td>${formData.serialNo || ""}</td>
-            <td><strong>Calibration Date:</strong></td>
-            <td>${formData.calibrationDate || ""}</td>
+            <td><strong>OTI</strong></td>
+            <td>${formData.oti || ""}°C</td>
+            <td><strong>WTI</strong></td>
+            <td>${formData.wti || ""}°C</td>
+          </tr>
+          <tr>
+            <td><strong>Test report reviewed by</strong></td>
+            <td>${formData.testReportReviewed || ""}</td>
+            <td><strong>Acceptance of the test</strong></td>
+            <td>${formData.acceptanceOfTest || ""}</td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style="margin-top: 40px;">Test Results</h4>
+      <h4 style="margin-top: 40px; text-align: center;">Tan delta and capacitance test on bushing</h4>
 
       <table class="form-table">
+        <tbody>
+          <tr>
+            <td><strong>METER USED</strong></td>
+            <td>${formData.meterUsedBushing || ""}</td>
+            <td><strong>DATE:</strong></td>
+            <td>${formData.dateBushing || ""}</td>
+            <td><strong>TIME :</strong></td>
+            <td>${formData.timeBushing || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>MODEL & S. NO.</strong></td>
+            <td>${formData.modelSrNoBushing || ""}</td>
+            <td><strong>WTI:</strong></td>
+            <td>${formData.wtiBushing || ""}</td>
+            <td><strong>OTI:</strong></td>
+            <td>${formData.otiBushing || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="form-table" style="margin-top: 20px;">
         <thead>
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Phase</th>
-            <th>End to End (Ω)</th>
-            <th>Inductive (Ω)</th>
-            <th>Capacitive (Ω)</th>
-            <th>Result</th>
+            <th rowspan="2"></th>
+            <th rowspan="2">AT 05 KV PHASE</th>
+            <th>TAN DELTA %</th>
+            <th>CAPACITANCE (PF)</th>
+            <th>EXCITATION CURRENT (mA)</th>
+            <th>DIELECTRIC LOSS</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>R Phase</strong></td>
-            <td>${formData.rPhaseEndToEnd || ""}</td>
-            <td>${formData.rPhaseInductive || ""}</td>
-            <td>${formData.rPhaseCapacitive || ""}</td>
-            <td>${formData.rPhaseResult || ""}</td>
+            <td><strong>1.1</strong></td>
+            <td>${formData.bushing11_05kv_phase || ""}</td>
+            <td>${formData.bushing11_05kv_tanDelta || ""}</td>
+            <td>${formData.bushing11_05kv_capacitance || ""}</td>
+            <td>${formData.bushing11_05kv_excitationCurrent || ""}</td>
+            <td>${formData.bushing11_05kv_dielectricLoss || ""}</td>
           </tr>
           <tr>
-            <td><strong>Y Phase</strong></td>
-            <td>${formData.yPhaseEndToEnd || ""}</td>
-            <td>${formData.yPhaseInductive || ""}</td>
-            <td>${formData.yPhaseCapacitive || ""}</td>
-            <td>${formData.yPhaseResult || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>B Phase</strong></td>
-            <td>${formData.bPhaseEndToEnd || ""}</td>
-            <td>${formData.bPhaseInductive || ""}</td>
-            <td>${formData.bPhaseCapacitive || ""}</td>
-            <td>${formData.bPhaseResult || ""}</td>
+            <td><strong>1.2</strong></td>
+            <td>${formData.bushing12_05kv_phase || ""}</td>
+            <td>${formData.bushing12_05kv_tanDelta || ""}</td>
+            <td>${formData.bushing12_05kv_capacitance || ""}</td>
+            <td>${formData.bushing12_05kv_excitationCurrent || ""}</td>
+            <td>${formData.bushing12_05kv_dielectricLoss || ""}</td>
           </tr>
         </tbody>
       </table>
 
-      <div style="margin-top: 30px;">
-        <strong>Remarks:</strong>
-        <p>${formData.remarks || ""}</p>
-      </div>
+      <table class="form-table" style="margin-top: 20px;">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th rowspan="2"></th>
+            <th rowspan="2">AT 10 KV PHASE</th>
+            <th>TAN DELTA %</th>
+            <th>CAPACITANCE (PF)</th>
+            <th>EXCITATION CURRENT (mA)</th>
+            <th>DIELECTRIC LOSS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1.1</strong></td>
+            <td>${formData.bushing11_10kv_phase || ""}</td>
+            <td>${formData.bushing11_10kv_tanDelta || ""}</td>
+            <td>${formData.bushing11_10kv_capacitance || ""}</td>
+            <td>${formData.bushing11_10kv_excitationCurrent || ""}</td>
+            <td>${formData.bushing11_10kv_dielectricLoss || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>1.2</strong></td>
+            <td>${formData.bushing12_10kv_phase || ""}</td>
+            <td>${formData.bushing12_10kv_tanDelta || ""}</td>
+            <td>${formData.bushing12_10kv_capacitance || ""}</td>
+            <td>${formData.bushing12_10kv_excitationCurrent || ""}</td>
+            <td>${formData.bushing12_10kv_dielectricLoss || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4 style="margin-top: 40px; text-align: center;">Tan delta and capacitance test on winding</h4>
+
+      <table class="form-table">
+        <tbody>
+          <tr>
+            <td><strong>METER USED</strong></td>
+            <td>${formData.meterUsedWinding || ""}</td>
+            <td><strong>DATE:</strong></td>
+            <td>${formData.dateWinding || ""}</td>
+            <td><strong>TIME :</strong></td>
+            <td>${formData.timeWinding || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>MAKE & S. NO.</strong></td>
+            <td>${formData.makeSrNoWinding || ""}</td>
+            <td><strong>AMBIENT TEMP</strong></td>
+            <td>${formData.ambientTempWinding || ""}</td>
+            <td><strong>OIL TEMP</strong></td>
+            <td>${formData.oilTempWinding || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="form-table" style="margin-top: 20px;">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th></th>
+            <th>AT 05 KV IN BETWEEN</th>
+            <th>TAN DELTA %</th>
+            <th>CAPACITANCE (PF)</th>
+            <th>EXCITATION CURRENT (mA)</th>
+            <th>DIELECTRIC LOSS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>HV – G</strong></td>
+            <td>${formData.hvg_05kv_tanDelta || ""}</td>
+            <td>${formData.hvg_05kv_capacitance || ""}</td>
+            <td>${formData.hvg_05kv_excitationCurrent || ""}</td>
+            <td>${formData.hvg_05kv_dielectricLoss || ""}</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="form-table" style="margin-top: 20px;">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th></th>
+            <th>AT 10 KV IN BETWEEN</th>
+            <th>TAN DELTA %</th>
+            <th>CAPACITANCE (PF)</th>
+            <th>EXCITATION CURRENT (mA)</th>
+            <th>DIELECTRIC LOSS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>HV – G</strong></td>
+            <td>${formData.hvg_10kv_tanDelta || ""}</td>
+            <td>${formData.hvg_10kv_capacitance || ""}</td>
+            <td>${formData.hvg_10kv_excitationCurrent || ""}</td>
+            <td>${formData.hvg_10kv_dielectricLoss || ""}</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
 
       ${generatePhotoThumbnails(formData.photos)}
     </div>
   `;
 }
 
-// Generate Stage 4 Form 2 - IR and Voltage Ratio Test
+// Generate Stage 4 Form 2 - Record of Measurement of IR Values & Voltage Ratio Test (matching frontend UI exactly)
 function generateStage4Form2(formData) {
   if (!formData) return "";
+
+  // Generate voltage ratio test rows
+  const voltageRatioRows = (formData.voltageRatioTests || [
+    { appliedVoltage: "1.1 – 1.2", measuredVoltage11_21: "", measuredVoltage12_21: "" },
+    { appliedVoltage: "1.1 – 2.1", measuredVoltage11_12: "", measuredVoltage12_21: "" },
+    { appliedVoltage: "2.1 – 1.2", measuredVoltage11_12: "", measuredVoltage11_21: "" }
+  ]).map((test, index) => `
+    <tr>
+      <td>${test.appliedVoltage || ""}</td>
+      <td>${test.measuredVoltage11_21 || ""}</td>
+      <td>${test.measuredVoltage12_21 || ""}</td>
+    </tr>
+  `).join("");
+
+  // Generate magnetising test rows
+  const magnetisingRows = (formData.magnetisingTests || [
+    { appliedVoltage: "1.1 –1.2", measuredCurrent: "" },
+    { appliedVoltage: "1.1 – 2.1", measuredCurrent: "" },
+    { appliedVoltage: "2.1 – 1.2", measuredCurrent: "" }
+  ]).map((test, index) => `
+    <tr>
+      <td><strong>${test.appliedVoltage}</strong></td>
+      <td>${test.measuredCurrent || ""}</td>
+    </tr>
+  `).join("");
 
   return `
     <div class="form-container" style="page-break-before: always;">
       <div class="company-header">
-        <h2>IR AND VOLTAGE RATIO TEST</h2>
+        <h2>RECORD OF MEASUREMENT OF IR VALUES</h2>
       </div>
 
       <table class="form-table">
         <tbody>
           <tr>
-            <td><strong>Date:</strong></td>
+            <td><strong>Date :</strong></td>
             <td>${formData.date || ""}</td>
             <td><strong>Time:</strong></td>
             <td>${formData.time || ""}</td>
+            <td colspan="2"><strong>Details of Insulation tester</strong></td>
           </tr>
           <tr>
-            <td><strong>Temperature OTI (°C):</strong></td>
-            <td>${formData.tempOTI || ""}</td>
-            <td><strong>WTI (°C):</strong></td>
-            <td>${formData.tempWTI || ""}</td>
+            <td><strong>Amb. Temp :</strong></td>
+            <td>${formData.ambTemp || ""}</td>
+            <td><strong>Make :</strong></td>
+            <td>${formData.make || ""}</td>
+            <td rowspan="4"></td>
+            <td rowspan="4"></td>
           </tr>
           <tr>
-            <td><strong>AMB (°C):</strong></td>
-            <td>${formData.tempAMB || ""}</td>
-            <td><strong>Test Voltage:</strong></td>
-            <td>${formData.testVoltage || ""}</td>
+            <td><strong>Oil Temp. :</strong></td>
+            <td>${formData.oilTemp || ""}</td>
+            <td><strong>Sr. No. :</strong></td>
+            <td>${formData.srNo || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>Wdg. Temp. :</strong></td>
+            <td>${formData.wdgTemp || ""}</td>
+            <td><strong>Range :</strong></td>
+            <td>${formData.range || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>Relative Humidity :</strong></td>
+            <td>${formData.relativeHumidity || ""}</td>
+            <td><strong>Voltage Level :</strong></td>
+            <td>${formData.voltageLevel || ""}</td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style="margin-top: 40px;">IR Values at 5 KV</h4>
-
-      <table class="form-table">
+      <table class="form-table" style="margin-top: 20px;">
         <thead>
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Winding</th>
-            <th>15 Sec (MΩ)</th>
-            <th>60 Sec (MΩ)</th>
-            <th>600 Sec (MΩ)</th>
-            <th>PI (600/60)</th>
+            <th></th>
+            <th>10 Sec MΩ</th>
+            <th>60 Sec MΩ</th>
+            <th>Ratio of IR 60/10</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>HV-Earth</strong></td>
-            <td>${formData.hvEarth15Sec || ""}</td>
+            <td>${formData.hvEarth10Sec || ""}</td>
             <td>${formData.hvEarth60Sec || ""}</td>
-            <td>${formData.hvEarth600Sec || ""}</td>
-            <td>${formData.hvEarthPI || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>LV-Earth</strong></td>
-            <td>${formData.lvEarth15Sec || ""}</td>
-            <td>${formData.lvEarth60Sec || ""}</td>
-            <td>${formData.lvEarth600Sec || ""}</td>
-            <td>${formData.lvEarthPI || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>HV-LV</strong></td>
-            <td>${formData.hvLv15Sec || ""}</td>
-            <td>${formData.hvLv60Sec || ""}</td>
-            <td>${formData.hvLv600Sec || ""}</td>
-            <td>${formData.hvLvPI || ""}</td>
+            <td>${formData.ratioIR60IR10 || ""}</td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style="margin-top: 40px;">Voltage Ratio Test</h4>
+      <h4 style="margin-top: 40px; text-align: center;">RATIO TEST 2</h4>
 
-      <table class="form-table">
+      <table class="form-table" style="margin-top: 20px;">
         <thead>
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Tap Position</th>
-            <th>Applied Voltage (V)</th>
-            <th>Measured Voltage (V)</th>
-            <th>Ratio</th>
-            <th>Deviation (%)</th>
+            <th>1.1 - 1.2</th>
+            <th>1.1 - 2.1</th>
+            <th>1.2 - 2.1</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Tap 1</strong></td>
-            <td>${formData.tap1Applied || ""}</td>
-            <td>${formData.tap1Measured || ""}</td>
-            <td>${formData.tap1Ratio || ""}</td>
-            <td>${formData.tap1Deviation || ""}</td>
+            <td>${formData.ratioTest2_table1_11_12 || ""}</td>
+            <td>${formData.ratioTest2_table1_11_21 || ""}</td>
+            <td>${formData.ratioTest2_table1_12_21 || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="form-table" style="margin-top: 20px;">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th>1.1 - 2.1</th>
+            <th>1.1 - 1.2</th>
+            <th>2.1 - 1.2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>${formData.ratioTest2_table2_11_21 || ""}</td>
+            <td>${formData.ratioTest2_table2_11_12 || ""}</td>
+            <td>${formData.ratioTest2_table2_21_12 || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="form-table" style="margin-top: 20px;">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th>2.1 - 1.2</th>
+            <th>1.1 - 1.2</th>
+            <th>1.1 - 2.1</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>${formData.ratioTest2_table3_21_12 || ""}</td>
+            <td>${formData.ratioTest2_table3_11_12 || ""}</td>
+            <td>${formData.ratioTest2_table3_11_21 || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4 style="margin-top: 40px; text-align: center;">SHORT CIRCUIT</h4>
+
+      <table class="form-table" style="margin-top: 20px;">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th>Applied</th>
+            <th>Measured Current</th>
+            <th>Measured Current</th>
+          </tr>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th>1.1 - 1.2</th>
+            <th>1.1</th>
+            <th>1.2 - 2.1</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>${formData.shortCircuit_table1_applied || ""}</td>
+            <td>${formData.shortCircuit_table1_measured11 || ""}</td>
+            <td>${formData.shortCircuit_table1_measured12_21 || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="form-table" style="margin-top: 20px;">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th>1.2 - 2.1</th>
+            <th>1.2</th>
+            <th>1.1 - 2.1</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>${formData.shortCircuit_table2_12_21 || ""}</td>
+            <td>${formData.shortCircuit_table2_measured12 || ""}</td>
+            <td>${formData.shortCircuit_table2_measured11_21 || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4 style="margin-top: 40px; text-align: center;">TYPE OF TEST – VOLTAGE RATIO TEST</h4>
+
+      <table class="form-table">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th>Applied Voltage</th>
+            <th colspan="2">Measured Voltage</th>
+          </tr>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th>1.1 – 1.2</th>
+            <th>1.1 – 2.1</th>
+            <th>1.2 – 2.1</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${voltageRatioRows}
+        </tbody>
+      </table>
+
+      <h4 style="margin-top: 40px; text-align: center;">TYPE OF TEST – MAGNETISING CURRENT TEST</h4>
+
+      <table class="form-table">
+        <tbody>
+          <tr>
+            <td><strong>APPLIED VOLTAGE:</strong></td>
+            <td>${formData.appliedVoltageMag || ""} VOLTS</td>
+            <td><strong>DATE:</strong></td>
+            <td>${formData.dateMag || ""}</td>
+            <td><strong>TIME:</strong></td>
+            <td>${formData.timeMag || ""}</td>
           </tr>
           <tr>
-            <td><strong>Tap 2</strong></td>
-            <td>${formData.tap2Applied || ""}</td>
-            <td>${formData.tap2Measured || ""}</td>
-            <td>${formData.tap2Ratio || ""}</td>
-            <td>${formData.tap2Deviation || ""}</td>
+            <td><strong>METER MAKE SR. NO.</strong></td>
+            <td colspan="5">${formData.meterMakeSrNoMag || ""}</td>
           </tr>
-          <tr>
-            <td><strong>Tap 3</strong></td>
-            <td>${formData.tap3Applied || ""}</td>
-            <td>${formData.tap3Measured || ""}</td>
-            <td>${formData.tap3Ratio || ""}</td>
-            <td>${formData.tap3Deviation || ""}</td>
+        </tbody>
+      </table>
+
+      <table class="form-table" style="margin-top: 20px;">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th>Applied Voltage</th>
+            <th>Measured Current</th>
           </tr>
+        </thead>
+        <tbody>
+          ${magnetisingRows}
         </tbody>
       </table>
 
@@ -1235,203 +1482,227 @@ function generateStage4Form2(formData) {
   `;
 }
 
-// Generate Stage 4 Form 3 - Short Circuit Test
+// Generate Stage 4 Form 3 - Short Circuit Test (matching frontend UI exactly)
 function generateStage4Form3(formData) {
   if (!formData) return "";
 
   return `
     <div class="form-container" style="page-break-before: always;">
       <div class="company-header">
-        <h2>SHORT CIRCUIT TEST</h2>
+        <h2>TYPE OF TEST – SHORT CIRCUIT TEST</h2>
       </div>
 
       <table class="form-table">
         <tbody>
           <tr>
-            <td><strong>Date:</strong></td>
+            <td><strong>APPLIED VOLTAGE:</strong></td>
+            <td>${formData.appliedVoltage || ""} VOLTS</td>
+            <td><strong>DATE:</strong></td>
             <td>${formData.date || ""}</td>
-            <td><strong>Time:</strong></td>
+            <td><strong>TIME :</strong></td>
             <td>${formData.time || ""}</td>
           </tr>
           <tr>
-            <td><strong>Temperature OTI (°C):</strong></td>
-            <td>${formData.tempOTI || ""}</td>
-            <td><strong>WTI (°C):</strong></td>
-            <td>${formData.tempWTI || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>AMB (°C):</strong></td>
-            <td>${formData.tempAMB || ""}</td>
-            <td><strong>Test Voltage (V):</strong></td>
-            <td>${formData.testVoltage || ""}</td>
+            <td><strong>METER MAKE SR. NO.</strong></td>
+            <td colspan="5">${formData.meterMakeSrNo || ""}</td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style="margin-top: 40px;">Short Circuit Impedance</h4>
-
-      <table class="form-table">
+      <table class="form-table" style="margin-top: 20px;">
         <thead>
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Phase</th>
-            <th>Voltage (V)</th>
-            <th>Current (A)</th>
-            <th>Power (W)</th>
-            <th>Impedance (%)</th>
+            <th>APPLIED VOLTAGE</th>
+            <th colspan="2">Measured Current (mA)</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>R-Y</strong></td>
-            <td>${formData.ryVoltage || ""}</td>
-            <td>${formData.ryCurrent || ""}</td>
-            <td>${formData.ryPower || ""}</td>
-            <td>${formData.ryImpedance || ""}</td>
+            <td><strong>1.1 – 1.2</strong></td>
+            <td><strong>1.1</strong></td>
+            <td><strong>1.2 – 2.1 SHORTED</strong></td>
           </tr>
           <tr>
-            <td><strong>Y-B</strong></td>
-            <td>${formData.ybVoltage || ""}</td>
-            <td>${formData.ybCurrent || ""}</td>
-            <td>${formData.ybPower || ""}</td>
-            <td>${formData.ybImpedance || ""}</td>
+            <td>${formData.test11_12_measuredCurrent11_23 || ""}</td>
+            <td>${formData.test11_12_measuredCurrent11 || ""}</td>
+            <td>${formData.test11_12_measuredCurrent12_21 || ""}</td>
           </tr>
           <tr>
-            <td><strong>B-R</strong></td>
-            <td>${formData.brVoltage || ""}</td>
-            <td>${formData.brCurrent || ""}</td>
-            <td>${formData.brPower || ""}</td>
-            <td>${formData.brImpedance || ""}</td>
+            <td><strong>1.2 – 2.1</strong></td>
+            <td><strong>1.2</strong></td>
+            <td><strong>1.1 – 2.1 SHORTED</strong></td>
           </tr>
           <tr>
-            <td><strong>Average</strong></td>
-            <td>${formData.avgVoltage || ""}</td>
-            <td>${formData.avgCurrent || ""}</td>
-            <td>${formData.avgPower || ""}</td>
-            <td>${formData.avgImpedance || ""}</td>
+            <td>${formData.test12_21_measuredCurrent12_21 || ""}</td>
+            <td>${formData.test12_21_measuredCurrent12 || ""}</td>
+            <td>${formData.test12_21_measuredCurrent11_21 || ""}</td>
           </tr>
         </tbody>
       </table>
 
-      <div style="margin-top: 30px;">
-        <strong>Remarks:</strong>
-        <p>${formData.remarks || ""}</p>
-      </div>
+      <table class="form-table" style="margin-top: 20px;">
+        <tbody>
+          <tr>
+            <td rowspan="4"><strong>Impedance calculation</strong></td>
+            <td><strong>Applied Voltage HV</strong></td>
+            <td><strong>Rated Current LV</strong></td>
+          </tr>
+          <tr>
+            <td>${formData.appliedVoltageHV || ""}</td>
+            <td>${formData.ratedCurrentLV || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>%Z = _____________ X _____________ X 100</strong></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span><strong>Rated voltage HV</strong></span>
+                <span>${formData.ratedVoltageHV || ""}</span>
+                <span><strong>Measured current LV</strong></span>
+                <span>${formData.measuredCurrentLV || ""}</span>
+              </div>
+              <div style="text-align: center; margin-top: 10px;">
+                <strong>%Z = ${formData.percentZ || ""}</strong>
+              </div>
+            </td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
 
       ${generatePhotoThumbnails(formData.photos)}
     </div>
   `;
 }
 
-// Generate Stage 4 Form 4 - Winding Resistance Measurement
+// Generate Stage 4 Form 4 - Winding Resistance Test and Record of Measurement of IR & PI Values (matching frontend UI exactly)
 function generateStage4Form4(formData) {
   if (!formData) return "";
 
   return `
     <div class="form-container" style="page-break-before: always;">
       <div class="company-header">
-        <h2>WINDING RESISTANCE MEASUREMENT</h2>
+        <h2>TYPE OF TEST – WINDING RESISTANCE TEST</h2>
       </div>
 
       <table class="form-table">
         <tbody>
           <tr>
-            <td><strong>Date:</strong></td>
+            <td><strong>METER USED</strong></td>
+            <td>${formData.meterUsed || ""}</td>
+            <td><strong>DATE:</strong></td>
             <td>${formData.date || ""}</td>
-            <td><strong>Time:</strong></td>
+            <td><strong>TIME :</strong></td>
             <td>${formData.time || ""}</td>
           </tr>
           <tr>
-            <td><strong>Temperature OTI (°C):</strong></td>
-            <td>${formData.tempOTI || ""}</td>
-            <td><strong>WTI (°C):</strong></td>
-            <td>${formData.tempWTI || ""}</td>
+            <td><strong>METER MAKE SR. NO.</strong></td>
+            <td>${formData.meterMakeSrNo || ""}</td>
+            <td><strong>WTI:</strong></td>
+            <td>${formData.wti || ""}</td>
+            <td><strong>OTI:</strong></td>
+            <td>${formData.oti || ""}</td>
           </tr>
           <tr>
-            <td><strong>AMB (°C):</strong></td>
-            <td>${formData.tempAMB || ""}</td>
-            <td><strong>Instrument Used:</strong></td>
-            <td>${formData.instrumentUsed || ""}</td>
+            <td><strong>RANGE</strong></td>
+            <td>${formData.range || ""}</td>
+            <td><strong>AMBIENT:</strong></td>
+            <td colspan="3">${formData.ambient || ""}</td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style="margin-top: 40px;">HV Winding Resistance</h4>
+      <h4 style="margin-top: 30px; text-align: center;">ALL MEASUREMENT IN OHMS / MILI OHMS</h4>
 
       <table class="form-table">
+        <tbody>
+          <tr>
+            <td><strong>1.1 – 1.2</strong></td>
+            <td>${formData.winding11_12 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>1.1 = 2.1</strong></td>
+            <td>${formData.winding11_21 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>2.1 – 1.2</strong></td>
+            <td>${formData.winding21_12 || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4 style="margin-top: 40px; text-align: center;">RECORD OF MEASUREMENT OF IR & PI VALUES</h4>
+
+      <table class="form-table">
+        <tbody>
+          <tr>
+            <td><strong>Date :</strong></td>
+            <td>${formData.dateIR || ""}</td>
+            <td><strong>Time:</strong></td>
+            <td>${formData.timeIR || ""}</td>
+            <td colspan="2"><strong>Details of Insulation tester</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Amb. Temp :</strong></td>
+            <td>${formData.ambTempIR || ""}</td>
+            <td><strong>Make :</strong></td>
+            <td>${formData.makeIR || ""}</td>
+            <td rowspan="4"></td>
+            <td rowspan="4"></td>
+          </tr>
+          <tr>
+            <td><strong>Oil Temp. :</strong></td>
+            <td>${formData.oilTempIR || ""}</td>
+            <td><strong>Sr. No. :</strong></td>
+            <td>${formData.srNoIR || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>Wdg. Temp. :</strong></td>
+            <td>${formData.wdgTempIR || ""}</td>
+            <td><strong>Range :</strong></td>
+            <td>${formData.rangeIR || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>Relative Humidity :</strong></td>
+            <td>${formData.relativeHumidityIR || ""}</td>
+            <td><strong>Voltage Level :</strong></td>
+            <td>${formData.voltageLevelIR || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="form-table" style="margin-top: 20px;">
         <thead>
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Phase</th>
-            <th>Resistance (Ω)</th>
-            <th>Corrected to 75°C (Ω)</th>
-            <th>Deviation (%)</th>
+            <th></th>
+            <th>10 Sec MΩ</th>
+            <th>60 Sec MΩ</th>
+            <th>600 Sec MΩ</th>
+            <th>Ratio of IR 60/IR 10</th>
+            <th>Ratio of IR 600/60</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>R Phase</strong></td>
-            <td>${formData.hvRPhaseResistance || ""}</td>
-            <td>${formData.hvRPhaseCorrected || ""}</td>
-            <td>${formData.hvRPhaseDeviation || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>Y Phase</strong></td>
-            <td>${formData.hvYPhaseResistance || ""}</td>
-            <td>${formData.hvYPhaseCorrected || ""}</td>
-            <td>${formData.hvYPhaseDeviation || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>B Phase</strong></td>
-            <td>${formData.hvBPhaseResistance || ""}</td>
-            <td>${formData.hvBPhaseCorrected || ""}</td>
-            <td>${formData.hvBPhaseDeviation || ""}</td>
+            <td><strong>HV-Earth</strong></td>
+            <td>${formData.hvEarth10Sec || ""}</td>
+            <td>${formData.hvEarth60Sec || ""}</td>
+            <td>${formData.hvEarth600Sec || ""}</td>
+            <td>${formData.ratioIR60IR10 || ""}</td>
+            <td>${formData.ratioIR600IR60 || ""}</td>
           </tr>
         </tbody>
       </table>
-
-      <h4 style="margin-top: 40px;">LV Winding Resistance</h4>
-
-      <table class="form-table">
-        <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Phase</th>
-            <th>Resistance (Ω)</th>
-            <th>Corrected to 75°C (Ω)</th>
-            <th>Deviation (%)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>R Phase</strong></td>
-            <td>${formData.lvRPhaseResistance || ""}</td>
-            <td>${formData.lvRPhaseCorrected || ""}</td>
-            <td>${formData.lvRPhaseDeviation || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>Y Phase</strong></td>
-            <td>${formData.lvYPhaseResistance || ""}</td>
-            <td>${formData.lvYPhaseCorrected || ""}</td>
-            <td>${formData.lvYPhaseDeviation || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>B Phase</strong></td>
-            <td>${formData.lvBPhaseResistance || ""}</td>
-            <td>${formData.lvBPhaseCorrected || ""}</td>
-            <td>${formData.lvBPhaseDeviation || ""}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div style="margin-top: 30px;">
-        <strong>Remarks:</strong>
-        <p>${formData.remarks || ""}</p>
-      </div>
 
       ${generatePhotoThumbnails(formData.photos)}
+      ${generateSignatureSection(formData.signatures)}
     </div>
   `;
 }
 
-// Generate Stage 5 Form 1 - Pre-Charging Check List
+// Generate Stage 5 Form 1 - Pre-Charging Check List (matching frontend UI exactly)
 function generateStage5Form1(formData) {
   if (!formData) return "";
 
@@ -1442,23 +1713,139 @@ function generateStage5Form1(formData) {
       </div>
 
       <h4>I. Valve Status</h4>
-      ${generateDataTable(formData.valveStatus, "")}
 
-      <h4 style="margin-top: 30px;">II. Air Venting Done from Following Locations</h4>
-      ${generateDataTable(formData.airVenting, "")}
+      <table class="form-table">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th>Description</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Drain valve of main tank</strong></td>
+            <td>${formData.drainValveMainTank || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>Drain valve of conservator</strong></td>
+            <td>${formData.drainValveConservator || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>Drain valve of cooler bank</strong></td>
+            <td>${formData.drainValveCoolerBank || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>Sampling valve</strong></td>
+            <td>${formData.samplingValve || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>Filtration valve</strong></td>
+            <td>${formData.filtrationValve || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>Nitrogen valve</strong></td>
+            <td>${formData.nitrogenValve || ""}</td>
+          </tr>
+        </tbody>
+      </table>
 
-      <h4 style="margin-top: 30px;">III. Protection Trails</h4>
-      ${generateDataTable(formData.protectionTrails, "")}
+      <h4 style="margin-top: 40px;">II. Air Venting Done from Following Locations</h4>
 
-      <h4 style="margin-top: 30px;">IV. Bushing Test Tap</h4>
-      ${generateDataTable(formData.bushingTestTap, "")}
+      <table class="form-table">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th>Location</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>HV bushing</strong></td>
+            <td>${formData.hvBushing || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>LV bushing</strong></td>
+            <td>${formData.lvBushing || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>Neutral bushing</strong></td>
+            <td>${formData.neutralBushing || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>Cooler bank</strong></td>
+            <td>${formData.coolerBank || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>Main tank</strong></td>
+            <td>${formData.mainTank || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4 style="margin-top: 40px;">III. Protection Trails</h4>
+
+      <table class="form-table">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th>Protection Type</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Buchholz relay</strong></td>
+            <td>${formData.buchholzRelay || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>PRV</strong></td>
+            <td>${formData.prv || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>WTI</strong></td>
+            <td>${formData.wti || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>OTI</strong></td>
+            <td>${formData.oti || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>Oil level gauge</strong></td>
+            <td>${formData.oilLevelGauge || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4 style="margin-top: 40px;">IV. Bushing Test Tap</h4>
+
+      <table class="form-table">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th>Bushing</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>HV bushing test tap covered</strong></td>
+            <td>${formData.hvBushingTestTap || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>LV bushing test tap covered</strong></td>
+            <td>${formData.lvBushingTestTap || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>Neutral bushing test tap covered</strong></td>
+            <td>${formData.neutralBushingTestTap || ""}</td>
+          </tr>
+        </tbody>
+      </table>
 
       ${generatePhotoThumbnails(formData.photos)}
     </div>
   `;
 }
 
-// Generate Stage 5 Form 2 - Pre-Charging Check List Part 2
+// Generate Stage 5 Form 2 - Pre-Charging Check List Part 2 (matching frontend UI exactly)
 function generateStage5Form2(formData) {
   if (!formData) return "";
 
@@ -1470,87 +1857,139 @@ function generateStage5Form2(formData) {
 
       <h4>V. Oil Values</h4>
       <table class="form-table">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th>Parameter</th>
+            <th>Value</th>
+          </tr>
+        </thead>
         <tbody>
           <tr>
-            <td><strong>BDV:</strong></td>
+            <td><strong>BDV</strong></td>
             <td>${formData.bdvKV || ""} KV</td>
           </tr>
           <tr>
-            <td><strong>Moisture Content:</strong></td>
+            <td><strong>Moisture Content</strong></td>
             <td>${formData.moistureContentPPM || ""} PPM</td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style="margin-top: 30px;">VI. Final IR Values</h4>
+      <h4 style="margin-top: 40px;">VI. Final IR Values</h4>
       <table class="form-table">
         <thead>
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
             <th></th>
-            <th>15 sec</th>
-            <th>60 sec</th>
-            <th>600 sec</th>
+            <th>15 sec MΩ</th>
+            <th>60 sec MΩ</th>
+            <th>600 sec MΩ</th>
+            <th>PI (600/60)</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>HV-E</strong></td>
+            <td><strong>HV-Earth</strong></td>
             <td>${formData.hvEarth15Sec || ""}</td>
             <td>${formData.hvEarth60Sec || ""}</td>
             <td>${formData.hvEarth600Sec || ""}</td>
+            <td>${formData.hvEarthPI || ""}</td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style="margin-top: 30px;">Additional Checks</h4>
+      <h4 style="margin-top: 40px;">VII. Oil Level of conservator</h4>
       <table class="form-table">
         <tbody>
           <tr>
-            <td><strong>VII. Oil Level of conservator:</strong></td>
+            <td><strong>Status:</strong></td>
             <td>${formData.oilLevelConservator || ""}</td>
           </tr>
+        </tbody>
+      </table>
+
+      <h4 style="margin-top: 40px;">VIII. HV Jumpers connected</h4>
+      <table class="form-table">
+        <tbody>
           <tr>
-            <td><strong>VIII. HV Jumpers connected:</strong></td>
+            <td><strong>Status:</strong></td>
             <td>${formData.hvJumpersConnected || ""}</td>
           </tr>
+        </tbody>
+      </table>
+
+      <h4 style="margin-top: 40px;">IX. LV Jumpers connected</h4>
+      <table class="form-table">
+        <tbody>
           <tr>
-            <td><strong>IX. LV Jumpers connected:</strong></td>
+            <td><strong>Status:</strong></td>
             <td>${formData.lvJumpersConnected || ""}</td>
           </tr>
+        </tbody>
+      </table>
+
+      <h4 style="margin-top: 40px;">X. Incoming LA Counter</h4>
+      <table class="form-table">
+        <tbody>
           <tr>
-            <td><strong>X. Incoming LA Counter:</strong></td>
+            <td><strong>Counter Reading:</strong></td>
             <td>${formData.incomingLACounter || ""}</td>
           </tr>
+        </tbody>
+      </table>
+
+      <h4 style="margin-top: 40px;">XI. Outgoing LA Counter</h4>
+      <table class="form-table">
+        <tbody>
           <tr>
-            <td><strong>XI. Outgoing LA Counter:</strong></td>
+            <td><strong>Counter Reading:</strong></td>
             <td>${formData.outgoingLACounter || ""}</td>
           </tr>
+        </tbody>
+      </table>
+
+      <h4 style="margin-top: 40px;">XII. All CT Cable Terminated and Glands Sealed</h4>
+      <table class="form-table">
+        <tbody>
           <tr>
-            <td><strong>XII. All CT Cable Terminated and Glands Sealed:</strong></td>
+            <td><strong>Status:</strong></td>
             <td>${formData.allCTCableTerminated || ""}</td>
           </tr>
+        </tbody>
+      </table>
+
+      <h4 style="margin-top: 40px;">XIII. Protection relays checked through breaker tripping</h4>
+      <table class="form-table">
+        <tbody>
           <tr>
-            <td><strong>XIII. Protection relays checked through breaker tripping:</strong></td>
+            <td><strong>Status:</strong></td>
             <td>${formData.protectionRelaysChecked || ""}</td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style="margin-top: 30px;">Temperature</h4>
+      <h4 style="margin-top: 40px;">Temperature Readings</h4>
       <table class="form-table">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th>Parameter</th>
+            <th>Value (°C)</th>
+          </tr>
+        </thead>
         <tbody>
           <tr>
-            <td><strong>WTI:</strong></td>
-            <td>${formData.temperatureWTI || ""} °C</td>
-            <td><strong>OTI:</strong></td>
-            <td>${formData.temperatureOTI || ""} °C</td>
+            <td><strong>WTI</strong></td>
+            <td>${formData.temperatureWTI || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>OTI</strong></td>
+            <td>${formData.temperatureOTI || ""}</td>
           </tr>
         </tbody>
       </table>
 
-      <div style="margin-top: 30px;">
-        <strong>Remarks:</strong>
-        <p>${formData.remarks || ""}</p>
+      <h4 style="margin-top: 40px;">Remarks</h4>
+      <div style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 15px; min-height: 100px; background: #f7fafc;">
+        ${formData.remarks || ""}
       </div>
 
       ${generatePhotoThumbnails(formData.photos)}
@@ -1559,18 +1998,24 @@ function generateStage5Form2(formData) {
   `;
 }
 
-// Generate Stage 6 Form 1 - Work Completion Report
+// Generate Stage 6 Form 1 - Work Completion Report (matching frontend UI exactly)
 function generateStage6Form1(formData) {
   if (!formData) return "";
 
   return `
-    <div class="form-container" style="page-break-before: always; background: white; padding: 40px;">
+    <div class="form-container" style="page-break-before: always; background: white; padding: 40px; max-width: 800px; margin: 0 auto;">
       <!-- Header with logo and certifications -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 3px solid #C41E3A; padding-bottom: 20px;">
         <div style="display: flex; align-items: center; gap: 15px;">
           <div>
             <div style="font-size: 1.5rem; font-weight: bold; color: #333;">VISHVAS POWER</div>
             <div style="font-size: 0.8rem; color: #666;">(A unit of M/s Vishvas Power Engineering Services Pvt Ltd)</div>
+          </div>
+        </div>
+
+        <div style="text-align: center;">
+          <div style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
+            <!-- Stamp placeholder -->
           </div>
         </div>
 
@@ -1597,7 +2042,7 @@ function generateStage6Form1(formData) {
           Work completion report
         </h1>
         <div style="text-align: right; font-size: 1rem;">
-          <strong>Date:</strong> ${formData.completionDate || "___________"}
+          <strong>Date:-</strong> ${formData.completionDate || "___________"}
         </div>
       </div>
 
@@ -1623,7 +2068,7 @@ function generateStage6Form1(formData) {
         <h3 style="font-size: 1.2rem; font-weight: bold; margin-bottom: 15px;">Transformer Details</h3>
         
         <div style="margin-bottom: 10px;">
-          <strong>Type:</strong> ${formData.type || "auto Transformer"}
+          <strong>Type: – auto Transformer</strong>
         </div>
         
         <div style="margin-bottom: 10px;">

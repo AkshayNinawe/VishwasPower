@@ -269,9 +269,6 @@ export const setTableData = async (req, res) => {
 export const generatePDF = async (req, res) => {
   try {
     console.log("=== PDF Generation Request received ===");
-    console.log("Full request body:", JSON.stringify(req.body, null, 2));
-    console.log("Request body keys:", Object.keys(req.body));
-    console.log("Request headers:", req.headers);
     
     // Try different possible field names
     const projectName = req.body.projectName || req.body.ProjectName || req.body.project_name;

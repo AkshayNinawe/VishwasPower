@@ -2693,6 +2693,7 @@ const ETCAdminPanel = ({
   };
 
   const [expandedStages, setExpandedStages] = useState({});
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const toggleStageExpansion = (stageKey) => {
     setExpandedStages((prev) => ({
@@ -2708,6 +2709,9 @@ const ETCAdminPanel = ({
         showNotification("No forms data available to download", "warning");
         return;
       }
+
+      // Show loading UI
+      setIsDownloading(true);
 
       // Send request to backend
       const response = await axios.post(
@@ -2738,6 +2742,9 @@ const ETCAdminPanel = ({
     } catch (error) {
       console.error("Error downloading the PDF", error);
       showNotification("Failed to download PDF. Please try again.", "error");
+    } finally {
+      // Hide loading UI
+      setIsDownloading(false);
     }
   };
 
@@ -4612,6 +4619,47 @@ const ETCAdminPanel = ({
           </div>
         </div>
       )}
+
+      {/* Loading Modal for PDF Download */}
+      {isDownloading && (
+        <div className="modal-overlay" style={{ zIndex: 9999 }}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "15px" }}
+              >
+                <div
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    border: "4px solid #f3f3f3",
+                    borderTop: "4px solid #4299e1",
+                    borderRadius: "50%",
+                    animation: "spin 1s linear infinite",
+                  }}
+                ></div>
+                <h3 style={{ margin: 0, color: "#374151" }}>Generating PDF...</h3>
+              </div>
+            </div>
+            <div style={{ textAlign: "center", padding: "20px 0" }}>
+              <p style={{ fontSize: "1.1rem", color: "#6b7280", margin: "10px 0" }}>
+                Please wait while we generate your PDF document.
+              </p>
+              <p style={{ fontSize: "0.9rem", color: "#9ca3af", margin: "5px 0" }}>
+                This may take a few moments depending on the number of forms and images.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add CSS for spinner animation */}
+      <style jsx>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 };
