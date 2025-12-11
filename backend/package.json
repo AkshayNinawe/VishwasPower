@@ -7,7 +7,8 @@
     "dev": "npx nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "echo 'Build completed'",
-    "debug:puppeteer": "node debug-puppeteer.js"
+    "debug:puppeteer": "node debug-puppeteer.js",
+    "postinstall": "node scripts/setup-puppeteer.js"
   },
   "author": "",
   "type": "module",
@@ -31,7 +32,6 @@
     "puppeteer": "^24.32.0"
   },
   "puppeteer": {
-    "skipDownload": false,
-    "executablePath": null
+    "skipDownload": true
   }
 }

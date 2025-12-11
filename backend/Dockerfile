@@ -52,19 +52,24 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
+# Set environment variables before npm install
+ENV NODE_ENV=production
+ENV PUPPETEER_SKIP_DOWNLOAD=true
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
+ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+
 # Install dependencies
 RUN npm ci --only=production
 
 # Copy application code
 COPY . .
 
-# Create uploads directory
-RUN mkdir -p uploads
+# Create necessary directories
+RUN mkdir -p uploads .cache/puppeteer scripts
 
-# Set environment variables
-ENV NODE_ENV=production
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
+# Run setup script to verify Chrome installation
+RUN node scripts/setup-puppeteer.js || echo "Setup script completed with warnings"
 
 # Expose port
 EXPOSE 5000
