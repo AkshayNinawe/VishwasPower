@@ -345,9 +345,19 @@ export const generatePDF = async (req, res) => {
         '--no-pings',
         '--password-store=basic',
         '--use-mock-keychain',
-        '--disable-blink-features=AutomationControlled'
+        '--disable-blink-features=AutomationControlled',
+        // Memory optimization flags for Render's 512MB limit
+        '--memory-pressure-off',
+        '--max_old_space_size=256',
+        '--disable-background-mode',
+        '--disable-plugins',
+        '--disable-plugins-discovery',
+        '--disable-preconnect',
+        '--disable-prefetch',
+        '--no-zygote',
+        '--single-process'
       ],
-      timeout: 60000,
+      timeout: 30000,
       ignoreDefaultArgs: ['--disable-extensions'],
       handleSIGINT: false,
       handleSIGTERM: false,

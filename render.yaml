@@ -2,7 +2,7 @@ services:
   - type: web
     name: vishwas-power-backend
     env: node
-    plan: starter
+    plan: standard
     buildCommand: cd backend && npm ci --only=production
     startCommand: cd backend && npm start
     envVars:
