@@ -354,10 +354,29 @@ export const generatePDF = async (req, res) => {
       handleSIGHUP: false
     };
 
-    // In production (Render), use the system Chrome if available
+    // Configure Chrome executable path
     if (process.env.NODE_ENV === 'production' && process.env.PUPPETEER_EXECUTABLE_PATH) {
       console.log("Using system Chrome from environment variable:", process.env.PUPPETEER_EXECUTABLE_PATH);
       launchOptions.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+    } else if (process.platform === 'win32') {
+      // For Windows development, use system Chrome
+      const windowsChromePaths = [
+        'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+        'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+        process.env.LOCALAPPDATA + '\\Google\\Chrome\\Application\\chrome.exe'
+      ];
+      
+      for (const chromePath of windowsChromePaths) {
+        try {
+          if (fs.existsSync(chromePath)) {
+            console.log("Using system Chrome for Windows:", chromePath);
+            launchOptions.executablePath = chromePath;
+            break;
+          }
+        } catch (error) {
+          console.log("Error checking Chrome path:", chromePath, error.message);
+        }
+      }
     }
     
     console.log("Launching browser with options:", { 
