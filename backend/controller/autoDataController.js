@@ -354,11 +354,66 @@ export const generatePDF = async (req, res) => {
       handleSIGHUP: false
     };
 
-    // Configure Chrome executable path - CRITICAL FIX
+    // Configure Chrome executable path - CRITICAL FIX FOR RENDER
     let chromeExecutable = null;
     
-    // 1. First priority: Environment variable (production)
-    if (process.env.PUPPETEER_EXECUTABLE_PATH) {
+    // 1. First priority: Check for downloaded Puppeteer Chrome (Render environment)
+    if (process.env.RENDER === 'true') {
+      console.log("🔍 Render environment detected - checking for Puppeteer Chrome...");
+      
+      // Check for Puppeteer downloaded Chrome
+      const puppeteerChromePaths = [
+        '/opt/render/.cache/puppeteer/chrome/linux-143.0.7499.40/chrome-linux64/chrome',
+        '/opt/render/.cache/puppeteer/chrome/linux-*/chrome-linux64/chrome'
+      ];
+      
+      for (const chromePath of puppeteerChromePaths) {
+        try {
+          if (chromePath.includes('*')) {
+            // Handle wildcard path
+            const { execSync } = await import('child_process');
+            try {
+              const foundPath = execSync('ls /opt/render/.cache/puppeteer/chrome/linux-*/chrome-linux64/chrome 2>/dev/null | head -1', { encoding: 'utf8', timeout: 5000 }).trim();
+              if (foundPath && fs.existsSync(foundPath)) {
+                chromeExecutable = foundPath;
+                console.log("✅ Found Puppeteer Chrome with wildcard:", chromeExecutable);
+                break;
+              }
+            } catch (wildcardError) {
+              console.log("Wildcard search failed:", wildcardError.message);
+            }
+          } else {
+            console.log(`Checking Puppeteer Chrome: ${chromePath}`);
+            if (fs.existsSync(chromePath)) {
+              chromeExecutable = chromePath;
+              console.log("✅ Found Puppeteer Chrome:", chromeExecutable);
+              break;
+            } else {
+              console.log(`❌ Not found: ${chromePath}`);
+            }
+          }
+        } catch (error) {
+          console.log("Error checking Puppeteer Chrome path:", chromePath, error.message);
+        }
+      }
+      
+      // If not found, try to find any Puppeteer Chrome
+      if (!chromeExecutable) {
+        try {
+          const { execSync } = await import('child_process');
+          const findResult = execSync('find /opt/render/.cache/puppeteer -name "chrome" -type f 2>/dev/null | head -1', { encoding: 'utf8', timeout: 10000 }).trim();
+          if (findResult && fs.existsSync(findResult)) {
+            chromeExecutable = findResult;
+            console.log("✅ Found Puppeteer Chrome via find:", chromeExecutable);
+          }
+        } catch (findError) {
+          console.log("Find command failed:", findError.message);
+        }
+      }
+    }
+    
+    // 2. Second priority: Environment variable (production)
+    if (!chromeExecutable && process.env.PUPPETEER_EXECUTABLE_PATH) {
       chromeExecutable = process.env.PUPPETEER_EXECUTABLE_PATH;
       console.log("Using Chrome from environment variable:", chromeExecutable);
     }

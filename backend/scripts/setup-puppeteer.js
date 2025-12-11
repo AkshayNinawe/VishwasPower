@@ -19,7 +19,7 @@ console.log(`Platform: ${process.platform}`);
 console.log(`Render: ${isRender ? 'Yes' : 'No'}`);
 
 // Skip Puppeteer download in production or when explicitly set
-const shouldSkipDownload = isProduction || 
+const shouldSkipDownload = (isProduction && !isRender) || 
                           process.env.PUPPETEER_SKIP_DOWNLOAD === 'true' || 
                           process.env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD === 'true';
 
