@@ -386,24 +386,77 @@ export const generatePDF = async (req, res) => {
       }
     }
     else if (process.platform === 'linux') {
-      // Linux Chrome paths (for production/Render)
+      // Linux Chrome paths (for production/Render) - Enhanced detection
       const linuxChromePaths = [
         '/usr/bin/google-chrome-stable',
         '/usr/bin/google-chrome',
+        '/usr/bin/chrome',
         '/usr/bin/chromium-browser',
         '/usr/bin/chromium',
-        '/opt/google/chrome/chrome'
+        '/opt/google/chrome/chrome',
+        '/snap/bin/chromium',
+        '/usr/local/bin/google-chrome-stable',
+        '/usr/local/bin/google-chrome'
       ];
+      
+      console.log("🔍 Searching for Chrome on Linux platform...");
+      console.log("Available Chrome paths to check:", linuxChromePaths);
       
       for (const chromePath of linuxChromePaths) {
         try {
+          console.log(`Checking: ${chromePath}`);
           if (fs.existsSync(chromePath)) {
-            chromeExecutable = chromePath;
-            console.log("Using system Chrome for Linux:", chromeExecutable);
-            break;
+            // Additional verification - try to get version
+            try {
+              const { execSync } = await import('child_process');
+              const version = execSync(`${chromePath} --version`, { encoding: 'utf8', timeout: 5000 });
+              chromeExecutable = chromePath;
+              console.log("✅ Found working Chrome for Linux:", chromeExecutable);
+              console.log("Chrome version:", version.trim());
+              break;
+            } catch (versionError) {
+              console.log(`❌ Chrome exists but not executable: ${chromePath}`, versionError.message);
+            }
+          } else {
+            console.log(`❌ Not found: ${chromePath}`);
           }
         } catch (error) {
           console.log("Error checking Chrome path:", chromePath, error.message);
+        }
+      }
+      
+      // If still not found, try to find Chrome using which command
+      if (!chromeExecutable) {
+        try {
+          const { execSync } = await import('child_process');
+          const whichResult = execSync('which google-chrome-stable || which google-chrome || which chrome || which chromium', { encoding: 'utf8', timeout: 5000 });
+          if (whichResult && whichResult.trim()) {
+            const foundPath = whichResult.trim();
+            console.log("🔍 Found Chrome using 'which' command:", foundPath);
+            if (fs.existsSync(foundPath)) {
+              chromeExecutable = foundPath;
+              console.log("✅ Using Chrome found by 'which':", chromeExecutable);
+            }
+          }
+        } catch (whichError) {
+          console.log("'which' command failed:", whichError.message);
+        }
+      }
+      
+      // Last resort: Try to install Chrome if we're in a Docker environment
+      if (!chromeExecutable && process.env.RENDER === 'true') {
+        console.log("🚨 Chrome not found in Render environment. This should not happen!");
+        console.log("Attempting to list available browsers...");
+        try {
+          const { execSync } = await import('child_process');
+          const lsResult = execSync('ls -la /usr/bin/ | grep -E "(chrome|chromium)"', { encoding: 'utf8', timeout: 5000 });
+          console.log("Available browsers in /usr/bin/:", lsResult);
+          
+          // Try to find any Chrome-like executable
+          const aptResult = execSync('dpkg -l | grep -E "(chrome|chromium)"', { encoding: 'utf8', timeout: 5000 });
+          console.log("Installed Chrome packages:", aptResult);
+        } catch (debugError) {
+          console.log("Debug commands failed:", debugError.message);
         }
       }
     }
