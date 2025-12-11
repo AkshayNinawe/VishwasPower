@@ -10,10 +10,6 @@ services:
         value: production
       - key: RENDER
         value: "true"
-      - key: PUPPETEER_SKIP_DOWNLOAD
-        value: "false"
-      - key: PUPPETEER_SKIP_CHROMIUM_DOWNLOAD
-        value: "false"
       - key: NODE_TLS_REJECT_UNAUTHORIZED
         value: "0"
     healthCheckPath: /api/auth/allUsers

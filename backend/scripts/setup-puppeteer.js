@@ -18,10 +18,10 @@ console.log(`Environment: ${isProduction ? 'Production' : 'Development'}`);
 console.log(`Platform: ${process.platform}`);
 console.log(`Render: ${isRender ? 'Yes' : 'No'}`);
 
-// Skip Puppeteer download in production or when explicitly set
+// Skip Puppeteer download in production or when explicitly set (but not in Render)
 const shouldSkipDownload = (isProduction && !isRender) || 
-                          process.env.PUPPETEER_SKIP_DOWNLOAD === 'true' || 
-                          process.env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD === 'true';
+                          (process.env.PUPPETEER_SKIP_DOWNLOAD === 'true' && !isRender) || 
+                          (process.env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD === 'true' && !isRender);
 
 if (shouldSkipDownload) {
   console.log('✅ Skipping Puppeteer Chrome download (using system Chrome)');

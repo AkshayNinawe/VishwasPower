@@ -32,6 +32,7 @@
     "puppeteer": "^24.32.0"
   },
   "puppeteer": {
-    "skipDownload": true
+    "skipDownload": false,
+    "cacheDirectory": "/opt/render/.cache/puppeteer"
   }
 }
