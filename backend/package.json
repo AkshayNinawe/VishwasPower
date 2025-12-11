@@ -6,9 +6,7 @@
     "start": "node index.js",
     "dev": "npx nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "echo 'Build completed'",
-    "debug:puppeteer": "node debug-puppeteer.js",
-    "postinstall": "node scripts/setup-puppeteer.js"
+    "postinstall": "node -e \"try { require('puppeteer').executablePath() } catch(e) { require('child_process').execSync('npx puppeteer browsers install chrome', {stdio: 'inherit'}) }\""
   },
   "author": "",
   "type": "module",
@@ -20,7 +18,6 @@
     "bcryptjs": "^3.0.2",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
-    "cross-env": "^7.0.3",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
@@ -30,9 +27,5 @@
     "openai": "^5.7.0",
     "pdfkit": "^0.17.2",
     "puppeteer": "^24.32.0"
-  },
-  "puppeteer": {
-    "skipDownload": false,
-    "cacheDirectory": "/opt/render/.cache/puppeteer"
   }
 }
