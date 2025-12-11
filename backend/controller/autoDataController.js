@@ -3,7 +3,7 @@ import multer from "multer"
 import path from "path"
 import fs from "fs"
 import PDFDocument from "pdfkit"
-import puppeteer from "puppeteer-core"
+import puppeteer from "puppeteer"
 import { generateHTMLTemplate } from "../utils/pdfTemplateGenerator.js"
 
 // Setup multer storage
@@ -316,11 +316,9 @@ export const generatePDF = async (req, res) => {
     const html = generateHTMLTemplate(completeData, projectName, companyName);
     console.log("HTML template generated successfully");
 
-    // Launch Puppeteer with enhanced configuration for Render.com
+    // Launch Puppeteer with configuration for Render.com
     console.log("Launching Puppeteer browser...");
     
-    // Determine the correct executable path based on environment
-    let executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
     let launchOptions = {
       headless: true,
       args: [
@@ -356,110 +354,16 @@ export const generatePDF = async (req, res) => {
       handleSIGHUP: false
     };
 
-    // Check if we're running on Render or similar cloud platform
-    if (process.env.RENDER || process.env.NODE_ENV === 'production') {
-      console.log("Detected cloud environment, prioritizing system Chrome");
-      
-      // Try system Chrome paths first (more reliable)
-      const systemPaths = [
-        '/usr/bin/google-chrome-stable',
-        '/usr/bin/google-chrome',
-        '/usr/bin/chromium-browser',
-        '/usr/bin/chromium',
-        '/opt/google/chrome/chrome',
-        '/snap/bin/chromium',
-        '/usr/local/bin/google-chrome-stable',
-        '/usr/local/bin/google-chrome'
-      ];
-
-      // Check system paths first
-      for (const chromePath of systemPaths) {
-        if (fs.existsSync(chromePath)) {
-          console.log(`Found system Chrome at: ${chromePath}`);
-          executablePath = chromePath;
-          break;
-        }
-      }
-
-      // Only try Puppeteer cache if system Chrome not found
-      if (!executablePath) {
-        console.log("System Chrome not found, checking Puppeteer cache...");
-        try {
-          const baseDir = '/opt/render/.cache/puppeteer/chrome';
-          if (fs.existsSync(baseDir)) {
-            const versionDirs = fs.readdirSync(baseDir).filter(dir => dir.startsWith('linux-'));
-            if (versionDirs.length > 0) {
-              const fullPath = path.join(baseDir, versionDirs[0], 'chrome-linux64', 'chrome');
-              if (fs.existsSync(fullPath)) {
-                console.log(`Found Puppeteer Chrome at: ${fullPath}`);
-                executablePath = fullPath;
-              }
-            }
-          }
-        } catch (error) {
-          console.log(`Could not check Puppeteer cache: ${error.message}`);
-        }
-      }
-
-      // Try chrome-aws-lambda as fallback
-      if (!executablePath) {
-        console.log("No Chrome found, trying chrome-aws-lambda...");
-        try {
-          const chromium = await import('chrome-aws-lambda');
-          executablePath = await chromium.default.executablePath;
-          launchOptions.args = [...launchOptions.args, ...chromium.default.args];
-          console.log("Using chrome-aws-lambda executable");
-        } catch (error) {
-          console.log("chrome-aws-lambda not available:", error.message);
-        }
-      }
-
-      // Last resort: don't set executablePath and let Puppeteer handle it
-      if (!executablePath) {
-        console.log("No Chrome executable found, letting Puppeteer use default");
-        // Don't set executablePath, let Puppeteer try its default
-      }
-    } else {
-      // Local development - try to find Chrome in the project's cache directory
-      const cacheDir = path.join(process.cwd(), '.cache', 'puppeteer', 'chrome');
-      if (fs.existsSync(cacheDir)) {
-        const versionDirs = fs.readdirSync(cacheDir).filter(dir => 
-          dir.startsWith('win64-') || dir.startsWith('linux-') || dir.startsWith('mac-')
-        );
-        if (versionDirs.length > 0) {
-          let chromeExePath;
-          if (process.platform === 'win32') {
-            chromeExePath = path.join(cacheDir, versionDirs[0], 'chrome-win64', 'chrome.exe');
-          } else if (process.platform === 'darwin') {
-            chromeExePath = path.join(cacheDir, versionDirs[0], 'chrome-mac64', 'Google Chrome for Testing.app', 'Contents', 'MacOS', 'Google Chrome for Testing');
-          } else {
-            chromeExePath = path.join(cacheDir, versionDirs[0], 'chrome-linux64', 'chrome');
-          }
-          
-          if (fs.existsSync(chromeExePath)) {
-            executablePath = chromeExePath;
-          }
-        }
-      }
-      
-      // For local development, we need to specify an executable path
-      // since we're using puppeteer-core
-      if (!executablePath) {
-        console.log("No Chrome found in local development, you may need to install Chrome");
-      }
+    // In production (Render), use the system Chrome if available
+    if (process.env.NODE_ENV === 'production' && process.env.PUPPETEER_EXECUTABLE_PATH) {
+      console.log("Using system Chrome from environment variable:", process.env.PUPPETEER_EXECUTABLE_PATH);
+      launchOptions.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
     }
     
-    console.log("Using Chrome executable at:", executablePath);
-    
-    // Ensure we have a valid executable path for puppeteer-core
-    if (!executablePath) {
-      const errorMessage = "No Chrome executable found. Please ensure Chrome is installed or set PUPPETEER_EXECUTABLE_PATH environment variable.";
-      console.error(errorMessage);
-      throw new Error(errorMessage);
-    }
-    
-    // Set the executable path in launch options
-    launchOptions.executablePath = executablePath;
+    console.log("Launching browser with options:", { 
+      executablePath: launchOptions.executablePath || 'default',
+      headless: launchOptions.headless 
+    });
     
     const browser = await puppeteer.launch(launchOptions);
 
