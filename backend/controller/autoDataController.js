@@ -354,29 +354,82 @@ export const generatePDF = async (req, res) => {
       handleSIGHUP: false
     };
 
-    // Configure Chrome executable path
-    if (process.env.NODE_ENV === 'production' && process.env.PUPPETEER_EXECUTABLE_PATH) {
-      console.log("Using system Chrome from environment variable:", process.env.PUPPETEER_EXECUTABLE_PATH);
-      launchOptions.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
-    } else if (process.platform === 'win32') {
-      // For Windows development, use system Chrome
+    // Configure Chrome executable path - CRITICAL FIX
+    let chromeExecutable = null;
+    
+    // 1. First priority: Environment variable (production)
+    if (process.env.PUPPETEER_EXECUTABLE_PATH) {
+      chromeExecutable = process.env.PUPPETEER_EXECUTABLE_PATH;
+      console.log("Using Chrome from environment variable:", chromeExecutable);
+    }
+    // 2. Second priority: Platform-specific detection
+    else if (process.platform === 'win32') {
+      // Windows Chrome paths
       const windowsChromePaths = [
         'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-        'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
-        process.env.LOCALAPPDATA + '\\Google\\Chrome\\Application\\chrome.exe'
+        'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
       ];
+      if (process.env.LOCALAPPDATA) {
+        windowsChromePaths.push(path.join(process.env.LOCALAPPDATA, 'Google\\Chrome\\Application\\chrome.exe'));
+      }
       
       for (const chromePath of windowsChromePaths) {
         try {
           if (fs.existsSync(chromePath)) {
-            console.log("Using system Chrome for Windows:", chromePath);
-            launchOptions.executablePath = chromePath;
+            chromeExecutable = chromePath;
+            console.log("Using system Chrome for Windows:", chromeExecutable);
             break;
           }
         } catch (error) {
           console.log("Error checking Chrome path:", chromePath, error.message);
         }
       }
+    }
+    else if (process.platform === 'linux') {
+      // Linux Chrome paths (for production/Render)
+      const linuxChromePaths = [
+        '/usr/bin/google-chrome-stable',
+        '/usr/bin/google-chrome',
+        '/usr/bin/chromium-browser',
+        '/usr/bin/chromium',
+        '/opt/google/chrome/chrome'
+      ];
+      
+      for (const chromePath of linuxChromePaths) {
+        try {
+          if (fs.existsSync(chromePath)) {
+            chromeExecutable = chromePath;
+            console.log("Using system Chrome for Linux:", chromeExecutable);
+            break;
+          }
+        } catch (error) {
+          console.log("Error checking Chrome path:", chromePath, error.message);
+        }
+      }
+    }
+    
+    // 3. Set the executable path if found
+    if (chromeExecutable) {
+      launchOptions.executablePath = chromeExecutable;
+    } else {
+      console.error("❌ No Chrome executable found! PDF generation will fail.");
+      console.error("Platform:", process.platform);
+      console.error("NODE_ENV:", process.env.NODE_ENV);
+      console.error("PUPPETEER_EXECUTABLE_PATH:", process.env.PUPPETEER_EXECUTABLE_PATH);
+      
+      // Try to provide helpful error message
+      const errorMessage = process.platform === 'linux' 
+        ? "Chrome not found. Ensure Chrome is installed: apt-get install google-chrome-stable"
+        : "Chrome not found. Please install Google Chrome.";
+      
+      return res.status(500).json({
+        error: "Chrome executable not found",
+        message: errorMessage,
+        platform: process.platform,
+        searchedPaths: process.platform === 'linux' 
+          ? ['/usr/bin/google-chrome-stable', '/usr/bin/google-chrome']
+          : ['C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe']
+      });
     }
     
     console.log("Launching browser with options:", { 

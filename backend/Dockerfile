@@ -66,10 +66,16 @@ RUN npm ci --only=production
 COPY . .
 
 # Create necessary directories
-RUN mkdir -p uploads .cache/puppeteer scripts
+RUN mkdir -p uploads .cache/puppeteer
+
+# Copy scripts directory first
+COPY scripts/ ./scripts/
 
 # Run setup script to verify Chrome installation
 RUN node scripts/setup-puppeteer.js || echo "Setup script completed with warnings"
+
+# Verify Chrome installation
+RUN google-chrome-stable --version && echo "✅ Chrome verified" || echo "⚠️ Chrome verification failed"
 
 # Expose port
 EXPOSE 5000
