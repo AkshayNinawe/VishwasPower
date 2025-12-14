@@ -2168,14 +2168,25 @@ function generateStage6Form1(formData) {
 }
 
 // Generate forms for a stage dynamically
-function generateStageContent(stageData, stageNumber) {
+function generateStageContent(stageData, stageNumber, headerImage) {
   if (!stageData) return "";
 
-  let content = `<div class="page-break"></div>`;
-  content += `<h2 style="text-align: center; color: #2d3748; margin: 40px 0;">Stage ${stageNumber}</h2>`;
+  let content = "";
 
   Object.entries(stageData).forEach(([formKey, formData]) => {
     if (formData && typeof formData === "object") {
+      // Add header image and page break for each form
+      content += `
+        <div class="content-page">
+          ${headerImage ? `
+          <div class="page-header">
+            <img src="${headerImage}" alt="Header" />
+          </div>
+          ` : ''}
+          
+          <h2 style="text-align: center; color: #2d3748; margin: 20px 0;">Stage ${stageNumber} - ${formatLabel(formKey)}</h2>
+      `;
+
       // Stage 1 Forms
       if (stageNumber === 1 && formKey === "form1") {
         content += generateStage1Form1(formData);
@@ -2236,7 +2247,7 @@ function generateStageContent(stageData, stageNumber) {
       else {
         // Generic form rendering
         content += `
-          <div class="form-container" style="page-break-before: always;">
+          <div class="form-container">
             <div class="company-header">
               <h2>${formatLabel(formKey)}</h2>
             </div>
@@ -2246,6 +2257,8 @@ function generateStageContent(stageData, stageNumber) {
           </div>
         `;
       }
+
+      content += `</div>`; // Close content-page div
     }
   });
 
@@ -2266,13 +2279,33 @@ export function generateHTMLTemplate(data, projectName, companyName) {
     console.error("Error reading CSS file:", error);
   }
 
+  // Convert images to base64 for embedding
+  const getImageAsBase64 = (imagePath) => {
+    try {
+      const fullPath = path.join(__dirname, "../src", imagePath);
+      if (fs.existsSync(fullPath)) {
+        const imageBuffer = fs.readFileSync(fullPath);
+        const base64Image = imageBuffer.toString('base64');
+        const mimeType = imagePath.toLowerCase().endsWith('.jpg') || imagePath.toLowerCase().endsWith('.jpeg') ? 'image/jpeg' : 'image/png';
+        return `data:${mimeType};base64,${base64Image}`;
+      }
+    } catch (error) {
+      console.error(`Error reading image ${imagePath}:`, error);
+    }
+    return null;
+  };
+
+  const firstPageImage = getImageAsBase64('FirstPage.jpg');
+  const lastPageImage = getImageAsBase64('LastPage.jpg');
+  const headerImage = getImageAsBase64('Header.jpg');
+
   // Generate content for all stages
   let stagesContent = "";
   if (data.autoTransformerData) {
     for (let i = 1; i <= 7; i++) {
       const stageKey = `stage${i}`;
       if (data.autoTransformerData[stageKey]) {
-        stagesContent += generateStageContent(data.autoTransformerData[stageKey], i);
+        stagesContent += generateStageContent(data.autoTransformerData[stageKey], i, headerImage);
       }
     }
   }
@@ -2324,7 +2357,8 @@ export function generateHTMLTemplate(data, projectName, companyName) {
         
         body {
           background: white !important;
-          padding: 20px;
+          padding: 0;
+          margin: 0;
         }
         
         .form-stage-container {
@@ -2337,28 +2371,111 @@ export function generateHTMLTemplate(data, projectName, companyName) {
           box-shadow: none !important;
           margin-bottom: 40px;
         }
+
+        /* First page styles */
+        .first-page {
+          width: 100vw;
+          height: 100vh;
+          page-break-after: always;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .first-page img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        /* Last page styles */
+        .last-page {
+          width: 100vw;
+          height: 100vh;
+          page-break-before: always;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .last-page img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        /* Header styles for content pages */
+        .page-header {
+          width: 100%;
+          margin-bottom: 20px;
+          page-break-inside: avoid;
+        }
+
+        .page-header img {
+          width: 100%;
+          height: auto;
+          max-height: 120px;
+          object-fit: contain;
+        }
+
+        /* Content pages with header */
+        .content-page {
+          padding: 20px;
+          page-break-before: always;
+        }
+
+        .content-page:first-child {
+          page-break-before: auto;
+        }
       </style>
     </head>
     <body>
       <div class="form-stage-container">
-        <!-- Cover Page -->
-        <div style="text-align: center; padding: 100px 20px; page-break-after: always;">
-          <h1 style="font-size: 3rem; color: #2d3748; margin-bottom: 30px;">
-            Transformer Installation Report
-          </h1>
-          <h2 style="font-size: 2rem; color: #4a5568; margin-bottom: 20px;">
-            ${projectName}
-          </h2>
-          <h3 style="font-size: 1.5rem; color: #718096;">
-            ${companyName}
-          </h3>
-          <p style="margin-top: 50px; font-size: 1.2rem; color: #a0aec0;">
-            Generated on: ${new Date().toLocaleDateString()}
-          </p>
+        <!-- First Page -->
+        ${firstPageImage ? `
+        <div class="first-page">
+          <img src="${firstPageImage}" alt="First Page" />
+        </div>
+        ` : ''}
+
+        <!-- Content Pages with Header -->
+        <div class="content-page">
+          ${headerImage ? `
+          <div class="page-header">
+            <img src="${headerImage}" alt="Header" />
+          </div>
+          ` : ''}
+          
+          <!-- Cover Page Content -->
+          <div style="text-align: center; padding: 100px 20px;">
+            <h1 style="font-size: 3rem; color: #2d3748; margin-bottom: 30px;">
+              Transformer Installation Report
+            </h1>
+            <h2 style="font-size: 2rem; color: #4a5568; margin-bottom: 20px;">
+              ${projectName}
+            </h2>
+            <h3 style="font-size: 1.5rem; color: #718096;">
+              ${companyName}
+            </h3>
+            <p style="margin-top: 50px; font-size: 1.2rem; color: #a0aec0;">
+              Generated on: ${new Date().toLocaleDateString()}
+            </p>
+          </div>
         </div>
 
         <!-- All Stages Content -->
         ${stagesContent}
+
+        <!-- Last Page -->
+        ${lastPageImage ? `
+        <div class="last-page">
+          <img src="${lastPageImage}" alt="Last Page" />
+        </div>
+        ` : ''}
       </div>
     </body>
     </html>
