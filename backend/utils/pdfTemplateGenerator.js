@@ -208,7 +208,7 @@ function generateStage1Form1(formData) {
   if (!formData) return "";
 
   return `
-    <div class="form-container" style="page-break-before: always;">
+    <div class="form-container">
       <div class="company-header">
         <h2>NAME PLATE DETAILS TRANSFORMER</h2>
       </div>
@@ -305,7 +305,7 @@ function generateStage1Form2(formData) {
   }).join("");
 
   return `
-    <div class="form-container" style="page-break-before: always;">
+    <div class="form-container">
       <div class="company-header">
         <h2>PROTOCOL FOR ACCESSORIES CHECKING</h2>
       </div>
@@ -337,7 +337,7 @@ function generateStage1Form3(formData) {
   if (!formData) return "";
 
   return `
-    <div class="form-container" style="page-break-before: always;">
+    <div class="form-container">
       <div class="company-header">
         <h2>CORE INSULATION CHECK: At 1 KV > 500 MΩ</h2>
       </div>
