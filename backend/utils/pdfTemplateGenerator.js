@@ -461,7 +461,7 @@ function generateStage1Form4(formData) {
   if (!formData) return "";
 
   return `
-    <div class="form-container" style="page-break-before: always;">
+    <div class="form-container">
       <div class="company-header">
         <h2>Pre-Erection Tan delta and capacitance test on bushing</h2>
       </div>
@@ -580,7 +580,7 @@ function generateStage1Form5(formData) {
   if (!formData) return "";
 
   return `
-    <div class="form-container" style="page-break-before: always;">
+    <div class="form-container">
       <div class="company-header">
         <h2>RECORD OF MEASUREMENT OF IR VALUES</h2>
       </div>
@@ -666,7 +666,7 @@ function generateStage2Form1(formData) {
   `).join("");
 
   return `
-    <div class="form-container" style="page-break-before: always;">
+    <div class="form-container">
       <div class="company-header">
         <h2>RECORD OF OIL HANDLING</h2>
         <h3>TEST VALUES PRIOR TO FILTERATION</h3>
