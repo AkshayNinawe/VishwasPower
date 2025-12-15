@@ -725,7 +725,7 @@ function generateStage2Form2(formData) {
   if (!formData) return "";
 
   return `
-    <div class="form-container" style="page-break-before: always;">
+    <div class="form-container">
       <div class="company-header">
         <h2>IR AFTER ERECTION TEMP OTI ........°C WTI............°C, AMB........°C</h2>
         <h3>RANGE ONLY 1 KV</h3>
@@ -806,7 +806,7 @@ function generateStage3Form1(formData) {
   `).join("");
 
   return `
-    <div class="form-container" style="page-break-before: always;">
+    <div class="form-container">
       <div class="company-header">
         <h2>Before oil filling of main tank</h2>
       </div>
@@ -887,7 +887,7 @@ function generateStage3Form2(formData) {
   `).join("");
 
   return `
-    <div class="form-container" style="page-break-before: always;">
+    <div class="form-container">
       <div class="company-header">
         <h2>RECORD FOR OIL FILTRATION</h2>
         <h3>Oil filtration of Main Tank</h3>
@@ -967,7 +967,7 @@ function generateStage3Form3(formData) {
   `).join("");
 
   return `
-    <div class="form-container" style="page-break-before: always;">
+    <div class="form-container">
       <div class="company-header">
         <h2>Oil filtration of Radiator</h2>
       </div>
@@ -1048,7 +1048,7 @@ function generateStage4Form1(formData) {
   if (!formData) return "";
 
   return `
-    <div class="form-container" style="page-break-before: always;">
+    <div class="form-container">
       <div class="company-header">
         <h2>SFRA TEST RECORD</h2>
       </div>
@@ -1271,7 +1271,7 @@ function generateStage4Form2(formData) {
   `).join("");
 
   return `
-    <div class="form-container" style="page-break-before: always;">
+    <div class="form-container">
       <div class="company-header">
         <h2>RECORD OF MEASUREMENT OF IR VALUES</h2>
       </div>
@@ -1487,7 +1487,7 @@ function generateStage4Form3(formData) {
   if (!formData) return "";
 
   return `
-    <div class="form-container" style="page-break-before: always;">
+    <div class="form-container">
       <div class="company-header">
         <h2>TYPE OF TEST – SHORT CIRCUIT TEST</h2>
       </div>
@@ -1582,7 +1582,7 @@ function generateStage4Form4(formData) {
   if (!formData) return "";
 
   return `
-    <div class="form-container" style="page-break-before: always;">
+    <div class="form-container">
       <div class="company-header">
         <h2>TYPE OF TEST – WINDING RESISTANCE TEST</h2>
       </div>
@@ -1707,7 +1707,7 @@ function generateStage5Form1(formData) {
   if (!formData) return "";
 
   return `
-    <div class="form-container" style="page-break-before: always;">
+    <div class="form-container">
       <div class="company-header">
         <h2>PRE-CHARGING CHECK LIST</h2>
       </div>
@@ -1850,7 +1850,7 @@ function generateStage5Form2(formData) {
   if (!formData) return "";
 
   return `
-    <div class="form-container" style="page-break-before: always;">
+    <div class="form-container">
       <div class="company-header">
         <h2>PRE-CHARGING CHECK LIST - PART 2</h2>
       </div>
@@ -2003,7 +2003,7 @@ function generateStage6Form1(formData) {
   if (!formData) return "";
 
   return `
-    <div class="form-container" style="page-break-before: always; background: white; padding: 40px; max-width: 800px; margin: 0 auto;">
+    <div class="form-container" style="background: white; padding: 40px; max-width: 800px; margin: 0 auto;">
       <!-- Header with logo and certifications -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 3px solid #C41E3A; padding-bottom: 20px;">
         <div style="display: flex; align-items: center; gap: 15px;">
