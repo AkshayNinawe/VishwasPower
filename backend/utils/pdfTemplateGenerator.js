@@ -2425,14 +2425,11 @@ export function generateHTMLTemplate(data, projectName, companyName) {
         /* Content pages with header */
         .content-page {
           padding: 20px;
+          page-break-before: always;
         }
 
         .content-page:first-child {
           page-break-before: auto;
-        }
-        
-        .content-page.page-break {
-          page-break-before: always;
         }
       </style>
     </head>
