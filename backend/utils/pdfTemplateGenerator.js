@@ -2240,9 +2240,9 @@ function generateStageContent(stageData, stageNumber, headerImage) {
       else if (stageNumber === 5 && formKey === "form2") {
         content += generateStage5Form2(formData);
       }
-      // Stage 6 Forms
+      // Stage 6 Forms - Skip form1 as it's handled in the last page overlay
       else if (stageNumber === 6 && formKey === "form1") {
-        content += generateStage6Form1(formData);
+        // Skip - Stage 6 Form 1 is handled as overlay on the last page
       }
       else {
         // Generic form rendering
@@ -2472,8 +2472,45 @@ export function generateHTMLTemplate(data, projectName, companyName) {
 
         <!-- Last Page -->
         ${lastPageImage ? `
-        <div class="last-page">
-          <img src="${lastPageImage}" alt="Last Page" />
+        <div class="last-page" style="position: relative;">
+          <img src="${lastPageImage}" alt="Last Page" style="width: 100%; height: 100%; object-fit: cover;" />
+          ${data.autoTransformerData && data.autoTransformerData.stage6 && data.autoTransformerData.stage6.form1 ? 
+            (() => {
+              const stage6Data = data.autoTransformerData.stage6.form1;
+              return `
+                <!-- Overlay Stage 6 Form 1 data on LastPage.jpg -->
+                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; font-family: Helvetica, Arial, sans-serif; font-size: 10px; color: #000000;">
+                  ${stage6Data.customerName ? `<div style="position: absolute; left: 128px; top: 232px; width: 200px;">${stage6Data.customerName}</div>` : ''}
+                  ${stage6Data.orderNumber ? `<div style="position: absolute; left: 122px; top: 245px; width: 150px;">${stage6Data.orderNumber}</div>` : ''}
+                  ${stage6Data.location ? `<div style="position: absolute; left: 90px; top: 258px; width: 200px;">${stage6Data.location}</div>` : ''}
+                  ${stage6Data.type ? `<div style="position: absolute; left: 78px; top: 313px; width: 150px;">${stage6Data.type}</div>` : ''}
+                  ${stage6Data.capacity ? `<div style="position: absolute; left: 90px; top: 325px; width: 100px;">${stage6Data.capacity}</div>` : ''}
+                  ${stage6Data.voltageRating ? `<div style="position: absolute; left: 122px; top: 338px; width: 100px;">${stage6Data.voltageRating}</div>` : ''}
+                  ${stage6Data.make ? `<div style="position: absolute; left: 76px; top: 351px; width: 150px;">${stage6Data.make}</div>` : ''}
+                  ${stage6Data.serialNumber ? `<div style="position: absolute; left: 120px; top: 364px; width: 200px;">${stage6Data.serialNumber}</div>` : ''}
+                  ${stage6Data.completionDate ? `<div style="position: absolute; left: 350px; top: 440px; width: 150px;">${stage6Data.completionDate}</div>` : ''}
+                  ${stage6Data.chargingDate ? `<div style="position: absolute; left: 350px; top: 456px; width: 150px;">${stage6Data.chargingDate}</div>` : ''}
+                  ${stage6Data.commissioningDate ? `<div style="position: absolute; left: 420px; top: 455px; width: 150px;">${stage6Data.commissioningDate}</div>` : ''}
+                  
+                  ${stage6Data.signatures ? (() => {
+                    const signatures = stage6Data.signatures;
+                    return `
+                      ${signatures.vpesName ? `<div style="position: absolute; left: 78px; top: 537px; width: 150px;">${signatures.vpesName}</div>` : ''}
+                      ${signatures.vpesDesignation ? `<div style="position: absolute; left: 103px; top: 550px; width: 150px;">${signatures.vpesDesignation}</div>` : ''}
+                      ${signatures.vpesSignature && signatures.vpesSignature.startsWith('data:image/') ? 
+                        `<img src="${signatures.vpesSignature}" style="position: absolute; left: 55px; top: 553px; width: 120px; height: 30px;" />` : ''}
+                      ${signatures.vpesDate ? `<div style="position: absolute; left: 73px; top: 576px; width: 150px;">${signatures.vpesDate}</div>` : ''}
+                      ${signatures.customerName ? `<div style="position: absolute; left: 369px; top: 537px; width: 150px;">${signatures.customerName}</div>` : ''}
+                      ${signatures.customerDesignation ? `<div style="position: absolute; left: 398px; top: 550px; width: 150px;">${signatures.customerDesignation}</div>` : ''}
+                      ${signatures.customerDate ? `<div style="position: absolute; left: 365px; top: 576px; width: 150px;">${signatures.customerDate}</div>` : ''}
+                      ${signatures.customerSignature && signatures.customerSignature.startsWith('data:image/') ? 
+                        `<img src="${signatures.customerSignature}" style="position: absolute; left: 355px; top: 547px; width: 120px; height: 30px;" />` : ''}
+                    `;
+                  })() : ''}
+                </div>
+              `;
+            })() : ''
+          }
         </div>
         ` : ''}
       </div>
