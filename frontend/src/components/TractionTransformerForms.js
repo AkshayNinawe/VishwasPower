@@ -3898,7 +3898,7 @@ function Stage1Form6({ onSubmit, onPrevious, initialData, isLastFormOfStage, com
           <tr>
             <th>AT 05 KV PHASE</th>
             <th>TAN DELTA in %</th>
-            <th>CAPACITANCE (Pf)</th>
+            <th>CAPACITANCE (pF)</th>
             <th>EXCITATION CURRENT (mA) </th>
             <th>DIELECTRIC LOSS </th>
           </tr>
@@ -3978,7 +3978,7 @@ function Stage1Form6({ onSubmit, onPrevious, initialData, isLastFormOfStage, com
           <tr>
             <th>AT 10 KV PHASE</th>
             <th>TAN DELTA in %</th>
-            <th>CAPACITANCE (Pf)</th>
+            <th>CAPACITANCE (pF)</th>
             <th>EXCITATION CURRENT (mA) </th>
             <th>DIELECTRIC LOSS </th>
           </tr>
@@ -4091,7 +4091,7 @@ function Stage1Form6({ onSubmit, onPrevious, initialData, isLastFormOfStage, com
           <tr>
             <th>AT 05 KV PHASE </th>
             <th>TAN DELTA in %</th>
-            <th>CAPACITANCE (Pf) </th>
+            <th>CAPACITANCE (pF) </th>
             <th>EXCITATION CURRENT (mA)</th>
             <th>DIELECTRIC LOSS </th>
           </tr>
@@ -4171,7 +4171,7 @@ function Stage1Form6({ onSubmit, onPrevious, initialData, isLastFormOfStage, com
           <tr>
             <th>AT 10 KV PHASE </th>
             <th>TAN DELTA in %</th>
-            <th>CAPACITANCE (Pf) </th>
+            <th>CAPACITANCE (pF) </th>
             <th>EXCITATION CURRENT (mA)</th>
             <th>DIELECTRIC LOSS </th>
           </tr>

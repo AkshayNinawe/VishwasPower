@@ -4438,7 +4438,7 @@ function TanDeltaCapacitanceTestForm({
           <tr>
             <th>AT 05 KV PHASE</th>
             <th>TAN DELTA in %</th>
-            <th>CAPACITANCE (PF)</th>
+            <th>CAPACITANCE (pF)</th>
             <th>EXCITATION CURRENT</th>
             <th>DIELECTRIC LOSS</th>
           </tr>

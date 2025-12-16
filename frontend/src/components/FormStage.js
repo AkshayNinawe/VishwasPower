@@ -2143,7 +2143,7 @@ function PreErectionTanDeltaTestForm({
             <th rowSpan="2"></th>
             <th rowSpan="2">AT 05 KV PHASE</th>
             <th>TAN DELTA %</th>
-            <th>CAPACITANCE (PF)</th>
+            <th>CAPACITANCE (pF)</th>
             <th>EXCITATION CURRENT (mA)</th>
             <th>DIELECTRIC LOSS</th>
           </tr>
@@ -2288,7 +2288,7 @@ function PreErectionTanDeltaTestForm({
             <th rowSpan="2"></th>
             <th rowSpan="2">AT 10 KV PHASE</th>
             <th>TAN DELTA %</th>
-            <th>CAPACITANCE (PF)</th>
+            <th>CAPACITANCE (pF)</th>
             <th>EXCITATION CURRENT (mA)</th>
             <th>DIELECTRIC LOSS</th>
           </tr>
@@ -4477,7 +4477,7 @@ function SFRATestRecordForm({
             <th rowSpan="2"></th>
             <th rowSpan="2">AT 05 KV PHASE</th>
             <th>TAN DELTA %</th>
-            <th>CAPACITANCE (PF)</th>
+            <th>CAPACITANCE (pF)</th>
             <th>EXCITATION CURRENT (mA)</th>
             <th>DIELECTRIC LOSS</th>
           </tr>
@@ -4623,7 +4623,7 @@ function SFRATestRecordForm({
             <th rowSpan="2"></th>
             <th rowSpan="2">AT 10 KV PHASE</th>
             <th>TAN DELTA %</th>
-            <th>CAPACITANCE (PF)</th>
+            <th>CAPACITANCE (pF)</th>
             <th>EXCITATION CURRENT (mA)</th>
             <th>DIELECTRIC LOSS</th>
           </tr>
@@ -4858,7 +4858,7 @@ function SFRATestRecordForm({
             <th></th>
             <th>AT 05 KV IN BETWEEN</th>
             <th>TAN DELTA %</th>
-            <th>CAPACITANCE (PF)</th>
+            <th>CAPACITANCE (pF)</th>
             <th>EXCITATION CURRENT (mA)</th>
             <th>DIELECTRIC LOSS</th>
           </tr>
@@ -4938,7 +4938,7 @@ function SFRATestRecordForm({
             <th></th>
             <th>AT 10 KV IN BETWEEN</th>
             <th>TAN DELTA %</th>
-            <th>CAPACITANCE (PF)</th>
+            <th>CAPACITANCE (pF)</th>
             <th>EXCITATION CURRENT (mA)</th>
             <th>DIELECTRIC LOSS</th>
           </tr>
@@ -5037,7 +5037,6 @@ function IRVoltageRatioMagnetisingTestForm({
     // IR Values section
     date: initialData.date || "",
     time: initialData.time || "",
-    insulationTesterDetails: initialData.insulationTesterDetails || "",
     ambTemp: initialData.ambTemp || "",
     make: initialData.make || "",
     oilTemp: initialData.oilTemp || "",
@@ -5050,67 +5049,33 @@ function IRVoltageRatioMagnetisingTestForm({
     hvEarth60Sec: initialData.hvEarth60Sec || "",
     ratioIR60IR10: initialData.ratioIR60IR10 || "",
     
-    // RATIO TEST 2 - Table 1 (1.1 - 1.2, 1.1 - 2.1, 1.2 - 2.1)
-    ratioTest2_table1_11_12: initialData.ratioTest2_table1_11_12 || "",
-    ratioTest2_table1_11_21: initialData.ratioTest2_table1_11_21 || "",
-    ratioTest2_table1_12_21: initialData.ratioTest2_table1_12_21 || "",
+    // VOLTAGE RATIO TEST - Table 1 (1.1 - 1.2, 1.1 - 2.1, 1.2 - 2.1)
+    voltageRatioTest_table1_11_12: initialData.voltageRatioTest_table1_11_12 || "",
+    voltageRatioTest_table1_11_21: initialData.voltageRatioTest_table1_11_21 || "",
+    voltageRatioTest_table1_12_21: initialData.voltageRatioTest_table1_12_21 || "",
     
-    // RATIO TEST 2 - Table 2 (1.1 - 2.1, 1.1 - 1.2, 2.1 - 1.2)
-    ratioTest2_table2_11_21: initialData.ratioTest2_table2_11_21 || "",
-    ratioTest2_table2_11_12: initialData.ratioTest2_table2_11_12 || "",
-    ratioTest2_table2_21_12: initialData.ratioTest2_table2_21_12 || "",
+    // VOLTAGE RATIO TEST - Table 2 (1.1 - 2.1, 1.1 - 1.2, 2.1 - 1.2) - Alternative fields to avoid conflicts
+    voltageRatioTest_table2_11_21_alt: initialData.voltageRatioTest_table2_11_21_alt || "",
+    voltageRatioTest_table2_11_12_alt: initialData.voltageRatioTest_table2_11_12_alt || "",
+    voltageRatioTest_table2_21_12: initialData.voltageRatioTest_table2_21_12 || "",
     
-    // RATIO TEST 2 - Table 3 (2.1 - 1.2, 1.1 - 1.2, 1.1 - 2.1)
-    ratioTest2_table3_21_12: initialData.ratioTest2_table3_21_12 || "",
-    ratioTest2_table3_11_12: initialData.ratioTest2_table3_11_12 || "",
-    ratioTest2_table3_11_21: initialData.ratioTest2_table3_11_21 || "",
+    // VOLTAGE RATIO TEST - Table 3 (2.1 - 1.2, 1.1 - 1.2, 1.1 - 2.1) - Alternative fields to avoid conflicts
+    voltageRatioTest_table3_21_12_alt: initialData.voltageRatioTest_table3_21_12_alt || "",
+    voltageRatioTest_table3_11_12_alt: initialData.voltageRatioTest_table3_11_12_alt || "",
+    voltageRatioTest_table3_11_21_alt: initialData.voltageRatioTest_table3_11_21_alt || "",
     
-    // SHORT CIRCUIT - Table 1 (Applied, Measured Current 1.1, Measured Current 1.2 - 2.1)
-    shortCircuit_table1_applied: initialData.shortCircuit_table1_applied || "",
-    shortCircuit_table1_measured11: initialData.shortCircuit_table1_measured11 || "",
-    shortCircuit_table1_measured12_21: initialData.shortCircuit_table1_measured12_21 || "",
-    
-    // SHORT CIRCUIT - Table 2 (1.2 - 2.1, 1.2, 1.1 - 2.1)
-    shortCircuit_table2_12_21: initialData.shortCircuit_table2_12_21 || "",
-    shortCircuit_table2_measured12: initialData.shortCircuit_table2_measured12 || "",
-    shortCircuit_table2_measured11_21: initialData.shortCircuit_table2_measured11_21 || "",
-    
-    // Voltage Ratio Test
-    voltageRatioTests: initialData.voltageRatioTests || [
-      {
-        appliedVoltage: "1.1 – 1.2",
-        measuredVoltage11_21: "",
-        measuredVoltage12_21: "",
-      },
-      {
-        appliedVoltage: "1.1 – 2.1",
-        measuredVoltage11_12: "",
-        measuredVoltage12_21: "",
-      },
-      {
-        appliedVoltage: "2.1 – 1.2",
-        measuredVoltage11_12: "",
-        measuredVoltage11_21: "",
-      },
-    ],
     // Magnetising Current Test
     appliedVoltageMag: initialData.appliedVoltageMag || "",
     dateMag: initialData.dateMag || "",
     timeMag: initialData.timeMag || "",
     meterMakeSrNoMag: initialData.meterMakeSrNoMag || "",
     magnetisingTests: initialData.magnetisingTests || [
-      { appliedVoltage: "1.1 –1.2", measuredCurrent: "" },
-      { appliedVoltage: "1.1 – 2.1", measuredCurrent: "" },
-      { appliedVoltage: "2.1 – 1.2", measuredCurrent: "" },
+      { appliedVoltage: "1.1 –1.2", appliedVoltageValue: "", measuredCurrent: "" },
+      { appliedVoltage: "1.1 – 2.1", appliedVoltageValue: "", measuredCurrent: "" },
+      { appliedVoltage: "2.1 – 1.2", appliedVoltageValue: "", measuredCurrent: "" },
     ],
     ...initialData,
   });
-
-  const handleVoltageRatioTestChange = (index, field, value) => {
-    const updatedTests = [...formData.voltageRatioTests];
-    updatedTests[index] = { ...updatedTests[index], [field]: value };
-    setFormData({ ...formData, voltageRatioTests: updatedTests });
-  };
 
   const handleMagnetisingTestChange = (index, field, value) => {
     const updatedTests = [...formData.magnetisingTests];
@@ -5159,13 +5124,7 @@ function IRVoltageRatioMagnetisingTestForm({
             <td>
               <strong>Details of Insulation tester</strong>
             </td>
-            {/* <td>
-              <input
-                type="text"
-                value={formData.insulationTesterDetails}
-                onChange={(e) => setFormData({ ...formData, insulationTesterDetails: e.target.value })}
-              />
-            </td> */}
+            <td></td>
           </tr>
           <tr>
             <td>
@@ -5322,7 +5281,7 @@ function IRVoltageRatioMagnetisingTestForm({
       </table>
 
       <h4 style={{ marginTop: "40px", textAlign: "center" }}>
-        RATIO TEST 2
+        VOLTAGE RATIO TEST
       </h4>
 
       <table className="form-table" style={{ marginTop: "20px" }}>
@@ -5338,27 +5297,27 @@ function IRVoltageRatioMagnetisingTestForm({
             <td>
               <input
                 type="text"
-                value={formData.ratioTest2_table1_11_12}
+                value={formData.voltageRatioTest_table1_11_12}
                 onChange={(e) =>
-                  setFormData({ ...formData, ratioTest2_table1_11_12: e.target.value })
+                  setFormData({ ...formData, voltageRatioTest_table1_11_12: e.target.value })
                 }
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.ratioTest2_table1_11_21}
+                value={formData.voltageRatioTest_table1_11_21}
                 onChange={(e) =>
-                  setFormData({ ...formData, ratioTest2_table1_11_21: e.target.value })
+                  setFormData({ ...formData, voltageRatioTest_table1_11_21: e.target.value })
                 }
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.ratioTest2_table1_12_21}
+                value={formData.voltageRatioTest_table1_12_21}
                 onChange={(e) =>
-                  setFormData({ ...formData, ratioTest2_table1_12_21: e.target.value })
+                  setFormData({ ...formData, voltageRatioTest_table1_12_21: e.target.value })
                 }
               />
             </td>
@@ -5379,27 +5338,27 @@ function IRVoltageRatioMagnetisingTestForm({
             <td>
               <input
                 type="text"
-                value={formData.ratioTest2_table2_11_21}
+                value={formData.voltageRatioTest_table2_11_21_alt}
                 onChange={(e) =>
-                  setFormData({ ...formData, ratioTest2_table2_11_21: e.target.value })
+                  setFormData({ ...formData, voltageRatioTest_table2_11_21_alt: e.target.value })
                 }
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.ratioTest2_table2_11_12}
+                value={formData.voltageRatioTest_table2_11_12_alt}
                 onChange={(e) =>
-                  setFormData({ ...formData, ratioTest2_table2_11_12: e.target.value })
+                  setFormData({ ...formData, voltageRatioTest_table2_11_12_alt: e.target.value })
                 }
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.ratioTest2_table2_21_12}
+                value={formData.voltageRatioTest_table2_21_12}
                 onChange={(e) =>
-                  setFormData({ ...formData, ratioTest2_table2_21_12: e.target.value })
+                  setFormData({ ...formData, voltageRatioTest_table2_21_12: e.target.value })
                 }
               />
             </td>
@@ -5420,184 +5379,31 @@ function IRVoltageRatioMagnetisingTestForm({
             <td>
               <input
                 type="text"
-                value={formData.ratioTest2_table3_21_12}
+                value={formData.voltageRatioTest_table3_21_12_alt}
                 onChange={(e) =>
-                  setFormData({ ...formData, ratioTest2_table3_21_12: e.target.value })
+                  setFormData({ ...formData, voltageRatioTest_table3_21_12_alt: e.target.value })
                 }
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.ratioTest2_table3_11_12}
+                value={formData.voltageRatioTest_table3_11_12_alt}
                 onChange={(e) =>
-                  setFormData({ ...formData, ratioTest2_table3_11_12: e.target.value })
+                  setFormData({ ...formData, voltageRatioTest_table3_11_12_alt: e.target.value })
                 }
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.ratioTest2_table3_11_21}
+                value={formData.voltageRatioTest_table3_11_21_alt}
                 onChange={(e) =>
-                  setFormData({ ...formData, ratioTest2_table3_11_21: e.target.value })
+                  setFormData({ ...formData, voltageRatioTest_table3_11_21_alt: e.target.value })
                 }
               />
             </td>
           </tr>
-        </tbody>
-      </table>
-
-      <h4 style={{ marginTop: "40px", textAlign: "center" }}>
-        SHORT CIRCUIT
-      </h4>
-
-      <table className="form-table" style={{ marginTop: "20px" }}>
-        <thead>
-          <tr>
-            <th>Applied</th>
-            <th>Measured Current</th>
-            <th>Measured Current</th>
-          </tr>
-          <tr>
-            <th>1.1 - 1.2</th>
-            <th>1.1</th>
-            <th>1.2 - 2.1</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <input
-                type="text"
-                value={formData.shortCircuit_table1_applied}
-                onChange={(e) =>
-                  setFormData({ ...formData, shortCircuit_table1_applied: e.target.value })
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.shortCircuit_table1_measured11}
-                onChange={(e) =>
-                  setFormData({ ...formData, shortCircuit_table1_measured11: e.target.value })
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.shortCircuit_table1_measured12_21}
-                onChange={(e) =>
-                  setFormData({ ...formData, shortCircuit_table1_measured12_21: e.target.value })
-                }
-              />
-            </td>
-          </tr>
-        </tbody>
-        <thead>
-          <tr>
-            <th>1.2 - 2.1</th>
-            <th>1.2</th>
-            <th>1.1 - 2.1</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <input
-                type="text"
-                value={formData.shortCircuit_table2_12_21}
-                onChange={(e) =>
-                  setFormData({ ...formData, shortCircuit_table2_12_21: e.target.value })
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.shortCircuit_table2_measured12}
-                onChange={(e) =>
-                  setFormData({ ...formData, shortCircuit_table2_measured12: e.target.value })
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.shortCircuit_table2_measured11_21}
-                onChange={(e) =>
-                  setFormData({ ...formData, shortCircuit_table2_measured11_21: e.target.value })
-                }
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h4 style={{ marginTop: "40px", textAlign: "center" }}>
-        TYPE OF TEST – VOLTAGE RATIO TEST
-      </h4>
-
-      <table className="form-table">
-        <thead>
-          <tr>
-            <th>Applied Voltage</th>
-            <th colSpan="2">Measured Voltage</th>
-          </tr>
-          <tr>
-            <th>1.1 – 1.2</th>
-            <th>1.1 – 2.1</th>
-            <th>1.2 – 2.1</th>
-          </tr>
-        </thead>
-        <tbody>
-          {formData.voltageRatioTests.map((test, index) => (
-            <tr key={index}>
-              <td>
-                <input
-                  type="text"
-                  value={test.appliedVoltage11_12}
-                  onChange={(e) =>
-                    handleVoltageRatioTestChange(
-                      index,
-                      "appliedVoltage11_12",
-                      e.target.value
-                    )
-                  }
-                />
-                
-              </td>
-              
-              <td>
-                <input
-                  type="text"
-                  value={test.measuredVoltage11_21}
-                  onChange={(e) =>
-                    handleVoltageRatioTestChange(
-                      index,
-                      "measuredVoltage11_21",
-                      e.target.value
-                    )
-                  }
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={test.measuredVoltage12_21}
-                  onChange={(e) =>
-                    handleVoltageRatioTestChange(
-                      index,
-                      "measuredVoltage12_21",
-                      e.target.value
-                    )
-                  }
-                />
-              </td>
-            </tr>
-          ))}
         </tbody>
       </table>
 
@@ -5669,8 +5475,9 @@ function IRVoltageRatioMagnetisingTestForm({
       <table className="form-table" style={{ marginTop: "20px" }}>
         <thead>
           <tr>
-            <th>Applied Voltage</th>
-            <th>Measured Current</th>
+            <th>Connection</th>
+            <th>Applied Voltage (V)</th>
+            <th>Measured Current (mA)</th>
           </tr>
         </thead>
         <tbody>
@@ -5678,6 +5485,19 @@ function IRVoltageRatioMagnetisingTestForm({
             <tr key={index}>
               <td>
                 <strong>{test.appliedVoltage}</strong>
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={test.appliedVoltageValue}
+                  onChange={(e) =>
+                    handleMagnetisingTestChange(
+                      index,
+                      "appliedVoltageValue",
+                      e.target.value
+                    )
+                  }
+                />
               </td>
               <td>
                 <input
@@ -5720,6 +5540,7 @@ function ShortCircuitTestForm({
 }) {
   const [formData, setFormData] = useState({
     appliedVoltage: initialData.appliedVoltage || "",
+    appliedVoltageTableHeader: initialData.appliedVoltageTableHeader || "APPLIED VOLTAGE",
     date: initialData.date || "",
     time: initialData.time || "",
     meterMakeSrNo: initialData.meterMakeSrNo || "",

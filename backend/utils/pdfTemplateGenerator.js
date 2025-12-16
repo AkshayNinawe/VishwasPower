@@ -512,7 +512,7 @@ function generateStage1Form4(formData) {
             <th></th>
             <th>PHASE</th>
             <th>TAN DELTA %</th>
-            <th>CAPACITANCE (PF)</th>
+            <th>CAPACITANCE (pF)</th>
             <th>EXCITATION CURRENT (mA)</th>
             <th>DIELECTRIC LOSS</th>
           </tr>
@@ -545,7 +545,7 @@ function generateStage1Form4(formData) {
             <th></th>
             <th>PHASE</th>
             <th>TAN DELTA %</th>
-            <th>CAPACITANCE (PF)</th>
+            <th>CAPACITANCE (pF)</th>
             <th>EXCITATION CURRENT (mA)</th>
             <th>DIELECTRIC LOSS</th>
           </tr>
@@ -1111,7 +1111,7 @@ function generateStage4Form1(formData) {
             <th rowspan="2"></th>
             <th rowspan="2">AT 05 KV PHASE</th>
             <th>TAN DELTA %</th>
-            <th>CAPACITANCE (PF)</th>
+            <th>CAPACITANCE (pF)</th>
             <th>EXCITATION CURRENT (mA)</th>
             <th>DIELECTRIC LOSS</th>
           </tr>
@@ -1142,7 +1142,7 @@ function generateStage4Form1(formData) {
             <th rowspan="2"></th>
             <th rowspan="2">AT 10 KV PHASE</th>
             <th>TAN DELTA %</th>
-            <th>CAPACITANCE (PF)</th>
+            <th>CAPACITANCE (pF)</th>
             <th>EXCITATION CURRENT (mA)</th>
             <th>DIELECTRIC LOSS</th>
           </tr>
@@ -1196,7 +1196,7 @@ function generateStage4Form1(formData) {
             <th></th>
             <th>AT 05 KV IN BETWEEN</th>
             <th>TAN DELTA %</th>
-            <th>CAPACITANCE (PF)</th>
+            <th>CAPACITANCE (pF)</th>
             <th>EXCITATION CURRENT (mA)</th>
             <th>DIELECTRIC LOSS</th>
           </tr>
@@ -1219,7 +1219,7 @@ function generateStage4Form1(formData) {
             <th></th>
             <th>AT 10 KV IN BETWEEN</th>
             <th>TAN DELTA %</th>
-            <th>CAPACITANCE (PF)</th>
+            <th>CAPACITANCE (pF)</th>
             <th>EXCITATION CURRENT (mA)</th>
             <th>DIELECTRIC LOSS</th>
           </tr>

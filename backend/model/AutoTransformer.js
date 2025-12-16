@@ -288,6 +288,7 @@ const VoltageRatioTestSubSchema = new mongoose.Schema(
 const MagnetisingTestSubSchema = new mongoose.Schema(
   {
     appliedVoltage: { type: String, trim: true, default: "" },
+    appliedVoltageValue: { type: String, trim: true, default: "" },
     measuredCurrent: { type: String, trim: true, default: "" },
   },
   { _id: false }
@@ -358,9 +359,9 @@ const Stage4Form1SubSchema = new mongoose.Schema(
 // Sub-schema for Stage 4 Form 2
 const Stage4Form2SubSchema = new mongoose.Schema(
   {
+    // IR Values section
     date: { type: String, trim: true, default: "" },
     time: { type: String, trim: true, default: "" },
-    insulationTesterDetails: { type: String, trim: true, default: "" },
     ambTemp: { type: String, trim: true, default: "" },
     make: { type: String, trim: true, default: "" },
     oilTemp: { type: String, trim: true, default: "" },
@@ -373,32 +374,22 @@ const Stage4Form2SubSchema = new mongoose.Schema(
     hvEarth60Sec: { type: String, trim: true, default: "" },
     ratioIR60IR10: { type: String, trim: true, default: "" },
     
-    // RATIO TEST 2 - Table 1 (1.1 - 1.2, 1.1 - 2.1, 1.2 - 2.1)
-    ratioTest2_table1_11_12: { type: String, trim: true, default: "" },
-    ratioTest2_table1_11_21: { type: String, trim: true, default: "" },
-    ratioTest2_table1_12_21: { type: String, trim: true, default: "" },
+    // VOLTAGE RATIO TEST - Table 1 (1.1 - 1.2, 1.1 - 2.1, 1.2 - 2.1)
+    voltageRatioTest_table1_11_12: { type: String, trim: true, default: "" },
+    voltageRatioTest_table1_11_21: { type: String, trim: true, default: "" },
+    voltageRatioTest_table1_12_21: { type: String, trim: true, default: "" },
     
-    // RATIO TEST 2 - Table 2 (1.1 - 2.1, 1.1 - 1.2, 2.1 - 1.2)
-    ratioTest2_table2_11_21: { type: String, trim: true, default: "" },
-    ratioTest2_table2_11_12: { type: String, trim: true, default: "" },
-    ratioTest2_table2_21_12: { type: String, trim: true, default: "" },
+    // VOLTAGE RATIO TEST - Table 2 (1.1 - 2.1, 1.1 - 1.2, 2.1 - 1.2) - Alternative fields to avoid conflicts
+    voltageRatioTest_table2_11_21_alt: { type: String, trim: true, default: "" },
+    voltageRatioTest_table2_11_12_alt: { type: String, trim: true, default: "" },
+    voltageRatioTest_table2_21_12: { type: String, trim: true, default: "" },
     
-    // RATIO TEST 2 - Table 3 (2.1 - 1.2, 1.1 - 1.2, 1.1 - 2.1)
-    ratioTest2_table3_21_12: { type: String, trim: true, default: "" },
-    ratioTest2_table3_11_12: { type: String, trim: true, default: "" },
-    ratioTest2_table3_11_21: { type: String, trim: true, default: "" },
+    // VOLTAGE RATIO TEST - Table 3 (2.1 - 1.2, 1.1 - 1.2, 1.1 - 2.1) - Alternative fields to avoid conflicts
+    voltageRatioTest_table3_21_12_alt: { type: String, trim: true, default: "" },
+    voltageRatioTest_table3_11_12_alt: { type: String, trim: true, default: "" },
+    voltageRatioTest_table3_11_21_alt: { type: String, trim: true, default: "" },
     
-    // SHORT CIRCUIT - Table 1 (Applied, Measured Current 1.1, Measured Current 1.2 - 2.1)
-    shortCircuit_table1_applied: { type: String, trim: true, default: "" },
-    shortCircuit_table1_measured11: { type: String, trim: true, default: "" },
-    shortCircuit_table1_measured12_21: { type: String, trim: true, default: "" },
-    
-    // SHORT CIRCUIT - Table 2 (1.2 - 2.1, 1.2, 1.1 - 2.1)
-    shortCircuit_table2_12_21: { type: String, trim: true, default: "" },
-    shortCircuit_table2_measured12: { type: String, trim: true, default: "" },
-    shortCircuit_table2_measured11_21: { type: String, trim: true, default: "" },
-    
-    voltageRatioTests: { type: [VoltageRatioTestSubSchema], default: [] },
+    // Magnetising Current Test
     appliedVoltageMag: { type: String, trim: true, default: "" },
     dateMag: { type: String, trim: true, default: "" },
     timeMag: { type: String, trim: true, default: "" },
