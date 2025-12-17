@@ -1719,8 +1719,7 @@ function CoreInsulationCheckForm({
               </strong>
             </td>
             <td>
-              <input
-                type="text"
+              <select
                 value={formData.reservoirAvailable}
                 onChange={(e) =>
                   setFormData({
@@ -1728,7 +1727,11 @@ function CoreInsulationCheckForm({
                     reservoirAvailable: e.target.value,
                   })
                 }
-              />
+              >
+                <option value="">(Yes/No)</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
             </td>
             <td>
               <input
@@ -1812,13 +1815,16 @@ function CoreInsulationCheckForm({
               <strong>Whether Crane is Available in good condition</strong>
             </td>
             <td>
-              <input
-                type="text"
+              <select
                 value={formData.craneAvailable}
                 onChange={(e) =>
                   setFormData({ ...formData, craneAvailable: e.target.value })
                 }
-              />
+              >
+                <option value="">(Yes/No)</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
             </td>
             <td>
               <input
@@ -5239,7 +5245,7 @@ function IRVoltageRatioMagnetisingTestForm({
         <thead>
           <tr>
             <th></th>
-            <th>10 Sec MΩ</th>
+            <th>15 Sec MΩ</th>
             <th>60 Sec MΩ</th>
             <th>Ratio of IR 60/10</th>
           </tr>
@@ -6038,7 +6044,7 @@ function WindingResistanceIRPITestForm({
       </table>
 
       <h4 style={{ marginTop: "30px", textAlign: "center" }}>
-        ALL MEASUREMENT IN OHMS / MILI OHMS
+        ALL MEASUREMENT IN OHMS / MΩ
       </h4>
 
       <table className="form-table">
@@ -6060,7 +6066,7 @@ function WindingResistanceIRPITestForm({
           </tr>
           <tr>
             <td>
-              <strong>1.1 = 2.1</strong>
+              <strong>1.1 - 2.1</strong>
             </td>
             <td>
               <input

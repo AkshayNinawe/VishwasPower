@@ -1318,7 +1318,7 @@ function generateStage4Form2(formData) {
         <thead>
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
             <th></th>
-            <th>10 Sec MΩ</th>
+            <th>15 Sec MΩ</th>
             <th>60 Sec MΩ</th>
             <th>Ratio of IR 60/10</th>
           </tr>
@@ -1333,7 +1333,7 @@ function generateStage4Form2(formData) {
         </tbody>
       </table>
 
-      <h4 style="margin-top: 40px; text-align: center;">RATIO TEST 2</h4>
+      <h4 style="margin-top: 40px; text-align: center;">Voltage RATIO TEST 2</h4>
 
       <table class="form-table" style="margin-top: 20px;">
         <thead>
@@ -1614,7 +1614,7 @@ function generateStage4Form4(formData) {
         </tbody>
       </table>
 
-      <h4 style="margin-top: 30px; text-align: center;">ALL MEASUREMENT IN OHMS / MILI OHMS</h4>
+      <h4 style="margin-top: 30px; text-align: center;">ALL MEASUREMENT IN OHMS / MΩ</h4>
 
       <table class="form-table">
         <tbody>
@@ -1623,7 +1623,7 @@ function generateStage4Form4(formData) {
             <td>${formData.winding11_12 || ""}</td>
           </tr>
           <tr>
-            <td><strong>1.1 = 2.1</strong></td>
+            <td><strong>1.1 - 2.1</strong></td>
             <td>${formData.winding11_21 || ""}</td>
           </tr>
           <tr>
