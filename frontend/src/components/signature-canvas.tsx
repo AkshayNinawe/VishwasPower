@@ -70,8 +70,32 @@ const SignatureCanvas: React.FC<SignatureCanvasProps> = ({
     }
   }, [width, height, initialDataUrl, getCanvas, getContext, clearCanvas])
 
+  // Additional touch event handling to prevent page scrolling
+  useEffect(() => {
+    const canvas = getCanvas()
+    if (!canvas) return
+
+    const preventTouch = (e: TouchEvent) => {
+      e.preventDefault()
+    }
+
+    // Add passive: false to ensure preventDefault works
+    canvas.addEventListener('touchstart', preventTouch, { passive: false })
+    canvas.addEventListener('touchmove', preventTouch, { passive: false })
+    canvas.addEventListener('touchend', preventTouch, { passive: false })
+
+    return () => {
+      canvas.removeEventListener('touchstart', preventTouch)
+      canvas.removeEventListener('touchmove', preventTouch)
+      canvas.removeEventListener('touchend', preventTouch)
+    }
+  }, [getCanvas])
+
   const startDrawing = useCallback(
     (e: React.MouseEvent | React.TouchEvent) => {
+      // Prevent default touch behavior to stop page scrolling
+      e.preventDefault()
+      
       const canvas = getCanvas()
       const ctx = getContext()
       if (!canvas || !ctx) return
@@ -89,6 +113,9 @@ const SignatureCanvas: React.FC<SignatureCanvasProps> = ({
 
   const draw = useCallback(
     (e: React.MouseEvent | React.TouchEvent) => {
+      // Prevent default touch behavior to stop page scrolling
+      e.preventDefault()
+      
       if (!isDrawing) return
       const canvas = getCanvas()
       const ctx = getContext()
@@ -103,7 +130,12 @@ const SignatureCanvas: React.FC<SignatureCanvasProps> = ({
     [isDrawing, getCanvas, getContext],
   )
 
-  const endDrawing = useCallback(() => {
+  const endDrawing = useCallback((e?: React.TouchEvent | React.MouseEvent) => {
+    // Prevent default touch behavior to stop page scrolling
+    if (e) {
+      e.preventDefault()
+    }
+    
     setIsDrawing(false)
     saveSignature()
   }, [saveSignature])
@@ -119,7 +151,15 @@ const SignatureCanvas: React.FC<SignatureCanvasProps> = ({
         onTouchStart={startDrawing}
         onTouchMove={draw}
         onTouchEnd={endDrawing}
-        style={{ border: "1px solid #ccc", touchAction: "none" }}
+        onTouchCancel={endDrawing}
+        style={{ 
+          border: "1px solid #ccc", 
+          touchAction: "none",
+          userSelect: "none",
+          WebkitUserSelect: "none",
+          MozUserSelect: "none",
+          msUserSelect: "none"
+        }}
       />
       <div className="signature-actions" style={{ marginTop: "5px" }}>
         <button

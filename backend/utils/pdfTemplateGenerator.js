@@ -1333,7 +1333,7 @@ function generateStage4Form2(formData) {
         </tbody>
       </table>
 
-      <h4 style="margin-top: 40px; text-align: center;">Voltage RATIO TEST 2</h4>
+      <h4 style="margin-top: 40px; text-align: center;">VOLTAGE RATIO TEST</h4>
 
       <table class="form-table" style="margin-top: 20px;">
         <thead>

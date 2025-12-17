@@ -441,6 +441,9 @@ const useSignatureCanvas = (initialDataUrl) => {
 
   const draw = useCallback(
     (e) => {
+      // Prevent default touch behavior to stop page scrolling
+      e.preventDefault();
+      
       if (!isDrawing) return;
 
       const canvas = canvasRef.current;
@@ -473,6 +476,9 @@ const useSignatureCanvas = (initialDataUrl) => {
   );
 
   const startDrawing = useCallback((e) => {
+    // Prevent default touch behavior to stop page scrolling
+    e.preventDefault();
+    
     setIsDrawing(true);
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -489,10 +495,14 @@ const useSignatureCanvas = (initialDataUrl) => {
 
     lastX.current = clientX - rect.left;
     lastY.current = clientY - rect.top;
-    e.preventDefault();
   }, []);
 
-  const stopDrawing = useCallback(() => {
+  const stopDrawing = useCallback((e) => {
+    // Prevent default touch behavior to stop page scrolling
+    if (e) {
+      e.preventDefault();
+    }
+    
     setIsDrawing(false);
     setSignatureDataUrl(getSignature());
   }, [getSignature]);
@@ -515,6 +525,27 @@ const useSignatureCanvas = (initialDataUrl) => {
       }
     }
   }, [initialDataUrl]);
+
+  // Additional touch event handling to prevent page scrolling
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const preventTouch = (e) => {
+      e.preventDefault();
+    };
+
+    // Add passive: false to ensure preventDefault works
+    canvas.addEventListener('touchstart', preventTouch, { passive: false });
+    canvas.addEventListener('touchmove', preventTouch, { passive: false });
+    canvas.addEventListener('touchend', preventTouch, { passive: false });
+
+    return () => {
+      canvas.removeEventListener('touchstart', preventTouch);
+      canvas.removeEventListener('touchmove', preventTouch);
+      canvas.removeEventListener('touchend', preventTouch);
+    };
+  }, []);
 
   return {
     canvasRef,
@@ -904,7 +935,16 @@ const SignatureBox = ({
         onTouchStart={startDrawing}
         onTouchMove={draw}
         onTouchEnd={stopDrawing}
-      /> 
+        onTouchCancel={stopDrawing}
+        style={{ 
+          border: "1px solid #ccc", 
+          touchAction: "none",
+          userSelect: "none",
+          WebkitUserSelect: "none",
+          MozUserSelect: "none",
+          msUserSelect: "none"
+        }}
+      />
       <button
         type="button"
         onClick={clearCanvas}
