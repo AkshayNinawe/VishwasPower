@@ -2480,12 +2480,12 @@ export function generateHTMLTemplate(data, projectName, companyName) {
               return `
                 <!-- Overlay Stage 6 Form 1 data on LastPage.jpg -->
                 <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; font-family: Helvetica, Arial, sans-serif; font-size: 10px; color: #000000;">
-                  ${stage6Data.customerName ? `<div style="position: absolute; left: 128px; top: 232px; width: 200px;">${stage6Data.customerName}</div>` : ''}
-                  ${stage6Data.orderNumber ? `<div style="position: absolute; left: 122px; top: 338px; width: 100px;">${stage6Data.orderNumber}</div>` : ''}
-                  ${stage6Data.location ? `<div style="position: absolute; left: 76px; top: 351px; width: 150px;">${stage6Data.location}</div>` : ''}
+                  ${stage6Data.customerName ? `<div style="position: absolute; left: 158px; top: 232px; width: 200px;">${stage6Data.customerName}</div>` : ''}
+                  ${stage6Data.orderNumber ? `<div style="position: absolute; left: 122px; top: 335px; width: 100px;">${stage6Data.orderNumber}</div>` : ''}
+                  ${stage6Data.location ? `<div style="position: absolute; left: 80px; top: 351px; width: 150px;">${stage6Data.location}</div>` : ''}
                   ${stage6Data.type ? `<div style="position: absolute; left: 78px; top: 313px; width: 150px;">${stage6Data.type}</div>` : ''}
                   ${stage6Data.capacity ? `<div style="position: absolute; left: 90px; top: 325px; width: 100px;">${stage6Data.capacity}</div>` : ''}
-                  ${stage6Data.voltageRating ? `<div style="position: absolute; left: 122px; top: 438px; width: 100px;">${stage6Data.voltageRating}</div>` : ''}
+                  ${stage6Data.voltageRating ? `<div style="position: absolute; left: 120px; top: 464px; width: 200px;">${stage6Data.voltageRating}</div>` : ''}
                   ${stage6Data.make ? `<div style="position: absolute; left: 76px; top: 451px; width: 150px;">${stage6Data.make}</div>` : ''}
                   ${stage6Data.serialNumber ? `<div style="position: absolute; left: 120px; top: 464px; width: 200px;">${stage6Data.serialNumber}</div>` : ''}
                   ${stage6Data.completionDate ? `<div style="position: absolute; left: 350px; top: 440px; width: 150px;">${stage6Data.completionDate}</div>` : ''}
@@ -2495,14 +2495,14 @@ export function generateHTMLTemplate(data, projectName, companyName) {
                   ${stage6Data.signatures ? (() => {
                     const signatures = stage6Data.signatures;
                     return `
-                      ${signatures.vpesName ? `<div style="position: absolute; left: 78px; top: 637px; width: 150px;">${signatures.vpesName}</div>` : ''}
-                      ${signatures.vpesDesignation ? `<div style="position: absolute; left: 103px; top: 650px; width: 150px;">${signatures.vpesDesignation}</div>` : ''}
+                      ${signatures.vpesName ? `<div style="position: absolute; left: 78px; top: 737px; width: 150px;">${signatures.vpesName}</div>` : ''}
+                      ${signatures.vpesDesignation ? `<div style="position: absolute; left: 103px; top: 750px; width: 150px;">${signatures.vpesDesignation}</div>` : ''}
                       ${signatures.vpesSignature && signatures.vpesSignature.startsWith('data:image/') ? 
-                        `<img src="${signatures.vpesSignature}" style="position: absolute; left: 55px; top: 653px; width: 120px; height: 30px;" />` : ''}
+                        `<img src="${signatures.vpesSignature}" style="position: absolute; left: 55px; top: 753px; width: 120px; height: 30px;" />` : ''}
                       ${signatures.vpesDate ? `<div style="position: absolute; left: 73px; top: 676px; width: 150px;">${signatures.vpesDate}</div>` : ''}
-                      ${signatures.customerName ? `<div style="position: absolute; left: 400px; top: 637px; width: 150px;">${signatures.customerName}</div>` : ''}
-                      ${signatures.customerDesignation ? `<div style="position: absolute; left: 410px; top: 650px; width: 150px;">${signatures.customerDesignation}</div>` : ''}
-                      ${signatures.customerDate ? `<div style="position: absolute; left: 365px; top: 676px; width: 150px;">${signatures.customerDate}</div>` : ''}
+                      ${signatures.customerName ? `<div style="position: absolute; left: 450px; top: 737px; width: 150px;">${signatures.customerName}</div>` : ''}
+                      ${signatures.customerDesignation ? `<div style="position: absolute; left: 460px; top: 750px; width: 150px;">${signatures.customerDesignation}</div>` : ''}
+                      ${signatures.customerDate ? `<div style="position: absolute; left: 460px; top: 776px; width: 150px;">${signatures.customerDate}</div>` : ''}
                       ${signatures.customerSignature && signatures.customerSignature.startsWith('data:image/') ? 
                         `<img src="${signatures.customerSignature}" style="position: absolute; left: 355px; top: 547px; width: 120px; height: 30px;" />` : ''}
                     `;
