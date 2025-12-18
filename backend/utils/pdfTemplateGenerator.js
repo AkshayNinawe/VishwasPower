@@ -1706,136 +1706,140 @@ function generateStage4Form4(formData) {
 function generateStage5Form1(formData) {
   if (!formData) return "";
 
+  // Valve Status Items (matching UI exactly)
+  const valveStatusItems = [
+    { id: "I", description: "Valve Status" },
+    { id: "A", description: "Bucholz to Conservator" },
+    { id: "B", description: "Main Tank to Bucholz" },
+    { id: "C", description: "Radiator Top Valves" },
+    { id: "D", description: "Radiator Bottom Valves" },
+    { id: "E", description: "Top Filter Valve" },
+    { id: "F", description: "Bottom Filter Valve" },
+    { id: "G", description: "Drain Valve" },
+  ];
+
+  // Air Venting Items (matching UI exactly)
+  const airVentingItems = [
+    { id: "1", description: "Main Tank" },
+    { id: "2", description: "Bucholz Relay" },
+    { id: "3", description: "HV Bushing" },
+    { id: "4", description: "LV Bushing" },
+    { id: "5", description: "Neutral Bushing" },
+    { id: "6", description: "Radiator – Top" },
+  ];
+
+  // Protection Trails Items (matching UI exactly)
+  const protectionTrailsItems = [
+    { id: "1", description: "Buchholz checked by oil draining", type: "ALARM" },
+    { id: "1b", description: "Buchholz checked by oil draining", type: "TRIP" },
+    { id: "2", description: "MOG", type: "ALARM" },
+    { id: "3", description: "PRV MAIN TANK", type: "TRIP" },
+    { id: "4", description: "OTI", type: "ALARM" },
+    { id: "4b", description: "OTI", type: "TRIP" },
+    { id: "5", description: "WTI", type: "ALARM" },
+    { id: "5b", description: "WTI", type: "TRIP" },
+  ];
+
+  // Generate Valve Status rows
+  const valveStatusRows = valveStatusItems.map(item => {
+    const qty = formData.valveStatus?.[item.id]?.qty || "";
+    const status = formData.valveStatus?.[item.id]?.status || "";
+    return `
+      <tr>
+        <td><strong>${item.id}</strong></td>
+        <td><strong>${item.description}</strong></td>
+        <td>${qty}</td>
+        <td>${status}</td>
+        <td></td>
+      </tr>
+    `;
+  }).join("");
+
+  // Generate Air Venting rows
+  const airVentingRows = airVentingItems.map(item => {
+    const qty = formData.airVenting?.[item.id]?.qty || "";
+    const status = formData.airVenting?.[item.id]?.status || "";
+    return `
+      <tr>
+        <td><strong>${item.id}</strong></td>
+        <td><strong>${item.description}</strong></td>
+        <td>${qty}</td>
+        <td>${status}</td>
+        <td></td>
+      </tr>
+    `;
+  }).join("");
+
+  // Generate Protection Trails rows
+  const protectionTrailsRows = protectionTrailsItems.map(item => {
+    const checked = formData.protectionTrails?.[`${item.id}-${item.type}`]?.checked || "";
+    return `
+      <tr>
+        <td><strong>${item.id}</strong></td>
+        <td><strong>${item.description}</strong></td>
+        <td><strong>${item.type}</strong></td>
+        <td>${checked}</td>
+        <td></td>
+      </tr>
+    `;
+  }).join("");
+
   return `
     <div class="form-container">
       <div class="company-header">
         <h2>PRE-CHARGING CHECK LIST</h2>
       </div>
 
-      <h4>I. Valve Status</h4>
-
       <table class="form-table">
         <thead>
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Description</th>
+            <th>Sr.N.</th>
+            <th>Particulars</th>
+            <th>Qty.</th>
             <th>Status</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
+          ${valveStatusRows}
           <tr>
-            <td><strong>Drain valve of main tank</strong></td>
-            <td>${formData.drainValveMainTank || ""}</td>
+            <td><strong>II</strong></td>
+            <td><strong>Air Venting Done from Following Locations:</strong></td>
+            <td></td>
+            <td></td>
+            <td></td>
           </tr>
+          ${airVentingRows}
           <tr>
-            <td><strong>Drain valve of conservator</strong></td>
-            <td>${formData.drainValveConservator || ""}</td>
+            <td><strong>III</strong></td>
+            <td><strong>Protection Trails</strong></td>
+            <td></td>
+            <td><strong>Checked</strong></td>
+            <td></td>
           </tr>
-          <tr>
-            <td><strong>Drain valve of cooler bank</strong></td>
-            <td>${formData.drainValveCoolerBank || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>Sampling valve</strong></td>
-            <td>${formData.samplingValve || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>Filtration valve</strong></td>
-            <td>${formData.filtrationValve || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>Nitrogen valve</strong></td>
-            <td>${formData.nitrogenValve || ""}</td>
-          </tr>
+          ${protectionTrailsRows}
         </tbody>
       </table>
 
-      <h4 style="margin-top: 40px;">II. Air Venting Done from Following Locations</h4>
-
-      <table class="form-table">
-        <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Location</th>
-            <th>Status</th>
-          </tr>
-        </thead>
+      <table class="form-table" style="margin-top: 20px;">
         <tbody>
           <tr>
-            <td><strong>HV bushing</strong></td>
-            <td>${formData.hvBushing || ""}</td>
+            <td></td>
+            <td><strong>TRIP</strong></td>
+            <td></td>
+            <td></td>
           </tr>
           <tr>
-            <td><strong>LV bushing</strong></td>
-            <td>${formData.lvBushing || ""}</td>
+            <td><strong>IV</strong></td>
+            <td><strong>Bushing Test Tap</strong></td>
+            <td><strong>HV</strong></td>
+            <td><strong>LV</strong></td>
           </tr>
           <tr>
-            <td><strong>Neutral bushing</strong></td>
-            <td>${formData.neutralBushing || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>Cooler bank</strong></td>
-            <td>${formData.coolerBank || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>Main tank</strong></td>
-            <td>${formData.mainTank || ""}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h4 style="margin-top: 40px;">III. Protection Trails</h4>
-
-      <table class="form-table">
-        <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Protection Type</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Buchholz relay</strong></td>
-            <td>${formData.buchholzRelay || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>PRV</strong></td>
-            <td>${formData.prv || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>WTI</strong></td>
-            <td>${formData.wti || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>OTI</strong></td>
-            <td>${formData.oti || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>Oil level gauge</strong></td>
-            <td>${formData.oilLevelGauge || ""}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h4 style="margin-top: 40px;">IV. Bushing Test Tap</h4>
-
-      <table class="form-table">
-        <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Bushing</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>HV bushing test tap covered</strong></td>
-            <td>${formData.hvBushingTestTap || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>LV bushing test tap covered</strong></td>
-            <td>${formData.lvBushingTestTap || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>Neutral bushing test tap covered</strong></td>
-            <td>${formData.neutralBushingTestTap || ""}</td>
+            <td></td>
+            <td><strong>Test Cap Earthed</strong></td>
+            <td>${formData.bushingTestTap?.hvTestCapEarthed || ""}</td>
+            <td>${formData.bushingTestTap?.lvTestCapEarthed || ""}</td>
           </tr>
         </tbody>
       </table>
