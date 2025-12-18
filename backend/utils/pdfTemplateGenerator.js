@@ -2480,7 +2480,7 @@ export function generateHTMLTemplate(data, projectName, companyName) {
               return `
                 <!-- Overlay Stage 6 Form 1 data on LastPage.jpg -->
                 <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; font-family: Helvetica, Arial, sans-serif; font-size: 10px; color: #000000;">
-                  ${stage6Data.customerName ? `<div style="position: absolute; left: 130px; top: 318px; width: 200px;">${stage6Data.customerName}</div>` : ''}
+                  ${stage6Data.customerName ? `<div style="position: absolute; left: 128px; top: 318px; width: 200px;">${stage6Data.customerName}</div>` : ''}
                   ${stage6Data.orderNumber ? `<div style="position: absolute; left: 122px; top: 333px; width: 100px;">${stage6Data.orderNumber}</div>` : ''}
                   ${stage6Data.location ? `<div style="position: absolute; left: 80px; top: 351px; width: 150px;">${stage6Data.location}</div>` : ''}
                   ${stage6Data.type ? `<div style="position: absolute; left: 90px; top: 420px; width: 100px;">${stage6Data.type}</div>` : ''}
