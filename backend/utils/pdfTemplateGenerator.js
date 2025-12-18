@@ -1386,66 +1386,6 @@ function generateStage4Form2(formData) {
         </tbody>
       </table>
 
-      <h4 style="margin-top: 40px; text-align: center;">SHORT CIRCUIT</h4>
-
-      <table class="form-table" style="margin-top: 20px;">
-        <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Applied</th>
-            <th>Measured Current</th>
-            <th>Measured Current</th>
-          </tr>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>1.1 - 1.2</th>
-            <th>1.1</th>
-            <th>1.2 - 2.1</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>${formData.shortCircuit_table1_applied || ""}</td>
-            <td>${formData.shortCircuit_table1_measured11 || ""}</td>
-            <td>${formData.shortCircuit_table1_measured12_21 || ""}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <table class="form-table" style="margin-top: 20px;">
-        <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>1.2 - 2.1</th>
-            <th>1.2</th>
-            <th>1.1 - 2.1</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>${formData.shortCircuit_table2_12_21 || ""}</td>
-            <td>${formData.shortCircuit_table2_measured12 || ""}</td>
-            <td>${formData.shortCircuit_table2_measured11_21 || ""}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h4 style="margin-top: 40px; text-align: center;">TYPE OF TEST – VOLTAGE RATIO TEST</h4>
-
-      <table class="form-table">
-        <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Applied Voltage</th>
-            <th colspan="2">Measured Voltage</th>
-          </tr>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>1.1 – 1.2</th>
-            <th>1.1 – 2.1</th>
-            <th>1.2 – 2.1</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${voltageRatioRows}
-        </tbody>
-      </table>
-
       <h4 style="margin-top: 40px; text-align: center;">TYPE OF TEST – MAGNETISING CURRENT TEST</h4>
 
       <table class="form-table">
@@ -1614,7 +1554,7 @@ function generateStage4Form4(formData) {
         </tbody>
       </table>
 
-      <h4 style="margin-top: 30px; text-align: center;">ALL MEASUREMENT IN OHMS / MΩ</h4>
+      <h4 style="margin-top: 30px; text-align: center;">ALL MEASUREMENT IN OHMS (Ω)</h4>
 
       <table class="form-table">
         <tbody>
