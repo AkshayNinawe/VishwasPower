@@ -1859,141 +1859,135 @@ function generateStage5Form2(formData) {
         <h2>PRE-CHARGING CHECK LIST - PART 2</h2>
       </div>
 
-      <h4>V. Oil Values</h4>
-      <table class="form-table">
-        <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Parameter</th>
-            <th>Value</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>BDV</strong></td>
-            <td>${formData.bdvKV || ""} KV</td>
-          </tr>
-          <tr>
-            <td><strong>Moisture Content</strong></td>
-            <td>${formData.moistureContentPPM || ""} PPM</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h4 style="margin-top: 40px;">VI. Final IR Values</h4>
       <table class="form-table">
         <thead>
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
             <th></th>
-            <th>15 sec MΩ</th>
-            <th>60 sec MΩ</th>
-            <th>600 sec MΩ</th>
-            <th>PI (600/60)</th>
+            <th>Oil Values</th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>HV-Earth</strong></td>
+            <td><strong>V</strong></td>
+            <td><strong>BDV</strong></td>
+            <td>${formData.bdvKV || ""}</td>
+            <td><strong>KV</strong></td>
+          </tr>
+          <tr>
+            <td><strong>2</strong></td>
+            <td><strong>Moisture Content</strong></td>
+            <td>${formData.moistureContentPPM || ""}</td>
+            <td><strong>PPM</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="form-table" style="margin-top: 20px;">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th></th>
+            <th>Final IR Values</th>
+            <th>15 sec.</th>
+            <th>60 sec.</th>
+            <th>600 sec.</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>VI</strong></td>
+            <td><strong>HV – E</strong></td>
             <td>${formData.hvEarth15Sec || ""}</td>
             <td>${formData.hvEarth60Sec || ""}</td>
             <td>${formData.hvEarth600Sec || ""}</td>
-            <td>${formData.hvEarthPI || ""}</td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style="margin-top: 40px;">VII. Oil Level of conservator</h4>
-      <table class="form-table">
+      <table class="form-table" style="margin-top: 20px;">
         <tbody>
           <tr>
-            <td><strong>Status:</strong></td>
+            <td><strong>VII</strong></td>
+            <td><strong>Oil Level of conservator</strong></td>
             <td>${formData.oilLevelConservator || ""}</td>
+            <td></td>
           </tr>
-        </tbody>
-      </table>
-
-      <h4 style="margin-top: 40px;">VIII. HV Jumpers connected</h4>
-      <table class="form-table">
-        <tbody>
           <tr>
-            <td><strong>Status:</strong></td>
+            <td><strong>VIII</strong></td>
+            <td><strong>HV Jumpers connected</strong></td>
             <td>${formData.hvJumpersConnected || ""}</td>
+            <td></td>
           </tr>
-        </tbody>
-      </table>
-
-      <h4 style="margin-top: 40px;">IX. LV Jumpers connected</h4>
-      <table class="form-table">
-        <tbody>
           <tr>
-            <td><strong>Status:</strong></td>
+            <td><strong>IX</strong></td>
+            <td><strong>LV Jumpers connected</strong></td>
             <td>${formData.lvJumpersConnected || ""}</td>
+            <td></td>
           </tr>
-        </tbody>
-      </table>
-
-      <h4 style="margin-top: 40px;">X. Incoming LA Counter</h4>
-      <table class="form-table">
-        <tbody>
           <tr>
-            <td><strong>Counter Reading:</strong></td>
+            <td><strong>X</strong></td>
+            <td><strong>Incoming LA Counter</strong></td>
             <td>${formData.incomingLACounter || ""}</td>
+            <td></td>
           </tr>
-        </tbody>
-      </table>
-
-      <h4 style="margin-top: 40px;">XI. Outgoing LA Counter</h4>
-      <table class="form-table">
-        <tbody>
           <tr>
-            <td><strong>Counter Reading:</strong></td>
+            <td><strong>XI</strong></td>
+            <td><strong>Outgoing LA Counter</strong></td>
             <td>${formData.outgoingLACounter || ""}</td>
+            <td></td>
           </tr>
-        </tbody>
-      </table>
-
-      <h4 style="margin-top: 40px;">XII. All CT Cable Terminated and Glands Sealed</h4>
-      <table class="form-table">
-        <tbody>
           <tr>
-            <td><strong>Status:</strong></td>
+            <td><strong>XII</strong></td>
+            <td><strong>All CT Cable Terminated and Glands Sealed</strong></td>
             <td>${formData.allCTCableTerminated || ""}</td>
+            <td></td>
           </tr>
-        </tbody>
-      </table>
-
-      <h4 style="margin-top: 40px;">XIII. Protection relays checked through breaker tripping</h4>
-      <table class="form-table">
-        <tbody>
           <tr>
-            <td><strong>Status:</strong></td>
+            <td><strong>XIII</strong></td>
+            <td><strong>Protection relays checked through breaker tripping</strong></td>
             <td>${formData.protectionRelaysChecked || ""}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>1</strong></td>
+            <td><strong>Anabond applied to HV Bushings</strong></td>
+            <td>${formData.anabondAppliedHVBushings || ""}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>2</strong></td>
+            <td><strong>All joints properly sealed against Water Ingress</strong></td>
+            <td>${formData.allJointsSealed || ""}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>3</strong></td>
+            <td><strong>All Foreign material cleared from Transformer</strong></td>
+            <td>${formData.allForeignMaterialCleared || ""}</td>
+            <td></td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style="margin-top: 40px;">Temperature Readings</h4>
-      <table class="form-table">
-        <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Parameter</th>
-            <th>Value (°C)</th>
-          </tr>
-        </thead>
+      <table class="form-table" style="margin-top: 20px;">
         <tbody>
           <tr>
+            <td><strong>Temperature of</strong></td>
+            <td><strong>°C</strong></td>
             <td><strong>WTI</strong></td>
             <td>${formData.temperatureWTI || ""}</td>
-          </tr>
-          <tr>
             <td><strong>OTI</strong></td>
             <td>${formData.temperatureOTI || ""}</td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style="margin-top: 40px;">Remarks</h4>
-      <div style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 15px; min-height: 100px; background: #f7fafc;">
-        ${formData.remarks || ""}
+      <div style="margin-top: 30px;">
+        <h4><strong>Remarks:</strong></h4>
+        <div style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 15px; min-height: 100px; background: #f7fafc;">
+          ${formData.remarks || "The Transformer as mentioned above has been jointly cleared for charging. All the necessary pre-commissioning checks and protection trials have been found satisfactory. Transformer has been cleared from all foreign material and is ready for charging."}
+        </div>
       </div>
 
       ${generatePhotoThumbnails(formData.photos)}
