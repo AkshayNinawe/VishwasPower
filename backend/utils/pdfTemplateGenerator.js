@@ -2480,7 +2480,7 @@ export function generateHTMLTemplate(data, projectName, companyName) {
               return `
                 <!-- Overlay Stage 6 Form 1 data on LastPage.jpg -->
                 <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; font-family: Helvetica, Arial, sans-serif; font-size: 10px; color: #000000;">
-                  ${stage6Data.customerName ? `<div style="position: absolute; left: 150px; top: 323px; width: 200px;">${stage6Data.customerName}</div>` : ''}
+                  ${stage6Data.customerName ? `<div style="position: absolute; left: 130px; top: 318px; width: 200px;">${stage6Data.customerName}</div>` : ''}
                   ${stage6Data.orderNumber ? `<div style="position: absolute; left: 122px; top: 333px; width: 100px;">${stage6Data.orderNumber}</div>` : ''}
                   ${stage6Data.location ? `<div style="position: absolute; left: 80px; top: 351px; width: 150px;">${stage6Data.location}</div>` : ''}
                   ${stage6Data.type ? `<div style="position: absolute; left: 90px; top: 420px; width: 100px;">${stage6Data.type}</div>` : ''}
@@ -2490,7 +2490,7 @@ export function generateHTMLTemplate(data, projectName, companyName) {
                   ${stage6Data.serialNumber ? `<div style="position: absolute; left: 120px; top: 497px; width: 200px;">${stage6Data.serialNumber}</div>` : ''}
                   ${stage6Data.completionDate ? `<div style="position: absolute; left: 350px; top: 440px; width: 150px;">${stage6Data.completionDate}</div>` : ''}
                   ${stage6Data.chargingDate ? `<div style="position: absolute; left: 350px; top: 456px; width: 150px;">${stage6Data.chargingDate}</div>` : ''}
-                  ${stage6Data.commissioningDate ? `<div style="position: absolute; left: 420px; top: 455px; width: 150px;">${stage6Data.commissioningDate}</div>` : ''}
+                  ${stage6Data.commissioningDate ? `<div style="position: absolute; left: 430px; top: 555px; width: 150px;">${stage6Data.commissioningDate}</div>` : ''}
                   
                   ${stage6Data.signatures ? (() => {
                     const signatures = stage6Data.signatures;
