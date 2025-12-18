@@ -2489,8 +2489,8 @@ export function generateHTMLTemplate(data, projectName, companyName) {
                   ${stage6Data.make ? `<div style="position: absolute; left: 76px; top: 477px; width: 150px;">${stage6Data.make}</div>` : ''}
                   ${stage6Data.serialNumber ? `<div style="position: absolute; left: 120px; top: 497px; width: 200px;">${stage6Data.serialNumber}</div>` : ''}
                   ${stage6Data.completionDate ? `<div style="position: absolute; left: 350px; top: 440px; width: 150px;">${stage6Data.completionDate}</div>` : ''}
-                  ${stage6Data.chargingDate ? `<div style="position: absolute; left: 350px; top: 456px; width: 150px;">${stage6Data.chargingDate}</div>` : ''}
-                  ${stage6Data.commissioningDate ? `<div style="position: absolute; left: 430px; top: 555px; width: 150px;">${stage6Data.commissioningDate}</div>` : ''}
+                  ${stage6Data.chargingDate ? `<div style="position: absolute; left: 430px; top: 600px; width: 150px;">${stage6Data.chargingDate}</div>` : ''}
+                  ${stage6Data.commissioningDate ? `<div style="position: absolute; left: 425px; top: 600px; width: 150px;">${stage6Data.commissioningDate}</div>` : ''}
                   
                   ${stage6Data.signatures ? (() => {
                     const signatures = stage6Data.signatures;
