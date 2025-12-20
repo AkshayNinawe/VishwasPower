@@ -2792,6 +2792,8 @@ function RecordOilHandlingForm({
   onPrevious,
   initialData,
   isLastFormOfStage,
+  companyName,
+  projectName,
 }) {
   const [formData, setFormData] = useState({
     tank1NoOfBarrels: initialData.tank1NoOfBarrels || "",
@@ -2814,6 +2816,86 @@ function RecordOilHandlingForm({
     photos: initialData.photos || {},
     ...initialData,
   });
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.post(
+          `${BACKEND_API_BASE_URL}/api/autoData/getTable`,
+          {
+            companyName: companyName,
+            projectName: projectName,
+            stage: 2,
+            formNumber: 1,
+          }
+        );
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage2Form1");
+          const fetchedData = response.data.data;
+          
+          // Ensure filtrationRecords has the correct structure and always has 10 rows
+          let filtrationRecords = Array(10).fill().map((_, index) => ({
+            date: "",
+            time: "",
+            vacuumLevel: "",
+            inletTemp: "",
+            outletTemp: "",
+            remark: "",
+          }));
+          
+          // If we have existing data, merge it with the default structure
+          if (fetchedData.filtrationRecords && Array.isArray(fetchedData.filtrationRecords)) {
+            fetchedData.filtrationRecords.forEach((record, index) => {
+              if (index < 10 && record) {
+                filtrationRecords[index] = {
+                  date: record.date || "",
+                  time: record.time || "",
+                  vacuumLevel: record.vacuumLevel || "",
+                  inletTemp: record.inletTemp || "",
+                  outletTemp: record.outletTemp || "",
+                  remark: record.remark || "",
+                };
+              }
+            });
+          }
+          
+          setFormData({
+            ...fetchedData,
+            filtrationRecords: filtrationRecords
+          });
+        } else {
+          console.log("There is no data in DB.");
+          // Initialize with default structure when no data exists
+          setFormData(prev => ({
+            ...prev,
+            filtrationRecords: Array(10).fill().map(() => ({
+              date: "",
+              time: "",
+              vacuumLevel: "",
+              inletTemp: "",
+              outletTemp: "",
+              remark: "",
+            }))
+          }));
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        // Initialize with default structure on error
+        setFormData(prev => ({
+          ...prev,
+          filtrationRecords: Array(10).fill().map(() => ({
+            date: "",
+            time: "",
+            vacuumLevel: "",
+            inletTemp: "",
+            outletTemp: "",
+            remark: "",
+          }))
+        }));
+      }
+    };
+    fetchFormData();
+  }, [projectName, companyName]);
 
   const handleFiltrationRecordChange = (index, field, value) => {
     const updatedRecords = [...formData.filtrationRecords];
@@ -3049,6 +3131,8 @@ function IRAfterErectionStage2Form({
   onPrevious,
   initialData,
   isLastFormOfStage,
+  companyName,
+  projectName,
 }) {
   const [formData, setFormData] = useState({
     tempOTI: initialData.tempOTI || "",
@@ -3063,6 +3147,31 @@ function IRAfterErectionStage2Form({
     photos: initialData.photos || {},
     ...initialData,
   });
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.post(
+          `${BACKEND_API_BASE_URL}/api/autoData/getTable`,
+          {
+            companyName: companyName,
+            projectName: projectName,
+            stage: 2,
+            formNumber: 2,
+          }
+        );
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage2Form2");
+          setFormData(response.data.data);
+        } else {
+          console.log("There is no data in DB.");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchFormData();
+  }, [projectName, companyName]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -3279,6 +3388,8 @@ function BeforeOilFillingPressureTestForm({
   onPrevious,
   initialData,
   isLastFormOfStage,
+  companyName,
+  projectName,
 }) {
   const [formData, setFormData] = useState({
     bdvKV: initialData.bdvKV || "",
@@ -3294,8 +3405,8 @@ function BeforeOilFillingPressureTestForm({
       initialData.pressureTestRecords ||
       Array(6)
         .fill()
-        .map(() => ({
-          srNo: "",
+        .map((_, index) => ({
+          srNo: (index + 1).toString(),
           timeStarted: "",
           pressureKgCm2: "",
           tempAmb: "",
@@ -3304,6 +3415,86 @@ function BeforeOilFillingPressureTestForm({
         })),
     ...initialData,
   });
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.post(
+          `${BACKEND_API_BASE_URL}/api/autoData/getTable`,
+          {
+            companyName: companyName,
+            projectName: projectName,
+            stage: 3,
+            formNumber: 1,
+          }
+        );
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage3Form1");
+          const fetchedData = response.data.data;
+          
+          // Ensure pressureTestRecords has the correct structure and always has 6 rows
+          let pressureTestRecords = Array(6).fill().map((_, index) => ({
+            srNo: (index + 1).toString(),
+            timeStarted: "",
+            pressureKgCm2: "",
+            tempAmb: "",
+            tempOTI: "",
+            tempWTI: "",
+          }));
+          
+          // If we have existing data, merge it with the default structure
+          if (fetchedData.pressureTestRecords && Array.isArray(fetchedData.pressureTestRecords)) {
+            fetchedData.pressureTestRecords.forEach((record, index) => {
+              if (index < 6 && record) {
+                pressureTestRecords[index] = {
+                  srNo: (index + 1).toString(),
+                  timeStarted: record.timeStarted || "",
+                  pressureKgCm2: record.pressureKgCm2 || "",
+                  tempAmb: record.tempAmb || "",
+                  tempOTI: record.tempOTI || "",
+                  tempWTI: record.tempWTI || "",
+                };
+              }
+            });
+          }
+          
+          setFormData({
+            ...fetchedData,
+            pressureTestRecords: pressureTestRecords
+          });
+        } else {
+          console.log("There is no data in DB.");
+          // Initialize with default structure when no data exists
+          setFormData(prev => ({
+            ...prev,
+            pressureTestRecords: Array(6).fill().map((_, index) => ({
+              srNo: (index + 1).toString(),
+              timeStarted: "",
+              pressureKgCm2: "",
+              tempAmb: "",
+              tempOTI: "",
+              tempWTI: "",
+            }))
+          }));
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        // Initialize with default structure on error
+        setFormData(prev => ({
+          ...prev,
+          pressureTestRecords: Array(6).fill().map((_, index) => ({
+            srNo: (index + 1).toString(),
+            timeStarted: "",
+            pressureKgCm2: "",
+            tempAmb: "",
+            tempOTI: "",
+            tempWTI: "",
+          }))
+        }));
+      }
+    };
+    fetchFormData();
+  }, [projectName, companyName]);
 
   const handlePressureTestRecordChange = (index, field, value) => {
     const updatedRecords = [...formData.pressureTestRecords];
@@ -3570,6 +3761,8 @@ function RecordOilFiltrationMainTankForm({
   onPrevious,
   initialData,
   isLastFormOfStage,
+  companyName,
+  projectName,
 }) {
   const [formData, setFormData] = useState({
     filtrationRecords:
@@ -3593,6 +3786,90 @@ function RecordOilFiltrationMainTankForm({
     ratioIR60IR15: initialData.ratioIR60IR15 || "",
     ...initialData,
   });
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.post(
+          `${BACKEND_API_BASE_URL}/api/autoData/getTable`,
+          {
+            companyName: companyName,
+            projectName: projectName,
+            stage: 3,
+            formNumber: 2,
+          }
+        );
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage3Form2");
+          const fetchedData = response.data.data;
+          
+          // Ensure filtrationRecords has the correct structure and always has 15 rows
+          let filtrationRecords = Array(15).fill().map((_, index) => ({
+            date: "",
+            time: "",
+            vacuumLevel: "",
+            mcOutletTemp: "",
+            otiTemp: "",
+            wtiTemp: "",
+            remark: "",
+          }));
+          
+          // If we have existing data, merge it with the default structure
+          if (fetchedData.filtrationRecords && Array.isArray(fetchedData.filtrationRecords)) {
+            fetchedData.filtrationRecords.forEach((record, index) => {
+              if (index < 15 && record) {
+                filtrationRecords[index] = {
+                  date: record.date || "",
+                  time: record.time || "",
+                  vacuumLevel: record.vacuumLevel || "",
+                  mcOutletTemp: record.mcOutletTemp || "",
+                  otiTemp: record.otiTemp || "",
+                  wtiTemp: record.wtiTemp || "",
+                  remark: record.remark || "",
+                };
+              }
+            });
+          }
+          
+          setFormData({
+            ...fetchedData,
+            filtrationRecords: filtrationRecords
+          });
+        } else {
+          console.log("There is no data in DB.");
+          // Initialize with default structure when no data exists
+          setFormData(prev => ({
+            ...prev,
+            filtrationRecords: Array(15).fill().map(() => ({
+              date: "",
+              time: "",
+              vacuumLevel: "",
+              mcOutletTemp: "",
+              otiTemp: "",
+              wtiTemp: "",
+              remark: "",
+            }))
+          }));
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        // Initialize with default structure on error
+        setFormData(prev => ({
+          ...prev,
+          filtrationRecords: Array(15).fill().map(() => ({
+            date: "",
+            time: "",
+            vacuumLevel: "",
+            mcOutletTemp: "",
+            otiTemp: "",
+            wtiTemp: "",
+            remark: "",
+          }))
+        }));
+      }
+    };
+    fetchFormData();
+  }, [projectName, companyName]);
 
   const handleFiltrationRecordChange = (index, field, value) => {
     const updatedRecords = [...formData.filtrationRecords];
@@ -3818,6 +4095,8 @@ function OilFiltrationRadiatorCombineForm({
   onPrevious,
   initialData,
   isLastFormOfStage,
+  companyName,
+  projectName,
 }) {
   const [formData, setFormData] = useState({
     // Oil filtration of Radiator records
@@ -3862,6 +4141,137 @@ function OilFiltrationRadiatorCombineForm({
     photos: initialData.photos || {},
     ...initialData,
   });
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.post(
+          `${BACKEND_API_BASE_URL}/api/autoData/getTable`,
+          {
+            companyName: companyName,
+            projectName: projectName,
+            stage: 3,
+            formNumber: 3,
+          }
+        );
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage3Form3");
+          const fetchedData = response.data.data;
+          
+          // Ensure radiatorRecords has the correct structure and always has 5 rows
+          let radiatorRecords = Array(5).fill().map(() => ({
+            date: "",
+            time: "",
+            vacuumLevel: "",
+            mcOutletTemp: "",
+            otiTemp: "",
+            wtiTemp: "",
+            remark: "",
+          }));
+          
+          // If we have existing data, merge it with the default structure
+          if (fetchedData.radiatorRecords && Array.isArray(fetchedData.radiatorRecords)) {
+            fetchedData.radiatorRecords.forEach((record, index) => {
+              if (index < 5 && record) {
+                radiatorRecords[index] = {
+                  date: record.date || "",
+                  time: record.time || "",
+                  vacuumLevel: record.vacuumLevel || "",
+                  mcOutletTemp: record.mcOutletTemp || "",
+                  otiTemp: record.otiTemp || "",
+                  wtiTemp: record.wtiTemp || "",
+                  remark: record.remark || "",
+                };
+              }
+            });
+          }
+          
+          // Ensure combineRecords has the correct structure and always has 5 rows
+          let combineRecords = Array(5).fill().map(() => ({
+            date: "",
+            time: "",
+            vacuumLevel: "",
+            mcOutletTemp: "",
+            otiTemp: "",
+            wtiTemp: "",
+            remark: "",
+          }));
+          
+          // If we have existing data, merge it with the default structure
+          if (fetchedData.combineRecords && Array.isArray(fetchedData.combineRecords)) {
+            fetchedData.combineRecords.forEach((record, index) => {
+              if (index < 5 && record) {
+                combineRecords[index] = {
+                  date: record.date || "",
+                  time: record.time || "",
+                  vacuumLevel: record.vacuumLevel || "",
+                  mcOutletTemp: record.mcOutletTemp || "",
+                  otiTemp: record.otiTemp || "",
+                  wtiTemp: record.wtiTemp || "",
+                  remark: record.remark || "",
+                };
+              }
+            });
+          }
+          
+          setFormData({
+            ...fetchedData,
+            radiatorRecords: radiatorRecords,
+            combineRecords: combineRecords
+          });
+        } else {
+          console.log("There is no data in DB.");
+          // Initialize with default structure when no data exists
+          setFormData(prev => ({
+            ...prev,
+            radiatorRecords: Array(5).fill().map(() => ({
+              date: "",
+              time: "",
+              vacuumLevel: "",
+              mcOutletTemp: "",
+              otiTemp: "",
+              wtiTemp: "",
+              remark: "",
+            })),
+            combineRecords: Array(5).fill().map(() => ({
+              date: "",
+              time: "",
+              vacuumLevel: "",
+              mcOutletTemp: "",
+              otiTemp: "",
+              wtiTemp: "",
+              remark: "",
+            }))
+          }));
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        // Initialize with default structure on error
+        setFormData(prev => ({
+          ...prev,
+          radiatorRecords: Array(5).fill().map(() => ({
+            date: "",
+            time: "",
+            vacuumLevel: "",
+            mcOutletTemp: "",
+            otiTemp: "",
+            wtiTemp: "",
+            remark: "",
+          })),
+          combineRecords: Array(5).fill().map(() => ({
+            date: "",
+            time: "",
+            vacuumLevel: "",
+            mcOutletTemp: "",
+            otiTemp: "",
+            wtiTemp: "",
+            remark: "",
+          }))
+        }));
+      }
+    };
+    fetchFormData();
+  }, [projectName, companyName]);
 
   const handleRadiatorRecordChange = (index, field, value) => {
     const updatedRecords = [...formData.radiatorRecords];
@@ -4237,6 +4647,8 @@ function SFRATestRecordForm({
   onPrevious,
   initialData,
   isLastFormOfStage,
+  companyName,
+  projectName,
 }) {
   const [formData, setFormData] = useState({
     makeOfMeter: initialData.makeOfMeter || "",
@@ -4303,6 +4715,31 @@ function SFRATestRecordForm({
     hvg_10kv_dielectricLoss: initialData.hvg_10kv_dielectricLoss || "",
     ...initialData,
   });
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.post(
+          `${BACKEND_API_BASE_URL}/api/autoData/getTable`,
+          {
+            companyName: companyName,
+            projectName: projectName,
+            stage: 4,
+            formNumber: 1,
+          }
+        );
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage4Form1");
+          setFormData(response.data.data);
+        } else {
+          console.log("There is no data in DB.");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchFormData();
+  }, [projectName, companyName]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -5078,6 +5515,8 @@ function IRVoltageRatioMagnetisingTestForm({
   onPrevious,
   initialData,
   isLastFormOfStage,
+  companyName,
+  projectName,
 }) {
   const [formData, setFormData] = useState({
     // IR Values section
@@ -5122,6 +5561,74 @@ function IRVoltageRatioMagnetisingTestForm({
     ],
     ...initialData,
   });
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.post(
+          `${BACKEND_API_BASE_URL}/api/autoData/getTable`,
+          {
+            companyName: companyName,
+            projectName: projectName,
+            stage: 4,
+            formNumber: 2,
+          }
+        );
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage4Form2");
+          const fetchedData = response.data.data;
+          
+          // Ensure magnetisingTests has the correct structure and always has 3 rows
+          let magnetisingTests = [
+            { appliedVoltage: "1.1 –1.2", appliedVoltageValue: "", measuredCurrent: "" },
+            { appliedVoltage: "1.1 – 2.1", appliedVoltageValue: "", measuredCurrent: "" },
+            { appliedVoltage: "2.1 – 1.2", appliedVoltageValue: "", measuredCurrent: "" },
+          ];
+          
+          // If we have existing data, merge it with the default structure
+          if (fetchedData.magnetisingTests && Array.isArray(fetchedData.magnetisingTests)) {
+            fetchedData.magnetisingTests.forEach((test, index) => {
+              if (index < 3 && test) {
+                magnetisingTests[index] = {
+                  appliedVoltage: magnetisingTests[index].appliedVoltage, // Keep the default labels
+                  appliedVoltageValue: test.appliedVoltageValue || "",
+                  measuredCurrent: test.measuredCurrent || "",
+                };
+              }
+            });
+          }
+          
+          setFormData({
+            ...fetchedData,
+            magnetisingTests: magnetisingTests
+          });
+        } else {
+          console.log("There is no data in DB.");
+          // Initialize with default structure when no data exists
+          setFormData(prev => ({
+            ...prev,
+            magnetisingTests: [
+              { appliedVoltage: "1.1 –1.2", appliedVoltageValue: "", measuredCurrent: "" },
+              { appliedVoltage: "1.1 – 2.1", appliedVoltageValue: "", measuredCurrent: "" },
+              { appliedVoltage: "2.1 – 1.2", appliedVoltageValue: "", measuredCurrent: "" },
+            ]
+          }));
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        // Initialize with default structure on error
+        setFormData(prev => ({
+          ...prev,
+          magnetisingTests: [
+            { appliedVoltage: "1.1 –1.2", appliedVoltageValue: "", measuredCurrent: "" },
+            { appliedVoltage: "1.1 – 2.1", appliedVoltageValue: "", measuredCurrent: "" },
+            { appliedVoltage: "2.1 – 1.2", appliedVoltageValue: "", measuredCurrent: "" },
+          ]
+        }));
+      }
+    };
+    fetchFormData();
+  }, [projectName, companyName]);
 
   const handleMagnetisingTestChange = (index, field, value) => {
     const updatedTests = [...formData.magnetisingTests];
@@ -5583,6 +6090,8 @@ function ShortCircuitTestForm({
   onPrevious,
   initialData,
   isLastFormOfStage,
+  companyName,
+  projectName,
 }) {
   const [formData, setFormData] = useState({
     appliedVoltage: initialData.appliedVoltage || "",
@@ -5605,6 +6114,31 @@ function ShortCircuitTestForm({
     measuredCurrentLV: initialData.measuredCurrentLV || "",
     ...initialData,
   });
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.post(
+          `${BACKEND_API_BASE_URL}/api/autoData/getTable`,
+          {
+            companyName: companyName,
+            projectName: projectName,
+            stage: 4,
+            formNumber: 3,
+          }
+        );
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage4Form3");
+          setFormData(response.data.data);
+        } else {
+          console.log("There is no data in DB.");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchFormData();
+  }, [projectName, companyName]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -5891,6 +6425,8 @@ function WindingResistanceIRPITestForm({
   onPrevious,
   initialData,
   isLastFormOfStage,
+  companyName,
+  projectName,
 }) {
   const [formData, setFormData] = useState({
     // Winding Resistance Test
@@ -5933,6 +6469,31 @@ function WindingResistanceIRPITestForm({
     photos: initialData.photos || {},
     ...initialData,
   });
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.post(
+          `${BACKEND_API_BASE_URL}/api/autoData/getTable`,
+          {
+            companyName: companyName,
+            projectName: projectName,
+            stage: 4,
+            formNumber: 4,
+          }
+        );
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage4Form4");
+          setFormData(response.data.data);
+        } else {
+          console.log("There is no data in DB.");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchFormData();
+  }, [projectName, companyName]);
 
   const handleSignatureChange = (key, type, value) => {
     setFormData((prev) => ({
@@ -6365,8 +6926,8 @@ function WindingResistanceIRPITestForm({
       <DigitalSignatureSection
         signatures={signatureRequirements.map((sig) => ({
           ...sig,
-          nameValue: formData.signatures[`${sig.key}Name`] || "",
-          signature: formData.signatures[`${sig.key}Signature`] || "",
+          nameValue: formData.signatures?.[`${sig.key}Name`] || "",
+          signature: formData.signatures?.[`${sig.key}Signature`] || "",
         }))}
         onSignatureChange={handleSignatureChange}
       />
@@ -6393,6 +6954,8 @@ function PreChargingChecklistForm({
   onPrevious,
   initialData,
   isLastFormOfStage,
+  companyName,
+  projectName,
 }) {
   const [formData, setFormData] = useState({
     // Valve Status
@@ -6405,6 +6968,31 @@ function PreChargingChecklistForm({
     bushingTestTap: initialData.bushingTestTap || {},
     ...initialData,
   });
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.post(
+          `${BACKEND_API_BASE_URL}/api/autoData/getTable`,
+          {
+            companyName: companyName,
+            projectName: projectName,
+            stage: 5,
+            formNumber: 1,
+          }
+        );
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage5Form1");
+          setFormData(response.data.data);
+        } else {
+          console.log("There is no data in DB.");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchFormData();
+  }, [projectName, companyName]);
 
   const valveStatusItems = [
     { id: "I", description: "Valve Status" },
@@ -6694,6 +7282,8 @@ function PreChargingChecklistPart2Form({
   onPrevious,
   initialData,
   isLastFormOfStage,
+  companyName,
+  projectName,
 }) {
   const [formData, setFormData] = useState({
     // Oil Values
@@ -6739,6 +7329,31 @@ function PreChargingChecklistPart2Form({
     photos: initialData.photos || {},
     ...initialData,
   });
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.post(
+          `${BACKEND_API_BASE_URL}/api/autoData/getTable`,
+          {
+            companyName: companyName,
+            projectName: projectName,
+            stage: 5,
+            formNumber: 2,
+          }
+        );
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage5Form2");
+          setFormData(response.data.data);
+        } else {
+          console.log("There is no data in DB.");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchFormData();
+  }, [projectName, companyName]);
 
   const handleSignatureChange = (key, type, value) => {
     setFormData((prev) => ({
@@ -7250,6 +7865,8 @@ function WorkCompletionReportForm({
   onPrevious,
   initialData,
   isLastFormOfStage,
+  companyName,
+  projectName,
 }) {
   const [formData, setFormData] = useState({
     // Project Information
@@ -7279,6 +7896,31 @@ function WorkCompletionReportForm({
     },
     ...initialData,
   });
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.post(
+          `${BACKEND_API_BASE_URL}/api/autoData/getTable`,
+          {
+            companyName: companyName,
+            projectName: projectName,
+            stage: 6,
+            formNumber: 1,
+          }
+        );
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage6Form1");
+          setFormData(response.data.data);
+        } else {
+          console.log("There is no data in DB.");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchFormData();
+  }, [projectName, companyName]);
 
   const handleSignatureChange = (key, type, value) => {
     setFormData((prev) => ({

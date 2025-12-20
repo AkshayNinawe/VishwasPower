@@ -2426,9 +2426,9 @@ export function generateHTMLTemplate(data, projectName, companyName) {
                   ${stage6Data.voltageRating ? `<div style="position: absolute; left: 125px; top: 457px; width: 200px;">${stage6Data.voltageRating}</div>` : ''}
                   ${stage6Data.make ? `<div style="position: absolute; left: 73px; top: 477px; width: 150px;">${stage6Data.make}</div>` : ''}
                   ${stage6Data.serialNumber ? `<div style="position: absolute; left: 120px; top: 495px; width: 200px;">${stage6Data.serialNumber}</div>` : ''}
-                  ${stage6Data.completionDate ? `<div style="position: absolute; left: 350px; top: 440px; width: 150px;">${stage6Data.completionDate}</div>` : ''}
-                  ${stage6Data.chargingDate ? `<div style="position: absolute; left: 435px; top: 630px; width: 150px;">${stage6Data.chargingDate}</div>` : ''}
-                  ${stage6Data.commissioningDate ? `<div style="position: absolute; left: 485px; top: 630px; width: 150px;">${stage6Data.commissioningDate}</div>` : ''}
+                  ${stage6Data.completionDate ? `<div style="position: absolute; left: 475px; top: 295px; width: 150px;">${stage6Data.completionDate}</div>` : ''}
+                  ${stage6Data.chargingDate ? `<div style="position: absolute; left: 435px; top: 620px; width: 150px;">${stage6Data.chargingDate}</div>` : ''}
+                  ${stage6Data.commissioningDate ? `<div style="position: absolute; left: 510px; top: 620px; width: 150px;">${stage6Data.commissioningDate}</div>` : ''}
                   
                   ${stage6Data.signatures ? (() => {
                     const signatures = stage6Data.signatures;

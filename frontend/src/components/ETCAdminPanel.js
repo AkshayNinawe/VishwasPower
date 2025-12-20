@@ -2262,8 +2262,21 @@ const ETCAdminPanel = ({
     }
 
     try {
+      // If-else block for three departments
+      let apiEndpoint;
+      if (selectedDepartment.name === 'Auto Transformer') {
+        apiEndpoint = `${BACKEND_API_BASE_URL}/api/autocompany/rejectStage`;
+      } else if (selectedDepartment.name === 'Traction Transformer') {
+        apiEndpoint = `${BACKEND_API_BASE_URL}/api/tractioncompany/rejectStage`;
+      } else if (selectedDepartment.name === 'V Connected 63 MVA Transformer') {
+        apiEndpoint = `${BACKEND_API_BASE_URL}/api/vconnectcompany/rejectStage`;
+      } else {
+        // Fallback to auto transformer API
+        apiEndpoint = `${BACKEND_API_BASE_URL}/api/autoData/rejectStage`;
+      }
+
       const { data } = await axios.post(
-        `${BACKEND_API_BASE_URL}/api/company/rejectStage`,
+        apiEndpoint,
         {
           companyName: selectedProjectForReview.companyName,
           projectName: selectedProjectForReview.name,
