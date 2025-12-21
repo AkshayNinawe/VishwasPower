@@ -2202,7 +2202,7 @@ const ETCAdminPanel = ({
     }
 
     console.log(
-      `Approving stage ${stage} for Project ${selectedProjectForReview.name}`
+      `Approving stage ${selectedProjectForReview.stage} for Project ${selectedProjectForReview.name}`
     );
 
     setSelectedMainCompany((prevCompany) => ({
@@ -2228,10 +2228,10 @@ const ETCAdminPanel = ({
     }));
 
     showNotification(
-      `Stage ${stage} approved for ${selectedProjectForReview.name}! ${
-        stage === 6
+      `Stage ${selectedProjectForReview.stage} approved for ${selectedProjectForReview.name}! ${
+        selectedProjectForReview.stage === 6
           ? "Project completed all stages."
-          : `Stage ${stage + 1} is now available.`
+          : `Stage ${selectedProjectForReview.stage + 1} is now available.`
       }`,
       "success"
     );
