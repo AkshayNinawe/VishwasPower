@@ -7459,9 +7459,9 @@ function PreChargingChecklistPart2Form({
           <tr>
             <th></th>
             <th>Final IR Values</th>
-            <th>15 sec.</th>
-            <th>60 sec.</th>
-            <th>600 sec.</th>
+            <th>15 sec MΩ</th>
+            <th>60 sec MΩ</th>
+            <th>600 sec MΩ</th>
           </tr>
         </thead>
         <tbody>

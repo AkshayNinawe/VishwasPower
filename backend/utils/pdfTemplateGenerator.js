@@ -1829,9 +1829,9 @@ function generateStage5Form2(formData) {
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
             <th></th>
             <th>Final IR Values</th>
-            <th>15 sec.</th>
-            <th>60 sec.</th>
-            <th>600 sec.</th>
+            <th>15 sec MΩ</th>
+            <th>60 sec MΩ</th>
+            <th>600 sec MΩ</th>
           </tr>
         </thead>
         <tbody>
