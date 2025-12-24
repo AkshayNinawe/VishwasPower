@@ -1260,12 +1260,13 @@ function generateStage4Form2(formData) {
 
   // Generate magnetising test rows
   const magnetisingRows = (formData.magnetisingTests || [
-    { appliedVoltage: "1.1 –1.2", measuredCurrent: "" },
-    { appliedVoltage: "1.1 – 2.1", measuredCurrent: "" },
-    { appliedVoltage: "2.1 – 1.2", measuredCurrent: "" }
+    { appliedVoltage: "1.1 –1.2", appliedVoltageValue: "", measuredCurrent: "" },
+    { appliedVoltage: "1.1 – 2.1", appliedVoltageValue: "", measuredCurrent: "" },
+    { appliedVoltage: "2.1 – 1.2", appliedVoltageValue: "", measuredCurrent: "" }
   ]).map((test, index) => `
     <tr>
       <td><strong>${test.appliedVoltage}</strong></td>
+      <td>${test.appliedVoltageValue || ""}</td>
       <td>${test.measuredCurrent || ""}</td>
     </tr>
   `).join("");
@@ -1408,8 +1409,9 @@ function generateStage4Form2(formData) {
       <table class="form-table" style="margin-top: 20px;">
         <thead>
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Applied Voltage</th>
-            <th>Measured Current</th>
+            <th>Connection</th>
+            <th>Applied Voltage (V)</th>
+            <th>Measured Current (mA)</th>
           </tr>
         </thead>
         <tbody>
