@@ -620,6 +620,500 @@ const Stage1Form5 = ({ formData }) => (
   </div>
 );
 
+// Stage 2 Form 1: Record of Oil Handling
+const Stage2Form1 = ({ formData }) => (
+  <div>
+    <div className="company-header">
+      <h2>RECORD OF OIL HANDLING</h2>
+      <h3>TEST VALUES PRIOR TO FILTERATION</h3>
+    </div>
+
+    <h4>Oil Filling in the Reservoirs Tank:</h4>
+
+    <table className="form-table" style={{
+      width: "100%",
+      borderCollapse: "collapse",
+      marginBottom: "20px"
+    }}>
+      <thead>
+        <tr>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}></th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>No of barrels</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Started on Date & time</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Completed on Date & time</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>BDV</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>MOISTURE CONTENT</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <strong>Tank1</strong>
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.tank1NoOfBarrels || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="datetime-local" value={formData.tank1StartedDateTime || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="datetime-local" value={formData.tank1CompletedDateTime || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.tank1BDV || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.tank1MoistureContent || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4 style={{ marginTop: "40px" }}>
+      RECORD FOR OIL FILTRATION IN RESERVOIR TANK
+    </h4>
+
+    <table className="form-table" style={{
+      width: "100%",
+      borderCollapse: "collapse",
+      marginBottom: "20px"
+    }}>
+      <thead>
+        <tr>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Date</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Time</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Vacuum Level (mm/hg or torr)</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Inlet Temp°C</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Outlet Temp°C</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Remark</th>
+        </tr>
+      </thead>
+      <tbody>
+        {formData.filtrationRecords && formData.filtrationRecords.map((record, index) => (
+          <tr key={index}>
+            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+              <input type="date" value={record.date || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+              <input type="time" value={record.time || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+              <input type="text" value={record.vacuumLevel || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+              <input type="text" value={record.inletTemp || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+              <input type="text" value={record.outletTemp || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+              <input type="text" value={record.remark || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+);
+
+// Stage 2 Form 2: IR After Erection - Stage 2 End
+const Stage2Form2 = ({ formData }) => (
+  <div>
+    <div className="company-header">
+      <h2>
+        IR after erection Temp OTI ........°C WTI............°C, AMB........°C
+        &nbsp;&nbsp;&nbsp;&nbsp; RANGE ONLY 1 KV
+      </h2>
+    </div>
+
+    <div className="form-grid" style={{ marginBottom: "20px" }}>
+      <div className="form-group">
+        <label>OTI Temperature (°C):</label>
+        <input
+          type="text"
+          value={formData.tempOTI || ""}
+          disabled
+          className="form-input disabled preview"
+        />
+      </div>
+      <div className="form-group">
+        <label>WTI Temperature (°C):</label>
+        <input
+          type="text"
+          value={formData.tempWTI || ""}
+          disabled
+          className="form-input disabled preview"
+        />
+      </div>
+      <div className="form-group">
+        <label>AMB Temperature (°C):</label>
+        <input
+          type="text"
+          value={formData.tempAMB || ""}
+          disabled
+          className="form-input disabled preview"
+        />
+      </div>
+    </div>
+
+    <table className="form-table" style={{
+      width: "100%",
+      borderCollapse: "collapse",
+      marginBottom: "20px"
+    }}>
+      <thead>
+        <tr>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}></th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>15 Sec MΩ</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>60 Sec MΩ</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Ratio of IR 60/IR 15</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>HV-Earth</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.hvEarth15Sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.hvEarth60Sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.ratioIR60IR15 || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4 style={{ marginTop: "40px" }}>Lead Clearance in mm: -</h4>
+
+    <table className="form-table" style={{
+      width: "100%",
+      borderCollapse: "collapse",
+      marginBottom: "20px"
+    }}>
+      <tbody>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>HV with respect to earth</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input
+              type="text"
+              value={formData.hvWithRespectToEarth || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>LV with respect to earth</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input
+              type="text"
+              value={formData.lvWithRespectToEarth || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Neutral with respect to earth</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input
+              type="text"
+              value={formData.neutralWithRespectToEarth || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+);
+
+
+// Stage 2 Review Renderer Component
+const Stage2ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
+  const stage2Forms = [
+    {
+      id: "record-oil-handling",
+      title: "Record of Oil Handling - Test Values Prior to Filteration",
+      fields: [
+        { name: "tank1StartedDateTime", label: "Tank1 Started Date & Time", type: "datetime-local" },
+        { name: "tank1CompletedDateTime", label: "Tank1 Completed Date & Time", type: "datetime-local" },
+        { name: "oilTemperature", label: "Oil Temperature", type: "text" },
+        { name: "ambientTemperature", label: "Ambient Temperature", type: "text" },
+        { name: "oilLevel", label: "Oil Level", type: "text" },
+        { name: "filtrationMethod", label: "Filtration Method", type: "text" },
+        { name: "remarks", label: "Remarks", type: "textarea" }
+      ]
+    },
+    {
+      id: "ir-after-erection-stage2",
+      title: "IR After Erection - Stage 2 End",
+      fields: [
+        { name: "date", label: "Date", type: "date" },
+        { name: "time", label: "Time", type: "time" },
+        { name: "ambTemp", label: "Amb. Temp", type: "text" },
+        { name: "make", label: "Make", type: "text" },
+        { name: "oilTemp", label: "Oil Temp.", type: "text" },
+        { name: "srNo", label: "Sr. No.", type: "text" },
+        { name: "wdgTemp", label: "Wdg. Temp.", type: "text" },
+        { name: "range", label: "Range", type: "text" },
+        { name: "relativeHumidity", label: "Relative Humidity", type: "text" },
+        { name: "voltageLevel", label: "Voltage Level", type: "text" },
+        { name: "hvEarth15Sec", label: "HV-Earth 15 Sec MΩ", type: "text" },
+        { name: "hvEarth60Sec", label: "HV-Earth 60 Sec MΩ", type: "text" },
+        { name: "hvEarthRatio", label: "HV-Earth Ratio", type: "text" },
+        { name: "lvEarth15Sec", label: "LV-Earth 15 Sec MΩ", type: "text" },
+        { name: "lvEarth60Sec", label: "LV-Earth 60 Sec MΩ", type: "text" },
+        { name: "lvEarthRatio", label: "LV-Earth Ratio", type: "text" },
+        { name: "hvLv15Sec", label: "HV-LV 15 Sec MΩ", type: "text" },
+        { name: "hvLv60Sec", label: "HV-LV 60 Sec MΩ", type: "text" },
+        { name: "hvLvRatio", label: "HV-LV Ratio", type: "text" }
+      ]
+    }
+  ];
+
+  const renderFormField = (field, value, formKey) => {
+    if (field.type === "nested-object" && typeof value === "object" && value !== null) {
+      return (
+        <div key={`${formKey}-${field.name}`} className="form-group-preview nested-object-group">
+          <label className="form-label-preview">
+            📋 {formatLabel(field.label)}
+          </label>
+          <div className="nested-object-display" style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            gap: "15px",
+            marginTop: "10px",
+          }}>
+            {Object.entries(value).map(([nestedKey, nestedValue]) => (
+              <div key={`${field.name}-${nestedKey}`} className="nested-item" style={{
+                padding: "12px",
+                border: "1px solid #e5e7eb",
+                borderRadius: "8px",
+                backgroundColor: "#f9fafb",
+              }}>
+                <h5 style={{
+                  margin: "0 0 10px 0",
+                  color: "#374151",
+                  fontSize: "0.9rem",
+                  fontWeight: "600",
+                }}>
+                  {formatLabel(field.label)} - {nestedKey}
+                </h5>
+                {typeof nestedValue === "object" && nestedValue !== null ? (
+                  <div className="nested-fields-grid" style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                    gap: "10px",
+                  }}>
+                    {Object.entries(nestedValue).map(([subKey, subValue]) => (
+                      <div key={`${nestedKey}-${subKey}`} className="nested-field">
+                        <label className="nested-field-label" style={{
+                          fontSize: "0.8rem",
+                          color: "#6b7280",
+                          fontWeight: "500",
+                        }}>
+                          {formatLabel(subKey)}:
+                        </label>
+                        <div className="nested-field-value">
+                          <input
+                            type="text"
+                            value={subValue || ""}
+                            disabled
+                            className="form-input disabled preview"
+                            style={{
+                              fontSize: "0.85rem",
+                              padding: "6px 8px",
+                            }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="form-input-display">
+                    <input
+                      type="text"
+                      value={nestedValue || ""}
+                      disabled
+                      className="form-input disabled preview"
+                    />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div key={`${formKey}-${field.name}`} className="form-group-preview">
+        <label className="form-label-preview">
+          {formatLabel(field.label)}
+        </label>
+        <div className="form-input-display">
+          <input
+            type={field.type === "date" ? "date" : field.type === "time" ? "time" : field.type === "datetime-local" ? "datetime-local" : "text"}
+            value={value || ""}
+            disabled
+            className="form-input disabled preview"
+          />
+        </div>
+      </div>
+    );
+  };
+
+  const renderPhotos = (photos, formKey) => {
+    if (!photos || typeof photos !== "object") return null;
+
+    return (
+      <div key={`${formKey}-photos`} className="form-group-preview photo-group" style={{ width: "100%" }}>
+        <label className="form-label-preview">
+          📸 Photos
+        </label>
+        <div className="photo-display-grid" style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+          gap: "15px",
+          marginTop: "10px"
+        }}>
+          {Object.entries(photos).map(([photoKey, url]) => {
+            let fullUrl;
+            if (typeof url === 'string') {
+              if (url.startsWith("data:image/")) {
+                fullUrl = url;
+              } else if (url.startsWith("http")) {
+                fullUrl = url;
+              } else if (url.includes("cloudinary.com") || url.startsWith("v1")) {
+                fullUrl = `${BACKEND_IMG_API_BASE_URL}${url}`;
+              } else if (url.startsWith("/")) {
+                fullUrl = `${BACKEND_API_BASE_URL}${url}`;
+              } else {
+                fullUrl = `${BACKEND_API_BASE_URL}/${url}`;
+              }
+            } else {
+              fullUrl = "/placeholder.svg";
+            }
+
+            return (
+              <div key={photoKey} className="photo-item" style={{
+                border: "1px solid #e5e7eb",
+                borderRadius: "8px",
+                padding: "10px",
+                backgroundColor: "#f9fafb"
+              }}>
+                <span className="photo-label" style={{
+                  display: "block",
+                  fontSize: "0.85rem",
+                  fontWeight: "600",
+                  color: "#374151",
+                  marginBottom: "8px",
+                  textAlign: "center"
+                }}>
+                  {photoKey}
+                </span>
+                <img
+                  src={fullUrl}
+                  alt={photoKey}
+                  className="photo-preview-img"
+                  style={{
+                    width: "100%",
+                    height: "150px",
+                    objectFit: "cover",
+                    borderRadius: "6px",
+                    border: "1px solid #d1d5db",
+                    cursor: "pointer"
+                  }}
+                  onError={(e) => {
+                    console.error(`Failed to load image: ${fullUrl}`);
+                    e.target.src = "/placeholder.svg";
+                  }}
+                  onClick={() => {
+                    window.open(fullUrl, '_blank');
+                  }}
+                />
+                <div style={{ marginTop: "8px", textAlign: "center" }}>
+                  <a
+                    href={fullUrl}
+                    download={`${photoKey}.jpg`}
+                    style={{
+                      display: "inline-block",
+                      padding: "4px 8px",
+                      backgroundColor: "#3b82f6",
+                      color: "white",
+                      textDecoration: "none",
+                      borderRadius: "4px",
+                      fontSize: "0.75rem"
+                    }}
+                  >
+                    📥 Download
+                  </a>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="stage2-review-container">
+      {stage2Forms.map((form, formIndex) => {
+        const formData = formDataFromDB[`form${formIndex + 1}`] || {};
+        
+        return (
+          <div key={form.id} className="form-review-card" style={{
+            marginBottom: "30px",
+            border: "2px solid #e5e7eb",
+            borderRadius: "12px",
+            padding: "20px",
+            background: "white",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+          }}>
+            <div className="company-header" style={{
+              textAlign: "center",
+              marginBottom: "20px",
+              padding: "15px",
+              backgroundColor: "#f8fafc",
+              borderRadius: "8px",
+              border: "1px solid #e2e8f0"
+            }}>
+              <h2 style={{ margin: 0, color: "#1e293b", fontSize: "1.25rem" }}>
+                {form.title}
+              </h2>
+            </div>
+
+            {/* Use the organized form components */}
+            {form.id === "record-oil-handling" ? (
+              <Stage2Form1 formData={formData} />
+            ) : form.id === "ir-after-erection-stage2" ? (
+              <Stage2Form2 formData={formData} />
+            ) : (
+              <div className="form-grid-preview" style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+                gap: "20px",
+              }}>
+                {form.fields.map((field) => 
+                  renderFormField(field, formData[field.name], form.id)
+                )}
+              </div>
+            )}
+
+            {/* Render photos if they exist */}
+            {formData.photos && renderPhotos(formData.photos, form.id)}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
 // Stage 1 Review Renderer Component
 const Stage1ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
   const stage1Forms = [
@@ -969,6 +1463,11 @@ const StageReviewPanel = ({
     switch(currentStageReview) {
       case 1:
         return <Stage1ReviewRenderer 
+          formDataFromDB={formDataFromDB} 
+          formatLabel={formatLabel}
+        />;
+      case 2:
+        return <Stage2ReviewRenderer 
           formDataFromDB={formDataFromDB} 
           formatLabel={formatLabel}
         />;
