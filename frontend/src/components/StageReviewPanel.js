@@ -1,6 +1,625 @@
 import React from 'react';
 import { BACKEND_API_BASE_URL, BACKEND_IMG_API_BASE_URL } from './constant';
 
+// Stage 1 Form 1: Name Plate Details Transformer
+const Stage1Form1 = ({ formData }) => (
+  <table className="form-table" style={{
+    width: "100%",
+    borderCollapse: "collapse",
+    marginBottom: "20px"
+  }}>
+    <tbody>
+      <tr>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>MAKE</td>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+          <input type="text" value={formData.make || ""} disabled className="form-input disabled preview" />
+        </td>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>CURRENT HV (A)</td>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+          <input type="text" value={formData.currentHV || ""} disabled className="form-input disabled preview" />
+        </td>
+      </tr>
+      <tr>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>SR. NO.</td>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+          <input type="text" value={formData.srNo || ""} disabled className="form-input disabled preview" />
+        </td>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>LV (A)</td>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+          <input type="text" value={formData.currentLV || ""} disabled className="form-input disabled preview" />
+        </td>
+      </tr>
+      <tr>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>MVA Rating</td>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+          <input type="text" value={formData.mvaRating || ""} disabled className="form-input disabled preview" />
+        </td>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Temp. Rise over amb. In Oil °C</td>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+          <input type="text" value={formData.tempRiseOil || ""} disabled className="form-input disabled preview" />
+        </td>
+      </tr>
+      <tr>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>HV (KV)</td>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+          <input type="text" value={formData.hvKv || ""} disabled className="form-input disabled preview" />
+        </td>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Winding</td>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+          <input type="text" value={formData.winding || ""} disabled className="form-input disabled preview" />
+        </td>
+      </tr>
+      <tr>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>LV (KV)</td>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+          <input type="text" value={formData.lvKv || ""} disabled className="form-input disabled preview" />
+        </td>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Transporting weight</td>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+          <input type="text" value={formData.transportingWeight || ""} disabled className="form-input disabled preview" />
+        </td>
+      </tr>
+      <tr>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>% Impedance</td>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+          <input type="text" value={formData.impedancePercent || ""} disabled className="form-input disabled preview" />
+        </td>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>No. Of radiators</td>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+          <input type="text" value={formData.noOfRadiators || ""} disabled className="form-input disabled preview" />
+        </td>
+      </tr>
+      <tr>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Year of Mfg.</td>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+          <input type="text" value={formData.yearOfMfg || ""} disabled className="form-input disabled preview" />
+        </td>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Weight of Core & Winding.</td>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+          <input type="text" value={formData.weightCoreWinding || ""} disabled className="form-input disabled preview" />
+        </td>
+      </tr>
+      <tr>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Oil Quantity in liter</td>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+          <input type="text" value={formData.oilQuantityLiter || ""} disabled className="form-input disabled preview" />
+        </td>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Total Weight</td>
+        <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+          <input type="text" value={formData.totalWeight || ""} disabled className="form-input disabled preview" />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+);
+
+// Stage 1 Form 2: Protocol for Accessories Checking
+const Stage1Form2 = ({ formData }) => (
+  <table className="form-table" style={{
+    width: "100%",
+    borderCollapse: "collapse",
+    marginBottom: "20px"
+  }}>
+    <thead>
+      <tr>
+        <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>No</th>
+        <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Packing case Number</th>
+        <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Material Description</th>
+        <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Qty as per P. L.</th>
+        <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Qty. Received</th>
+        <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Short Qty</th>
+        <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Damaged Qty.</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { id: 1, description: "HV bushing" },
+        { id: 2, description: "LV Bushing" },
+        { id: 3, description: "Neutral bushing" },
+        { id: 4, description: "Buchholz" },
+        { id: 5, description: "PRV" },
+        { id: 6, description: "CPR" },
+        { id: 7, description: "Breather" },
+        { id: 8, description: "Bushing Connector" },
+        { id: 9, description: "Radiators" },
+      ].map((item) => (
+        <tr key={item.id}>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>{item.id}</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input 
+              type="text" 
+              value={formData.accessories?.[item.id]?.packingCase || ""} 
+              disabled 
+              className="form-input disabled preview" 
+            />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>{item.description}</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input 
+              type="text" 
+              value={formData.accessories?.[item.id]?.qtyPerPL || ""} 
+              disabled 
+              className="form-input disabled preview" 
+            />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input 
+              type="text" 
+              value={formData.accessories?.[item.id]?.qtyReceived || ""} 
+              disabled 
+              className="form-input disabled preview" 
+            />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input 
+              type="text" 
+              value={formData.accessories?.[item.id]?.shortQty || ""} 
+              disabled 
+              className="form-input disabled preview" 
+            />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input 
+              type="text" 
+              value={formData.accessories?.[item.id]?.damagedQty || ""} 
+              disabled 
+              className="form-input disabled preview" 
+            />
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+);
+
+// Stage 1 Form 3: Core Insulation Check
+const Stage1Form3 = ({ formData }) => (
+  <div>
+    {/* Core Insulation Check Table */}
+    <h4 style={{ textAlign: "center", margin: "20px 0" }}>CORE INSULATION CHECK: At 1 KV &gt; 500 MΩ</h4>
+    <table className="form-table" style={{
+      width: "100%",
+      borderCollapse: "collapse",
+      marginBottom: "20px"
+    }}>
+      <thead>
+        <tr>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}></th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Obtained Value MΩ</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Remarks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Between Core – frame</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.betweenCoreFrame || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.betweenCoreFrameRemarks || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Between Frame – tank</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.betweenFrameTank || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.betweenFrameTankRemarks || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Between core – tank</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.betweenCoreTank || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.betweenCoreTankRemarks || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    {/* Checklist for Equipment Table */}
+    <h4 style={{ textAlign: "center", margin: "40px 0 20px 0" }}>CHECKLIST FOR CONFORMING AVAILABILITY OF EQUIPMENT AT SITE</h4>
+    <table className="form-table" style={{
+      width: "100%",
+      borderCollapse: "collapse",
+      marginBottom: "20px"
+    }}>
+      <thead>
+        <tr>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}></th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Description</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Rating/capacity</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Checked by</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>2.</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Whether the Filter Machine is Available</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.filterMachine || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.filterMachineChecked || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>3.</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Capacity of Filter Machine</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.filterCapacity || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.filterCapacityChecked || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>4.</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Capacity of the Vacuum Pump to be used.</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.vacuumPumpCapacity || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.vacuumPumpCapacityChecked || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>5.</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Whether the Reservoir is Available with valves and a breather.</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.reservoirAvailable || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.reservoirAvailableChecked || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>6.</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Capacity of Reservoirs.</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.reservoirCapacity || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.reservoirCapacityChecked || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>8.</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Hose Pipes for the Filtration Process.</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.hosePipes || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.hosePipesChecked || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>9.</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Whether Crane is Available in good condition</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.craneAvailable || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.craneAvailableChecked || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    {/* Safety Equipment Table */}
+    <h4 style={{ textAlign: "center", margin: "30px 0 20px 0" }}>SAFETY EQUIPMENT</h4>
+    <table className="form-table" style={{
+      width: "100%",
+      borderCollapse: "collapse",
+      marginBottom: "20px"
+    }}>
+      <thead>
+        <tr>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Descriptions</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Confirmation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Fire extinguisher/ Fire sand bucket</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.fireExtinguisher || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>First aid kit</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.firstAidKit || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>PPE for the working team of ETC agency, like- Safety shoes, Helmet, etc...</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.ppeEquipment || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+);
+
+// Stage 1 Form 4: Pre-Erection Tan Delta and Capacitance Test on Bushing
+const Stage1Form4 = ({ formData }) => (
+  <div>
+    {/* Basic Information Table */}
+    <table className="form-table" style={{
+      width: "100%",
+      borderCollapse: "collapse",
+      marginBottom: "20px"
+    }}>
+      <tbody>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>METER USED:</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.meterUsed || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>DATE:</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="date" value={formData.date || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>TIME:</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="time" value={formData.time || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>MODEL & S. NO.</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.modelSrNo || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>WTI:</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.wti || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>OTI:</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.oti || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    {/* Bushing Serial Numbers Table */}
+    <table className="form-table" style={{
+      width: "100%",
+      borderCollapse: "collapse",
+      marginBottom: "20px"
+    }}>
+      <thead>
+        <tr>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }} rowSpan="2">BUSHING SR.NO.</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>1.1</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>1.2</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}></td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.bushing11 || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.bushing12 || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    {/* AT 05 KV PHASE Table */}
+    <table className="form-table" style={{
+      width: "100%",
+      borderCollapse: "collapse",
+      marginBottom: "20px"
+    }}>
+      <thead>
+        <tr>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }} rowSpan="2"></th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }} rowSpan="2">AT 05 KV PHASE</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>TAN DELTA %</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>CAPACITANCE (pF)</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>EXCITATION CURRENT (mA)</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>DIELECTRIC LOSS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>1.1</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.bushing11_05kv_phase || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.bushing11_05kv_tanDelta || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.bushing11_05kv_capacitance || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.bushing11_05kv_excitationCurrent || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.bushing11_05kv_dielectricLoss || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>1.2</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.bushing12_05kv_phase || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.bushing12_05kv_tanDelta || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.bushing12_05kv_capacitance || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.bushing12_05kv_excitationCurrent || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.bushing12_05kv_dielectricLoss || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    {/* AT 10 KV PHASE Table */}
+    <table className="form-table" style={{
+      width: "100%",
+      borderCollapse: "collapse",
+      marginBottom: "20px"
+    }}>
+      <thead>
+        <tr>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }} rowSpan="2"></th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }} rowSpan="2">AT 10 KV PHASE</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>TAN DELTA %</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>CAPACITANCE (pF)</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>EXCITATION CURRENT (mA)</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>DIELECTRIC LOSS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>1.1</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.bushing11_10kv_phase || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.bushing11_10kv_tanDelta || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.bushing11_10kv_capacitance || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.bushing11_10kv_excitationCurrent || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.bushing11_10kv_dielectricLoss || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>1.2</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.bushing12_10kv_phase || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.bushing12_10kv_tanDelta || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.bushing12_10kv_capacitance || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.bushing12_10kv_excitationCurrent || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.bushing12_10kv_dielectricLoss || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+);
+
+// Stage 1 Form 5: Record of Measurement of IR Values
+const Stage1Form5 = ({ formData }) => (
+  <div>
+    {/* Basic Information Table */}
+    <table className="form-table" style={{
+      width: "100%",
+      borderCollapse: "collapse",
+      marginBottom: "20px"
+    }}>
+      <tbody>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Date</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="date" value={formData.date || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Time</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="time" value={formData.time || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Amb. Temp</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.ambTemp || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Make</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.make || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Oil Temp.</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.oilTemp || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Sr. No.</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.srNo || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Wdg. Temp.</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.wdgTemp || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Range</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.range || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Relative Humidity</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.relativeHumidity || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Voltage Level</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }} colSpan="5">
+            <input type="text" value={formData.voltageLevel || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    {/* IR Values Measurement Table */}
+    <table className="form-table" style={{
+      width: "100%",
+      borderCollapse: "collapse",
+      marginBottom: "20px"
+    }}>
+      <thead>
+        <tr>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}></th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>15 Sec MΩ</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>60 Sec MΩ</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Ratio of IR 60/IR 15</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>HV-Earth</td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.hvEarth15Sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.hvEarth60Sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+            <input type="text" value={formData.ratioIR60IR15 || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+);
+
 // Stage 1 Review Renderer Component
 const Stage1ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
   const stage1Forms = [
@@ -303,96 +922,17 @@ const Stage1ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
               </h2>
             </div>
 
-            {/* Render form fields in a table-like structure for forms that use tables */}
+            {/* Use the organized form components */}
             {form.id === "name-plate-details" ? (
-              <table className="form-table" style={{
-                width: "100%",
-                borderCollapse: "collapse",
-                marginBottom: "20px"
-              }}>
-                <tbody>
-                  <tr>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>MAKE</td>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-                      <input type="text" value={formData.make || ""} disabled className="form-input disabled preview" />
-                    </td>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>CURRENT HV (A)</td>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-                      <input type="text" value={formData.currentHV || ""} disabled className="form-input disabled preview" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>SR. NO.</td>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-                      <input type="text" value={formData.srNo || ""} disabled className="form-input disabled preview" />
-                    </td>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>LV (A)</td>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-                      <input type="text" value={formData.currentLV || ""} disabled className="form-input disabled preview" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>MVA Rating</td>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-                      <input type="text" value={formData.mvaRating || ""} disabled className="form-input disabled preview" />
-                    </td>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Temp. Rise over amb. In Oil °C</td>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-                      <input type="text" value={formData.tempRiseOil || ""} disabled className="form-input disabled preview" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>HV (KV)</td>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-                      <input type="text" value={formData.hvKv || ""} disabled className="form-input disabled preview" />
-                    </td>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Winding</td>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-                      <input type="text" value={formData.winding || ""} disabled className="form-input disabled preview" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>LV (KV)</td>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-                      <input type="text" value={formData.lvKv || ""} disabled className="form-input disabled preview" />
-                    </td>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Transporting weight</td>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-                      <input type="text" value={formData.transportingWeight || ""} disabled className="form-input disabled preview" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>% Impedance</td>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-                      <input type="text" value={formData.impedancePercent || ""} disabled className="form-input disabled preview" />
-                    </td>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>No. Of radiators</td>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-                      <input type="text" value={formData.noOfRadiators || ""} disabled className="form-input disabled preview" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Year of Mfg.</td>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-                      <input type="text" value={formData.yearOfMfg || ""} disabled className="form-input disabled preview" />
-                    </td>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Weight of Core & Winding.</td>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-                      <input type="text" value={formData.weightCoreWinding || ""} disabled className="form-input disabled preview" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Oil Quantity in liter</td>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-                      <input type="text" value={formData.oilQuantityLiter || ""} disabled className="form-input disabled preview" />
-                    </td>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Total Weight</td>
-                    <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-                      <input type="text" value={formData.totalWeight || ""} disabled className="form-input disabled preview" />
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <Stage1Form1 formData={formData} />
+            ) : form.id === "protocol-accessories-checking" ? (
+              <Stage1Form2 formData={formData} />
+            ) : form.id === "core-insulation-check" ? (
+              <Stage1Form3 formData={formData} />
+            ) : form.id === "pre-erection-tan-delta-test" ? (
+              <Stage1Form4 formData={formData} />
+            ) : form.id === "record-measurement-ir-values" ? (
+              <Stage1Form5 formData={formData} />
             ) : (
               <div className="form-grid-preview" style={{
                 display: "grid",
