@@ -625,7 +625,7 @@ const Stage2Form1 = ({ formData }) => (
   <div>
     <div className="company-header">
       <h2>RECORD OF OIL HANDLING</h2>
-      <h3>TEST VALUES PRIOR TO FILTERATION</h3>
+      <h2>TEST VALUES PRIOR TO FILTERATION</h2>
     </div>
 
     <h4>Oil Filling in the Reservoirs Tank:</h4>
@@ -963,7 +963,7 @@ const Stage3Form2 = ({ formData }) => (
   <div>
     <div className="company-header">
       <h2>RECORD FOR OIL FILTRATION</h2>
-      <h3>Oil filtration of Main Tank</h3>
+      <h2>Oil filtration of Main Tank</h2>
     </div>
 
     <table className="form-table" style={{
