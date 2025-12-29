@@ -4856,4 +4856,31 @@ const StageReviewPanel = ({
   );
 };
 
+// Export form components for reuse in other files
+export {
+  Stage1Form1,
+  Stage1Form2,
+  Stage1Form3,
+  Stage1Form4,
+  Stage1Form5,
+  Stage2Form1,
+  Stage2Form2,
+  Stage3Form1,
+  Stage3Form2,
+  Stage3Form3,
+  Stage4Form1,
+  Stage4Form2,
+  Stage4Form3,
+  Stage4Form4,
+  Stage5Form1,
+  Stage5Form2,
+  Stage6Form1,
+  Stage1ReviewRenderer,
+  Stage2ReviewRenderer,
+  Stage3ReviewRenderer,
+  Stage4ReviewRenderer,
+  Stage5ReviewRenderer,
+  Stage6ReviewRenderer
+};
+
 export default StageReviewPanel;

@@ -7,6 +7,7 @@ import FormStage from "./FormStage"; // Import FormStage
 import VConnected63MVATransformerForms from "./VConnected63MVATransformerForms";
 import TractionTransformerForms from "./TractionTransformerForms";
 import StageReviewPanel from "./StageReviewPanel";
+import { ViewFormRenderer } from "./ViewForm";
 import "./stage-review-styles.css";
 import "./form-styles.css";
 import html2pdf from "html2pdf.js";
@@ -3059,522 +3060,69 @@ const ETCAdminPanel = ({
             </div> */}
 
             <div className="stages-review-container">
-              {Object.entries(formDataFromDB).map(([stageKey, forms]) => (
-                <div key={stageKey} className="stage-forms-section">
-                  <div
-                    className="stage-header-clickable"
-                    onClick={() => toggleStageExpansion(stageKey)}
-                    style={{
-                      cursor: "pointer",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      padding: "16px 20px",
-                      background:
-                        "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                      borderRadius: "12px",
-                      marginBottom: expandedStages[stageKey] ? "20px" : "0",
-                      transition: "all 0.3s ease",
-                    }}
-                  >
-                    <h3
-                      style={{
-                        margin: 0,
-                        color: "white",
-                        fontSize: "1.3rem",
-                        fontWeight: "700",
-                      }}
-                    >
-                      {stageKey.replace("stage", "Stage ")} (
-                      {Object.keys(forms).length} forms)
-                    </h3>
-                    <span
-                      style={{
-                        color: "white",
-                        fontSize: "1.2rem",
-                        transform: expandedStages[stageKey]
-                          ? "rotate(180deg)"
-                          : "rotate(0deg)",
-                        transition: "transform 0.3s ease",
-                      }}
-                    >
-                      ▼
-                    </span>
-                  </div>
-
-                  {expandedStages[stageKey] && (
+              {Object.entries(formDataFromDB).map(([stageKey, forms]) => {
+                const stageNumber = parseInt(stageKey.replace('stage', ''));
+                
+                return (
+                  <div key={stageKey} className="stage-forms-section">
                     <div
-                      className="forms-dropdown-content"
+                      className="stage-header-clickable"
+                      onClick={() => toggleStageExpansion(stageKey)}
                       style={{
-                        animation: "slideDown 0.3s ease-out",
+                        cursor: "pointer",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        padding: "16px 20px",
+                        background:
+                          "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                        borderRadius: "12px",
+                        marginBottom: expandedStages[stageKey] ? "20px" : "0",
+                        transition: "all 0.3s ease",
                       }}
                     >
-                      {Object.entries(forms).map(([formKey, formData]) => (
-                        <div
-                          key={`${stageKey}-${formKey}`}
-                          className={`form-review-card ${selectedProjectForReview?.status}`}
-                          style={{
-                            marginBottom: "20px",
-                            border: "2px solid #e5e7eb",
-                            borderRadius: "12px",
-                            padding: "20px",
-                            background: "white",
-                            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                          }}
-                        >
-                          <h4
-                            style={{
-                              color: "#374151",
-                              fontSize: "1.1rem",
-                              fontWeight: "600",
-                              marginBottom: "16px",
-                              paddingBottom: "8px",
-                              borderBottom: "1px solid #e5e7eb",
-                            }}
-                          >
-                            📋 {formKey.replace("form", "Form ")}
-                          </h4>
-
-                          <div className="form-layout-preview">
-                            <div
-                              className="form-grid-preview"
-                              style={{
-                                display: "grid",
-                                gridTemplateColumns: "1fr",
-                                gap: "20px",
-                              }}
-                            >
-                              {Object.entries(formData).map(
-                                ([fieldKey, fieldValue]) => {
-                                  // Handle photos specially
-                                  if (
-                                    fieldKey === "photos" &&
-                                    fieldValue &&
-                                    typeof fieldValue === "object"
-                                  ) {
-                                    return (
-                                      <div
-                                        key={`${stageKey}-${formKey}-photos`}
-                                        className="form-group-preview photo-group"
-                                        style={{
-                                          width: "100%",
-                                        }}
-                                      >
-                                        <label className="form-label-preview">
-                                          📸{" "}
-                                          {fieldKey.charAt(0).toUpperCase() +
-                                            fieldKey.slice(1)}
-                                        </label>
-                                        <div className="photo-display-grid">
-                                          {Object.entries(fieldValue).map(
-                                            ([photoKey, url]) => {
-                                              // Handle different URL formats
-                                              let fullUrl;
-                                              if (typeof url === 'string') {
-                                                if (url.startsWith("data:image/")) {
-                                                  // Base64 image
-                                                  fullUrl = url;
-                                                } else if (url.startsWith("http")) {
-                                                  // Full URL (including Cloudinary URLs)
-                                                  fullUrl = url;
-                                                } else if (url.includes("cloudinary.com")) {
-                                                  // Cloudinary URL without protocol
-                                                  fullUrl = url.startsWith("//") ? `https:${url}` : `https://${url}`;
-                                                } else if (url.startsWith("/")) {
-                                                  // Absolute path for local files
-                                                  fullUrl = `${BACKEND_API_BASE_URL}${url}`;
-                                                } else {
-                                                  // Relative path for local files
-                                                  fullUrl = `${BACKEND_API_BASE_URL}/${url}`;
-                                                }
-                                              } else {
-                                                fullUrl = "/placeholder.svg";
-                                              }
-                                              
-                                              return (
-                                                <div
-                                                  key={photoKey}
-                                                  className="photo-item"
-                                                  style={{
-                                                    border: "1px solid #e5e7eb",
-                                                    borderRadius: "8px",
-                                                    padding: "10px",
-                                                    backgroundColor: "#f9fafb"
-                                                  }}
-                                                >
-                                                  <span className="photo-label" style={{
-                                                    display: "block",
-                                                    fontSize: "0.85rem",
-                                                    fontWeight: "600",
-                                                    color: "#374151",
-                                                    marginBottom: "8px",
-                                                    textAlign: "center"
-                                                  }}>
-                                                    {photoKey}
-                                                  </span>
-                                                  <img
-                                                    src={fullUrl}
-                                                    alt={photoKey}
-                                                    className="photo-preview-img"
-                                                    style={{
-                                                      width: "100%",
-                                                      height: "150px",
-                                                      objectFit: "cover",
-                                                      borderRadius: "6px",
-                                                      border: "1px solid #d1d5db",
-                                                      cursor: "pointer"
-                                                    }}
-                                                    onError={(e) => {
-                                                      console.error(`Failed to load image: ${fullUrl}`);
-                                                      e.target.src = "/placeholder.svg";
-                                                    }}
-                                                    onClick={() => {
-                                                      // Open image in new tab for better viewing
-                                                      window.open(fullUrl, '_blank');
-                                                    }}
-                                                  />
-                                                </div>
-                                              );
-                                            }
-                                          )}
-                                        </div>
-                                      </div>
-                                    );
-                                  }
-
-                                  // Handle strings & numbers with form input styling
-                                  if (
-                                    typeof fieldValue === "string" ||
-                                    typeof fieldValue === "number"
-                                  ) {
-                                    return (
-                                      <div
-                                        key={`${stageKey}-${formKey}-${fieldKey}`}
-                                        className="form-group-preview"
-                                      >
-                                        <label className="form-label-preview">
-                                          {formatLabel(fieldKey)}
-                                        </label>
-                                        <div className="form-input-display">
-                                          <input
-                                            type="text"
-                                            value={fieldValue}
-                                            disabled
-                                            className="form-input disabled preview"
-                                          />
-                                        </div>
-                                      </div>
-                                    );
-                                  }
-
-                                  // Handle nested objects (like accessories)
-                                  if (
-                                    typeof fieldValue === "object" &&
-                                    fieldValue !== null &&
-                                    !Array.isArray(fieldValue) &&
-                                    fieldKey !== "photos"
-                                  ) {
-                                    return (
-                                      <div
-                                        key={`${stageKey}-${formKey}-${fieldKey}`}
-                                        className="form-group-preview nested-object-group"
-                                      >
-                                        <label className="form-label-preview">
-                                          📋 {formatLabel(fieldKey)}
-                                        </label>
-                                        <div
-                                          className="nested-object-display"
-                                          style={{
-                                            display: "grid",
-                                            gridTemplateColumns:
-                                              "repeat(2, 1fr)",
-                                            gap: "15px",
-                                            marginTop: "10px",
-                                          }}
-                                        >
-                                          {Object.entries(fieldValue).map(
-                                            ([nestedKey, nestedValue]) => (
-                                              <div
-                                                key={`${fieldKey}-${nestedKey}`}
-                                                className="nested-item"
-                                                style={{
-                                                  padding: "12px",
-                                                  border: "1px solid #e5e7eb",
-                                                  borderRadius: "8px",
-                                                  backgroundColor: "#f9fafb",
-                                                }}
-                                              >
-                                                <h5
-                                                  style={{
-                                                    margin: "0 0 10px 0",
-                                                    color: "#374151",
-                                                    fontSize: "0.9rem",
-                                                    fontWeight: "600",
-                                                  }}
-                                                >
-                                                  {formatLabel(fieldKey)} -{" "}
-                                                  {nestedKey}
-                                                </h5>
-                                                {typeof nestedValue ===
-                                                  "object" &&
-                                                nestedValue !== null ? (
-                                                  <div
-                                                    className="nested-fields-grid"
-                                                    style={{
-                                                      display: "grid",
-                                                      gridTemplateColumns:
-                                                        "repeat(auto-fit, minmax(200px, 1fr))",
-                                                      gap: "10px",
-                                                    }}
-                                                  >
-                                                    {Object.entries(
-                                                      nestedValue
-                                                    ).map(
-                                                      ([subKey, subValue]) => (
-                                                        <div
-                                                          key={`${nestedKey}-${subKey}`}
-                                                          className="nested-field"
-                                                        >
-                                                          <label
-                                                            className="nested-field-label"
-                                                            style={{
-                                                              fontSize:
-                                                                "0.8rem",
-                                                              color: "#6b7280",
-                                                              fontWeight: "500",
-                                                            }}
-                                                          >
-                                                            {formatLabel(
-                                                              subKey
-                                                            )}
-                                                            :
-                                                          </label>
-                                                          <div className="nested-field-value">
-                                                            <input
-                                                              type="text"
-                                                              value={
-                                                                subValue || ""
-                                                              }
-                                                              disabled
-                                                              className="form-input disabled preview"
-                                                              style={{
-                                                                fontSize:
-                                                                  "0.85rem",
-                                                                padding:
-                                                                  "6px 8px",
-                                                              }}
-                                                            />
-                                                          </div>
-                                                        </div>
-                                                      )
-                                                    )}
-                                                  </div>
-                                                ) : (
-                                                  <div className="form-input-display">
-                                                    <input
-                                                      type="text"
-                                                      value={nestedValue || ""}
-                                                      disabled
-                                                      className="form-input disabled preview"
-                                                    />
-                                                  </div>
-                                                )}
-                                              </div>
-                                            )
-                                          )}
-                                        </div>
-                                      </div>
-                                    );
-                                  }
-
-                                  // Handle arrays
-                                  if (Array.isArray(fieldValue)) {
-                                    return (
-                                      <div
-                                        key={`${stageKey}-${formKey}-${fieldKey}`}
-                                        className="form-group-preview array-group"
-                                      >
-                                        <label className="form-label-preview">
-                                          📝 {formatLabel(fieldKey)}
-                                        </label>
-                                        <div className="array-display">
-                                          {fieldValue.length === 0 ? (
-                                            <div className="form-input-display">
-                                              <input
-                                                type="text"
-                                                value="No data"
-                                                disabled
-                                                className="form-input disabled preview"
-                                              />
-                                            </div>
-                                          ) : (
-                                            fieldValue.map((item, index) => (
-                                              <div
-                                                key={`${fieldKey}-${index}`}
-                                                className="array-item"
-                                                style={{
-                                                  marginBottom: "10px",
-                                                  padding: "10px",
-                                                  border: "1px solid #e5e7eb",
-                                                  borderRadius: "6px",
-                                                  backgroundColor: "#f9fafb",
-                                                }}
-                                              >
-                                                {typeof item === "object" &&
-                                                item !== null ? (
-                                                  <div>
-                                                    <h6
-                                                      style={{
-                                                        margin: "0 0 8px 0",
-                                                        fontSize: "0.85rem",
-                                                      }}
-                                                    >
-                                                      Item {index + 1}
-                                                    </h6>
-                                                    {Object.entries(item).map(
-                                                      ([
-                                                        itemKey,
-                                                        itemValue,
-                                                      ]) => (
-                                                        <div
-                                                          key={itemKey}
-                                                          style={{
-                                                            marginBottom: "5px",
-                                                          }}
-                                                        >
-                                                          <span
-                                                            style={{
-                                                              fontSize:
-                                                                "0.8rem",
-                                                              color: "#6b7280",
-                                                            }}
-                                                          >
-                                                            {formatLabel(
-                                                              itemKey
-                                                            )}
-                                                            :
-                                                          </span>
-                                                          <input
-                                                            type="text"
-                                                            value={
-                                                              itemValue || ""
-                                                            }
-                                                            disabled
-                                                            className="form-input disabled preview"
-                                                            style={{
-                                                              marginLeft: "8px",
-                                                              fontSize:
-                                                                "0.8rem",
-                                                            }}
-                                                          />
-                                                        </div>
-                                                      )
-                                                    )}
-                                                  </div>
-                                                ) : (
-                                                  <input
-                                                    type="text"
-                                                    value={item || ""}
-                                                    disabled
-                                                    className="form-input disabled preview"
-                                                  />
-                                                )}
-                                              </div>
-                                            ))
-                                          )}
-                                        </div>
-                                      </div>
-                                    );
-                                  }
-
-                                  return null;
-                                }
-                              )}
-                            </div>
-
-                            {/* <div className="form-preview-container">
-                              {(() => {
-                                const stageNumber = Number.parseInt(
-                                  stageKey.replace("stage", "")
-                                );
-                                const formIndex =
-                                  Number.parseInt(formKey.replace("form", "")) -
-                                  1;
-                                const formStructure =
-                                  formStructures[`stage${stageNumber}`]?.forms[
-                                    formIndex
-                                  ];
-
-                                if (!formStructure)
-                                  return <div>Form structure not found</div>;
-
-                                return (
-                                  <div className="direct-form-view">
-                                    <div className="form-title-only">
-                                      <h4>{formStructure.title}</h4>
-                                    </div>
-
-                                    <div className="mini-form-layout">
-                                      <div className="mini-form-grid">
-                                        {formStructure.fields.map(
-                                          (field, fieldIndex) => (
-                                            <div
-                                              key={fieldIndex}
-                                              className="mini-form-group"
-                                            >
-                                              <label className="mini-form-label">
-                                                {field.label}:
-                                              </label>
-                                              <div className="mini-form-value">
-                                                {field.type === "select" ? (
-                                                  <span>
-                                                    {formData[field.name] ||
-                                                      "Not Selected"}
-                                                  </span>
-                                                ) : field.type ===
-                                                  "textarea" ? (
-                                                  <span className="textarea-preview">
-                                                    {formData[field.name] ||
-                                                      "No data entered"}
-                                                  </span>
-                                                ) : field.type ===
-                                                  "checkbox" ? (
-                                                  <span className="checkbox-preview">
-                                                    {formData[field.name]
-                                                      ? "✓ Yes"
-                                                      : "✗ No"}
-                                                  </span>
-                                                ) : field.type === "file" ? (
-                                                  <span className="file-preview">
-                                                    {formData[field.name]
-                                                      ? `📎 ${
-                                                          formData[field.name]
-                                                        }`
-                                                      : "No file"}
-                                                  </span>
-                                                ) : (
-                                                  <span>
-                                                    {formData[field.name] ||
-                                                      "No data entered"}
-                                                  </span>
-                                                )}
-                                              </div>
-                                            </div>
-                                          )
-                                        )}
-                                      </div>
-                                    </div>
-                                  </div>
-                                );
-                              })()}
-                            </div> */}
-                          </div>
-                        </div>
-                      ))}
+                      <h3
+                        style={{
+                          margin: 0,
+                          color: "white",
+                          fontSize: "1.3rem",
+                          fontWeight: "700",
+                        }}
+                      >
+                        {stageKey.replace("stage", "Stage ")} (
+                        {Object.keys(forms).length} forms)
+                      </h3>
+                      <span
+                        style={{
+                          color: "white",
+                          fontSize: "1.2rem",
+                          transform: expandedStages[stageKey]
+                            ? "rotate(180deg)"
+                            : "rotate(0deg)",
+                          transition: "transform 0.3s ease",
+                        }}
+                      >
+                        ▼
+                      </span>
                     </div>
-                  )}
-                </div>
-              ))}
+
+                    {expandedStages[stageKey] && (
+                      <div
+                        className="forms-dropdown-content"
+                        style={{
+                          animation: "slideDown 0.3s ease-out",
+                        }}
+                      >
+                        <ViewFormRenderer 
+                          stageNumber={stageNumber}
+                          formDataFromDB={forms}
+                          formatLabel={formatLabel}
+                        />
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </>
         ) : !selectedDepartment ? (
