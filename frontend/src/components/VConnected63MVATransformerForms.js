@@ -9635,7 +9635,7 @@ export function WorkCompletionReportForm({
           </h3>
 
           <p style={{ lineHeight: "1.6", marginBottom: "15px" }}>
-            This is to certify that the erection, Testing and commissioning of the above-mentioned transformer have been
+            This is to certify that the erection, Testing and commissioning of the above-mentioned transformer has been
             completed in accordance with the terms and conditions of the referenced order.
           </p>
 
@@ -9669,7 +9669,7 @@ export function WorkCompletionReportForm({
           </p>
 
           <p style={{ lineHeight: "1.6", marginBottom: "30px" }}>
-            All works under the scope of the order have been completed, and no pending activities remain.
+            All works under the scope of the order has been completed.
           </p>
         </div>
 
