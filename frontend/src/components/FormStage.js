@@ -6100,9 +6100,11 @@ function ShortCircuitTestForm({
     time: initialData.time || "",
     meterMakeSrNo: initialData.meterMakeSrNo || "",
     // Short circuit test measurements
+    test11_12_measuredCurrent11_23: initialData.test11_12_measuredCurrent11_23 || "",
     test11_12_measuredCurrent11: initialData.test11_12_measuredCurrent11 || "",
     test11_12_measuredCurrent12_21:
       initialData.test11_12_measuredCurrent12_21 || "",
+    test12_21_measuredCurrent12_21: initialData.test12_21_measuredCurrent12_21 || "",
     test12_21_measuredCurrent12: initialData.test12_21_measuredCurrent12 || "",
     test12_21_measuredCurrent11_21:
       initialData.test12_21_measuredCurrent11_21 || "",
