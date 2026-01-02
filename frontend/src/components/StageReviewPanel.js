@@ -1484,7 +1484,7 @@ const Stage4Form1 = ({ formData }) => (
         <tr>
           <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>HV – G</td>
           <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-            <input type="text" value={formData.hvg_05kv_between || ""} disabled className="form-input disabled preview" />
+            <input type="text" value={formData.hvg_05kv_phase || ""} disabled className="form-input disabled preview" />
           </td>
           <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
             <input type="text" value={formData.hvg_05kv_tanDelta || ""} disabled className="form-input disabled preview" />
@@ -1517,7 +1517,7 @@ const Stage4Form1 = ({ formData }) => (
         <tr>
           <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>HV – G</td>
           <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-            <input type="text" value={formData.hvg_10kv_between || ""} disabled className="form-input disabled preview" />
+            <input type="text" value={formData.hvg_10kv_phase || ""} disabled className="form-input disabled preview" />
           </td>
           <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
             <input type="text" value={formData.hvg_10kv_tanDelta || ""} disabled className="form-input disabled preview" />

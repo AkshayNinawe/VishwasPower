@@ -5354,6 +5354,18 @@ function SFRATestRecordForm({
             <td>
               <input
                 type="text"
+                value={formData.hvg_05kv_phase || ""}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    hvg_05kv_phase: e.target.value,
+                  })
+                }
+              />
+            </td>
+            <td>
+              <input
+                type="text"
                 value={formData.hvg_05kv_tanDelta}
                 onChange={(e) =>
                   setFormData({
@@ -5399,18 +5411,6 @@ function SFRATestRecordForm({
                 }
               />
             </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvg_05kv_bushing_dielectricLoss}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    hvg_05kv_bushing_dielectricLoss: e.target.value,
-                  })
-                }
-              />
-            </td>
           </tr>
         </tbody>
       </table>
@@ -5430,6 +5430,18 @@ function SFRATestRecordForm({
           <tr>
             <td>
               <strong>HV – G</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.hvg_10kv_phase || ""}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    hvg_10kv_phase: e.target.value,
+                  })
+                }
+              />
             </td>
             <td>
               <input
@@ -5475,18 +5487,6 @@ function SFRATestRecordForm({
                   setFormData({
                     ...formData,
                     hvg_10kv_dielectricLoss: e.target.value,
-                  })
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvg_10kv_bushing_dielectricLoss}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    hvg_10kv_bushing_dielectricLoss: e.target.value,
                   })
                 }
               />

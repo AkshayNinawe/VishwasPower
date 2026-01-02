@@ -352,18 +352,18 @@ const Stage4Form1SubSchema = new mongoose.Schema(
     makeSrNoWinding: { type: String, trim: true, default: "" },
     ambientTempWinding: { type: String, trim: true, default: "" },
     oilTempWinding: { type: String, trim: true, default: "" },
-    // AT 05 KV IN BETWEEN HV-G - Missing bushing dielectric loss field
+    // AT 05 KV IN BETWEEN HV-G
+    hvg_05kv_phase: { type: String, trim: true, default: "" },
     hvg_05kv_tanDelta: { type: String, trim: true, default: "" },
     hvg_05kv_capacitance: { type: String, trim: true, default: "" },
     hvg_05kv_excitationCurrent: { type: String, trim: true, default: "" },
     hvg_05kv_dielectricLoss: { type: String, trim: true, default: "" },
-    hvg_05kv_bushing_dielectricLoss: { type: String, trim: true, default: "" },
-    // AT 10 KV IN BETWEEN HV-G - Missing bushing dielectric loss field
+    // AT 10 KV IN BETWEEN HV-G
+    hvg_10kv_phase: { type: String, trim: true, default: "" },
     hvg_10kv_tanDelta: { type: String, trim: true, default: "" },
     hvg_10kv_capacitance: { type: String, trim: true, default: "" },
     hvg_10kv_excitationCurrent: { type: String, trim: true, default: "" },
     hvg_10kv_dielectricLoss: { type: String, trim: true, default: "" },
-    hvg_10kv_bushing_dielectricLoss: { type: String, trim: true, default: "" },
   },
   { _id: false }
 );
