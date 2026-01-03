@@ -94,57 +94,109 @@ const Stage1Form4SubSchema = new mongoose.Schema(
     testReportReviewedBy: { type: String, trim: true, default: "" },
     acceptanceOfTest: { type: String, trim: true, default: "" },
 
-    // Phase 1.1 - CT Ratio test fields
-    phase31_20percent_appliedCurrent: { type: String, trim: true, default: "" },
-    phase31_20percent_measuredCurrent: { type: String, trim: true, default: "" },
-    phase31_40percent_appliedCurrent: { type: String, trim: true, default: "" },
-    phase31_40percent_measuredCurrent: { type: String, trim: true, default: "" },
-    phase31_60percent_appliedCurrent: { type: String, trim: true, default: "" },
-    phase31_60percent_measuredCurrent: { type: String, trim: true, default: "" },
-    phase31_80percent_appliedCurrent: { type: String, trim: true, default: "" },
-    phase31_80percent_measuredCurrent: { type: String, trim: true, default: "" },
-    phase31_100percent_appliedCurrent: { type: String, trim: true, default: "" },
-    phase31_100percent_measuredCurrent: { type: String, trim: true, default: "" },
+    // Phase 1.1 - CT Ratio test fields (S1-S2)
+    phase31_20percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_20percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_40percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_40percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_60percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_60percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_80percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_80percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_100percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_100percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
 
-    // Phase 1.1 - Knee point voltage fields
-    phase31_knee_20percent_appliedVoltage: { type: String, trim: true, default: "" },
-    phase31_knee_20percent_measuredCurrent: { type: String, trim: true, default: "" },
-    phase31_knee_40percent_appliedVoltage: { type: String, trim: true, default: "" },
-    phase31_knee_40percent_measuredCurrent: { type: String, trim: true, default: "" },
-    phase31_knee_60percent_appliedVoltage: { type: String, trim: true, default: "" },
-    phase31_knee_60percent_measuredCurrent: { type: String, trim: true, default: "" },
-    phase31_knee_80percent_appliedVoltage: { type: String, trim: true, default: "" },
-    phase31_knee_80percent_measuredCurrent: { type: String, trim: true, default: "" },
-    phase31_knee_100percent_appliedVoltage: { type: String, trim: true, default: "" },
-    phase31_knee_100percent_measuredCurrent: { type: String, trim: true, default: "" },
-    phase31_knee_110percent_appliedVoltage: { type: String, trim: true, default: "" },
-    phase31_knee_110percent_measuredCurrent: { type: String, trim: true, default: "" },
+    // Phase 1.1 - CT Ratio test fields (S1-S3)
+    phase31_20percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_20percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_40percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_40percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_60percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_60percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_80percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_80percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_100percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_100percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
 
-    // Phase 1.2 - CT Ratio test fields
-    phase32_20percent_appliedCurrent: { type: String, trim: true, default: "" },
-    phase32_20percent_measuredCurrent: { type: String, trim: true, default: "" },
-    phase32_40percent_appliedCurrent: { type: String, trim: true, default: "" },
-    phase32_40percent_measuredCurrent: { type: String, trim: true, default: "" },
-    phase32_60percent_appliedCurrent: { type: String, trim: true, default: "" },
-    phase32_60percent_measuredCurrent: { type: String, trim: true, default: "" },
-    phase32_80percent_appliedCurrent: { type: String, trim: true, default: "" },
-    phase32_80percent_measuredCurrent: { type: String, trim: true, default: "" },
-    phase32_100percent_appliedCurrent: { type: String, trim: true, default: "" },
-    phase32_100percent_measuredCurrent: { type: String, trim: true, default: "" },
+    // Phase 1.1 - Knee point voltage fields (S1-S2)
+    phase31_knee_20percent_appliedVoltage_s1s2: { type: String, trim: true, default: "" },
+    phase31_knee_20percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_knee_40percent_appliedVoltage_s1s2: { type: String, trim: true, default: "" },
+    phase31_knee_40percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_knee_60percent_appliedVoltage_s1s2: { type: String, trim: true, default: "" },
+    phase31_knee_60percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_knee_80percent_appliedVoltage_s1s2: { type: String, trim: true, default: "" },
+    phase31_knee_80percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_knee_100percent_appliedVoltage_s1s2: { type: String, trim: true, default: "" },
+    phase31_knee_100percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_knee_110percent_appliedVoltage_s1s2: { type: String, trim: true, default: "" },
+    phase31_knee_110percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
 
-    // Phase 1.2 - Knee point voltage fields
-    phase32_knee_20percent_appliedVoltage: { type: String, trim: true, default: "" },
-    phase32_knee_20percent_measuredCurrent: { type: String, trim: true, default: "" },
-    phase32_knee_40percent_appliedVoltage: { type: String, trim: true, default: "" },
-    phase32_knee_40percent_measuredCurrent: { type: String, trim: true, default: "" },
-    phase32_knee_60percent_appliedVoltage: { type: String, trim: true, default: "" },
-    phase32_knee_60percent_measuredCurrent: { type: String, trim: true, default: "" },
-    phase32_knee_80percent_appliedVoltage: { type: String, trim: true, default: "" },
-    phase32_knee_80percent_measuredCurrent: { type: String, trim: true, default: "" },
-    phase32_knee_100percent_appliedVoltage: { type: String, trim: true, default: "" },
-    phase32_knee_100percent_measuredCurrent: { type: String, trim: true, default: "" },
-    phase32_knee_110percent_appliedVoltage: { type: String, trim: true, default: "" },
-    phase32_knee_110percent_measuredCurrent: { type: String, trim: true, default: "" },
+    // Phase 1.1 - Knee point voltage fields (S1-S3)
+    phase31_knee_20percent_appliedVoltage_s1s3: { type: String, trim: true, default: "" },
+    phase31_knee_20percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_knee_40percent_appliedVoltage_s1s3: { type: String, trim: true, default: "" },
+    phase31_knee_40percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_knee_60percent_appliedVoltage_s1s3: { type: String, trim: true, default: "" },
+    phase31_knee_60percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_knee_80percent_appliedVoltage_s1s3: { type: String, trim: true, default: "" },
+    phase31_knee_80percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_knee_100percent_appliedVoltage_s1s3: { type: String, trim: true, default: "" },
+    phase31_knee_100percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_knee_110percent_appliedVoltage_s1s3: { type: String, trim: true, default: "" },
+    phase31_knee_110percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+
+    // Phase 1.2 - CT Ratio test fields (S1-S2)
+    phase32_20percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_20percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_40percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_40percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_60percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_60percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_80percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_80percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_100percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_100percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+
+    // Phase 1.2 - CT Ratio test fields (S1-S3)
+    phase32_20percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_20percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_40percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_40percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_60percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_60percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_80percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_80percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_100percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_100percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+
+    // Phase 1.2 - Knee point voltage fields (S1-S2)
+    phase32_knee_20percent_appliedVoltage_s1s2: { type: String, trim: true, default: "" },
+    phase32_knee_20percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_knee_40percent_appliedVoltage_s1s2: { type: String, trim: true, default: "" },
+    phase32_knee_40percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_knee_60percent_appliedVoltage_s1s2: { type: String, trim: true, default: "" },
+    phase32_knee_60percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_knee_80percent_appliedVoltage_s1s2: { type: String, trim: true, default: "" },
+    phase32_knee_80percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_knee_100percent_appliedVoltage_s1s2: { type: String, trim: true, default: "" },
+    phase32_knee_100percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_knee_110percent_appliedVoltage_s1s2: { type: String, trim: true, default: "" },
+    phase32_knee_110percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+
+    // Phase 1.2 - Knee point voltage fields (S1-S3)
+    phase32_knee_20percent_appliedVoltage_s1s3: { type: String, trim: true, default: "" },
+    phase32_knee_20percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_knee_40percent_appliedVoltage_s1s3: { type: String, trim: true, default: "" },
+    phase32_knee_40percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_knee_60percent_appliedVoltage_s1s3: { type: String, trim: true, default: "" },
+    phase32_knee_60percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_knee_80percent_appliedVoltage_s1s3: { type: String, trim: true, default: "" },
+    phase32_knee_80percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_knee_100percent_appliedVoltage_s1s3: { type: String, trim: true, default: "" },
+    phase32_knee_100percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_knee_110percent_appliedVoltage_s1s3: { type: String, trim: true, default: "" },
+    phase32_knee_110percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
 
     // Legacy bushing fields (keeping for backward compatibility)
     meterUsed: { type: String, trim: true, default: "" },
@@ -179,23 +231,272 @@ const Stage1Form4SubSchema = new mongoose.Schema(
   { _id: false }
 );
 
-// Sub-schema for Stage 1 Form 5 (Insulation Resistance)
+// Sub-schema for Stage 1 Form 5 (Pre erection Ratio test of turret CTs)
 const Stage1Form5SubSchema = new mongoose.Schema(
   {
+    // Phase 2.1 CT Ratio measurements
+    phase31_20percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_20percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_20percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_20percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_40percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_40percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_40percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_40percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_60percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_60percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_60percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_60percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_80percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_80percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_80percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_80percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_100percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_100percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_100percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_100percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+
+    // Phase 2.1 Knee point voltage measurements
+    phase31_knee_20percent_appliedVoltage_s1s2: { type: String, trim: true, default: "" },
+    phase31_knee_20percent_appliedVoltage_s1s3: { type: String, trim: true, default: "" },
+    phase31_knee_20percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_knee_20percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_knee_40percent_appliedVoltage_s1s2: { type: String, trim: true, default: "" },
+    phase31_knee_40percent_appliedVoltage_s1s3: { type: String, trim: true, default: "" },
+    phase31_knee_40percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_knee_40percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_knee_60percent_appliedVoltage_s1s2: { type: String, trim: true, default: "" },
+    phase31_knee_60percent_appliedVoltage_s1s3: { type: String, trim: true, default: "" },
+    phase31_knee_60percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_knee_60percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_knee_80percent_appliedVoltage_s1s2: { type: String, trim: true, default: "" },
+    phase31_knee_80percent_appliedVoltage_s1s3: { type: String, trim: true, default: "" },
+    phase31_knee_80percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_knee_80percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_knee_100percent_appliedVoltage_s1s2: { type: String, trim: true, default: "" },
+    phase31_knee_100percent_appliedVoltage_s1s3: { type: String, trim: true, default: "" },
+    phase31_knee_100percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_knee_100percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase31_knee_110percent_appliedVoltage_s1s2: { type: String, trim: true, default: "" },
+    phase31_knee_110percent_appliedVoltage_s1s3: { type: String, trim: true, default: "" },
+    phase31_knee_110percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase31_knee_110percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+
+    // Phase 2.2 CT Ratio measurements
+    phase32_20percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_20percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_20percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_20percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_40percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_40percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_40percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_40percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_60percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_60percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_60percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_60percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_80percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_80percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_80percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_80percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_100percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_100percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_100percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_100percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+
+    // Phase 2.2 Knee point voltage measurements
+    phase32_knee_20percent_appliedVoltage_s1s2: { type: String, trim: true, default: "" },
+    phase32_knee_20percent_appliedVoltage_s1s3: { type: String, trim: true, default: "" },
+    phase32_knee_20percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_knee_20percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_knee_40percent_appliedVoltage_s1s2: { type: String, trim: true, default: "" },
+    phase32_knee_40percent_appliedVoltage_s1s3: { type: String, trim: true, default: "" },
+    phase32_knee_40percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_knee_40percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_knee_60percent_appliedVoltage_s1s2: { type: String, trim: true, default: "" },
+    phase32_knee_60percent_appliedVoltage_s1s3: { type: String, trim: true, default: "" },
+    phase32_knee_60percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_knee_60percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_knee_80percent_appliedVoltage_s1s2: { type: String, trim: true, default: "" },
+    phase32_knee_80percent_appliedVoltage_s1s3: { type: String, trim: true, default: "" },
+    phase32_knee_80percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_knee_80percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_knee_100percent_appliedVoltage_s1s2: { type: String, trim: true, default: "" },
+    phase32_knee_100percent_appliedVoltage_s1s3: { type: String, trim: true, default: "" },
+    phase32_knee_100percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_knee_100percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    phase32_knee_110percent_appliedVoltage_s1s2: { type: String, trim: true, default: "" },
+    phase32_knee_110percent_appliedVoltage_s1s3: { type: String, trim: true, default: "" },
+    phase32_knee_110percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    phase32_knee_110percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+
+    // WTI CT Ratio measurements (S1-S2, S1-S3, S1-S4)
+    wti_20percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    wti_20percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    wti_20percent_appliedCurrent_s1s4: { type: String, trim: true, default: "" },
+    wti_20percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    wti_20percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    wti_20percent_measuredCurrent_s1s4: { type: String, trim: true, default: "" },
+    wti_40percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    wti_40percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    wti_40percent_appliedCurrent_s1s4: { type: String, trim: true, default: "" },
+    wti_40percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    wti_40percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    wti_40percent_measuredCurrent_s1s4: { type: String, trim: true, default: "" },
+    wti_60percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    wti_60percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    wti_60percent_appliedCurrent_s1s4: { type: String, trim: true, default: "" },
+    wti_60percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    wti_60percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    wti_60percent_measuredCurrent_s1s4: { type: String, trim: true, default: "" },
+    wti_80percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    wti_80percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    wti_80percent_appliedCurrent_s1s4: { type: String, trim: true, default: "" },
+    wti_80percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    wti_80percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    wti_80percent_measuredCurrent_s1s4: { type: String, trim: true, default: "" },
+    wti_100percent_appliedCurrent_s1s2: { type: String, trim: true, default: "" },
+    wti_100percent_appliedCurrent_s1s3: { type: String, trim: true, default: "" },
+    wti_100percent_appliedCurrent_s1s4: { type: String, trim: true, default: "" },
+    wti_100percent_measuredCurrent_s1s2: { type: String, trim: true, default: "" },
+    wti_100percent_measuredCurrent_s1s3: { type: String, trim: true, default: "" },
+    wti_100percent_measuredCurrent_s1s4: { type: String, trim: true, default: "" },
+
+    // WTI CT Ratio measurements (S1-S5, S1-S6, S1-S7)
+    wti_20percent_appliedCurrent_s1s5: { type: String, trim: true, default: "" },
+    wti_20percent_appliedCurrent_s1s6: { type: String, trim: true, default: "" },
+    wti_20percent_appliedCurrent_s1s7: { type: String, trim: true, default: "" },
+    wti_20percent_measuredCurrent_s1s5: { type: String, trim: true, default: "" },
+    wti_20percent_measuredCurrent_s1s6: { type: String, trim: true, default: "" },
+    wti_20percent_measuredCurrent_s1s7: { type: String, trim: true, default: "" },
+    wti_40percent_appliedCurrent_s1s5: { type: String, trim: true, default: "" },
+    wti_40percent_appliedCurrent_s1s6: { type: String, trim: true, default: "" },
+    wti_40percent_appliedCurrent_s1s7: { type: String, trim: true, default: "" },
+    wti_40percent_measuredCurrent_s1s5: { type: String, trim: true, default: "" },
+    wti_40percent_measuredCurrent_s1s6: { type: String, trim: true, default: "" },
+    wti_40percent_measuredCurrent_s1s7: { type: String, trim: true, default: "" },
+    wti_60percent_appliedCurrent_s1s5: { type: String, trim: true, default: "" },
+    wti_60percent_appliedCurrent_s1s6: { type: String, trim: true, default: "" },
+    wti_60percent_appliedCurrent_s1s7: { type: String, trim: true, default: "" },
+    wti_60percent_measuredCurrent_s1s5: { type: String, trim: true, default: "" },
+    wti_60percent_measuredCurrent_s1s6: { type: String, trim: true, default: "" },
+    wti_60percent_measuredCurrent_s1s7: { type: String, trim: true, default: "" },
+    wti_80percent_appliedCurrent_s1s5: { type: String, trim: true, default: "" },
+    wti_80percent_appliedCurrent_s1s6: { type: String, trim: true, default: "" },
+    wti_80percent_appliedCurrent_s1s7: { type: String, trim: true, default: "" },
+    wti_80percent_measuredCurrent_s1s5: { type: String, trim: true, default: "" },
+    wti_80percent_measuredCurrent_s1s6: { type: String, trim: true, default: "" },
+    wti_80percent_measuredCurrent_s1s7: { type: String, trim: true, default: "" },
+    wti_100percent_appliedCurrent_s1s5: { type: String, trim: true, default: "" },
+    wti_100percent_appliedCurrent_s1s6: { type: String, trim: true, default: "" },
+    wti_100percent_appliedCurrent_s1s7: { type: String, trim: true, default: "" },
+    wti_100percent_measuredCurrent_s1s5: { type: String, trim: true, default: "" },
+    wti_100percent_measuredCurrent_s1s6: { type: String, trim: true, default: "" },
+    wti_100percent_measuredCurrent_s1s7: { type: String, trim: true, default: "" },
+
+    photos: { type: Map, of: String, default: {} },
+  },
+  { _id: false }
+);
+
+// Sub-schema for Stage 1 Form 6 (Tan Delta and Capacitance Test on Bushing)
+const Stage1Form6SubSchema = new mongoose.Schema(
+  {
+    // Basic test information
+    meterUsed: { type: String, trim: true, default: "" },
     date: { type: String, trim: true, default: "" },
     time: { type: String, trim: true, default: "" },
-    make: { type: String, trim: true, default: "" },
-    srNo: { type: String, trim: true, default: "" },
-    insulationTesterDetails: { type: String, trim: true, default: "" },
+    modelSrNo: { type: String, trim: true, default: "" },
+    wti: { type: String, trim: true, default: "" },
+    oti: { type: String, trim: true, default: "" },
+
+    // HV Bushing Serial Numbers
+    hvBushing11_srNo: { type: String, trim: true, default: "" },
+    hvBushing12_srNo: { type: String, trim: true, default: "" },
+
+    // HV Bushing 1.1 - 05 KV Phase measurements
+    hvBushing11_05kv_tanDelta: { type: String, trim: true, default: "" },
+    hvBushing11_05kv_capacitance: { type: String, trim: true, default: "" },
+    hvBushing11_05kv_excitationCurrent: { type: String, trim: true, default: "" },
+    hvBushing11_05kv_dielectricLoss: { type: String, trim: true, default: "" },
+
+    // HV Bushing 1.2 - 05 KV Phase measurements
+    hvBushing12_05kv_tanDelta: { type: String, trim: true, default: "" },
+    hvBushing12_05kv_capacitance: { type: String, trim: true, default: "" },
+    hvBushing12_05kv_excitationCurrent: { type: String, trim: true, default: "" },
+    hvBushing12_05kv_dielectricLoss: { type: String, trim: true, default: "" },
+
+    // HV Bushing 1.1 - 10 KV Phase measurements
+    hvBushing11_10kv_tanDelta: { type: String, trim: true, default: "" },
+    hvBushing11_10kv_capacitance: { type: String, trim: true, default: "" },
+    hvBushing11_10kv_excitationCurrent: { type: String, trim: true, default: "" },
+    hvBushing11_10kv_dielectricLoss: { type: String, trim: true, default: "" },
+
+    // HV Bushing 1.2 - 10 KV Phase measurements
+    hvBushing12_10kv_tanDelta: { type: String, trim: true, default: "" },
+    hvBushing12_10kv_capacitance: { type: String, trim: true, default: "" },
+    hvBushing12_10kv_excitationCurrent: { type: String, trim: true, default: "" },
+    hvBushing12_10kv_dielectricLoss: { type: String, trim: true, default: "" },
+
+    // LV Bushing Serial Numbers
+    lvBushing21_srNo: { type: String, trim: true, default: "" },
+    lvBushing22_srNo: { type: String, trim: true, default: "" },
+
+    // LV Bushing 2.1 - 05 KV Phase measurements
+    lvBushing21_05kv_tanDelta: { type: String, trim: true, default: "" },
+    lvBushing21_05kv_capacitance: { type: String, trim: true, default: "" },
+    lvBushing21_05kv_excitationCurrent: { type: String, trim: true, default: "" },
+    lvBushing21_05kv_dielectricLoss: { type: String, trim: true, default: "" },
+
+    // LV Bushing 2.2 - 05 KV Phase measurements
+    lvBushing22_05kv_tanDelta: { type: String, trim: true, default: "" },
+    lvBushing22_05kv_capacitance: { type: String, trim: true, default: "" },
+    lvBushing22_05kv_excitationCurrent: { type: String, trim: true, default: "" },
+    lvBushing22_05kv_dielectricLoss: { type: String, trim: true, default: "" },
+
+    // LV Bushing 2.1 - 10 KV Phase measurements
+    lvBushing21_10kv_tanDelta: { type: String, trim: true, default: "" },
+    lvBushing21_10kv_capacitance: { type: String, trim: true, default: "" },
+    lvBushing21_10kv_excitationCurrent: { type: String, trim: true, default: "" },
+    lvBushing21_10kv_dielectricLoss: { type: String, trim: true, default: "" },
+
+    // LV Bushing 2.2 - 10 KV Phase measurements
+    lvBushing22_10kv_tanDelta: { type: String, trim: true, default: "" },
+    lvBushing22_10kv_capacitance: { type: String, trim: true, default: "" },
+    lvBushing22_10kv_excitationCurrent: { type: String, trim: true, default: "" },
+    lvBushing22_10kv_dielectricLoss: { type: String, trim: true, default: "" },
+
+    photos: { type: Map, of: String, default: {} },
+  },
+  { _id: false }
+);
+
+// Sub-schema for Stage 1 Form 7 (Record of Measurement of IR Values)
+const Stage1Form7SubSchema = new mongoose.Schema(
+  {
+    // Basic test information
+    date: { type: String, trim: true, default: "" },
+    time: { type: String, trim: true, default: "" },
     ambTemp: { type: String, trim: true, default: "" },
+    make: { type: String, trim: true, default: "" },
     oilTemp: { type: String, trim: true, default: "" },
+    srNo: { type: String, trim: true, default: "" },
     wdgTemp: { type: String, trim: true, default: "" },
     range: { type: String, trim: true, default: "" },
     relativeHumidity: { type: String, trim: true, default: "" },
     voltageLevel: { type: String, trim: true, default: "" },
-    hvEarth15Sec: { type: String, trim: true, default: "" },
-    hvEarth60Sec: { type: String, trim: true, default: "" },
-    ratioIR60IR15: { type: String, trim: true, default: "" },
+
+    // IR measurements
+    hvEarth_10sec: { type: String, trim: true, default: "" },
+    hvEarth_60sec: { type: String, trim: true, default: "" },
+    hvEarth_ratio: { type: String, trim: true, default: "" },
+    lvEarth_10sec: { type: String, trim: true, default: "" },
+    lvEarth_60sec: { type: String, trim: true, default: "" },
+    lvEarth_ratio: { type: String, trim: true, default: "" },
+    hvLv_10sec: { type: String, trim: true, default: "" },
+    hvLv_60sec: { type: String, trim: true, default: "" },
+    hvLv_ratio: { type: String, trim: true, default: "" },
+
     photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
@@ -214,32 +515,83 @@ const FiltrationRecordSchema = new mongoose.Schema(
   { _id: false }
 );
 
-// Sub-schema for Stage 2 Form 1 (Oil Filtration)
+// Sub-schema for Stage 2 Form 1 (Record of Oil Handling)
 const Stage2Form1SubSchema = new mongoose.Schema(
   {
-    tank1NoOfBarrels: { type: String, trim: true, default: "" },
-    tank1StartedDateTime: { type: String, trim: true, default: "" },
-    tank1CompletedDateTime: { type: String, trim: true, default: "" },
-    tank1BDV: { type: String, trim: true, default: "" },
-    tank1MoistureContent: { type: String, trim: true, default: "" },
+    // Tank 1 data
+    tank1_noOfBarrels: { type: String, trim: true, default: "" },
+    tank1_startedDate: { type: String, trim: true, default: "" },
+    tank1_startedTime: { type: String, trim: true, default: "" },
+    tank1_completedDate: { type: String, trim: true, default: "" },
+    tank1_completedTime: { type: String, trim: true, default: "" },
+    tank1_bdv: { type: String, trim: true, default: "" },
+    tank1_ppm: { type: String, trim: true, default: "" },
+
+    // Tank 2 data
+    tank2_noOfBarrels: { type: String, trim: true, default: "" },
+    tank2_startedDate: { type: String, trim: true, default: "" },
+    tank2_startedTime: { type: String, trim: true, default: "" },
+    tank2_completedDate: { type: String, trim: true, default: "" },
+    tank2_completedTime: { type: String, trim: true, default: "" },
+    tank2_bdv: { type: String, trim: true, default: "" },
+    tank2_ppm: { type: String, trim: true, default: "" },
+
+    // Tank 3 data
+    tank3_noOfBarrels: { type: String, trim: true, default: "" },
+    tank3_startedDate: { type: String, trim: true, default: "" },
+    tank3_startedTime: { type: String, trim: true, default: "" },
+    tank3_completedDate: { type: String, trim: true, default: "" },
+    tank3_completedTime: { type: String, trim: true, default: "" },
+    tank3_bdv: { type: String, trim: true, default: "" },
+    tank3_ppm: { type: String, trim: true, default: "" },
+
+    // Reservoir Tank Filtration
     filtrationRecords: [FiltrationRecordSchema],
     photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );
 
-// Sub-schema for Stage 2 Form 2 (Insulation Resistance)
+// Sub-schema for Stage 2 Form 2 (Line Lead Clearance and IR Values After Erection)
 const Stage2Form2SubSchema = new mongoose.Schema(
   {
+    // Line Lead Clearance in mm
+    hv_earth_11: { type: String, trim: true, default: "" },
+    hv_earth_12: { type: String, trim: true, default: "" },
+    lv1_earth_21: { type: String, trim: true, default: "" },
+    lv1_earth_22: { type: String, trim: true, default: "" },
+    lv2_earth_31: { type: String, trim: true, default: "" },
+    lv2_earth_32: { type: String, trim: true, default: "" },
+
+    // Temperature readings
     tempOTI: { type: String, trim: true, default: "" },
     tempWTI: { type: String, trim: true, default: "" },
     tempAMB: { type: String, trim: true, default: "" },
-    hvEarth15Sec: { type: String, trim: true, default: "" },
-    hvEarth60Sec: { type: String, trim: true, default: "" },
-    ratioIR60IR15: { type: String, trim: true, default: "" },
-    hvWithRespectToEarth: { type: String, trim: true, default: "" },
-    lvWithRespectToEarth: { type: String, trim: true, default: "" },
-    neutralWithRespectToEarth: { type: String, trim: true, default: "" },
+
+    // IR measurements (15sec and 60sec)
+    hvEarth_15sec: { type: String, trim: true, default: "" },
+    hvEarth_60sec: { type: String, trim: true, default: "" },
+    hvEarth_ratio: { type: String, trim: true, default: "" },
+    lv1Earth_15sec: { type: String, trim: true, default: "" },
+    lv1Earth_60sec: { type: String, trim: true, default: "" },
+    lv1Earth_ratio: { type: String, trim: true, default: "" },
+    lv2Earth_15sec: { type: String, trim: true, default: "" },
+    lv2Earth_60sec: { type: String, trim: true, default: "" },
+    lv2Earth_ratio: { type: String, trim: true, default: "" },
+    hvLv1_15sec: { type: String, trim: true, default: "" },
+    hvLv1_60sec: { type: String, trim: true, default: "" },
+    hvLv1_ratio: { type: String, trim: true, default: "" },
+    hvLv2_15sec: { type: String, trim: true, default: "" },
+    hvLv2_60sec: { type: String, trim: true, default: "" },
+    hvLv2_ratio: { type: String, trim: true, default: "" },
+    lv1Lv2_15sec: { type: String, trim: true, default: "" },
+    lv1Lv2_60sec: { type: String, trim: true, default: "" },
+    lv1Lv2_ratio: { type: String, trim: true, default: "" },
+
+    // Before oil filling in main tank
+    bdv: { type: String, trim: true, default: "" },
+    waterContent: { type: String, trim: true, default: "" },
+
     photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
@@ -250,29 +602,68 @@ const Stage2Form2SubSchema = new mongoose.Schema(
 // Sub-schema for pressure test records
 const PressureTestRecordSubSchema = new mongoose.Schema(
   {
-    srNo: { type: String, trim: true, default: "" },
     timeStarted: { type: String, trim: true, default: "" },
-    pressureKgCm2: { type: String, trim: true, default: "" },
+    pressure: { type: String, trim: true, default: "" },
     tempAmb: { type: String, trim: true, default: "" },
-    tempOTI: { type: String, trim: true, default: "" },
-    tempWTI: { type: String, trim: true, default: "" },
+    tempOti: { type: String, trim: true, default: "" },
+    tempWti: { type: String, trim: true, default: "" },
   },
   { _id: false }
 );
 
-// Sub-schema for Stage 3 Form 1
+// Sub-schema for vacuum records (nested within Stage3Form1)
+const VacuumRecordSchema = new mongoose.Schema(
+  {
+    date: { type: String, trim: true, default: "" },
+    time: { type: String, trim: true, default: "" },
+    vacuumLevelMic: { type: String, trim: true, default: "" },
+    vacuumLevelTransformer: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+// Sub-schema for Stage 3 Form 1 (Details for Recording of Vacuum Cycle)
 const Stage3Form1SubSchema = new mongoose.Schema(
   {
-    bdvKV: { type: String, trim: true, default: "" },
-    waterContentPPM: { type: String, trim: true, default: "" },
+    // Vacuum cycle details
+    vacuumHoseCheckedBy: { type: String, trim: true, default: "" },
+    vacuumHoseConnectedTo: { type: String, trim: true, default: "" },
+    evacuationStartedAt: { type: String, trim: true, default: "" },
+    evacuationStartedOn: { type: String, trim: true, default: "" },
+
+    // Vacuum cycle records
+    vacuumRecords: [VacuumRecordSchema],
+
+    // Temperature readings for IR test
     tempOTI: { type: String, trim: true, default: "" },
     tempWTI: { type: String, trim: true, default: "" },
     tempAMB: { type: String, trim: true, default: "" },
-    hvEarth15Sec: { type: String, trim: true, default: "" },
-    hvEarth60Sec: { type: String, trim: true, default: "" },
-    ratioIR60IR15: { type: String, trim: true, default: "" },
+
+    // IR measurements (15sec and 60sec)
+    hvEarth_15sec: { type: String, trim: true, default: "" },
+    hvEarth_60sec: { type: String, trim: true, default: "" },
+    hvEarth_ratio: { type: String, trim: true, default: "" },
+    lv1Earth_15sec: { type: String, trim: true, default: "" },
+    lv1Earth_60sec: { type: String, trim: true, default: "" },
+    lv1Earth_ratio: { type: String, trim: true, default: "" },
+    lv2Earth_15sec: { type: String, trim: true, default: "" },
+    lv2Earth_60sec: { type: String, trim: true, default: "" },
+    lv2Earth_ratio: { type: String, trim: true, default: "" },
+    hvLv1_15sec: { type: String, trim: true, default: "" },
+    hvLv1_60sec: { type: String, trim: true, default: "" },
+    hvLv1_ratio: { type: String, trim: true, default: "" },
+    hvLv2_15sec: { type: String, trim: true, default: "" },
+    hvLv2_60sec: { type: String, trim: true, default: "" },
+    hvLv2_ratio: { type: String, trim: true, default: "" },
+    lv1Lv2_15sec: { type: String, trim: true, default: "" },
+    lv1Lv2_60sec: { type: String, trim: true, default: "" },
+    lv1Lv2_ratio: { type: String, trim: true, default: "" },
+
+    // Pressure Test Report
     pressureTestDate: { type: String, trim: true, default: "" },
     pressureTestRecords: [PressureTestRecordSubSchema],
+
+    photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );
@@ -370,60 +761,46 @@ const SignatureSubSchema = new mongoose.Schema(
   { _id: false }
 );
 
-// Sub-schema for Stage 4 Form 1
-const Stage4Form1SubSchema = new mongoose.Schema(
+// Sub-schema for oil filtration records (nested within Stage4Form1)
+const Stage4FiltrationRecordSchema = new mongoose.Schema(
   {
-    makeOfMeter: { type: String, trim: true, default: "" },
     date: { type: String, trim: true, default: "" },
-    modelSrNo: { type: String, trim: true, default: "" },
-    ambient: { type: String, trim: true, default: "" },
-    oti: { type: String, trim: true, default: "" },
-    wti: { type: String, trim: true, default: "" },
-    testReportReviewed: { type: String, trim: true, default: "" },
-    acceptanceOfTest: { type: String, trim: true, default: "" },
-    meterUsedBushing: { type: String, trim: true, default: "" },
-    dateBushing: { type: String, trim: true, default: "" },
-    timeBushing: { type: String, trim: true, default: "" },
-    modelSrNoBushing: { type: String, trim: true, default: "" },
-    wtiBushing: { type: String, trim: true, default: "" },
-    otiBushing: { type: String, trim: true, default: "" },
-    bushing11_05kv_tanDelta: { type: String, trim: true, default: "" },
-    bushing11_05kv_capacitance: { type: String, trim: true, default: "" },
-    bushing11_05kv_excitationCurrent: { type: String, trim: true, default: "" },
-    bushing11_05kv_dielectricLoss: { type: String, trim: true, default: "" },
-    bushing12_05kv_tanDelta: { type: String, trim: true, default: "" },
-    bushing12_05kv_capacitance: { type: String, trim: true, default: "" },
-    bushing12_05kv_excitationCurrent: { type: String, trim: true, default: "" },
-    bushing12_05kv_dielectricLoss: { type: String, trim: true, default: "" },
-    bushing11_10kv_tanDelta: { type: String, trim: true, default: "" },
-    bushing11_10kv_capacitance: { type: String, trim: true, default: "" },
-    bushing11_10kv_excitationCurrent: { type: String, trim: true, default: "" },
-    bushing11_10kv_dielectricLoss: { type: String, trim: true, default: "" },
-    bushing12_10kv_tanDelta: { type: String, trim: true, default: "" },
-    bushing12_10kv_capacitance: { type: String, trim: true, default: "" },
-    bushing12_10kv_excitationCurrent: { type: String, trim: true, default: "" },
-    bushing12_10kv_dielectricLoss: { type: String, trim: true, default: "" },
-    meterUsedWinding: { type: String, trim: true, default: "" },
-    dateWinding: { type: String, trim: true, default: "" },
-    timeWinding: { type: String, trim: true, default: "" },
-    makeSrNoWinding: { type: String, trim: true, default: "" },
-    ambientTempWinding: { type: String, trim: true, default: "" },
-    oilTempWinding: { type: String, trim: true, default: "" },
-    hvg_05kv_tanDelta: { type: String, trim: true, default: "" },
-    hvg_05kv_capacitance: { type: String, trim: true, default: "" },
-    hvg_05kv_excitationCurrent: { type: String, trim: true, default: "" },
-    hvg_05kv_dielectricLoss: { type: String, trim: true, default: "" },
-    hvg_10kv_tanDelta: { type: String, trim: true, default: "" },
-    hvg_10kv_capacitance: { type: String, trim: true, default: "" },
-    hvg_10kv_excitationCurrent: { type: String, trim: true, default: "" },
-    hvg_10kv_dielectricLoss: { type: String, trim: true, default: "" },
+    time: { type: String, trim: true, default: "" },
+    vacuumLevel: { type: String, trim: true, default: "" },
+    mcOutletTemp: { type: String, trim: true, default: "" },
+    otiTemp: { type: String, trim: true, default: "" },
+    wtiTemp: { type: String, trim: true, default: "" },
   },
   { _id: false }
 );
 
-// Sub-schema for Stage 4 Form 2
+// Sub-schema for Stage 4 Form 1 (Record for Oil Filtration)
+const Stage4Form1SubSchema = new mongoose.Schema(
+  {
+    // Oil filtration records
+    filtrationRecords: [Stage4FiltrationRecordSchema],
+    photos: { type: Map, of: String, default: {} },
+  },
+  { _id: false }
+);
+
+// Sub-schema for cooler bank filtration records (nested within Stage4Form2)
+const Stage4CoolerBankRecordSchema = new mongoose.Schema(
+  {
+    date: { type: String, trim: true, default: "" },
+    time: { type: String, trim: true, default: "" },
+    vacuumLevel: { type: String, trim: true, default: "" },
+    mcOutletTemp: { type: String, trim: true, default: "" },
+    otiTemp: { type: String, trim: true, default: "" },
+    wtiTemp: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+// Sub-schema for Stage 4 Form 2 (IR Value before radiator/combine filtration)
 const Stage4Form2SubSchema = new mongoose.Schema(
   {
+    // IR Value before radiator/combine filtration
     date: { type: String, trim: true, default: "" },
     time: { type: String, trim: true, default: "" },
     insulationTesterDetails: { type: String, trim: true, default: "" },
@@ -435,70 +812,114 @@ const Stage4Form2SubSchema = new mongoose.Schema(
     range: { type: String, trim: true, default: "" },
     relativeHumidity: { type: String, trim: true, default: "" },
     voltageLevel: { type: String, trim: true, default: "" },
-    hvEarth10Sec: { type: String, trim: true, default: "" },
-    hvEarth60Sec: { type: String, trim: true, default: "" },
-    ratioIR60IR10: { type: String, trim: true, default: "" },
-    voltageRatioTests: { type: [VoltageRatioTestSubSchema], default: [] },
-    appliedVoltageMag: { type: String, trim: true, default: "" },
-    dateMag: { type: String, trim: true, default: "" },
-    timeMag: { type: String, trim: true, default: "" },
-    meterMakeSrNoMag: { type: String, trim: true, default: "" },
-    magnetisingTests: { type: [MagnetisingTestSubSchema], default: [] },
+
+    // Temperature readings
+    tempOTI: { type: String, trim: true, default: "" },
+    tempWTI: { type: String, trim: true, default: "" },
+    tempAMB: { type: String, trim: true, default: "" },
+
+    // IR measurements (15sec and 60sec)
+    hvEarth_15sec: { type: String, trim: true, default: "" },
+    hvEarth_60sec: { type: String, trim: true, default: "" },
+    hvEarth_ratio: { type: String, trim: true, default: "" },
+    lv1Earth_15sec: { type: String, trim: true, default: "" },
+    lv1Earth_60sec: { type: String, trim: true, default: "" },
+    lv1Earth_ratio: { type: String, trim: true, default: "" },
+    lv2Earth_15sec: { type: String, trim: true, default: "" },
+    lv2Earth_60sec: { type: String, trim: true, default: "" },
+    lv2Earth_ratio: { type: String, trim: true, default: "" },
+    hvLv1_15sec: { type: String, trim: true, default: "" },
+    hvLv1_60sec: { type: String, trim: true, default: "" },
+    hvLv1_ratio: { type: String, trim: true, default: "" },
+    hvLv2_15sec: { type: String, trim: true, default: "" },
+    hvLv2_60sec: { type: String, trim: true, default: "" },
+    hvLv2_ratio: { type: String, trim: true, default: "" },
+    lv1Lv2_15sec: { type: String, trim: true, default: "" },
+    lv1Lv2_60sec: { type: String, trim: true, default: "" },
+    lv1Lv2_ratio: { type: String, trim: true, default: "" },
+
+    // Oil filtration of Cooler Bank
+    coolerBankRecords: [Stage4CoolerBankRecordSchema],
+
+    photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );
 
-// Sub-schema for Stage 4 Form 3
+// Sub-schema for combine filtration records (nested within Stage4Form3)
+const Stage4CombineRecordSchema = new mongoose.Schema(
+  {
+    date: { type: String, trim: true, default: "" },
+    time: { type: String, trim: true, default: "" },
+    vacuumLevel: { type: String, trim: true, default: "" },
+    mcOutletTemp: { type: String, trim: true, default: "" },
+    otiTemp: { type: String, trim: true, default: "" },
+    wtiTemp: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+// Sub-schema for Stage 4 Form 3 (Oil filtration of Combine - Main Tank + Cooler bank)
 const Stage4Form3SubSchema = new mongoose.Schema(
   {
-    appliedVoltage: { type: String, trim: true, default: "" },
-    date: { type: String, trim: true, default: "" },
-    time: { type: String, trim: true, default: "" },
-    meterMakeSrNo: { type: String, trim: true, default: "" },
-    test11_12_measuredCurrent11: { type: String, trim: true, default: "" },
-    test11_12_measuredCurrent12_21: { type: String, trim: true, default: "" },
-    test12_21_measuredCurrent12: { type: String, trim: true, default: "" },
-    test12_21_measuredCurrent11_21: { type: String, trim: true, default: "" },
-    appliedVoltageHV: { type: String, trim: true, default: "" },
-    ratedCurrentLV: { type: String, trim: true, default: "" },
-    percentZ: { type: String, trim: true, default: "" },
-    ratedVoltageHV: { type: String, trim: true, default: "" },
-    measuredCurrentLV: { type: String, trim: true, default: "" },
+    // Oil filtration of Combine (Main Tank + Cooler bank)
+    combineRecords: [Stage4CombineRecordSchema],
+    photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );
 
-// Sub-schema for Stage 4 Form 4
+// Sub-schema for Stage 4 Form 4 (IR & PI Value after filtration)
 const Stage4Form4SubSchema = new mongoose.Schema(
   {
-    meterUsed: { type: String, trim: true, default: "" },
+    // IR & PI Value after filtration
     date: { type: String, trim: true, default: "" },
     time: { type: String, trim: true, default: "" },
-    meterMakeSrNo: { type: String, trim: true, default: "" },
-    wti: { type: String, trim: true, default: "" },
-    oti: { type: String, trim: true, default: "" },
-    range: { type: String, trim: true, default: "" },
-    ambient: { type: String, trim: true, default: "" },
-    winding11_12: { type: String, trim: true, default: "" },
-    winding11_21: { type: String, trim: true, default: "" },
-    winding21_12: { type: String, trim: true, default: "" },
-    dateIR: { type: String, trim: true, default: "" },
-    timeIR: { type: String, trim: true, default: "" },
     insulationTesterDetails: { type: String, trim: true, default: "" },
-    ambTempIR: { type: String, trim: true, default: "" },
-    makeIR: { type: String, trim: true, default: "" },
-    oilTempIR: { type: String, trim: true, default: "" },
-    srNoIR: { type: String, trim: true, default: "" },
-    wdgTempIR: { type: String, trim: true, default: "" },
-    rangeIR: { type: String, trim: true, default: "" },
-    relativeHumidityIR: { type: String, trim: true, default: "" },
-    voltageLevelIR: { type: String, trim: true, default: "" },
-    hvEarth10Sec: { type: String, trim: true, default: "" },
-    hvEarth60Sec: { type: String, trim: true, default: "" },
-    hvEarth600Sec: { type: String, trim: true, default: "" },
-    ratioIR60IR10: { type: String, trim: true, default: "" },
-    ratioIR600IR60: { type: String, trim: true, default: "" },
-    signatures: { type: SignatureSubSchema, default: () => ({}) },
+    ambTemp: { type: String, trim: true, default: "" },
+    make: { type: String, trim: true, default: "" },
+    oilTemp: { type: String, trim: true, default: "" },
+    srNo: { type: String, trim: true, default: "" },
+    wdgTemp: { type: String, trim: true, default: "" },
+    range: { type: String, trim: true, default: "" },
+    relativeHumidity: { type: String, trim: true, default: "" },
+    voltageLevel: { type: String, trim: true, default: "" },
+
+    // Temperature readings
+    tempOTI: { type: String, trim: true, default: "" },
+    tempWTI: { type: String, trim: true, default: "" },
+    tempAMB: { type: String, trim: true, default: "" },
+
+    // IR measurements (10sec, 60sec, 600sec, and PI)
+    hvEarth_10sec: { type: String, trim: true, default: "" },
+    hvEarth_60sec: { type: String, trim: true, default: "" },
+    hvEarth_600sec: { type: String, trim: true, default: "" },
+    hvEarth_pi: { type: String, trim: true, default: "" },
+    lv1Earth_10sec: { type: String, trim: true, default: "" },
+    lv1Earth_60sec: { type: String, trim: true, default: "" },
+    lv1Earth_600sec: { type: String, trim: true, default: "" },
+    lv1Earth_pi: { type: String, trim: true, default: "" },
+    lv2Earth_10sec: { type: String, trim: true, default: "" },
+    lv2Earth_60sec: { type: String, trim: true, default: "" },
+    lv2Earth_600sec: { type: String, trim: true, default: "" },
+    lv2Earth_pi: { type: String, trim: true, default: "" },
+    hvLv1_10sec: { type: String, trim: true, default: "" },
+    hvLv1_60sec: { type: String, trim: true, default: "" },
+    hvLv1_600sec: { type: String, trim: true, default: "" },
+    hvLv1_pi: { type: String, trim: true, default: "" },
+    hvLv2_10sec: { type: String, trim: true, default: "" },
+    hvLv2_60sec: { type: String, trim: true, default: "" },
+    hvLv2_600sec: { type: String, trim: true, default: "" },
+    hvLv2_pi: { type: String, trim: true, default: "" },
+    lv1Lv2_10sec: { type: String, trim: true, default: "" },
+    lv1Lv2_60sec: { type: String, trim: true, default: "" },
+    lv1Lv2_600sec: { type: String, trim: true, default: "" },
+    lv1Lv2_pi: { type: String, trim: true, default: "" },
+
+    // After Oil Filtration of main tank
+    bdv: { type: String, trim: true, default: "" },
+    waterContent: { type: String, trim: true, default: "" },
+
     photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
@@ -545,39 +966,67 @@ const DetailedSignatureSubSchema = new mongoose.Schema(
   { _id: false }
 );
 
-// Sub-schema for Stage 5 Form 1
+// Sub-schema for Stage 5 Form 1 (Test Record of Erection for Traction Transformer)
 const Stage5Form1SubSchema = new mongoose.Schema(
   {
-    valveStatus: { type: Map, of: StatusQtySubSchema, default: {} },
-    airVenting: { type: Map, of: StatusQtySubSchema, default: {} },
-    protectionTrails: { type: Map, of: ProtectionTrailsSubSchema, default: {} },
-    bushingTestTap: { type: BushingTestTapSubSchema, default: {} },
+    // Test equipment details
+    makeOfMeter: { type: String, trim: true, default: "" },
+    date: { type: String, trim: true, default: "" },
+    modelSrNo: { type: String, trim: true, default: "" },
+    ambient: { type: String, trim: true, default: "" },
+    oti: { type: String, trim: true, default: "" },
+    wti: { type: String, trim: true, default: "" },
+    testReportReviewedBy: { type: String, trim: true, default: "" },
+    acceptanceOfTest: { type: String, trim: true, default: "" },
+
+    // Transformer details
+    trSrNo: { type: String, trim: true, default: "" },
+    location: { type: String, trim: true, default: "" },
+    customer: { type: String, trim: true, default: "" },
+    testDate: { type: String, trim: true, default: "" },
+    testTime: { type: String, trim: true, default: "" },
+
+    // Test conditions
+    ambTemp: { type: String, trim: true, default: "" },
+    make: { type: String, trim: true, default: "" },
+    oilTemp: { type: String, trim: true, default: "" },
+    srNo: { type: String, trim: true, default: "" },
+    wdgTemp: { type: String, trim: true, default: "" },
+    voltageLevel: { type: String, trim: true, default: "" },
+
+    // IR measurements (15sec, 60sec, 600sec, and ratios)
+    hvEarth_15sec: { type: String, trim: true, default: "" },
+    hvEarth_60sec: { type: String, trim: true, default: "" },
+    hvEarth_600sec: { type: String, trim: true, default: "" },
+    hvEarth_ratio60_15: { type: String, trim: true, default: "" },
+    hvEarth_ratio600_60: { type: String, trim: true, default: "" },
+    lvEarth_15sec: { type: String, trim: true, default: "" },
+    lvEarth_60sec: { type: String, trim: true, default: "" },
+    lvEarth_600sec: { type: String, trim: true, default: "" },
+    lvEarth_ratio60_15: { type: String, trim: true, default: "" },
+    lvEarth_ratio600_60: { type: String, trim: true, default: "" },
+    hvLv_15sec: { type: String, trim: true, default: "" },
+    hvLv_60sec: { type: String, trim: true, default: "" },
+    hvLv_600sec: { type: String, trim: true, default: "" },
+    hvLv_ratio60_15: { type: String, trim: true, default: "" },
+    hvLv_ratio600_60: { type: String, trim: true, default: "" },
+
+    photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );
 
-// Sub-schema for Stage 5 Form 2
+// Sub-schema for Stage 5 Form 2 (Type of Test - Polarity Test)
 const Stage5Form2SubSchema = new mongoose.Schema(
   {
-    bdvKV: { type: String, trim: true, default: "" },
-    moistureContentPPM: { type: String, trim: true, default: "" },
-    hvEarth15Sec: { type: String, trim: true, default: "" },
-    hvEarth60Sec: { type: String, trim: true, default: "" },
-    hvEarth600Sec: { type: String, trim: true, default: "" },
-    oilLevelConservator: { type: String, trim: true, default: "" },
-    hvJumpersConnected: { type: String, enum: ["Yes", "No", ""], default: "" },
-    lvJumpersConnected: { type: String, enum: ["Yes", "No", ""], default: "" },
-    incomingLACounter: { type: String, trim: true, default: "" },
-    outgoingLACounter: { type: String, trim: true, default: "" },
-    allCTCableTerminated: { type: String, trim: true, default: "" },
-    protectionRelaysChecked: { type: String, trim: true, default: "" },
-    anabondAppliedHVBushings: { type: String, trim: true, default: "" },
-    allJointsSealed: { type: String, trim: true, default: "" },
-    allForeignMaterialCleared: { type: String, trim: true, default: "" },
-    temperatureWTI: { type: String, trim: true, default: "" },
-    temperatureOTI: { type: String, trim: true, default: "" },
-    remarks: { type: String, trim: true, default: "" },
-    signatures: { type: DetailedSignatureSubSchema, default: () => ({}) },
+    // Polarity Test - Condition 1
+    condition1_terminal1: { type: String, trim: true, default: "" },
+    condition1_terminal2: { type: String, trim: true, default: "" },
+
+    // Polarity Test - Condition 2
+    condition2_terminal1: { type: String, trim: true, default: "" },
+    condition2_terminal2: { type: String, trim: true, default: "" },
+
     photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
@@ -672,6 +1121,8 @@ const TractionSchema = new mongoose.Schema(
         form3: { type: Stage1Form3SubSchema, default: () => ({}) },
         form4: { type: Stage1Form4SubSchema, default: () => ({}) },
         form5: { type: Stage1Form5SubSchema, default: () => ({}) },
+        form6: { type: Stage1Form6SubSchema, default: () => ({}) },
+        form7: { type: Stage1Form7SubSchema, default: () => ({}) },
       },
       stage2: {
         form1: { type: Stage2Form1SubSchema, default: () => ({}) },
