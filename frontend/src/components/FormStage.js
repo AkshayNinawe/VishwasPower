@@ -563,19 +563,30 @@ const PhotoUploadSection = ({
   photos,
   onPhotoChange,
   allowMultiple = false,
+  initialPhotos = {},
 }) => {
   const [cameraStream, setCameraStream] = useState(null);
   const [showCamera, setShowCamera] = useState(false);
+  const [currentPhotoKey, setCurrentPhotoKey] = useState(null);
+  const [capturedPhotos, setCapturedPhotos] = useState({});
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
-  const startCamera = async () => {
+  // Initialize capturedPhotos with existing photo URLs from database
+  useEffect(() => {
+    if (initialPhotos && Object.keys(initialPhotos).length > 0) {
+      setCapturedPhotos(initialPhotos);
+    }
+  }, [initialPhotos]);
+
+  const startCamera = async (photoKey) => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: "environment" }, // Use back camera on mobile
       });
       setCameraStream(stream);
       setShowCamera(true);
+      setCurrentPhotoKey(photoKey);
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
       }
@@ -590,11 +601,12 @@ const PhotoUploadSection = ({
       cameraStream.getTracks().forEach((track) => track.stop());
       setCameraStream(null);
       setShowCamera(false);
+      setCurrentPhotoKey(null);
     }
   };
 
-  const capturePhoto = (photoKey) => {
-    if (videoRef.current && canvasRef.current) {
+  const capturePhoto = () => {
+    if (videoRef.current && canvasRef.current && currentPhotoKey) {
       const canvas = canvasRef.current;
       const video = videoRef.current;
       const context = canvas.getContext("2d");
@@ -609,7 +621,15 @@ const PhotoUploadSection = ({
             const file = new File([blob], `camera-capture-${Date.now()}.jpg`, {
               type: "image/jpeg",
             });
-            onPhotoChange(photoKey, file);
+            
+            // Create preview URL for the captured image
+            const previewUrl = URL.createObjectURL(blob);
+            setCapturedPhotos(prev => ({
+              ...prev,
+              [currentPhotoKey]: previewUrl
+            }));
+            
+            onPhotoChange(currentPhotoKey, file);
             stopCamera();
           }
         },
@@ -623,19 +643,57 @@ const PhotoUploadSection = ({
     if (allowMultiple && files.length > 1) {
       // Handle multiple files
       Array.from(files).forEach((file, index) => {
-        onPhotoChange(`${photoKey}_${index}`, file);
+        const previewUrl = URL.createObjectURL(file);
+        const key = `${photoKey}_${index}`;
+        setCapturedPhotos(prev => ({
+          ...prev,
+          [key]: previewUrl
+        }));
+        onPhotoChange(key, file);
       });
     } else {
       // Handle single file
-      onPhotoChange(photoKey, files[0]);
+      const file = files[0];
+      if (file) {
+        const previewUrl = URL.createObjectURL(file);
+        setCapturedPhotos(prev => ({
+          ...prev,
+          [photoKey]: previewUrl
+        }));
+        onPhotoChange(photoKey, file);
+      }
     }
   };
 
+  const removePhoto = (photoKey) => {
+    setCapturedPhotos(prev => {
+      const newPhotos = { ...prev };
+      if (newPhotos[photoKey]) {
+        URL.revokeObjectURL(newPhotos[photoKey]);
+        delete newPhotos[photoKey];
+      }
+      return newPhotos;
+    });
+    onPhotoChange(photoKey, null);
+  };
+
   useEffect(() => {
+    // Set up video stream when camera is started
+    if (showCamera && cameraStream && videoRef.current) {
+      videoRef.current.srcObject = cameraStream;
+      videoRef.current.play().catch(error => {
+        console.error("Error playing video:", error);
+      });
+    }
+    
     return () => {
       stopCamera(); // Cleanup on unmount
+      // Cleanup preview URLs
+      Object.values(capturedPhotos).forEach(url => {
+        URL.revokeObjectURL(url);
+      });
     };
-  }, []);
+  }, [showCamera, cameraStream]);
 
   return (
     <div className="photo-upload-section">
@@ -672,7 +730,12 @@ const PhotoUploadSection = ({
           <canvas ref={canvasRef} style={{ display: "none" }} />
           <div style={{ marginTop: "20px" }}>
             <button
-              onClick={() => capturePhoto(photos[0]?.key)}
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                capturePhoto();
+              }}
               className="capture-btn"
               style={{
                 padding: "10px 20px",
@@ -687,6 +750,7 @@ const PhotoUploadSection = ({
               📷 Capture Photo
             </button>
             <button
+              type="button"
               onClick={stopCamera}
               style={{
                 padding: "10px 20px",
@@ -709,6 +773,45 @@ const PhotoUploadSection = ({
           <div key={index} className="photo-upload-item">
             <label>{photo.label}</label>
 
+            {/* Image Preview */}
+            {capturedPhotos[photo.key] && (
+              <div style={{ marginTop: "10px", position: "relative" }}>
+                <img
+                  src={capturedPhotos[photo.key]}
+                  alt={`Preview for ${photo.label}`}
+                  style={{
+                    width: "150px",
+                    height: "100px",
+                    objectFit: "cover",
+                    borderRadius: "8px",
+                    border: "2px solid #4CAF50",
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => removePhoto(photo.key)}
+                  style={{
+                    position: "absolute",
+                    top: "-5px",
+                    right: "-5px",
+                    backgroundColor: "#f44336",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "50%",
+                    width: "20px",
+                    height: "20px",
+                    cursor: "pointer",
+                    fontSize: "12px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  ×
+                </button>
+              </div>
+            )}
+
             <div
               className="upload-options"
               style={{ display: "flex", gap: "10px", marginTop: "10px" }}
@@ -716,7 +819,11 @@ const PhotoUploadSection = ({
               {/* Camera Button */}
               <button
                 type="button"
-                onClick={startCamera}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  startCamera(photo.key);
+                }}
                 className="camera-btn"
                 style={{
                   padding: "8px 12px",
@@ -786,7 +893,7 @@ const PhotoUploadSection = ({
             <input
               type="file"
               accept="image/*"
-              onChange={(e) => onPhotoChange(photo.key, e.target.files[0])}
+              onChange={(e) => handleFileSelect(photo.key, e.target.files)}
               style={{ marginTop: "10px", width: "100%" }}
             />
           </div>
@@ -1267,6 +1374,7 @@ function NamePlateDetailsForm({
         title="Transformer, Oil Level gauge, Wheel Locking, Transformer Foundation Level condition"
         photos={photoRequirements}
         onPhotoChange={handlePhotoChange}
+        initialPhotos={formData.photos}
       />
 
       <div className="form-actions">
