@@ -19,7 +19,7 @@ import {
   Stage5Form1,
   Stage5Form2,
   Stage6Form1
-} from './StageReviewPanel';
+} from './AutoTransformerStageReviewPanel';
 
 // Utility function to render photos
 const renderPhotos = (photos, formKey) => {
@@ -804,7 +804,7 @@ const GenericStageRenderer = ({ formDataFromDB, formatLabel, stageTitle }) => {
 };
 
 // Main Stage Form Renderer Component
-export const ViewFormRenderer = ({ stageNumber, formDataFromDB, formatLabel }) => {
+export const AutoTransformerViewFormRenderer = ({ stageNumber, formDataFromDB, formatLabel }) => {
   const stageTitles = {
     1: "Stage 1 - Initial Inspection & Testing",
     2: "Stage 2 - Oil Handling & IR Testing",
@@ -836,4 +836,4 @@ export const ViewFormRenderer = ({ stageNumber, formDataFromDB, formatLabel }) =
   }
 };
 
-export default ViewFormRenderer;
+export default AutoTransformerViewFormRenderer;

@@ -4361,7 +4361,7 @@ const Stage6ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
   );
 };
 
-const StageReviewPanel = ({
+const AutoTransformerStageReviewPanel = ({
   currentStageReview,
   selectedProjectForReview,
   currentStageForms,
@@ -4882,4 +4882,4 @@ export {
   Stage6ReviewRenderer
 };
 
-export default StageReviewPanel;
+export default AutoTransformerStageReviewPanel;

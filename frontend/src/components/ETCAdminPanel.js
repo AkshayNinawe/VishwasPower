@@ -6,8 +6,8 @@ import { BACKEND_API_BASE_URL, BACKEND_IMG_API_BASE_URL, additionalLogging } fro
 import FormStage from "./FormStage"; // Import FormStage
 import VConnected63MVATransformerForms from "./VConnected63MVATransformerForms";
 import TractionTransformerForms from "./TractionTransformerForms";
-import StageReviewPanel from "./StageReviewPanel";
-import { ViewFormRenderer } from "./ViewForm";
+import AutoTransformerStageReviewPanel from "./AutoTransformerStageReviewPanel";
+import { AutoTransformerViewFormRenderer } from "./AutoTransformerViewForm";
 import "./stage-review-styles.css";
 import "./form-styles.css";
 import html2pdf from "html2pdf.js";
@@ -2973,7 +2973,7 @@ const ETCAdminPanel = ({
             }
           })()
         ) : reviewMode ? (
-          <StageReviewPanel
+          <AutoTransformerStageReviewPanel
             currentStageReview={currentStageReview}
             selectedProjectForReview={selectedProjectForReview}
             currentStageForms={currentStageForms}
@@ -3113,7 +3113,7 @@ const ETCAdminPanel = ({
                           animation: "slideDown 0.3s ease-out",
                         }}
                       >
-                        <ViewFormRenderer 
+                        <AutoTransformerViewFormRenderer 
                           stageNumber={stageNumber}
                           formDataFromDB={forms}
                           formatLabel={formatLabel}
