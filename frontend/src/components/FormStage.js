@@ -575,7 +575,16 @@ const PhotoUploadSection = ({
   // Initialize capturedPhotos with existing photo URLs from database
   useEffect(() => {
     if (initialPhotos && Object.keys(initialPhotos).length > 0) {
-      setCapturedPhotos(initialPhotos);
+      setCapturedPhotos(prevPhotos => {
+        // Only add photos from initialPhotos that don't already exist in prevPhotos
+        const newPhotos = { ...prevPhotos };
+        Object.keys(initialPhotos).forEach(key => {
+          if (!newPhotos[key]) {
+            newPhotos[key] = initialPhotos[key];
+          }
+        });
+        return newPhotos;
+      });
     }
   }, [initialPhotos]);
 
@@ -624,12 +633,17 @@ const PhotoUploadSection = ({
             
             // Create preview URL for the captured image
             const previewUrl = URL.createObjectURL(blob);
+            
+            // Update captured photos state immediately
             setCapturedPhotos(prev => ({
               ...prev,
               [currentPhotoKey]: previewUrl
             }));
             
+            // Call the parent component's photo change handler
             onPhotoChange(currentPhotoKey, file);
+            
+            // Stop camera after successful capture
             stopCamera();
           }
         },
