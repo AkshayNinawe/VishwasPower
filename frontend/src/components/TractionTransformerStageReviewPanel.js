@@ -558,7 +558,7 @@ const Stage1Form2 = ({ formData }) => {
 const Stage1Form3 = ({ formData }) => (
   <div className="form-container">
     <div className="company-header">
-      <h2>CORE INSULATION CHECK: At 1KV > 500 MΩ </h2>
+      <h2>CORE INSULATION CHECK: At 1KV `{'>'}` 500 MΩ </h2>
     </div>
 
     <table className="form-table">
@@ -6842,8 +6842,8 @@ const Stage1ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
       ]
     },
     {
-      id: "pre-erection-ratio-test-phase1",
-      title: "Pre erection Ratio test of turret CTs - Phase 1",
+      id: "pre-erection-ratio-test-turret-cts",
+      title: "Pre erection Ratio test of turret CTs",
       fields: [
         { name: "phase31_20percent_appliedCurrent_s1s2", label: "Phase 1.1 - 20% Applied Current S1-S2", type: "text" },
         { name: "phase31_20percent_appliedCurrent_s1s3", label: "Phase 1.1 - 20% Applied Current S1-S3", type: "text" },

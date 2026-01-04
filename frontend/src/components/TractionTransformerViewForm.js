@@ -7,6 +7,7 @@ import {
   Stage1Form3,
   Stage1Form4,
   Stage1Form5,
+  Stage1Form6,
   Stage2Form1,
   Stage2Form2,
   Stage3Form1,
@@ -532,14 +533,19 @@ const Stage1ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
       component: Stage1Form3
     },
     {
-      id: "pre-erection-tan-delta-test",
-      title: "Pre-Erection Tan Delta and Capacitance Test on Bushing",
+      id: "pre-erection-ratio-test-turret-cts",
+      title: "Pre erection Ratio test of turret CTs",
       component: Stage1Form4
     },
     {
-      id: "record-measurement-ir-values",
-      title: "Record of Measurement of IR Values",
+      id: "pre-erection-ratio-test-phase2",
+      title: "Pre erection Ratio test of turret CTs - Phase 2",
       component: Stage1Form5
+    },
+    {
+      id: "tan-delta-capacitance-test-bushing",
+      title: "TAN DELTA AND CAPACITANCE TEST ON BUSHING",
+      component: Stage1Form6
     }
   ];
 
