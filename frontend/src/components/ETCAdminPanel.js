@@ -7,7 +7,11 @@ import FormStage from "./FormStage"; // Import FormStage
 import VConnected63MVATransformerForms from "./VConnected63MVATransformerForms";
 import TractionTransformerForms from "./TractionTransformerForms";
 import AutoTransformerStageReviewPanel from "./AutoTransformerStageReviewPanel";
+import TractionTransformerStageReviewPanel from "./TractionTransformerStageReviewPanel";
+import VConnected63MVATransformerStageReviewPanel from "./VConnected63MVATransformerStageReviewPanel";
 import { AutoTransformerViewFormRenderer } from "./AutoTransformerViewForm";
+import { TractionTransformerViewFormRenderer } from "./TractionTransformerViewForm";
+import { VConnected63MVATransformerViewFormRenderer } from "./VConnected63MVATransformerViewForm";
 import "./stage-review-styles.css";
 import "./form-styles.css";
 import html2pdf from "html2pdf.js";
@@ -2973,17 +2977,66 @@ const ETCAdminPanel = ({
             }
           })()
         ) : reviewMode ? (
-          <AutoTransformerStageReviewPanel
-            currentStageReview={currentStageReview}
-            selectedProjectForReview={selectedProjectForReview}
-            currentStageForms={currentStageForms}
-            formDataFromDB={formDataFromDB}
-            getStageStatus={getStageStatus}
-            formatLabel={formatLabel}
-            handleApproveStage={handleApproveStage}
-            handleRejectStage={handleRejectStage}
-            onBackToCompanies={handleBackFromReview}
-          />
+          (() => {
+            if (selectedDepartment?.name === "Auto Transformer") {
+              return (
+                <AutoTransformerStageReviewPanel
+                  currentStageReview={currentStageReview}
+                  selectedProjectForReview={selectedProjectForReview}
+                  currentStageForms={currentStageForms}
+                  formDataFromDB={formDataFromDB}
+                  getStageStatus={getStageStatus}
+                  formatLabel={formatLabel}
+                  handleApproveStage={handleApproveStage}
+                  handleRejectStage={handleRejectStage}
+                  onBackToCompanies={handleBackFromReview}
+                />
+              );
+            } else if (selectedDepartment?.name === "Traction Transformer") {
+              return (
+                <TractionTransformerStageReviewPanel
+                  currentStageReview={currentStageReview}
+                  selectedProjectForReview={selectedProjectForReview}
+                  currentStageForms={currentStageForms}
+                  formDataFromDB={formDataFromDB}
+                  getStageStatus={getStageStatus}
+                  formatLabel={formatLabel}
+                  handleApproveStage={handleApproveStage}
+                  handleRejectStage={handleRejectStage}
+                  onBackToCompanies={handleBackFromReview}
+                />
+              );
+            } else if (selectedDepartment?.name === "V Connected 63 MVA Transformer") {
+              return (
+                <VConnected63MVATransformerStageReviewPanel
+                  currentStageReview={currentStageReview}
+                  selectedProjectForReview={selectedProjectForReview}
+                  currentStageForms={currentStageForms}
+                  formDataFromDB={formDataFromDB}
+                  getStageStatus={getStageStatus}
+                  formatLabel={formatLabel}
+                  handleApproveStage={handleApproveStage}
+                  handleRejectStage={handleRejectStage}
+                  onBackToCompanies={handleBackFromReview}
+                />
+              );
+            } else {
+              // Fallback to AutoTransformerStageReviewPanel for unknown departments
+              return (
+                <AutoTransformerStageReviewPanel
+                  currentStageReview={currentStageReview}
+                  selectedProjectForReview={selectedProjectForReview}
+                  currentStageForms={currentStageForms}
+                  formDataFromDB={formDataFromDB}
+                  getStageStatus={getStageStatus}
+                  formatLabel={formatLabel}
+                  handleApproveStage={handleApproveStage}
+                  handleRejectStage={handleRejectStage}
+                  onBackToCompanies={handleBackFromReview}
+                />
+              );
+            }
+          })()
         ) : showSubmitterReview ? (
           <>
             <div className="section-header">
@@ -3021,43 +3074,6 @@ const ETCAdminPanel = ({
                 </button>
               </div>
             </div>
-
-            {/* <div className="submitter-review-summary">
-              <div className="review-stats">
-                <div className="stat-card">
-                  <h4>Total Forms</h4>
-                  <div className="stat-number">{allProjectForms.length}</div>
-                </div>
-                <div className="stat-card">
-                  <h4>Approved</h4>
-                  <div className="stat-number">
-                    {
-                      allProjectForms.filter((f) => f.status === "approved")
-                        .length
-                    }
-                  </div>
-                </div>
-                <div className="stat-card">
-                  <h4>Pending</h4>
-                  <div className="stat-number">
-                    {
-                      allProjectForms.filter(
-                        (f) => f.status === "pending-review"
-                      ).length
-                    }
-                  </div>
-                </div>
-                <div className="stat-card">
-                  <h4>Rejected</h4>
-                  <div className="stat-number">
-                    {
-                      allProjectForms.filter((f) => f.status === "rejected")
-                        .length
-                    }
-                  </div>
-                </div>
-              </div>
-            </div> */}
 
             <div className="stages-review-container">
               {Object.entries(formDataFromDB).map(([stageKey, forms]) => {
@@ -3113,11 +3129,42 @@ const ETCAdminPanel = ({
                           animation: "slideDown 0.3s ease-out",
                         }}
                       >
-                        <AutoTransformerViewFormRenderer 
-                          stageNumber={stageNumber}
-                          formDataFromDB={forms}
-                          formatLabel={formatLabel}
-                        />
+                        {(() => {
+                          if (selectedDepartment?.name === "Auto Transformer") {
+                            return (
+                              <AutoTransformerViewFormRenderer 
+                                stageNumber={stageNumber}
+                                formDataFromDB={forms}
+                                formatLabel={formatLabel}
+                              />
+                            );
+                          } else if (selectedDepartment?.name === "Traction Transformer") {
+                            return (
+                              <TractionTransformerViewFormRenderer 
+                                stageNumber={stageNumber}
+                                formDataFromDB={forms}
+                                formatLabel={formatLabel}
+                              />
+                            );
+                          } else if (selectedDepartment?.name === "V Connected 63 MVA Transformer") {
+                            return (
+                              <VConnected63MVATransformerViewFormRenderer 
+                                stageNumber={stageNumber}
+                                formDataFromDB={forms}
+                                formatLabel={formatLabel}
+                              />
+                            );
+                          } else {
+                            // Fallback to AutoTransformerViewFormRenderer for unknown departments
+                            return (
+                              <AutoTransformerViewFormRenderer 
+                                stageNumber={stageNumber}
+                                formDataFromDB={forms}
+                                formatLabel={formatLabel}
+                              />
+                            );
+                          }
+                        })()}
                       </div>
                     )}
                   </div>
