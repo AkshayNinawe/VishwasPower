@@ -19,7 +19,7 @@ import {
   Stage5Form1,
   Stage5Form2,
   Stage6Form1
-} from './AutoTransformerStageReviewPanel';
+} from './TractionTransformerStageReviewPanel';
 
 // Utility function to render photos
 const renderPhotos = (photos, formKey) => {
