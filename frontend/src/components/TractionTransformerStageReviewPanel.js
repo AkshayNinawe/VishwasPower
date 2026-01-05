@@ -558,7 +558,7 @@ const Stage1Form2 = ({ formData }) => {
 const Stage1Form3 = ({ formData }) => (
   <div className="form-container">
     <div className="company-header">
-      <h2>CORE INSULATION CHECK: At 1KV > 500 MΩ </h2>
+      <h2>CORE INSULATION CHECK: At 1KV &gt; 500 MΩ </h2>
     </div>
 
     <table className="form-table">
@@ -7099,10 +7099,12 @@ const Stage1ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
               <Stage1Form2 formData={formData} />
             ) : form.id === "core-insulation-check" ? (
               <Stage1Form3 formData={formData} />
-            ) : form.id === "pre-erection-tan-delta-test" ? (
+            ) : form.id === "pre-erection-ratio-test-turret-cts" ? (
               <Stage1Form4 formData={formData} />
-            ) : form.id === "record-measurement-ir-values" ? (
+            ) : form.id === "pre-erection-ratio-test-phase2" ? (
               <Stage1Form5 formData={formData} />
+            ) : form.id === "tan-delta-capacitance-test-bushing" ? (
+              <Stage1Form6 formData={formData} />
             ) : (
               <div className="form-grid-preview" style={{
                 display: "grid",
