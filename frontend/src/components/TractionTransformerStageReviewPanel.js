@@ -558,7 +558,7 @@ const Stage1Form2 = ({ formData }) => {
 const Stage1Form3 = ({ formData }) => (
   <div className="form-container">
     <div className="company-header">
-      <h2>CORE INSULATION CHECK: At 1KV `{'>'}` 500 MΩ </h2>
+      <h2>CORE INSULATION CHECK: At 1KV > 500 MΩ </h2>
     </div>
 
     <table className="form-table">
