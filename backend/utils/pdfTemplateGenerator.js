@@ -1455,7 +1455,7 @@ function generateStage4Form3(formData) {
         <thead>
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
             <th>APPLIED VOLTAGE</th>
-            <th colspan="2">Measured Current (mA)</th>
+            <th colspan="2">Measured Current (A)</th>
           </tr>
         </thead>
         <tbody>

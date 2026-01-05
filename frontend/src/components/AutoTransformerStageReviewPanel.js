@@ -1801,7 +1801,7 @@ const Stage4Form3 = ({ formData }) => (
       <thead>
         <tr>
           <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>APPLIED VOLTAGE</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }} colSpan="2">Measured Current (mA)</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }} colSpan="2">Measured Current (A)</th>
         </tr>
       </thead>
       <tbody>

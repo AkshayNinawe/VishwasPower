@@ -6337,7 +6337,7 @@ function ShortCircuitTestForm({
         <thead>
           <tr>
             <th>APPLIED VOLTAGE</th>
-            <th colSpan="2">Measured Current (mA)</th>
+            <th colSpan="2">Measured Current (A)</th>
           </tr>
         </thead>
         <tbody>
@@ -6353,17 +6353,18 @@ function ShortCircuitTestForm({
             </td>
           </tr>
           <tr>
-            <td>  <input
+            <td>
+              <input
                 type="text"
                 value={formData.test11_12_measuredCurrent11_23}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    test11_12_measuredCurrent11_22: e.target.value,
+                    test11_12_measuredCurrent11_23: e.target.value,
                   })
                 }
-              /></td>
-            
+              />
+            </td>
             <td>
               <input
                 type="text"
@@ -6401,16 +6402,18 @@ function ShortCircuitTestForm({
             </td>
           </tr>
           <tr>
-            <td><input
+            <td>
+              <input
                 type="text"
                 value={formData.test12_21_measuredCurrent12_21}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    test12_21_measuredCurrent12_11: e.target.value,
+                    test12_21_measuredCurrent12_21: e.target.value,
                   })
                 }
-              /></td>
+              />
+            </td>
             <td>
               <input
                 type="text"
