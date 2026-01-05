@@ -1204,11 +1204,11 @@ function generateStage4Form1(formData) {
         <tbody>
           <tr>
             <td><strong>HV – G</strong></td>
+            <td>${formData.hvg_05kv_phase || ""}</td>
             <td>${formData.hvg_05kv_tanDelta || ""}</td>
             <td>${formData.hvg_05kv_capacitance || ""}</td>
             <td>${formData.hvg_05kv_excitationCurrent || ""}</td>
             <td>${formData.hvg_05kv_dielectricLoss || ""}</td>
-            <td></td>
           </tr>
         </tbody>
       </table>
@@ -1227,11 +1227,11 @@ function generateStage4Form1(formData) {
         <tbody>
           <tr>
             <td><strong>HV – G</strong></td>
+            <td>${formData.hvg_10kv_phase || ""}</td>
             <td>${formData.hvg_10kv_tanDelta || ""}</td>
             <td>${formData.hvg_10kv_capacitance || ""}</td>
             <td>${formData.hvg_10kv_excitationCurrent || ""}</td>
             <td>${formData.hvg_10kv_dielectricLoss || ""}</td>
-            <td></td>
           </tr>
         </tbody>
       </table>
@@ -1346,9 +1346,9 @@ function generateStage4Form2(formData) {
         </thead>
         <tbody>
           <tr>
-            <td>${formData.ratioTest2_table1_11_12 || ""}</td>
-            <td>${formData.ratioTest2_table1_11_21 || ""}</td>
-            <td>${formData.ratioTest2_table1_12_21 || ""}</td>
+            <td>${formData.voltageRatioTest_table1_11_12 || ""}</td>
+            <td>${formData.voltageRatioTest_table1_11_21 || ""}</td>
+            <td>${formData.voltageRatioTest_table1_12_21 || ""}</td>
           </tr>
         </tbody>
       </table>
@@ -1363,9 +1363,9 @@ function generateStage4Form2(formData) {
         </thead>
         <tbody>
           <tr>
-            <td>${formData.ratioTest2_table2_11_21 || ""}</td>
-            <td>${formData.ratioTest2_table2_11_12 || ""}</td>
-            <td>${formData.ratioTest2_table2_21_12 || ""}</td>
+            <td>${formData.voltageRatioTest_table2_11_21_alt || ""}</td>
+            <td>${formData.voltageRatioTest_table2_11_12_alt || ""}</td>
+            <td>${formData.voltageRatioTest_table2_21_12 || ""}</td>
           </tr>
         </tbody>
       </table>
@@ -1380,9 +1380,9 @@ function generateStage4Form2(formData) {
         </thead>
         <tbody>
           <tr>
-            <td>${formData.ratioTest2_table3_21_12 || ""}</td>
-            <td>${formData.ratioTest2_table3_11_12 || ""}</td>
-            <td>${formData.ratioTest2_table3_11_21 || ""}</td>
+            <td>${formData.voltageRatioTest_table3_21_12_alt || ""}</td>
+            <td>${formData.voltageRatioTest_table3_11_12_alt || ""}</td>
+            <td>${formData.voltageRatioTest_table3_11_21_alt || ""}</td>
           </tr>
         </tbody>
       </table>
@@ -2430,7 +2430,7 @@ export function generateHTMLTemplate(data, projectName, companyName) {
                   ${stage6Data.serialNumber ? `<div style="position: absolute; left: 120px; top: 495px; width: 200px;">${stage6Data.serialNumber}</div>` : ''}
                   ${stage6Data.completionDate ? `<div style="position: absolute; left: 475px; top: 295px; width: 150px;">${stage6Data.completionDate}</div>` : ''}
                   ${stage6Data.chargingDate ? `<div style="position: absolute; left: 435px; top: 620px; width: 150px;">${stage6Data.chargingDate}</div>` : ''}
-                  ${stage6Data.commissioningDate ? `<div style="position: absolute; left: 510px; top: 620px; width: 150px;">${stage6Data.commissioningDate}</div>` : ''}
+                  ${stage6Data.commissioningDate ? `<div style="position: absolute; left: 520px; top: 620px; width: 150px;">${stage6Data.commissioningDate}</div>` : ''}
                   
                   ${stage6Data.signatures ? (() => {
                     const signatures = stage6Data.signatures;
