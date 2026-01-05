@@ -1039,12 +1039,6 @@ const SignatureBox = ({
   return (
     <div className="signature-box">
       <label>{label}</label>
-      <input
-        type="text"
-        placeholder="Enter name"
-        value={nameValue}
-        onChange={(e) => onNameChange(e.target.value)}
-      />
       <canvas
         ref={canvasRef}
         width={300}
