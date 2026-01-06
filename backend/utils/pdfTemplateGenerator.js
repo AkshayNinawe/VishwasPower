@@ -2430,7 +2430,7 @@ export function generateHTMLTemplate(data, projectName, companyName) {
                   ${stage6Data.serialNumber ? `<div style="position: absolute; left: 120px; top: 495px; width: 200px;">${stage6Data.serialNumber}</div>` : ''}
                   ${stage6Data.completionDate ? `<div style="position: absolute; left: 550px; top: 205px; width: 150px;">${stage6Data.completionDate}</div>` : ''}
                   ${stage6Data.chargingDate ? `<div style="position: absolute; left: 435px; top: 620px; width: 150px;">${stage6Data.chargingDate}</div>` : ''}
-                  ${stage6Data.commissioningDate ? `<div style="position: absolute; left: 5350px; top: 620px; width: 150px;">${stage6Data.commissioningDate}</div>` : ''}
+                  ${stage6Data.commissioningDate ? `<div style="position: absolute; left: 535px; top: 620px; width: 150px;">${stage6Data.commissioningDate}</div>` : ''}
                   
                   ${stage6Data.signatures ? (() => {
                     const signatures = stage6Data.signatures;
