@@ -67,7 +67,7 @@ function generateSignatureSection(signatures) {
           signatures.vpesSignature
             ? `<div style="margin: 15px 0;">
                  <img src="${signatures.vpesSignature}" 
-                      style="max-width: 200px; height: 80px; border: 2px solid #e2e8f0; border-radius: 8px;" />
+                      style="max-width: 100px; height: 40px; border: 2px solid #e2e8f0; border-radius: 8px;" />
                </div>`
             : ""
         }
@@ -82,7 +82,7 @@ function generateSignatureSection(signatures) {
           signatures.customerSignature
             ? `<div style="margin: 15px 0;">
                  <img src="${signatures.customerSignature}" 
-                      style="max-width: 200px; height: 80px; border: 2px solid #e2e8f0; border-radius: 8px;" />
+                      style="max-width: 100px; height: 40px; border: 2px solid #e2e8f0; border-radius: 8px;" />
                </div>`
             : ""
         }
@@ -2065,7 +2065,7 @@ function generateStage6Form1(formData) {
             ${formData.signatures?.vpesSignature ? 
               `<div style="margin: 15px 0;">
                 <img src="${formData.signatures.vpesSignature}" 
-                     style="max-width: 200px; height: 80px; border: 2px solid #e2e8f0; border-radius: 8px;" />
+                     style="max-width: 100px; height: 40px; border: 2px solid #e2e8f0; border-radius: 8px;" />
               </div>` : 
               "<div style='border-bottom: 1px solid #333; width: 200px; margin: 15px 0;'></div>"
             }
@@ -2092,7 +2092,7 @@ function generateStage6Form1(formData) {
             ${formData.signatures?.customerSignature ? 
               `<div style="margin: 15px 0;">
                 <img src="${formData.signatures.customerSignature}" 
-                     style="max-width: 200px; height: 80px; border: 2px solid #e2e8f0; border-radius: 8px;" />
+                     style="max-width: 100px; height: 40px; border: 2px solid #e2e8f0; border-radius: 8px;" />
               </div>` : 
               "<div style='border-bottom: 1px solid #333; width: 200px; margin: 15px 0;'></div>"
             }
@@ -2438,13 +2438,13 @@ export function generateHTMLTemplate(data, projectName, companyName) {
                       ${signatures.vpesName ? `<div style="position: absolute; left: 70px; top: 730px; width: 150px;">${signatures.vpesName}</div>` : ''}
                       ${signatures.vpesDesignation ? `<div style="position: absolute; left: 103px; top: 750px; width: 150px;">${signatures.vpesDesignation}</div>` : ''}
                       ${signatures.vpesSignature && signatures.vpesSignature.startsWith('data:image/') ? 
-                        `<img src="${signatures.vpesSignature}" style="position: absolute; left: 55px; top: 753px; width: 120px; height: 30px;" />` : ''}
+                        `<img src="${signatures.vpesSignature}" style="position: absolute; left: 55px; top: 753px; width: 60px; height: 15px;" />` : ''}
                       ${signatures.vpesDate ? `<div style="position: absolute; left: 73px; top: 785px; width: 150px;">${signatures.vpesDate}</div>` : ''}
                       ${signatures.customerName ? `<div style="position: absolute; left: 465px; top: 730px; width: 150px;">${signatures.customerName}</div>` : ''}
                       ${signatures.customerDesignation ? `<div style="position: absolute; left: 505px; top: 750px; width: 150px;">${signatures.customerDesignation}</div>` : ''}
                       ${signatures.customerDate ? `<div style="position: absolute; left: 460px; top: 785px; width: 150px;">${signatures.customerDate}</div>` : ''}
                       ${signatures.customerSignature && signatures.customerSignature.startsWith('data:image/') ? 
-                        `<img src="${signatures.customerSignature}" style="position: absolute; left: 480px; top: 740px; width: 120px; height: 30px;" />` : ''}
+                        `<img src="${signatures.customerSignature}" style="position: absolute; left: 480px; top: 750px; width: 60px; height: 15px;" />` : ''}
                     `;
                   })() : ''}
                 </div>
