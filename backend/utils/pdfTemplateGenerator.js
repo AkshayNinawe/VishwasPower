@@ -2438,13 +2438,13 @@ export function generateHTMLTemplate(data, projectName, companyName) {
                       ${signatures.vpesName ? `<div style="position: absolute; left: 70px; top: 730px; width: 150px;">${signatures.vpesName}</div>` : ''}
                       ${signatures.vpesDesignation ? `<div style="position: absolute; left: 103px; top: 750px; width: 150px;">${signatures.vpesDesignation}</div>` : ''}
                       ${signatures.vpesSignature && signatures.vpesSignature.startsWith('data:image/') ? 
-                        `<img src="${signatures.vpesSignature}" style="position: absolute; left: 75px; top: 760px; width: 60px; height: 15px;" />` : ''}
+                        `<img src="${signatures.vpesSignature}" style="position: absolute; left: 85px; top: 762px; width: 60px; height: 15px;" />` : ''}
                       ${signatures.vpesDate ? `<div style="position: absolute; left: 73px; top: 785px; width: 150px;">${signatures.vpesDate}</div>` : ''}
                       ${signatures.customerName ? `<div style="position: absolute; left: 465px; top: 730px; width: 150px;">${signatures.customerName}</div>` : ''}
                       ${signatures.customerDesignation ? `<div style="position: absolute; left: 505px; top: 750px; width: 150px;">${signatures.customerDesignation}</div>` : ''}
                       ${signatures.customerDate ? `<div style="position: absolute; left: 460px; top: 785px; width: 150px;">${signatures.customerDate}</div>` : ''}
                       ${signatures.customerSignature && signatures.customerSignature.startsWith('data:image/') ? 
-                        `<img src="${signatures.customerSignature}" style="position: absolute; left: 485px; top: 770px; width: 60px; height: 15px;" />` : ''}
+                        `<img src="${signatures.customerSignature}" style="position: absolute; left: 485px; top: 767px; width: 60px; height: 15px;" />` : ''}
                     `;
                   })() : ''}
                 </div>
