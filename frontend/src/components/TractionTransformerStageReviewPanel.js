@@ -4014,92 +4014,70 @@ const Stage1Form6 = ({ formData }) => (
   </div>
 );
 
-// Stage 1 Form 7: SFRA Test Record
 const Stage1Form7 = ({ formData }) => (
   <div className="form-container">
     <div className="company-header">
-      <h2>SFRA TEST RECORD</h2>
+      <h2>RECORD OF MEASUREMENT OF IR VALUES</h2>
     </div>
+    <h3>Before Erection</h3>
 
     <table className="form-table">
       <tbody>
         <tr>
-          <td><strong>MAKE OF METER</strong></td>
+          <td><strong>Date</strong></td>
           <td>
-            <input
-              type="text"
-              value={formData.makeOfMeter || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.date || ""} disabled className="form-input disabled preview" />
           </td>
-          <td><strong>DATE</strong></td>
+          <td><strong>Time</strong></td>
           <td>
-            <input
-              type="date"
-              value={formData.date || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.time || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
         <tr>
-          <td><strong>MODEL & S. NO.</strong></td>
+          <td><strong>Amb Temp:</strong></td>
           <td>
-            <input
-              type="text"
-              value={formData.modelSrNo || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.ambTemp || ""} disabled className="form-input disabled preview" />
           </td>
-          <td><strong>AMBIENT</strong></td>
+          <td><strong>Make:</strong></td>
           <td>
-            <input
-              type="text"
-              value={formData.ambient || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.make || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
         <tr>
-          <td><strong>OTI</strong></td>
+          <td><strong>Oil Temp:</strong></td>
           <td>
-            <input
-              type="text"
-              value={formData.oti || ""}
-              disabled
-              className="form-input disabled preview"
-              placeholder="°C"
-            />
+            <input type="text" value={formData.oilTemp || ""} disabled className="form-input disabled preview" />
           </td>
-          <td><strong>WTI</strong></td>
+          <td><strong>Sr No:</strong></td>
           <td>
-            <input
-              type="text"
-              value={formData.wti || ""}
-              disabled
-              className="form-input disabled preview"
-              placeholder="°C"
-            />
+            <input type="text" value={formData.srNo || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
         <tr>
-          <td><strong>Test report reviewed by</strong></td>
+          <td><strong>Wdg. Temp:</strong></td>
+          <td>
+            <input type="text" value={formData.wdgTemp || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td><strong>Range:</strong></td>
+          <td>
+            <input type="text" value={formData.range || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Relative Humidity</strong></td>
           <td>
             <input
               type="text"
-              value={formData.testReportReviewed || ""}
+              value={formData.relativeHumidity || ""}
               disabled
               className="form-input disabled preview"
             />
           </td>
-          <td><strong>Acceptance of the test</strong></td>
+          <td><strong>Voltage Level:</strong></td>
           <td>
             <input
               type="text"
-              value={formData.acceptanceOfTest || ""}
+              value={formData.voltageLevel || ""}
               disabled
               className="form-input disabled preview"
             />
@@ -4108,265 +4086,72 @@ const Stage1Form7 = ({ formData }) => (
       </tbody>
     </table>
 
-    <h4 style={{ marginTop: "30px", textAlign: "center" }}>SFRA Test Results</h4>
-    
     <table className="form-table">
       <thead>
         <tr>
-          <th>Test Configuration</th>
-          <th>Frequency Range</th>
-          <th>Result Status</th>
-          <th>Remarks</th>
+          <th> </th>
+          <th>10 Sec (MΩ)</th>
+          <th>60 Sec (MΩ)</th>
+          <th>Ratio of IR 60/IR 10</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong>Open Circuit Test - HV</strong></td>
+          <td><strong>HV-Earth</strong></td>
           <td>
-            <input
-              type="text"
-              value={formData.openCircuitHV_frequencyRange || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.hvEarth_10sec || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
-            <select
-              value={formData.openCircuitHV_status || ""}
-              disabled
-              className="form-input disabled preview"
-            >
-              <option value="">Select Status</option>
-              <option value="Pass">Pass</option>
-              <option value="Fail">Fail</option>
-              <option value="Acceptable">Acceptable</option>
-            </select>
+            <input type="text" value={formData.hvEarth_60sec || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.openCircuitHV_remarks || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.hvEarth_ratio || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
         <tr>
-          <td><strong>Open Circuit Test - LV</strong></td>
+          <td><strong>LV-Earth</strong></td>
           <td>
-            <input
-              type="text"
-              value={formData.openCircuitLV_frequencyRange || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.lvEarth_10sec || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
-            <select
-              value={formData.openCircuitLV_status || ""}
-              disabled
-              className="form-input disabled preview"
-            >
-              <option value="">Select Status</option>
-              <option value="Pass">Pass</option>
-              <option value="Fail">Fail</option>
-              <option value="Acceptable">Acceptable</option>
-            </select>
+            <input type="text" value={formData.lvEarth_60sec || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.openCircuitLV_remarks || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.lvEarth_ratio || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
         <tr>
-          <td><strong>Short Circuit Test - HV</strong></td>
+          <td><strong>HV-LV</strong></td>
           <td>
-            <input
-              type="text"
-              value={formData.shortCircuitHV_frequencyRange || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.hvLv_10sec || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
-            <select
-              value={formData.shortCircuitHV_status || ""}
-              disabled
-              className="form-input disabled preview"
-            >
-              <option value="">Select Status</option>
-              <option value="Pass">Pass</option>
-              <option value="Fail">Fail</option>
-              <option value="Acceptable">Acceptable</option>
-            </select>
+            <input type="text" value={formData.hvLv_60sec || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.shortCircuitHV_remarks || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Short Circuit Test - LV</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.shortCircuitLV_frequencyRange || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <select
-              value={formData.shortCircuitLV_status || ""}
-              disabled
-              className="form-input disabled preview"
-            >
-              <option value="">Select Status</option>
-              <option value="Pass">Pass</option>
-              <option value="Fail">Fail</option>
-              <option value="Acceptable">Acceptable</option>
-            </select>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.shortCircuitLV_remarks || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Capacitive Inter-winding Test</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.capacitiveInterwinding_frequencyRange || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <select
-              value={formData.capacitiveInterwinding_status || ""}
-              disabled
-              className="form-input disabled preview"
-            >
-              <option value="">Select Status</option>
-              <option value="Pass">Pass</option>
-              <option value="Fail">Fail</option>
-              <option value="Acceptable">Acceptable</option>
-            </select>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.capacitiveInterwinding_remarks || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Inductive Inter-winding Test</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.inductiveInterwinding_frequencyRange || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <select
-              value={formData.inductiveInterwinding_status || ""}
-              disabled
-              className="form-input disabled preview"
-            >
-              <option value="">Select Status</option>
-              <option value="Pass">Pass</option>
-              <option value="Fail">Fail</option>
-              <option value="Acceptable">Acceptable</option>
-            </select>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.inductiveInterwinding_remarks || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.hvLv_ratio || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
       </tbody>
     </table>
 
-    <div style={{ marginTop: "30px" }}>
-      <h4><strong>Overall Test Result:</strong></h4>
-      <div style={{ marginBottom: "15px" }}>
-        <select
-          value={formData.overallTestResult || ""}
-          disabled
-          className="form-input disabled preview"
-          style={{ width: "200px" }}
-        >
-          <option value="">Select Result</option>
-          <option value="Pass">Pass</option>
-          <option value="Fail">Fail</option>
-          <option value="Acceptable with Remarks">Acceptable with Remarks</option>
-        </select>
-      </div>
-      
-      <div style={{ marginBottom: "15px" }}>
-        <strong>Test Conclusion:</strong>
-        <textarea
-          value={formData.testConclusion || ""}
-          disabled
-          className="form-input disabled preview"
-          rows="4"
-          style={{ width: "100%", marginTop: "5px" }}
-          placeholder="Enter detailed test conclusion and analysis..."
-        />
-      </div>
-
-      <div style={{ marginBottom: "15px" }}>
-        <strong>Recommendations:</strong>
-        <textarea
-          value={formData.recommendations || ""}
-          disabled
-          className="form-input disabled preview"
-          rows="3"
-          style={{ width: "100%", marginTop: "5px" }}
-          placeholder="Enter any recommendations based on test results..."
-        />
-      </div>
-    </div>
-
     {/* Photo Upload Section for Review */}
     <div className="photo-upload-section">
       <h4>Note: - Photographs to be added: -</h4>
-      <p style={{ textAlign: "center", marginBottom: "20px", fontWeight: "600" }}>
-        SFRA Test Equipment, Test Setup, Frequency Response Graphs, Test Results Screenshots
-      </p>
 
       {formData.photos && (
-        <div className="photo-display-grid" style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: "15px",
-          marginTop: "10px"
-        }}>
+        <div
+          className="photo-display-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: "15px",
+            marginTop: "10px",
+          }}
+        >
           {Object.entries(formData.photos).map(([photoKey, url]) => {
             let fullUrl;
-            if (typeof url === 'string') {
+            if (typeof url === "string") {
               if (url.startsWith("data:image/")) {
                 fullUrl = url;
               } else if (url.startsWith("http")) {
@@ -4383,20 +4168,27 @@ const Stage1Form7 = ({ formData }) => (
             }
 
             return (
-              <div key={photoKey} className="photo-item" style={{
-                border: "1px solid #e5e7eb",
-                borderRadius: "8px",
-                padding: "10px",
-                backgroundColor: "#f9fafb"
-              }}>
-                <span className="photo-label" style={{
-                  display: "block",
-                  fontSize: "0.85rem",
-                  fontWeight: "600",
-                  color: "#374151",
-                  marginBottom: "8px",
-                  textAlign: "center"
-                }}>
+              <div
+                key={photoKey}
+                className="photo-item"
+                style={{
+                  border: "1px solid #e5e7eb",
+                  borderRadius: "8px",
+                  padding: "10px",
+                  backgroundColor: "#f9fafb",
+                }}
+              >
+                <span
+                  className="photo-label"
+                  style={{
+                    display: "block",
+                    fontSize: "0.85rem",
+                    fontWeight: "600",
+                    color: "#374151",
+                    marginBottom: "8px",
+                    textAlign: "center",
+                  }}
+                >
                   {photoKey}
                 </span>
                 <img
@@ -4409,14 +4201,14 @@ const Stage1Form7 = ({ formData }) => (
                     objectFit: "cover",
                     borderRadius: "6px",
                     border: "1px solid #d1d5db",
-                    cursor: "pointer"
+                    cursor: "pointer",
                   }}
                   onError={(e) => {
                     console.error(`Failed to load image: ${fullUrl}`);
                     e.target.src = "/placeholder.svg";
                   }}
                   onClick={() => {
-                    window.open(fullUrl, '_blank');
+                    window.open(fullUrl, "_blank");
                   }}
                 />
                 <div style={{ marginTop: "8px", textAlign: "center" }}>
@@ -4430,7 +4222,7 @@ const Stage1Form7 = ({ formData }) => (
                       color: "white",
                       textDecoration: "none",
                       borderRadius: "4px",
-                      fontSize: "0.75rem"
+                      fontSize: "0.75rem",
                     }}
                   >
                     📥 Download
@@ -7891,6 +7683,22 @@ const Stage1ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
         { name: "lvBushing21_srNo", label: "LV Bushing 2.1 Sr. No.", type: "text" },
         { name: "lvBushing22_srNo", label: "LV Bushing 2.2 Sr. No.", type: "text" }
       ]
+    },
+    {
+      id: "record-of-measurement-of-ir-values",
+      title: "RECORD OF MEASUREMENT OF IR VALUES",
+      fields: [
+        { name: "date", label: "Date", type: "text" },
+        { name: "time", label: "Time", type: "text" },
+        { name: "ambTemp", label: "Amb Temp", type: "text" },
+        { name: "make", label: "Make", type: "text" },
+        { name: "oilTemp", label: "Oil Temp", type: "text" },
+        { name: "srNo", label: "Sr No", type: "text" },
+        { name: "wdgTemp", label: "Wdg Temp", type: "text" },
+        { name: "range", label: "Range", type: "text" },
+        { name: "relativeHumidity", label: "Relative Humidity", type: "text" },
+        { name: "voltageLevel", label: "Voltage Level", type: "text" }
+      ]
     }
   ];
 
@@ -8120,6 +7928,8 @@ const Stage1ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
               <Stage1Form5 formData={formData} />
             ) : form.id === "tan-delta-capacitance-test-bushing" ? (
               <Stage1Form6 formData={formData} />
+            ) : form.id === "record-of-measurement-of-ir-values" ? (
+              <Stage1Form7 formData={formData} />
             ) : (
               <div className="form-grid-preview" style={{
                 display: "grid",
