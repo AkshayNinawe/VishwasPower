@@ -2428,7 +2428,7 @@ export function generateHTMLTemplate(data, projectName, companyName) {
                   ${stage6Data.voltageRating ? `<div style="position: absolute; left: 125px; top: 457px; width: 200px;">${stage6Data.voltageRating}</div>` : ''}
                   ${stage6Data.make ? `<div style="position: absolute; left: 73px; top: 477px; width: 150px;">${stage6Data.make}</div>` : ''}
                   ${stage6Data.serialNumber ? `<div style="position: absolute; left: 120px; top: 495px; width: 200px;">${stage6Data.serialNumber}</div>` : ''}
-                  ${stage6Data.completionDate ? `<div style="position: absolute; left: 560px; top: 265px; width: 150px;">${stage6Data.completionDate}</div>` : ''}
+                  ${stage6Data.completionDate ? `<div style="position: absolute; left: 560px; top: 255px; width: 150px;">${stage6Data.completionDate}</div>` : ''}
                   ${stage6Data.chargingDate ? `<div style="position: absolute; left: 435px; top: 620px; width: 150px;">${stage6Data.chargingDate}</div>` : ''}
                   ${stage6Data.commissioningDate ? `<div style="position: absolute; left: 535px; top: 620px; width: 150px;">${stage6Data.commissioningDate}</div>` : ''}
                   
@@ -2444,7 +2444,7 @@ export function generateHTMLTemplate(data, projectName, companyName) {
                       ${signatures.customerDesignation ? `<div style="position: absolute; left: 505px; top: 750px; width: 150px;">${signatures.customerDesignation}</div>` : ''}
                       ${signatures.customerDate ? `<div style="position: absolute; left: 460px; top: 785px; width: 150px;">${signatures.customerDate}</div>` : ''}
                       ${signatures.customerSignature && signatures.customerSignature.startsWith('data:image/') ? 
-                        `<img src="${signatures.customerSignature}" style="position: absolute; left: 480px; top: 813px; width: 120px; height: 30px;" />` : ''}
+                        `<img src="${signatures.customerSignature}" style="position: absolute; left: 480px; top: 780px; width: 120px; height: 30px;" />` : ''}
                     `;
                   })() : ''}
                 </div>
