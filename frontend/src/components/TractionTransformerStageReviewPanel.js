@@ -4447,205 +4447,501 @@ const Stage1Form7 = ({ formData }) => (
 
 // Stage 2 Form 1: Record of Oil Handling
 const Stage2Form1 = ({ formData }) => (
-  <div>
+  <div className="form-container">
     <div className="company-header">
       <h2>RECORD OF OIL HANDLING</h2>
-      <h2>TEST VALUES PRIOR TO FILTERATION</h2>
+      <h3>TEST VALUES PRIOR TO FILTERATION</h3>
     </div>
 
-    <h4>Oil Filling in the Reservoirs Tank:</h4>
-
-    <table className="form-table" style={{
-      width: "100%",
-      borderCollapse: "collapse",
-      marginBottom: "20px"
-    }}>
+    <h4>Record of Oil Filling in the Reservoirs Tank:</h4>
+    <table className="form-table">
       <thead>
         <tr>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}></th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>No of barrels</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Started on Date & time</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Completed on Date & time</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>BDV</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>MOISTURE CONTENT</th>
+          <th></th>
+          <th>No of barrels</th>
+          <th>Started on Date & time</th>
+          <th>Completed on Date & time</th>
+          <th>BDV</th>
+          <th>PPM</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-            <strong>Tank1</strong>
-          </td>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-            <input type="text" value={formData.tank1NoOfBarrels || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-            <input type="datetime-local" value={formData.tank1StartedDateTime || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-            <input type="datetime-local" value={formData.tank1CompletedDateTime || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-            <input type="text" value={formData.tank1BDV || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-            <input type="text" value={formData.tank1MoistureContent || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h4 style={{ marginTop: "40px" }}>
-      RECORD FOR OIL FILTRATION IN RESERVOIR TANK
-    </h4>
-
-    <table className="form-table" style={{
-      width: "100%",
-      borderCollapse: "collapse",
-      marginBottom: "20px"
-    }}>
-      <thead>
-        <tr>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Date</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Time</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Vacuum Level (mm/hg or torr)</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Inlet Temp°C</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Outlet Temp°C</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Remark</th>
-        </tr>
-      </thead>
-      <tbody>
-        {formData.filtrationRecords && formData.filtrationRecords.map((record, index) => (
-          <tr key={index}>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="date" value={record.date || ""} disabled className="form-input disabled preview" />
+        {[
+          { label: "Tank1", prefix: "tank1" },
+          { label: "Tank2", prefix: "tank2" },
+          { label: "Tank3", prefix: "tank3" },
+        ].map(({ label, prefix }) => (
+          <tr key={prefix}>
+            <td>
+              <strong>{label}</strong>
             </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="time" value={record.time || ""} disabled className="form-input disabled preview" />
+            <td>
+              <input
+                type="text"
+                value={formData?.[`${prefix}_noOfBarrels`] || ""}
+                disabled
+                className="form-input disabled preview"
+              />
             </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="text" value={record.vacuumLevel || ""} disabled className="form-input disabled preview" />
+            <td>
+              <div style={{ display: "flex", gap: "5px" }}>
+                <input
+                  type="date"
+                  value={formData?.[`${prefix}_startedDate`] || ""}
+                  disabled
+                  className="form-input disabled preview"
+                  style={{ width: "50%" }}
+                />
+                <input
+                  type="time"
+                  value={formData?.[`${prefix}_startedTime`] || ""}
+                  disabled
+                  className="form-input disabled preview"
+                  style={{ width: "50%" }}
+                />
+              </div>
             </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="text" value={record.inletTemp || ""} disabled className="form-input disabled preview" />
+            <td>
+              <div style={{ display: "flex", gap: "5px" }}>
+                <input
+                  type="date"
+                  value={formData?.[`${prefix}_completedDate`] || ""}
+                  disabled
+                  className="form-input disabled preview"
+                  style={{ width: "50%" }}
+                />
+                <input
+                  type="time"
+                  value={formData?.[`${prefix}_completedTime`] || ""}
+                  disabled
+                  className="form-input disabled preview"
+                  style={{ width: "50%" }}
+                />
+              </div>
             </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="text" value={record.outletTemp || ""} disabled className="form-input disabled preview" />
+            <td>
+              <input
+                type="text"
+                value={formData?.[`${prefix}_bdv`] || ""}
+                disabled
+                className="form-input disabled preview"
+              />
             </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="text" value={record.remark || ""} disabled className="form-input disabled preview" />
+            <td>
+              <input
+                type="text"
+                value={formData?.[`${prefix}_ppm`] || ""}
+                disabled
+                className="form-input disabled preview"
+              />
             </td>
           </tr>
         ))}
       </tbody>
     </table>
+
+    <h4 style={{ marginTop: "40px" }}>Reservoir Tank Filtration</h4>
+    <table className="form-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Vacuum Level (MM/HG or torr)</th>
+          <th>Inlet Temp.</th>
+          <th>Outlet Temp.</th>
+        </tr>
+      </thead>
+      <tbody>
+        {formData.filtrationRecords &&
+          formData.filtrationRecords.map((record, index) => (
+            <tr key={index}>
+              <td>
+                <input
+                  type="date"
+                  value={record.date || ""}
+                  disabled
+                  className="form-input disabled preview"
+                />
+              </td>
+              <td>
+                <input
+                  type="time"
+                  value={record.time || ""}
+                  disabled
+                  className="form-input disabled preview"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={record.vacuumLevel || ""}
+                  disabled
+                  className="form-input disabled preview"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={record.inletTemp || ""}
+                  disabled
+                  className="form-input disabled preview"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={record.outletTemp || ""}
+                  disabled
+                  className="form-input disabled preview"
+                />
+              </td>
+            </tr>
+          ))}
+      </tbody>
+    </table>
   </div>
 );
 
-// Stage 2 Form 2: IR After Erection - Stage 2 End
 const Stage2Form2 = ({ formData }) => (
-  <div>
+  <div className="form-container">
     <div className="company-header">
-      <h2>
-        IR after erection Temp OTI ........°C WTI............°C, AMB........°C
-        &nbsp;&nbsp;&nbsp;&nbsp; RANGE ONLY 1 KV
-      </h2>
+      <h2>Line Lead Clearance in mm :-</h2>
     </div>
 
-    <div className="form-grid" style={{ marginBottom: "20px" }}>
-      <div className="form-group">
-        <label>OTI Temperature (°C):</label>
-        <input
-          type="text"
-          value={formData.tempOTI || ""}
-          disabled
-          className="form-input disabled preview"
-        />
-      </div>
-      <div className="form-group">
-        <label>WTI Temperature (°C):</label>
-        <input
-          type="text"
-          value={formData.tempWTI || ""}
-          disabled
-          className="form-input disabled preview"
-        />
-      </div>
-      <div className="form-group">
-        <label>AMB Temperature (°C):</label>
-        <input
-          type="text"
-          value={formData.tempAMB || ""}
-          disabled
-          className="form-input disabled preview"
-        />
-      </div>
-    </div>
-
-    <table className="form-table" style={{
-      width: "100%",
-      borderCollapse: "collapse",
-      marginBottom: "20px"
-    }}>
+    <table className="form-table">
       <thead>
         <tr>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}></th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>15 Sec MΩ</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>60 Sec MΩ</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Ratio of IR 60/IR 15</th>
+          <th></th>
+          <th>1.1</th>
+          <th>1.2</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>HV-Earth</td>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-            <input type="text" value={formData.hvEarth15Sec || ""} disabled className="form-input disabled preview" />
+          <td>
+            <strong>HV with respect to earth</strong>
           </td>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-            <input type="text" value={formData.hvEarth60Sec || ""} disabled className="form-input disabled preview" />
+          <td>
+            <input
+              type="text"
+              value={formData.hv_earth_11 || ""}
+              disabled
+              className="form-input disabled preview"
+            />
           </td>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-            <input type="text" value={formData.ratioIR60IR15 || ""} disabled className="form-input disabled preview" />
+          <td>
+            <input
+              type="text"
+              value={formData.hv_earth_12 || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong>LV 1 with respect to earth</strong>
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.lv1_earth_21 || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.lv1_earth_22 || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong>LV 2 with respect to earth</strong>
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.lv2_earth_31 || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.lv2_earth_32 || ""}
+              disabled
+              className="form-input disabled preview"
+            />
           </td>
         </tr>
       </tbody>
     </table>
 
-    <h4 style={{ marginTop: "40px" }}>Lead Clearance in mm: -</h4>
+    <h3 style={{ marginTop: "40px", textAlign: "center" }}>
+      IR Values After erection Temp OTI .......°C WTI.............°C, AMB .............°C RANGE ONLY 1 KV
+    </h3>
 
-    <table className="form-table" style={{
-      width: "100%",
-      borderCollapse: "collapse",
-      marginBottom: "20px"
-    }}>
+    <table className="form-table">
       <tbody>
         <tr>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>HV with respect to earth</td>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+          <td>
+            <strong>Temp OTI °C</strong>
+          </td>
+          <td>
             <input
               type="text"
-              value={formData.hvWithRespectToEarth || ""}
+              value={formData.tempOTI || ""}
               disabled
               className="form-input disabled preview"
             />
           </td>
         </tr>
         <tr>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>LV with respect to earth</td>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+          <td>
+            <strong>Temp WTI °C</strong>
+          </td>
+          <td>
             <input
               type="text"
-              value={formData.lvWithRespectToEarth || ""}
+              value={formData.tempWTI || ""}
               disabled
               className="form-input disabled preview"
             />
           </td>
         </tr>
         <tr>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>Neutral with respect to earth</td>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
+          <td>
+            <strong>Temp AMB °C</strong>
+          </td>
+          <td>
             <input
               type="text"
-              value={formData.neutralWithRespectToEarth || ""}
+              value={formData.tempAMB || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table className="form-table" style={{ marginTop: "30px" }}>
+      <thead>
+        <tr>
+          <th></th>
+          <th>15 Sec (MΩ)</th>
+          <th>60 Sec (MΩ)</th>
+          <th>Ratio of IR 60/IR 15</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <strong>HV-Earth</strong>
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.hvEarth_15sec || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.hvEarth_60sec || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.hvEarth_ratio || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong>LV1-Earth</strong>
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.lv1Earth_15sec || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.lv1Earth_60sec || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.lv1Earth_ratio || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong>LV2-Earth</strong>
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.lv2Earth_15sec || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.lv2Earth_60sec || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.lv2Earth_ratio || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong>HV-LV1</strong>
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.hvLv1_15sec || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.hvLv1_60sec || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.hvLv1_ratio || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong>HV-LV2</strong>
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.hvLv2_15sec || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.hvLv2_60sec || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.hvLv2_ratio || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong>LV1-LV2</strong>
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.lv1Lv2_15sec || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.lv1Lv2_60sec || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.lv1Lv2_ratio || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4 style={{ marginTop: "40px" }}>Before oil filling in main tank</h4>
+    <table className="form-table">
+      <tbody>
+        <tr>
+          <td>
+            <strong>BDV (KV)</strong>
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.bdv || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong>Water Content (PPM)</strong>
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.waterContent || ""}
               disabled
               className="form-input disabled preview"
             />
@@ -4657,124 +4953,291 @@ const Stage2Form2 = ({ formData }) => (
 );
 
 
-// Stage 3 Form 1: Before Oil Filling and Pressure Test Report
 const Stage3Form1 = ({ formData }) => (
-  <div>
+  <div className="form-container">
     <div className="company-header">
-      <h2>Before oil filling of main tank</h2>
+      <h2>DETAILS FOR RECORDING OF VACUUM CYCLE</h2>
     </div>
 
-    <div className="form-grid" style={{ marginBottom: "20px" }}>
-      <div className="form-group">
-        <label><strong>BDV: _____ KV</strong></label>
-        <input type="text" value={formData.bdvKV || ""} disabled className="form-input disabled preview" />
-      </div>
-      <div className="form-group">
-        <label><strong>Water Content: _______ PPM</strong></label>
-        <input type="text" value={formData.waterContentPPM || ""} disabled className="form-input disabled preview" />
-      </div>
-    </div>
-
-    <h4 style={{ marginTop: "40px" }}>
-      IR After oil Toping up to conservator Temp OTI ........°C WTI....°C, AMB..........°C, RANGE ONLY 1 KV
-    </h4>
-
-    <div className="form-grid" style={{ marginBottom: "20px" }}>
-      <div className="form-group">
-        <label>OTI Temperature (°C):</label>
-        <input type="text" value={formData.tempOTI || ""} disabled className="form-input disabled preview" />
-      </div>
-      <div className="form-group">
-        <label>WTI Temperature (°C):</label>
-        <input type="text" value={formData.tempWTI || ""} disabled className="form-input disabled preview" />
-      </div>
-      <div className="form-group">
-        <label>AMB Temperature (°C):</label>
-        <input type="text" value={formData.tempAMB || ""} disabled className="form-input disabled preview" />
-      </div>
-    </div>
-
-    <table className="form-table" style={{
-      width: "100%",
-      borderCollapse: "collapse",
-      marginBottom: "20px"
-    }}>
-      <thead>
-        <tr>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}></th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>15 Sec MΩ</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>60 Sec MΩ</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Ratio of IR 60/IR 15</th>
-        </tr>
-      </thead>
+    <table className="form-table">
       <tbody>
         <tr>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>HV-Earth</td>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-            <input type="text" value={formData.hvEarth15Sec || ""} disabled className="form-input disabled preview" />
+          <td><strong>Vacuum hose Checked By</strong></td>
+          <td>
+            <input
+              type="text"
+              value={formData.vacuumHoseCheckedBy || ""}
+              disabled
+              className="form-input disabled preview"
+              style={{ width: "100%" }}
+            />
           </td>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-            <input type="text" value={formData.hvEarth60Sec || ""} disabled className="form-input disabled preview" />
+        </tr>
+        <tr>
+          <td><strong>Vacuum hose Connected To</strong></td>
+          <td>
+            <input
+              type="text"
+              value={formData.vacuumHoseConnectedTo || ""}
+              disabled
+              className="form-input disabled preview"
+              style={{ width: "100%" }}
+            />
+            <span style={{ marginLeft: "10px" }}>Valve.</span>
           </td>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-            <input type="text" value={formData.ratioIR60IR15 || ""} disabled className="form-input disabled preview" />
+        </tr>
+        <tr>
+          <td><strong>Evacuation Started At</strong></td>
+          <td>
+            <input
+              type="time"
+              value={formData.evacuationStartedAt || ""}
+              disabled
+              className="form-input disabled preview"
+              style={{ marginRight: "10px" }}
+            />
+            <span>Hrs. On</span>
+            <input
+              type="date"
+              value={formData.evacuationStartedOn || ""}
+              disabled
+              className="form-input disabled preview"
+              style={{ marginLeft: "10px" }}
+            />
           </td>
         </tr>
       </tbody>
     </table>
 
-    <div style={{
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      margin: "40px 0 20px 0",
-    }}>
-      <h4>PRESSURE TEST REPORT</h4>
-      <div className="form-group" style={{ margin: 0 }}>
-        <label><strong>Date: -</strong></label>
-        <input type="date" value={formData.pressureTestDate || ""} disabled className="form-input disabled preview" />
-      </div>
-    </div>
-
-    <table className="form-table" style={{
-      width: "100%",
-      borderCollapse: "collapse",
-      marginBottom: "20px"
-    }}>
+    <table className="form-table" style={{ marginTop: "30px" }}>
       <thead>
         <tr>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Sr. No.</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>TIME STARTED</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>PRESSURE Kg/cm²</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }} colSpan="3">TEMP°C</th>
-        </tr>
-        <tr>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}></th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}></th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}></th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Amb.</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>OTI</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>WTI</th>
+          <th>DATE</th>
+          <th>TIME</th>
+          <th>Vacuum Level in M/C</th>
+          <th>Vac. Level in Transformer Tank (torr)</th>
         </tr>
       </thead>
       <tbody>
-        {formData.pressureTestRecords && formData.pressureTestRecords.map((record, index) => (
+        {(formData.vacuumRecords || []).map((record, index) => (
           <tr key={index}>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>{index + 1}</td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="time" value={record.timeStarted || ""} disabled className="form-input disabled preview" />
+            <td>
+              <input type="date" value={record.date || ""} disabled className="form-input disabled preview" />
             </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="text" value={record.pressureKgCm2 || ""} disabled className="form-input disabled preview" />
+            <td>
+              <input type="time" value={record.time || ""} disabled className="form-input disabled preview" />
             </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="text" value={record.tempAmb || ""} disabled className="form-input disabled preview" />
+            <td>
+              <input
+                type="text"
+                value={record.vacuumLevelMic || ""}
+                disabled
+                className="form-input disabled preview"
+              />
             </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="text" value={record.tempOTI || ""} disabled className="form-input disabled preview" />
+            <td>
+              <input
+                type="text"
+                value={record.vacuumLevelTransformer || ""}
+                disabled
+                className="form-input disabled preview"
+              />
             </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="text" value={record.tempWTI || ""} disabled className="form-input disabled preview" />
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <h3 style={{ marginTop: "40px", textAlign: "center" }}>
+      IR After oil Topping up To Conservator Temp OTI .......°C WTI.............°C, AMB .............°C RANGE ONLY 1 KV
+    </h3>
+
+    <table className="form-table">
+      <tbody>
+        <tr>
+          <td><strong>Temp OTI °C</strong></td>
+          <td>
+            <input type="text" value={formData.tempOTI || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Temp WTI °C</strong></td>
+          <td>
+            <input type="text" value={formData.tempWTI || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Temp AMB °C</strong></td>
+          <td>
+            <input type="text" value={formData.tempAMB || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table className="form-table" style={{ marginTop: "30px" }}>
+      <thead>
+        <tr>
+          <th></th>
+          <th>15 Sec (MΩ)</th>
+          <th>60 Sec (MΩ)</th>
+          <th>Ratio of IR 60/IR 15</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>HV-Earth</strong></td>
+          <td>
+            <input type="text" value={formData.hvEarth_15sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.hvEarth_60sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.hvEarth_ratio || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td><strong>LV1-Earth</strong></td>
+          <td>
+            <input type="text" value={formData.lv1Earth_15sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.lv1Earth_60sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.lv1Earth_ratio || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td><strong>LV2-Earth</strong></td>
+          <td>
+            <input type="text" value={formData.lv2Earth_15sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.lv2Earth_60sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.lv2Earth_ratio || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td><strong>HV-LV1</strong></td>
+          <td>
+            <input type="text" value={formData.hvLv1_15sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.hvLv1_60sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.hvLv1_ratio || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td><strong>HV-LV2</strong></td>
+          <td>
+            <input type="text" value={formData.hvLv2_15sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.hvLv2_60sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.hvLv2_ratio || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td><strong>LV1-LV2</strong></td>
+          <td>
+            <input type="text" value={formData.lv1Lv2_15sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.lv1Lv2_60sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.lv1Lv2_ratio || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4 style={{ marginTop: "40px", textAlign: "center" }}>PRESSURE TEST REPORT</h4>
+
+    <table className="form-table">
+      <tbody>
+        <tr>
+          <td><strong>DATE</strong></td>
+          <td>
+            <input
+              type="date"
+              value={formData.pressureTestDate || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table className="form-table">
+      <thead>
+        <tr>
+          <th>Sr. No.</th>
+          <th>TIME STARTED</th>
+          <th>PRESSURE Kg/cm²</th>
+          <th colSpan="3">TEMP°C</th>
+        </tr>
+        <tr>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th>Amb.</th>
+          <th>OTI</th>
+          <th>WTI</th>
+        </tr>
+      </thead>
+      <tbody>
+        {(formData.pressureTests || []).map((test, index) => (
+          <tr key={index}>
+            <td><strong>{index + 1}</strong></td>
+            <td>
+              <input
+                type="time"
+                value={test.timeStarted || ""}
+                disabled
+                className="form-input disabled preview"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={test.pressure || ""}
+                disabled
+                className="form-input disabled preview"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={test.tempAmb || ""}
+                disabled
+                className="form-input disabled preview"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={test.tempOti || ""}
+                disabled
+                className="form-input disabled preview"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={test.tempWti || ""}
+                disabled
+                className="form-input disabled preview"
+              />
             </td>
           </tr>
         ))}
@@ -6724,214 +7187,45 @@ const Stage5ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
   );
 };
 
-// Stage 3 Review Renderer Component
-const Stage3ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
-  const stage3Forms = [
-    {
-      id: "before-oil-filling-pressure-test",
-      title: "Before Oil Filling and Pressure Test Report",
-      fields: [
-        { name: "bdvKV", label: "BDV (KV)", type: "text" },
-        { name: "waterContentPPM", label: "Water Content (PPM)", type: "text" },
-        { name: "tempOTI", label: "OTI Temperature (°C)", type: "text" },
-        { name: "tempWTI", label: "WTI Temperature (°C)", type: "text" },
-        { name: "tempAMB", label: "AMB Temperature (°C)", type: "text" },
-        { name: "hvEarth15Sec", label: "HV-Earth 15 Sec MΩ", type: "text" },
-        { name: "hvEarth60Sec", label: "HV-Earth 60 Sec MΩ", type: "text" },
-        { name: "ratioIR60IR15", label: "Ratio of IR 60/IR 15", type: "text" },
-        { name: "pressureTestDate", label: "Pressure Test Date", type: "date" },
-        { name: "pressureTestRecords", label: "Pressure Test Records", type: "array" }
-      ]
-    },
-    {
-      id: "record-oil-filtration-main-tank",
-      title: "Record for Oil Filtration - Main Tank",
-      fields: [
-        { name: "filtrationRecords", label: "Filtration Records", type: "array" },
-        { name: "tempOTI", label: "OTI Temperature (°C)", type: "text" },
-        { name: "tempWTI", label: "WTI Temperature (°C)", type: "text" },
-        { name: "tempAMB", label: "AMB Temperature (°C)", type: "text" },
-        { name: "hvEarth15Sec", label: "HV-Earth 15 Sec MΩ", type: "text" },
-        { name: "hvEarth60Sec", label: "HV-Earth 60 Sec MΩ", type: "text" },
-        { name: "ratioIR60IR15", label: "Ratio of IR 60/IR 15", type: "text" }
-      ]
-    },
-    {
-      id: "oil-filtration-radiator-combine",
-      title: "Oil Filtration of Radiator and Combine",
-      fields: [
-        { name: "radiatorRecords", label: "Radiator Records", type: "array" },
-        { name: "combineRecords", label: "Combine Records", type: "array" },
-        { name: "bdvKV", label: "BDV (KV)", type: "text" },
-        { name: "waterContentPPM", label: "Water Content (PPM)", type: "text" },
-        { name: "tempOTI", label: "OTI Temperature (°C)", type: "text" },
-        { name: "tempWTI", label: "WTI Temperature (°C)", type: "text" },
-        { name: "tempAMB", label: "AMB Temperature (°C)", type: "text" },
-        { name: "hvEarth15Sec", label: "HV-Earth 15 Sec MΩ", type: "text" },
-        { name: "hvEarth60Sec", label: "HV-Earth 60 Sec MΩ", type: "text" },
-        { name: "hvEarth600Sec", label: "HV-Earth 600 sec MΩ", type: "text" },
-        { name: "hvEarth60600Sec", label: "HV-Earth 600/60 sec MΩ", type: "text" }
-      ]
-    }
-  ];
-
-  const renderPhotos = (photos, formKey) => {
-    if (!photos || typeof photos !== "object") return null;
-
-    return (
-      <div key={`${formKey}-photos`} className="form-group-preview photo-group" style={{ width: "100%" }}>
-        <label className="form-label-preview">
-          📸 Photos
-        </label>
-        <div className="photo-display-grid" style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: "15px",
-          marginTop: "10px"
-        }}>
-          {Object.entries(photos).map(([photoKey, url]) => {
-            let fullUrl;
-            if (typeof url === 'string') {
-              if (url.startsWith("data:image/")) {
-                fullUrl = url;
-              } else if (url.startsWith("http")) {
-                fullUrl = url;
-              } else if (url.includes("cloudinary.com") || url.startsWith("v1")) {
-                fullUrl = `${BACKEND_IMG_API_BASE_URL}${url}`;
-              } else if (url.startsWith("/")) {
-                fullUrl = `${BACKEND_API_BASE_URL}${url}`;
-              } else {
-                fullUrl = `${BACKEND_API_BASE_URL}/${url}`;
-              }
-            } else {
-              fullUrl = "/placeholder.svg";
-            }
-
-            return (
-              <div key={photoKey} className="photo-item" style={{
-                border: "1px solid #e5e7eb",
-                borderRadius: "8px",
-                padding: "10px",
-                backgroundColor: "#f9fafb"
-              }}>
-                <span className="photo-label" style={{
-                  display: "block",
-                  fontSize: "0.85rem",
-                  fontWeight: "600",
-                  color: "#374151",
-                  marginBottom: "8px",
-                  textAlign: "center"
-                }}>
-                  {photoKey}
-                </span>
-                <img
-                  src={fullUrl}
-                  alt={photoKey}
-                  className="photo-preview-img"
-                  style={{
-                    width: "100%",
-                    height: "150px",
-                    objectFit: "cover",
-                    borderRadius: "6px",
-                    border: "1px solid #d1d5db",
-                    cursor: "pointer"
-                  }}
-                  onError={(e) => {
-                    console.error(`Failed to load image: ${fullUrl}`);
-                    e.target.src = "/placeholder.svg";
-                  }}
-                  onClick={() => {
-                    window.open(fullUrl, '_blank');
-                  }}
-                />
-                <div style={{ marginTop: "8px", textAlign: "center" }}>
-                  <a
-                    href={fullUrl}
-                    download={`${photoKey}.jpg`}
-                    style={{
-                      display: "inline-block",
-                      padding: "4px 8px",
-                      backgroundColor: "#3b82f6",
-                      color: "white",
-                      textDecoration: "none",
-                      borderRadius: "4px",
-                      fontSize: "0.75rem"
-                    }}
-                  >
-                    📥 Download
-                  </a>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    );
-  };
+/**
+ * Stage 3 (Traction) has ONLY ONE form in TractionTransformerForms.js:
+ * Stage3Form1 (Vacuum cycle + IR + Pressure test).
+ * The previous Stage3ReviewRenderer incorrectly rendered oil-filtration forms (belongs to Stage 4).
+ */
+const Stage3ReviewRenderer = ({ formDataFromDB }) => {
+  const formData = formDataFromDB?.form1 || {};
 
   return (
     <div className="stage3-review-container">
-      {stage3Forms.map((form, formIndex) => {
-        const formData = formDataFromDB[`form${formIndex + 1}`] || {};
-        
-        return (
-          <div key={form.id} className="form-review-card" style={{
-            marginBottom: "30px",
-            border: "2px solid #e5e7eb",
-            borderRadius: "12px",
-            padding: "20px",
-            background: "white",
-            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-          }}>
-            <div className="company-header" style={{
-              textAlign: "center",
-              marginBottom: "20px",
-              padding: "15px",
-              backgroundColor: "#f8fafc",
-              borderRadius: "8px",
-              border: "1px solid #e2e8f0"
-            }}>
-              <h2 style={{ margin: 0, color: "#1e293b", fontSize: "1.25rem" }}>
-                {form.title}
-              </h2>
-            </div>
+      <div
+        className="form-review-card"
+        style={{
+          marginBottom: "30px",
+          border: "2px solid #e5e7eb",
+          borderRadius: "12px",
+          padding: "20px",
+          background: "white",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <div
+          className="company-header"
+          style={{
+            textAlign: "center",
+            marginBottom: "20px",
+            padding: "15px",
+            backgroundColor: "#f8fafc",
+            borderRadius: "8px",
+            border: "1px solid #e2e8f0",
+          }}
+        >
+          <h2 style={{ margin: 0, color: "#1e293b", fontSize: "1.25rem" }}>
+            Vacuum Cycle Recording (Stage 3 - Form 1)
+          </h2>
+        </div>
 
-            {/* Use the organized form components */}
-            {form.id === "before-oil-filling-pressure-test" ? (
-              <Stage3Form1 formData={formData} />
-            ) : form.id === "record-oil-filtration-main-tank" ? (
-              <Stage3Form2 formData={formData} />
-            ) : form.id === "oil-filtration-radiator-combine" ? (
-              <Stage3Form3 formData={formData} />
-            ) : (
-              <div className="form-grid-preview" style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-                gap: "20px",
-              }}>
-                {form.fields.map((field) => (
-                  <div key={`${form.id}-${field.name}`} className="form-group-preview">
-                    <label className="form-label-preview">
-                      {formatLabel(field.label)}
-                    </label>
-                    <div className="form-input-display">
-                      <input
-                        type={field.type === "date" ? "date" : field.type === "time" ? "time" : "text"}
-                        value={formData[field.name] || ""}
-                        disabled
-                        className="form-input disabled preview"
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* Render photos if they exist */}
-            {formData.photos && renderPhotos(formData.photos, form.id)}
-          </div>
-        );
-      })}
+        <Stage3Form1 formData={formData} />
+      </div>
     </div>
   );
 };
@@ -8693,6 +8987,7 @@ export {
   Stage1Form4,
   Stage1Form5,
   Stage1Form6,
+  Stage1Form7,
   Stage2Form1,
   Stage2Form2,
   Stage3Form1,
