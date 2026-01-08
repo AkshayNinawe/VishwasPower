@@ -4014,6 +4014,7 @@ const Stage1Form6 = ({ formData }) => (
   </div>
 );
 
+
 const Stage1Form7 = ({ formData }) => (
   <div className="form-container">
     <div className="company-header">
