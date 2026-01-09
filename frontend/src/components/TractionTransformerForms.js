@@ -5156,6 +5156,7 @@ export function Stage2Form2({
           <tr>
             <th></th>
             <th>1.1</th>
+            <th></th>
             <th>1.2</th>
           </tr>
         </thead>
@@ -5169,6 +5170,7 @@ export function Stage2Form2({
                 onChange={(e) => setFormData({ ...formData, hv_earth_11: e.target.value })}
               />
             </td>
+            <td></td>
             <td>
               <input
                 type="text"
@@ -5186,28 +5188,12 @@ export function Stage2Form2({
                 onChange={(e) => setFormData({ ...formData, lv1_earth_21: e.target.value })}
               />
             </td>
+            <td></td>
             <td>
               <input
                 type="text"
                 value={formData.lv1_earth_22}
                 onChange={(e) => setFormData({ ...formData, lv1_earth_22: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td><strong>LV 2 with respect to earth</strong></td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2_earth_31}
-                onChange={(e) => setFormData({ ...formData, lv2_earth_31: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2_earth_32}
-                onChange={(e) => setFormData({ ...formData, lv2_earth_32: e.target.value })}
               />
             </td>
           </tr>
@@ -5257,9 +5243,9 @@ export function Stage2Form2({
         <thead>
           <tr>
             <th></th>
-            <th>15 Sec (MΩ)</th>
+            <th>10 Sec (MΩ)</th>
             <th>60 Sec (MΩ)</th>
-            <th>Ratio of IR 60/IR 15</th>
+            <th>Ratio of IR 60/IR 10</th>
           </tr>
         </thead>
         <tbody>
@@ -5268,8 +5254,8 @@ export function Stage2Form2({
             <td>
               <input
                 type="text"
-                value={formData.hvEarth_15sec}
-                onChange={(e) => setFormData({ ...formData, hvEarth_15sec: e.target.value })}
+                value={formData.hvEarth_10sec}
+                onChange={(e) => setFormData({ ...formData, hvEarth_10sec: e.target.value })}
               />
             </td>
             <td>
@@ -5288,122 +5274,50 @@ export function Stage2Form2({
             </td>
           </tr>
           <tr>
-            <td><strong>LV1-Earth</strong></td>
+            <td><strong>LV-Earth</strong></td>
             <td>
               <input
                 type="text"
-                value={formData.lv1Earth_15sec}
-                onChange={(e) => setFormData({ ...formData, lv1Earth_15sec: e.target.value })}
+                value={formData.lvEarth_10sec}
+                onChange={(e) => setFormData({ ...formData, lvEarth_10sec: e.target.value })}
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.lv1Earth_60sec}
-                onChange={(e) => setFormData({ ...formData, lv1Earth_60sec: e.target.value })}
+                value={formData.lvEarth_60sec}
+                onChange={(e) => setFormData({ ...formData, lvEarth_60sec: e.target.value })}
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.lv1Earth_ratio}
-                onChange={(e) => setFormData({ ...formData, lv1Earth_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td><strong>LV2-Earth</strong></td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_15sec}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_60sec}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_ratio}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_ratio: e.target.value })}
+                value={formData.lvEarth_ratio}
+                onChange={(e) => setFormData({ ...formData, lvEarth_ratio: e.target.value })}
               />
             </td>
           </tr>
           <tr>
-            <td><strong>HV-LV1</strong></td>
+            <td><strong>HV-LV</strong></td>
             <td>
               <input
                 type="text"
-                value={formData.hvLv1_15sec}
-                onChange={(e) => setFormData({ ...formData, hvLv1_15sec: e.target.value })}
+                value={formData.hvLv_10sec}
+                onChange={(e) => setFormData({ ...formData, hvLv_10sec: e.target.value })}
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.hvLv1_60sec}
-                onChange={(e) => setFormData({ ...formData, hvLv1_60sec: e.target.value })}
+                value={formData.hvLv_60sec}
+                onChange={(e) => setFormData({ ...formData, hvLv_60sec: e.target.value })}
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.hvLv1_ratio}
-                onChange={(e) => setFormData({ ...formData, hvLv1_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td><strong>HV-LV2</strong></td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_15sec}
-                onChange={(e) => setFormData({ ...formData, hvLv2_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_60sec}
-                onChange={(e) => setFormData({ ...formData, hvLv2_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_ratio}
-                onChange={(e) => setFormData({ ...formData, hvLv2_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td><strong>LV1-LV2</strong></td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_15sec}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_60sec}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_ratio}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_ratio: e.target.value })}
+                value={formData.hvLv_ratio}
+                onChange={(e) => setFormData({ ...formData, hvLv_ratio: e.target.value })}
               />
             </td>
           </tr>
@@ -11726,12 +11640,12 @@ const TractionTransformerForms = ({
   const stageFormsMapping = {
     1: [
       { component: Stage1Form1, name: "Name Plate Details Transformer/Reactor" },
-      { component: Stage1Form2, name: "Pre Erection Ratio Test of Turret CTs - Phase 3" },
-      { component: Stage1Form3, name: "Tan Delta and Capacitance Test on Bushing" },
-      { component: Stage1Form4, name: "SFRA Test Record" },
-      { component: Stage1Form5, name: "SFRA Test Record" },
-      { component: Stage1Form6, name: "SFRA Test Record" },
-      { component: Stage1Form7, name: "SFRA Test Record" },
+      { component: Stage1Form2, name: "PROTOCOL FOR ACCESSORIES CHECKING" },
+      { component: Stage1Form3, name: "CORE INSULATION CHECK: At 1 KV > 500 MΩ" },
+      { component: Stage1Form4, name: "Pre erection Ratio test of turret CTs" },
+      { component: Stage1Form5, name: "Pre erection Ratio test of turret CTs 2" },
+      { component: Stage1Form6, name: "Pre erection Ratio test of turret CTs 3" },
+      { component: Stage1Form7, name: "TAN DELTA AND CAPACITANCE TEST ON BUSHING" }
       ],
     2: [
       { component: Stage2Form1, name: "Record of Oil Handling" },

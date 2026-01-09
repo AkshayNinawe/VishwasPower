@@ -8,6 +8,7 @@ import {
   Stage1Form4,
   Stage1Form5,
   Stage1Form6,
+  Stage1Form7,
   Stage2Form1,
   Stage2Form2,
   Stage3Form1,
@@ -543,9 +544,14 @@ const Stage1ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
       component: Stage1Form5
     },
     {
+      id: "pre-erection-ratio-test-turret-cts-3",
+      title: "Pre erection Ratio test of turret CTs 3",
+      component: Stage1Form6
+    },
+    {
       id: "tan-delta-capacitance-test-bushing",
       title: "TAN DELTA AND CAPACITANCE TEST ON BUSHING",
-      component: Stage1Form6
+      component: Stage1Form7
     }
   ];
 

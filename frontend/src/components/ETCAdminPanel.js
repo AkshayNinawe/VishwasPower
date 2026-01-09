@@ -2315,29 +2315,6 @@ const ETCAdminPanel = ({
       )
     );
 
-    // Reset Project stage submission status
-    // setCompanies((companies) =>
-    //   companies.map((Project) =>
-    //     Project.id === selectedProjectForReview.id
-    //       ? {
-    //           ...Project,
-    //           status: "in-progress",
-    //           submittedStages: {
-    //             ...Project.submittedStages,
-    //             [rejectionStage]: false,
-    //           },
-    //           stageApprovals: {
-    //             ...Project.stageApprovals,
-    //             [rejectionStage]: false,
-    //           },
-    //           formsCompleted: 0, // Reset forms completed for this stage
-    //           totalForms: getStageFormCount(rejectionStage), // Reset total forms for current stage
-    //           lastActivity: new Date().toISOString().split("T")[0],
-    //         }
-    //       : Project
-    //   )
-    // );
-
     showNotification(
       `Stage ${rejectionStage.stage} rejected for Project : ${selectedProjectForReview.name}. Project needs to resubmit forms.`,
       "warning"
@@ -2362,11 +2339,25 @@ const ETCAdminPanel = ({
     try {
       if (additionalLogging) {
         console.log(
-          "Frontend : From handleCreateCompany post call to api/company"
+          "Frontend : From handleViewSubmittedForms post call to get complete table"
         );
       }
+
+      // Determine API endpoint based on department name
+      let apiEndpoint;
+      if (selectedDepartment.name === 'Traction Transformer') {
+        apiEndpoint = `${BACKEND_API_BASE_URL}/api/tractionData/getCompleteTable`;
+      } else if (selectedDepartment.name === 'Auto Transformer') {
+        apiEndpoint = `${BACKEND_API_BASE_URL}/api/autoData/getCompleteTable`;
+      } else if (selectedDepartment.name === 'V Connected 63 MVA Transformer') {
+        apiEndpoint = `${BACKEND_API_BASE_URL}/api/vconnectData/getCompleteTable`;
+      } else {
+        // Fallback to auto transformer API
+        apiEndpoint = `${BACKEND_API_BASE_URL}/api/autoData/getCompleteTable`;
+      }
+
       const response = await axios.post(
-        `${BACKEND_API_BASE_URL}/api/autoData/getCompleteTable`,
+        apiEndpoint,
         {
           projectName: Project.name,
           companyName: Project.companyName,
@@ -2376,9 +2367,27 @@ const ETCAdminPanel = ({
         `Complete data has been provided for ${Project.companyName} and projectName ${Project.name}`,
         response.data
       );
-      setFormDataFromDB(response.data.data.autoTransformerData);
+
+      // Set form data based on department type
+      let formData = null;
+      if (selectedDepartment.name === 'Traction Transformer') {
+        formData = response.data.data?.TractionData;
+      } else if (selectedDepartment.name === 'V Connected 63 MVA Transformer') {
+        formData = response.data.data?.vConnectData;
+      } else {
+        // Auto Transformer or fallback
+        formData = response.data.data?.autoTransformerData;
+      }
+
+      // Ensure formData is not null/undefined and is an object
+      if (formData && typeof formData === 'object') {
+        setFormDataFromDB(formData);
+      } else {
+        console.warn('No form data found or invalid data structure:', response.data);
+        setFormDataFromDB({});
+      }
     } catch (error) {
-      console.error("Error creating company on the backend:", error);
+      console.error("Error loading submitted forms:", error);
 
       if (error.response?.status === 404) {
         // ✅ Custom message for 404
