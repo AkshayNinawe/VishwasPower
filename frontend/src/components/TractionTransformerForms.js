@@ -5631,9 +5631,9 @@ export function Stage3Form1({
         <thead>
           <tr>
             <th></th>
-            <th>15 Sec (MΩ)</th>
+            <th>10 Sec (MΩ)</th>
             <th>60 Sec (MΩ)</th>
-            <th>Ratio of IR 60/IR 15</th>
+            <th>Ratio of IR 60/IR 10</th>
           </tr>
         </thead>
         <tbody>
@@ -5642,8 +5642,8 @@ export function Stage3Form1({
             <td>
               <input
                 type="text"
-                value={formData.hvEarth_15sec}
-                onChange={(e) => setFormData({ ...formData, hvEarth_15sec: e.target.value })}
+                value={formData.hvEarth_10sec}
+                onChange={(e) => setFormData({ ...formData, hvEarth_10sec: e.target.value })}
               />
             </td>
             <td>
@@ -5662,122 +5662,50 @@ export function Stage3Form1({
             </td>
           </tr>
           <tr>
-            <td><strong>LV1-Earth</strong></td>
+            <td><strong>LV-Earth</strong></td>
             <td>
               <input
                 type="text"
-                value={formData.lv1Earth_15sec}
-                onChange={(e) => setFormData({ ...formData, lv1Earth_15sec: e.target.value })}
+                value={formData.lvEarth_10sec}
+                onChange={(e) => setFormData({ ...formData, lvEarth_10sec: e.target.value })}
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.lv1Earth_60sec}
-                onChange={(e) => setFormData({ ...formData, lv1Earth_60sec: e.target.value })}
+                value={formData.lvEarth_60sec}
+                onChange={(e) => setFormData({ ...formData, lvEarth_60sec: e.target.value })}
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.lv1Earth_ratio}
-                onChange={(e) => setFormData({ ...formData, lv1Earth_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td><strong>LV2-Earth</strong></td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_15sec}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_60sec}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_ratio}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_ratio: e.target.value })}
+                value={formData.lvEarth_ratio}
+                onChange={(e) => setFormData({ ...formData, lvEarth_ratio: e.target.value })}
               />
             </td>
           </tr>
           <tr>
-            <td><strong>HV-LV1</strong></td>
+            <td><strong>HV-LV</strong></td>
             <td>
               <input
                 type="text"
-                value={formData.hvLv1_15sec}
-                onChange={(e) => setFormData({ ...formData, hvLv1_15sec: e.target.value })}
+                value={formData.hvLv_10sec}
+                onChange={(e) => setFormData({ ...formData, hvLv_10sec: e.target.value })}
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.hvLv1_60sec}
-                onChange={(e) => setFormData({ ...formData, hvLv1_60sec: e.target.value })}
+                value={formData.hvLv_60sec}
+                onChange={(e) => setFormData({ ...formData, hvLv_60sec: e.target.value })}
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.hvLv1_ratio}
-                onChange={(e) => setFormData({ ...formData, hvLv1_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td><strong>HV-LV2</strong></td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_15sec}
-                onChange={(e) => setFormData({ ...formData, hvLv2_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_60sec}
-                onChange={(e) => setFormData({ ...formData, hvLv2_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_ratio}
-                onChange={(e) => setFormData({ ...formData, hvLv2_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td><strong>LV1-LV2</strong></td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_15sec}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_60sec}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_ratio}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_ratio: e.target.value })}
+                value={formData.hvLv_ratio}
+                onChange={(e) => setFormData({ ...formData, hvLv_ratio: e.target.value })}
               />
             </td>
           </tr>
@@ -6150,42 +6078,6 @@ export function Stage4Form2({
         <tbody>
           <tr>
             <td>
-              <strong>Date</strong>
-            </td>
-            <td>
-              <input
-                type="date"
-                value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Time</strong>
-            </td>
-            <td>
-              <input
-                type="time"
-                value={formData.time}
-                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Insulation Tester Details</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.insulationTesterDetails}
-                onChange={(e) => setFormData({ ...formData, insulationTesterDetails: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
               <strong>Temp OTI °C</strong>
             </td>
             <td>
@@ -6227,9 +6119,9 @@ export function Stage4Form2({
         <thead>
           <tr>
             <th></th>
-            <th>15 Sec (MΩ)</th>
+            <th>10 Sec (MΩ)</th>
             <th>60 Sec (MΩ)</th>
-            <th>Ratio of IR 60/IR 15</th>
+            <th>Ratio of IR 60/IR 10</th>
           </tr>
         </thead>
         <tbody>
@@ -6261,7 +6153,7 @@ export function Stage4Form2({
           </tr>
           <tr>
             <td>
-              <strong>LV1-Earth</strong>
+              <strong>LV-Earth</strong>
             </td>
             <td>
               <input
@@ -6287,33 +6179,7 @@ export function Stage4Form2({
           </tr>
           <tr>
             <td>
-              <strong>LV2-Earth</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_15sec}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_60sec}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_ratio}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>HV-LV1</strong>
+              <strong>HV-LV</strong>
             </td>
             <td>
               <input
@@ -6334,58 +6200,6 @@ export function Stage4Form2({
                 type="text"
                 value={formData.hvLv1_ratio}
                 onChange={(e) => setFormData({ ...formData, hvLv1_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>HV-LV2</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_15sec}
-                onChange={(e) => setFormData({ ...formData, hvLv2_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_60sec}
-                onChange={(e) => setFormData({ ...formData, hvLv2_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_ratio}
-                onChange={(e) => setFormData({ ...formData, hvLv2_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>LV1-LV2</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_15sec}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_60sec}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_ratio}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_ratio: e.target.value })}
               />
             </td>
           </tr>
@@ -6745,42 +6559,6 @@ export function Stage4Form4({
         <tbody>
           <tr>
             <td>
-              <strong>Date</strong>
-            </td>
-            <td>
-              <input
-                type="date"
-                value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Time</strong>
-            </td>
-            <td>
-              <input
-                type="time"
-                value={formData.time}
-                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Insulation Tester Details</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.insulationTesterDetails}
-                onChange={(e) => setFormData({ ...formData, insulationTesterDetails: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
               <strong>Temp OTI °C</strong>
             </td>
             <td>
@@ -6897,39 +6675,6 @@ export function Stage4Form4({
           </tr>
           <tr>
             <td>
-              <strong>LV2-Earth</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_10sec}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_10sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_60sec}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_600sec}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_600sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_pi}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_pi: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
               <strong>HV-LV1</strong>
             </td>
             <td>
@@ -6958,72 +6703,6 @@ export function Stage4Form4({
                 type="text"
                 value={formData.hvLv1_pi}
                 onChange={(e) => setFormData({ ...formData, hvLv1_pi: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>HV-LV2</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_10sec}
-                onChange={(e) => setFormData({ ...formData, hvLv2_10sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_60sec}
-                onChange={(e) => setFormData({ ...formData, hvLv2_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_600sec}
-                onChange={(e) => setFormData({ ...formData, hvLv2_600sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_pi}
-                onChange={(e) => setFormData({ ...formData, hvLv2_pi: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>LV1-LV2</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_10sec}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_10sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_60sec}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_600sec}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_600sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_pi}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_pi: e.target.value })}
               />
             </td>
           </tr>
