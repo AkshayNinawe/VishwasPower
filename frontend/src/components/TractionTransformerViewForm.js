@@ -12,8 +12,6 @@ import {
   Stage2Form1,
   Stage2Form2,
   Stage3Form1,
-  Stage3Form2,
-  Stage3Form3,
   Stage4Form1,
   Stage4Form2,
   Stage4Form3,
@@ -191,83 +189,66 @@ const Stage6ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
 };
 
 // Stage 3 Review Renderer Component
+// Traction stage 3 has ONLY ONE form in TractionTransformerForms.js: Stage3Form1
 const Stage3ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
-  const stage3Forms = [
-    {
-      id: "before-oil-filling-pressure-test",
-      title: "Before Oil Filling and Pressure Test Report",
-      component: Stage3Form1
-    },
-    {
-      id: "record-oil-filtration-main-tank",
-      title: "Record for Oil Filtration - Main Tank",
-      component: Stage3Form2
-    },
-    {
-      id: "oil-filtration-radiator-combine",
-      title: "Oil Filtration of Radiator and Combine",
-      component: Stage3Form3
-    }
-  ];
+  const formData = formDataFromDB?.form1 || {};
+  const FormComponent = Stage3Form1;
 
   return (
     <div className="stage3-review-container">
-      {stage3Forms.map((form, formIndex) => {
-        const formData = formDataFromDB[`form${formIndex + 1}`] || {};
-        const FormComponent = form.component;
-        
-        return (
-          <div key={form.id} className="form-review-card" style={{
-            marginBottom: "30px",
-            border: "2px solid #e5e7eb",
-            borderRadius: "12px",
-            padding: "20px",
-            background: "white",
-            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+      <div
+        className="form-review-card"
+        style={{
+          marginBottom: "30px",
+          border: "2px solid #e5e7eb",
+          borderRadius: "12px",
+          padding: "20px",
+          background: "white",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <div
+          className="company-header"
+          style={{
+            textAlign: "center",
+            marginBottom: "20px",
+            padding: "15px",
+            backgroundColor: "#f8fafc",
+            borderRadius: "8px",
+            border: "1px solid #e2e8f0",
+          }}
+        >
+          <h2 style={{ margin: 0, color: "#1e293b", fontSize: "1.25rem" }}>
+            Traction Transformer - Vacuum Cycle Recording
+          </h2>
+        </div>
+
+        {FormComponent ? (
+          <FormComponent formData={formData} />
+        ) : (
+          <div className="form-grid-preview" style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gap: "20px",
           }}>
-            <div className="company-header" style={{
-              textAlign: "center",
-              marginBottom: "20px",
-              padding: "15px",
-              backgroundColor: "#f8fafc",
-              borderRadius: "8px",
-              border: "1px solid #e2e8f0"
-            }}>
-              <h2 style={{ margin: 0, color: "#1e293b", fontSize: "1.25rem" }}>
-                Traction Transformer - {form.title}
-              </h2>
-            </div>
-
-            {FormComponent ? (
-              <FormComponent formData={formData} />
-            ) : (
-              <div className="form-grid-preview" style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-                gap: "20px",
-              }}>
-                {Object.entries(formData).filter(([key]) => key !== 'photos').map(([fieldKey, fieldValue]) => (
-                  <div key={`${form.id}-${fieldKey}`} className="form-group-preview">
-                    <label className="form-label-preview">
-                      {formatLabel(fieldKey)}
-                    </label>
-                    <div className="form-input-display">
-                      <input
-                        type="text"
-                        value={fieldValue || ""}
-                        disabled
-                        className="form-input disabled preview"
-                      />
-                    </div>
-                  </div>
-                ))}
+            {Object.entries(formData).filter(([key]) => key !== "photos").map(([fieldKey, fieldValue]) => (
+              <div key={`stage3-${fieldKey}`} className="form-group-preview">
+                <label className="form-label-preview">{formatLabel(fieldKey)}</label>
+                <div className="form-input-display">
+                  <input
+                    type="text"
+                    value={fieldValue || ""}
+                    disabled
+                    className="form-input disabled preview"
+                  />
+                </div>
               </div>
-            )}
-
-            {formData.photos && renderPhotos(formData.photos, form.id)}
+            ))}
           </div>
-        );
-      })}
+        )}
+
+        {formData.photos && renderPhotos(formData.photos, "stage3-form1")}
+      </div>
     </div>
   );
 };
@@ -360,43 +341,51 @@ const Stage4ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
 };
 
 // Stage 5 Review Renderer Component
+// Traction stage 5 has 8 forms in TractionTransformerForms.js (Stage5Form1..Stage5Form8).
+// In review/view, we only have Stage5Form1 and Stage5Form2 UI components available from TractionTransformerStageReviewPanel,
+// so the remaining forms fall back to generic field rendering.
 const Stage5ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
   const stage5Forms = [
-    {
-      id: "pre-charging-checklist",
-      title: "Pre-Charging Check List",
-      component: Stage5Form1
-    },
-    {
-      id: "pre-charging-checklist-part2",
-      title: "Pre-Charging Check List - Part 2",
-      component: Stage5Form2
-    }
+    { id: "stage5-form1", title: "Magnetizing Current Test", component: Stage5Form1 },
+    { id: "stage5-form2", title: "Polarity Test", component: Stage5Form2 },
+    { id: "stage5-form3", title: "MAGNETISING CURRENT TEST", component: null },
+    { id: "stage5-form4", title: "Type of Test - Polarity Test", component: null },
+    { id: "stage5-form5", title: "IR Values of Transformer", component: null },
+    { id: "stage5-form6", title: "IR Values of Transformer", component: null },
+    { id: "stage5-form7", title: "IR Values of Transformer", component: null },
+    { id: "stage5-form8", title: "IR Values of Transformer", component: null },
   ];
 
   return (
     <div className="stage5-review-container">
       {stage5Forms.map((form, formIndex) => {
-        const formData = formDataFromDB[`form${formIndex + 1}`] || {};
+        const formData = formDataFromDB?.[`form${formIndex + 1}`] || {};
         const FormComponent = form.component;
-        
+
         return (
-          <div key={form.id} className="form-review-card" style={{
-            marginBottom: "30px",
-            border: "2px solid #e5e7eb",
-            borderRadius: "12px",
-            padding: "20px",
-            background: "white",
-            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-          }}>
-            <div className="company-header" style={{
-              textAlign: "center",
-              marginBottom: "20px",
-              padding: "15px",
-              backgroundColor: "#f8fafc",
-              borderRadius: "8px",
-              border: "1px solid #e2e8f0"
-            }}>
+          <div
+            key={form.id}
+            className="form-review-card"
+            style={{
+              marginBottom: "30px",
+              border: "2px solid #e5e7eb",
+              borderRadius: "12px",
+              padding: "20px",
+              background: "white",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            }}
+          >
+            <div
+              className="company-header"
+              style={{
+                textAlign: "center",
+                marginBottom: "20px",
+                padding: "15px",
+                backgroundColor: "#f8fafc",
+                borderRadius: "8px",
+                border: "1px solid #e2e8f0",
+              }}
+            >
               <h2 style={{ margin: 0, color: "#1e293b", fontSize: "1.25rem" }}>
                 Traction Transformer - {form.title}
               </h2>
@@ -405,26 +394,33 @@ const Stage5ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
             {FormComponent ? (
               <FormComponent formData={formData} />
             ) : (
-              <div className="form-grid-preview" style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-                gap: "20px",
-              }}>
-                {Object.entries(formData).filter(([key]) => key !== 'photos').map(([fieldKey, fieldValue]) => (
-                  <div key={`${form.id}-${fieldKey}`} className="form-group-preview">
-                    <label className="form-label-preview">
-                      {formatLabel(fieldKey)}
-                    </label>
-                    <div className="form-input-display">
-                      <input
-                        type="text"
-                        value={fieldValue || ""}
-                        disabled
-                        className="form-input disabled preview"
-                      />
+              <div
+                className="form-grid-preview"
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+                  gap: "20px",
+                }}
+              >
+                {Object.entries(formData)
+                  .filter(([key]) => key !== "photos")
+                  .map(([fieldKey, fieldValue]) => (
+                    <div key={`${form.id}-${fieldKey}`} className="form-group-preview">
+                      <label className="form-label-preview">{formatLabel(fieldKey)}</label>
+                      <div className="form-input-display">
+                        <input
+                          type="text"
+                          value={
+                            typeof fieldValue === "object" && fieldValue !== null
+                              ? JSON.stringify(fieldValue)
+                              : fieldValue || ""
+                          }
+                          disabled
+                          className="form-input disabled preview"
+                        />
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             )}
 
