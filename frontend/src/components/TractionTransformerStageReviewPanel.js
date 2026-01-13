@@ -4406,6 +4406,7 @@ const Stage2Form2 = ({ formData }) => (
         <tr>
           <th></th>
           <th>1.1</th>
+          <th></th>
           <th>1.2</th>
         </tr>
       </thead>
@@ -4422,6 +4423,7 @@ const Stage2Form2 = ({ formData }) => (
               className="form-input disabled preview"
             />
           </td>
+          <td></td>
           <td>
             <input
               type="text"
@@ -4443,31 +4445,11 @@ const Stage2Form2 = ({ formData }) => (
               className="form-input disabled preview"
             />
           </td>
+          <td></td>
           <td>
             <input
               type="text"
               value={formData.lv1_earth_22 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>LV 2 with respect to earth</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lv2_earth_31 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lv2_earth_32 || ""}
               disabled
               className="form-input disabled preview"
             />
@@ -4528,9 +4510,9 @@ const Stage2Form2 = ({ formData }) => (
       <thead>
         <tr>
           <th></th>
-          <th>15 Sec (MΩ)</th>
+          <th>10 Sec (MΩ)</th>
           <th>60 Sec (MΩ)</th>
-          <th>Ratio of IR 60/IR 15</th>
+          <th>Ratio of IR 60/IR 10</th>
         </tr>
       </thead>
       <tbody>
@@ -4541,7 +4523,7 @@ const Stage2Form2 = ({ formData }) => (
           <td>
             <input
               type="text"
-              value={formData.hvEarth_15sec || ""}
+              value={formData.hvEarth_10sec || ""}
               disabled
               className="form-input disabled preview"
             />
@@ -4565,12 +4547,12 @@ const Stage2Form2 = ({ formData }) => (
         </tr>
         <tr>
           <td>
-            <strong>LV1-Earth</strong>
+            <strong>LV-Earth</strong>
           </td>
           <td>
             <input
               type="text"
-              value={formData.lv1Earth_15sec || ""}
+              value={formData.lvEarth_10sec || ""}
               disabled
               className="form-input disabled preview"
             />
@@ -4578,7 +4560,7 @@ const Stage2Form2 = ({ formData }) => (
           <td>
             <input
               type="text"
-              value={formData.lv1Earth_60sec || ""}
+              value={formData.lvEarth_60sec || ""}
               disabled
               className="form-input disabled preview"
             />
@@ -4586,36 +4568,7 @@ const Stage2Form2 = ({ formData }) => (
           <td>
             <input
               type="text"
-              value={formData.lv1Earth_ratio || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>LV2-Earth</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lv2Earth_15sec || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lv2Earth_60sec || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lv2Earth_ratio || ""}
+              value={formData.lvEarth_ratio || ""}
               disabled
               className="form-input disabled preview"
             />
@@ -4623,12 +4576,12 @@ const Stage2Form2 = ({ formData }) => (
         </tr>
         <tr>
           <td>
-            <strong>HV-LV1</strong>
+            <strong>HV-LV</strong>
           </td>
           <td>
             <input
               type="text"
-              value={formData.hvLv1_15sec || ""}
+              value={formData.hvLv_10sec || ""}
               disabled
               className="form-input disabled preview"
             />
@@ -4636,7 +4589,7 @@ const Stage2Form2 = ({ formData }) => (
           <td>
             <input
               type="text"
-              value={formData.hvLv1_60sec || ""}
+              value={formData.hvLv_60sec || ""}
               disabled
               className="form-input disabled preview"
             />
@@ -4644,65 +4597,7 @@ const Stage2Form2 = ({ formData }) => (
           <td>
             <input
               type="text"
-              value={formData.hvLv1_ratio || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>HV-LV2</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.hvLv2_15sec || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.hvLv2_60sec || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.hvLv2_ratio || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>LV1-LV2</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lv1Lv2_15sec || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lv1Lv2_60sec || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lv1Lv2_ratio || ""}
+              value={formData.hvLv_ratio || ""}
               disabled
               className="form-input disabled preview"
             />
@@ -4872,16 +4767,16 @@ const Stage3Form1 = ({ formData }) => (
       <thead>
         <tr>
           <th></th>
-          <th>15 Sec (MΩ)</th>
+          <th>10 Sec (MΩ)</th>
           <th>60 Sec (MΩ)</th>
-          <th>Ratio of IR 60/IR 15</th>
+          <th>Ratio of IR 60/IR 10</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td><strong>HV-Earth</strong></td>
           <td>
-            <input type="text" value={formData.hvEarth_15sec || ""} disabled className="form-input disabled preview" />
+            <input type="text" value={formData.hvEarth_10sec || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
             <input type="text" value={formData.hvEarth_60sec || ""} disabled className="form-input disabled preview" />
@@ -4891,63 +4786,27 @@ const Stage3Form1 = ({ formData }) => (
           </td>
         </tr>
         <tr>
-          <td><strong>LV1-Earth</strong></td>
+          <td><strong>LV-Earth</strong></td>
           <td>
-            <input type="text" value={formData.lv1Earth_15sec || ""} disabled className="form-input disabled preview" />
+            <input type="text" value={formData.lvEarth_10sec || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
-            <input type="text" value={formData.lv1Earth_60sec || ""} disabled className="form-input disabled preview" />
+            <input type="text" value={formData.lvEarth_60sec || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
-            <input type="text" value={formData.lv1Earth_ratio || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>LV2-Earth</strong></td>
-          <td>
-            <input type="text" value={formData.lv2Earth_15sec || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td>
-            <input type="text" value={formData.lv2Earth_60sec || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td>
-            <input type="text" value={formData.lv2Earth_ratio || ""} disabled className="form-input disabled preview" />
+            <input type="text" value={formData.lvEarth_ratio || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
         <tr>
-          <td><strong>HV-LV1</strong></td>
+          <td><strong>HV-LV</strong></td>
           <td>
-            <input type="text" value={formData.hvLv1_15sec || ""} disabled className="form-input disabled preview" />
+            <input type="text" value={formData.hvLv_10sec || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
-            <input type="text" value={formData.hvLv1_60sec || ""} disabled className="form-input disabled preview" />
+            <input type="text" value={formData.hvLv_60sec || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
-            <input type="text" value={formData.hvLv1_ratio || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>HV-LV2</strong></td>
-          <td>
-            <input type="text" value={formData.hvLv2_15sec || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td>
-            <input type="text" value={formData.hvLv2_60sec || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td>
-            <input type="text" value={formData.hvLv2_ratio || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>LV1-LV2</strong></td>
-          <td>
-            <input type="text" value={formData.lv1Lv2_15sec || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td>
-            <input type="text" value={formData.lv1Lv2_60sec || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td>
-            <input type="text" value={formData.lv1Lv2_ratio || ""} disabled className="form-input disabled preview" />
+            <input type="text" value={formData.hvLv_ratio || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
       </tbody>
@@ -5039,276 +4898,6 @@ const Stage3Form1 = ({ formData }) => (
   </div>
 );
 
-// Stage 3 Form 2: Record for Oil Filtration - Main Tank
-const Stage3Form2 = ({ formData }) => (
-  <div>
-    <div className="company-header">
-      <h2>RECORD FOR OIL FILTRATION</h2>
-      <h2>Oil filtration of Main Tank</h2>
-    </div>
-
-    <table className="form-table" style={{
-      width: "100%",
-      borderCollapse: "collapse",
-      marginBottom: "20px"
-    }}>
-      <thead>
-        <tr>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Date</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Time</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Vacuum Level (mm/hg or torr)</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>M/C Outlet Temp°C</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>OTI Temp°C</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>WTI Temp°C</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Remark</th>
-        </tr>
-      </thead>
-      <tbody>
-        {formData.filtrationRecords && formData.filtrationRecords.map((record, index) => (
-          <tr key={index}>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="date" value={record.date || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="time" value={record.time || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="text" value={record.vacuumLevel || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="text" value={record.mcOutletTemp || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="text" value={record.otiTemp || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="text" value={record.wtiTemp || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="text" value={record.remark || ""} disabled className="form-input disabled preview" />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-
-    <h4 style={{ marginTop: "40px" }}>
-      IR Value before radiators/combine filtration , Temp OTI ........°C WTI............°C, AMB........°C RANGE ONLY 1 KV
-    </h4>
-
-    <div className="form-grid" style={{ marginBottom: "20px" }}>
-      <div className="form-group">
-        <label>OTI Temperature (°C):</label>
-        <input type="text" value={formData.tempOTI || ""} disabled className="form-input disabled preview" />
-      </div>
-      <div className="form-group">
-        <label>WTI Temperature (°C):</label>
-        <input type="text" value={formData.tempWTI || ""} disabled className="form-input disabled preview" />
-      </div>
-      <div className="form-group">
-        <label>AMB Temperature (°C):</label>
-        <input type="text" value={formData.tempAMB || ""} disabled className="form-input disabled preview" />
-      </div>
-    </div>
-
-    <table className="form-table" style={{
-      width: "100%",
-      borderCollapse: "collapse",
-      marginBottom: "20px"
-    }}>
-      <thead>
-        <tr>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}></th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>15 Sec MΩ</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>60 Sec MΩ</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Ratio of IR 60/IR 15</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>HV-Earth</td>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-            <input type="text" value={formData.hvEarth15Sec || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-            <input type="text" value={formData.hvEarth60Sec || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-            <input type="text" value={formData.ratioIR60IR15 || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-);
-
-// Stage 3 Form 3: Oil Filtration of Radiator and Combine
-const Stage3Form3 = ({ formData }) => (
-  <div>
-    <div className="company-header">
-      <h2>Oil filtration of Radiator</h2>
-    </div>
-
-    <table className="form-table" style={{
-      width: "100%",
-      borderCollapse: "collapse",
-      marginBottom: "20px"
-    }}>
-      <thead>
-        <tr>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Date</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Time</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Vacuum Level (mm/hg or torr)</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>M/C Outlet Temp°C</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>OTI Temp°C</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>WTI Temp°C</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Remark</th>
-        </tr>
-      </thead>
-      <tbody>
-        {formData.radiatorRecords && formData.radiatorRecords.map((record, index) => (
-          <tr key={index}>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="date" value={record.date || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="time" value={record.time || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="text" value={record.vacuumLevel || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="text" value={record.mcOutletTemp || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="text" value={record.otiTemp || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="text" value={record.wtiTemp || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="text" value={record.remark || ""} disabled className="form-input disabled preview" />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-
-    <h4 style={{ marginTop: "40px" }}>
-      Oil filtration of Combine (Main Tank + Cooler bank)
-    </h4>
-
-    <table className="form-table" style={{
-      width: "100%",
-      borderCollapse: "collapse",
-      marginBottom: "20px"
-    }}>
-      <thead>
-        <tr>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Date</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Time</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Vacuum Level (mm/hg or torr)</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>M/C Outlet Temp°C</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>OTI Temp°C</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>WTI Temp°C</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Remark</th>
-        </tr>
-      </thead>
-      <tbody>
-        {formData.combineRecords && formData.combineRecords.map((record, index) => (
-          <tr key={index}>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="date" value={record.date || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="time" value={record.time || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="text" value={record.vacuumLevel || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="text" value={record.mcOutletTemp || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="text" value={record.otiTemp || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="text" value={record.wtiTemp || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-              <input type="text" value={record.remark || ""} disabled className="form-input disabled preview" />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-
-    <h4 style={{ marginTop: "40px" }}>After Oil Filtration of main tank</h4>
-
-    <div className="form-grid" style={{ marginBottom: "20px" }}>
-      <div className="form-group">
-        <label><strong>BDV: _____ KV</strong></label>
-        <input type="text" value={formData.bdvKV || ""} disabled className="form-input disabled preview" />
-      </div>
-      <div className="form-group">
-        <label><strong>Water Content: _______ PPM</strong></label>
-        <input type="text" value={formData.waterContentPPM || ""} disabled className="form-input disabled preview" />
-      </div>
-    </div>
-
-    <h4 style={{ marginTop: "40px" }}>
-      PI Value after filteration, Temp OTI ........°C WTI............°C, AMB........°C RANGE ONLY 5 KV
-    </h4>
-
-    <div className="form-grid" style={{ marginBottom: "20px" }}>
-      <div className="form-group">
-        <label>OTI Temperature (°C):</label>
-        <input type="text" value={formData.tempOTI || ""} disabled className="form-input disabled preview" />
-      </div>
-      <div className="form-group">
-        <label>WTI Temperature (°C):</label>
-        <input type="text" value={formData.tempWTI || ""} disabled className="form-input disabled preview" />
-      </div>
-      <div className="form-group">
-        <label>AMB Temperature (°C):</label>
-        <input type="text" value={formData.tempAMB || ""} disabled className="form-input disabled preview" />
-      </div>
-    </div>
-
-    <table className="form-table" style={{
-      width: "100%",
-      borderCollapse: "collapse",
-      marginBottom: "20px"
-    }}>
-      <thead>
-        <tr>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}></th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>15 Sec MΩ</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>60 Sec MΩ</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>600 sec MΩ</th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>600/60 sec MΩ</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold" }}>HV-Earth</td>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-            <input type="text" value={formData.hvEarth15Sec || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-            <input type="text" value={formData.hvEarth60Sec || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-            <input type="text" value={formData.hvEarth600Sec || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td style={{ border: "1px solid #e5e7eb", padding: "8px" }}>
-            <input type="text" value={formData.hvEarth60600Sec || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-);
 
 // Stage 4 Form Components (for review display)
 const Stage4Form1 = ({ formData }) => (
@@ -5503,45 +5092,6 @@ const Stage4Form2 = ({ formData }) => (
       <tbody>
         <tr>
           <td>
-            <strong>Date</strong>
-          </td>
-          <td>
-            <input
-              type="date"
-              value={formData.date || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>Time</strong>
-          </td>
-          <td>
-            <input
-              type="time"
-              value={formData.time || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>Insulation Tester Details</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.insulationTesterDetails || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
             <strong>Temp OTI °C</strong>
           </td>
           <td>
@@ -5623,7 +5173,7 @@ const Stage4Form2 = ({ formData }) => (
         </tr>
         <tr>
           <td>
-            <strong>LV1-Earth</strong>
+            <strong>LV-Earth</strong>
           </td>
           <td>
             <input
@@ -5652,36 +5202,7 @@ const Stage4Form2 = ({ formData }) => (
         </tr>
         <tr>
           <td>
-            <strong>LV2-Earth</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lv2Earth_15sec || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lv2Earth_60sec || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lv2Earth_ratio || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>HV-LV1</strong>
+            <strong>HV-LV</strong>
           </td>
           <td>
             <input
@@ -5703,64 +5224,6 @@ const Stage4Form2 = ({ formData }) => (
             <input
               type="text"
               value={formData.hvLv1_ratio || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>HV-LV2</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.hvLv2_15sec || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.hvLv2_60sec || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.hvLv2_ratio || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>LV1-LV2</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lv1Lv2_15sec || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lv1Lv2_60sec || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lv1Lv2_ratio || ""}
               disabled
               className="form-input disabled preview"
             />
@@ -6131,35 +5594,6 @@ const Stage4Form4 = ({ formData }) => (
 
     <table className="form-table">
       <tbody>
-        <tr>
-          <td>
-            <strong>Date</strong>
-          </td>
-          <td>
-            <input type="date" value={formData.date || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>Time</strong>
-          </td>
-          <td>
-            <input type="time" value={formData.time || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>Insulation Tester Details</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.insulationTesterDetails || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
         <tr>
           <td>
             <strong>Temp OTI °C</strong>
@@ -8132,280 +7566,46 @@ const Stage3ReviewRenderer = ({ formDataFromDB }) => {
 };
 
 // Stage 2 Review Renderer Component
-const Stage2ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
+const Stage2ReviewRenderer = ({ formDataFromDB }) => {
   const stage2Forms = [
-    {
-      id: "record-oil-handling",
-      title: "Record of Oil Handling - Test Values Prior to Filteration",
-      fields: [
-        { name: "tank1StartedDateTime", label: "Tank1 Started Date & Time", type: "datetime-local" },
-        { name: "tank1CompletedDateTime", label: "Tank1 Completed Date & Time", type: "datetime-local" },
-        { name: "oilTemperature", label: "Oil Temperature", type: "text" },
-        { name: "ambientTemperature", label: "Ambient Temperature", type: "text" },
-        { name: "oilLevel", label: "Oil Level", type: "text" },
-        { name: "filtrationMethod", label: "Filtration Method", type: "text" },
-        { name: "remarks", label: "Remarks", type: "textarea" }
-      ]
-    },
-    {
-      id: "ir-after-erection-stage2",
-      title: "IR After Erection - Stage 2 End",
-      fields: [
-        { name: "date", label: "Date", type: "date" },
-        { name: "time", label: "Time", type: "time" },
-        { name: "ambTemp", label: "Amb. Temp", type: "text" },
-        { name: "make", label: "Make", type: "text" },
-        { name: "oilTemp", label: "Oil Temp.", type: "text" },
-        { name: "srNo", label: "Sr. No.", type: "text" },
-        { name: "wdgTemp", label: "Wdg. Temp.", type: "text" },
-        { name: "range", label: "Range", type: "text" },
-        { name: "relativeHumidity", label: "Relative Humidity", type: "text" },
-        { name: "voltageLevel", label: "Voltage Level", type: "text" },
-        { name: "hvEarth15Sec", label: "HV-Earth 15 Sec MΩ", type: "text" },
-        { name: "hvEarth60Sec", label: "HV-Earth 60 Sec MΩ", type: "text" },
-        { name: "hvEarthRatio", label: "HV-Earth Ratio", type: "text" },
-        { name: "lvEarth15Sec", label: "LV-Earth 15 Sec MΩ", type: "text" },
-        { name: "lvEarth60Sec", label: "LV-Earth 60 Sec MΩ", type: "text" },
-        { name: "lvEarthRatio", label: "LV-Earth Ratio", type: "text" },
-        { name: "hvLv15Sec", label: "HV-LV 15 Sec MΩ", type: "text" },
-        { name: "hvLv60Sec", label: "HV-LV 60 Sec MΩ", type: "text" },
-        { name: "hvLvRatio", label: "HV-LV Ratio", type: "text" }
-      ]
-    }
+    { id: "stage2-form1", title: "Record of Oil Handling", component: Stage2Form1 },
+    { id: "stage2-form2", title: "IR After Erection", component: Stage2Form2 },
   ];
-
-  const renderFormField = (field, value, formKey) => {
-    if (field.type === "nested-object" && typeof value === "object" && value !== null) {
-      return (
-        <div key={`${formKey}-${field.name}`} className="form-group-preview nested-object-group">
-          <label className="form-label-preview">
-            📋 {formatLabel(field.label)}
-          </label>
-          <div className="nested-object-display" style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
-            gap: "15px",
-            marginTop: "10px",
-          }}>
-            {Object.entries(value).map(([nestedKey, nestedValue]) => (
-              <div key={`${field.name}-${nestedKey}`} className="nested-item" style={{
-                padding: "12px",
-                border: "1px solid #e5e7eb",
-                borderRadius: "8px",
-                backgroundColor: "#f9fafb",
-              }}>
-                <h5 style={{
-                  margin: "0 0 10px 0",
-                  color: "#374151",
-                  fontSize: "0.9rem",
-                  fontWeight: "600",
-                }}>
-                  {formatLabel(field.label)} - {nestedKey}
-                </h5>
-                {typeof nestedValue === "object" && nestedValue !== null ? (
-                  <div className="nested-fields-grid" style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-                    gap: "10px",
-                  }}>
-                    {Object.entries(nestedValue).map(([subKey, subValue]) => (
-                      <div key={`${nestedKey}-${subKey}`} className="nested-field">
-                        <label className="nested-field-label" style={{
-                          fontSize: "0.8rem",
-                          color: "#6b7280",
-                          fontWeight: "500",
-                        }}>
-                          {formatLabel(subKey)}:
-                        </label>
-                        <div className="nested-field-value">
-                          <input
-                            type="text"
-                            value={subValue || ""}
-                            disabled
-                            className="form-input disabled preview"
-                            style={{
-                              fontSize: "0.85rem",
-                              padding: "6px 8px",
-                            }}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="form-input-display">
-                    <input
-                      type="text"
-                      value={nestedValue || ""}
-                      disabled
-                      className="form-input disabled preview"
-                    />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-
-    return (
-      <div key={`${formKey}-${field.name}`} className="form-group-preview">
-        <label className="form-label-preview">
-          {formatLabel(field.label)}
-        </label>
-        <div className="form-input-display">
-          <input
-            type={field.type === "date" ? "date" : field.type === "time" ? "time" : field.type === "datetime-local" ? "datetime-local" : "text"}
-            value={value || ""}
-            disabled
-            className="form-input disabled preview"
-          />
-        </div>
-      </div>
-    );
-  };
-
-  const renderPhotos = (photos, formKey) => {
-    if (!photos || typeof photos !== "object") return null;
-
-    return (
-      <div key={`${formKey}-photos`} className="form-group-preview photo-group" style={{ width: "100%" }}>
-        <label className="form-label-preview">
-          📸 Photos
-        </label>
-        <div className="photo-display-grid" style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: "15px",
-          marginTop: "10px"
-        }}>
-          {Object.entries(photos).map(([photoKey, url]) => {
-            let fullUrl;
-            if (typeof url === 'string') {
-              if (url.startsWith("data:image/")) {
-                fullUrl = url;
-              } else if (url.startsWith("http")) {
-                fullUrl = url;
-              } else if (url.includes("cloudinary.com") || url.startsWith("v1")) {
-                fullUrl = `${BACKEND_IMG_API_BASE_URL}${url}`;
-              } else if (url.startsWith("/")) {
-                fullUrl = `${BACKEND_API_BASE_URL}${url}`;
-              } else {
-                fullUrl = `${BACKEND_API_BASE_URL}/${url}`;
-              }
-            } else {
-              fullUrl = "/placeholder.svg";
-            }
-
-            return (
-              <div key={photoKey} className="photo-item" style={{
-                border: "1px solid #e5e7eb",
-                borderRadius: "8px",
-                padding: "10px",
-                backgroundColor: "#f9fafb"
-              }}>
-                <span className="photo-label" style={{
-                  display: "block",
-                  fontSize: "0.85rem",
-                  fontWeight: "600",
-                  color: "#374151",
-                  marginBottom: "8px",
-                  textAlign: "center"
-                }}>
-                  {photoKey}
-                </span>
-                <img
-                  src={fullUrl}
-                  alt={photoKey}
-                  className="photo-preview-img"
-                  style={{
-                    width: "100%",
-                    height: "150px",
-                    objectFit: "cover",
-                    borderRadius: "6px",
-                    border: "1px solid #d1d5db",
-                    cursor: "pointer"
-                  }}
-                  onError={(e) => {
-                    console.error(`Failed to load image: ${fullUrl}`);
-                    e.target.src = "/placeholder.svg";
-                  }}
-                  onClick={() => {
-                    window.open(fullUrl, '_blank');
-                  }}
-                />
-                <div style={{ marginTop: "8px", textAlign: "center" }}>
-                  <a
-                    href={fullUrl}
-                    download={`${photoKey}.jpg`}
-                    style={{
-                      display: "inline-block",
-                      padding: "4px 8px",
-                      backgroundColor: "#3b82f6",
-                      color: "white",
-                      textDecoration: "none",
-                      borderRadius: "4px",
-                      fontSize: "0.75rem"
-                    }}
-                  >
-                    📥 Download
-                  </a>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    );
-  };
 
   return (
     <div className="stage2-review-container">
       {stage2Forms.map((form, formIndex) => {
-        const formData = formDataFromDB[`form${formIndex + 1}`] || {};
-        
+        const formData = formDataFromDB?.[`form${formIndex + 1}`] || {};
+        const FormComponent = form.component;
+
         return (
-          <div key={form.id} className="form-review-card" style={{
-            marginBottom: "30px",
-            border: "2px solid #e5e7eb",
-            borderRadius: "12px",
-            padding: "20px",
-            background: "white",
-            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-          }}>
-            <div className="company-header" style={{
-              textAlign: "center",
-              marginBottom: "20px",
-              padding: "15px",
-              backgroundColor: "#f8fafc",
-              borderRadius: "8px",
-              border: "1px solid #e2e8f0"
-            }}>
-              <h2 style={{ margin: 0, color: "#1e293b", fontSize: "1.25rem" }}>
-                {form.title}
-              </h2>
+          <div
+            key={form.id}
+            className="form-review-card"
+            style={{
+              marginBottom: "30px",
+              border: "2px solid #e5e7eb",
+              borderRadius: "12px",
+              padding: "20px",
+              background: "white",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            }}
+          >
+            <div
+              className="company-header"
+              style={{
+                textAlign: "center",
+                marginBottom: "20px",
+                padding: "15px",
+                backgroundColor: "#f8fafc",
+                borderRadius: "8px",
+                border: "1px solid #e2e8f0",
+              }}
+            >
+              <h2 style={{ margin: 0, color: "#1e293b", fontSize: "1.25rem" }}>{form.title}</h2>
             </div>
 
-            {/* Use the organized form components */}
-            {form.id === "record-oil-handling" ? (
-              <Stage2Form1 formData={formData} />
-            ) : form.id === "ir-after-erection-stage2" ? (
-              <Stage2Form2 formData={formData} />
-            ) : (
-              <div className="form-grid-preview" style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-                gap: "20px",
-              }}>
-                {form.fields.map((field) => 
-                  renderFormField(field, formData[field.name], form.id)
-                )}
-              </div>
-            )}
-
-            {/* Render photos if they exist */}
-            {formData.photos && renderPhotos(formData.photos, form.id)}
+            {FormComponent ? <FormComponent formData={formData} /> : null}
           </div>
         );
       })}
@@ -9910,8 +9110,6 @@ export {
   Stage2Form1,
   Stage2Form2,
   Stage3Form1,
-  Stage3Form2,
-  Stage3Form3,
   Stage4Form1,
   Stage4Form2,
   Stage4Form3,
