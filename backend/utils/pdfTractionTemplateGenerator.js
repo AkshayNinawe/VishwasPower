@@ -2274,10 +2274,10 @@ export function generateHTMLTemplate(data, projectName, companyName) {
 
   // Generate content for all stages
   let stagesContent = "";
-  if (data.autoTransformerData) {
+  if (data.TractionData) {
     for (let i = 1; i <= 7; i++) {
       const stageKey = `stage${i}`;
-      if (data.autoTransformerData[stageKey]) {
+      if (data.TractionData[stageKey]) {
         stagesContent += generateStageContent(data.TractionData[stageKey], i, headerImage);
       }
     }
@@ -2447,9 +2447,9 @@ export function generateHTMLTemplate(data, projectName, companyName) {
         ${lastPageImage ? `
         <div class="last-page" style="position: relative;">
           <img src="${lastPageImage}" alt="Last Page" style="width: 100%; height: 100%; object-fit: cover;" />
-          ${data.autoTransformerData && data.autoTransformerData.stage6 && data.autoTransformerData.stage6.form1 ? 
+          ${data.TractionData && data.TractionData.stage6 && data.TractionData.stage6.form1 ?
             (() => {
-              const stage6Data = data.autoTransformerData.stage6.form1;
+              const stage6Data = data.TractionData.stage6.form1;
               return `
                 <!-- Overlay Stage 6 Form 1 data on LastPage.jpg -->
                 <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; font-family: Helvetica, Arial, sans-serif; font-size: 10px; color: #000000;">
