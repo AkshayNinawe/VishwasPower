@@ -1096,6 +1096,57 @@ const Stage6Form1SubSchema = new mongoose.Schema(
   { _id: false }
 );
 
+// --------------------
+// Stage 6 - Form 2 (Pre-Commissioning Checklist - Cont.)
+// --------------------
+const Stage6Form2SignatureSubSchema = new mongoose.Schema(
+  {
+    name: { type: String, trim: true, default: "" },
+    signature: { type: String, trim: true, default: "" },
+    date: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+const Stage6Form2TempSubSchema = new mongoose.Schema(
+  {
+    wti: { type: String, trim: true, default: "" },
+    oti: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+const Stage6Form2SubSchema = new mongoose.Schema(
+  {
+    protectionRelay: { type: mongoose.Schema.Types.Mixed, default: {} },
+    accessoriesChecking: { type: mongoose.Schema.Types.Mixed, default: {} },
+    octcTapPosition: { type: mongoose.Schema.Types.Mixed, default: {} },
+    bushingTestTapEarthed: { type: mongoose.Schema.Types.Mixed, default: {} },
+    oilValues: { type: mongoose.Schema.Types.Mixed, default: {} },
+    finalIR: { type: mongoose.Schema.Types.Mixed, default: {} },
+    oilLevelInConservator: { type: String, trim: true, default: "" },
+    connectors: { type: mongoose.Schema.Types.Mixed, default: {} },
+
+    connectorsLvJumpers: { type: mongoose.Schema.Types.Mixed, default: {} },
+    ctCableAndGlandsSealed: { type: String, trim: true, default: "" },
+    anabondAppliedHvBushings: { type: String, trim: true, default: "" },
+    allJointsSealedAgainstWaterIngress: { type: String, trim: true, default: "" },
+    foreignMaterialCleared: { type: String, trim: true, default: "" },
+
+    temperature: { type: Stage6Form2TempSubSchema, default: () => ({}) },
+    remarksChargingAsOn: { type: String, trim: true, default: "" },
+    remarksText: { type: String, trim: true, default: "" },
+
+    checkedBy: { type: Stage6Form2SignatureSubSchema, default: () => ({}) },
+    witnessedBy: { type: Stage6Form2SignatureSubSchema, default: () => ({}) },
+    reviewedBy: { type: Stage6Form2SignatureSubSchema, default: () => ({}) },
+    witnessedBy2: { type: Stage6Form2SignatureSubSchema, default: () => ({}) },
+
+    photos: { type: Map, of: String, default: {} },
+  },
+  { _id: false }
+);
+
 // ============================================================
 // Main schema
 // ============================================================
@@ -1139,6 +1190,7 @@ const TractionSchema = new mongoose.Schema(
       },
       stage6: {
         form1: { type: Stage6Form1SubSchema, default: () => ({}) },
+        form2: { type: Stage6Form2SubSchema, default: () => ({}) },
       },
     },
   },

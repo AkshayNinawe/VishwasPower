@@ -6759,8 +6759,7 @@ export function Stage4Form4({
   )
 }
 
-// Form 7: Magnetizing Current Test (V Connected 63 MVA)
-function Stage5Form1({
+export function Stage5Form1({
   onSubmit,
   onPrevious,
   initialData,
@@ -7232,8 +7231,7 @@ function Stage5Form1({
   )
 }
 
-// Form 8: Ratio Test (V Connected 63 MVA)
-function Stage5Form2({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
+export function Stage5Form2({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
   const [formData, setFormData] = useState({
     // Meter Sr. NO. and TIME
     meterSrNo: "",
@@ -7402,7 +7400,7 @@ function Stage5Form2({ onSubmit, onPrevious, initialData, isLastFormOfStage, com
   )
 }
 
-function Stage5Form3({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
+export function Stage5Form3({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
   const [formData, setFormData] = useState({
     // HV side table
     hvTap1_voltageApplied: "",
@@ -7688,16 +7686,7 @@ function Stage5Form3({ onSubmit, onPrevious, initialData, isLastFormOfStage, com
   )
 }
 
-/**
- * Stage 5 Form 4
- * TYPE OF TEST – POLARITY TEST
- *
- * Updated per provided reference image:
- * - Two sections: CONDITION 1 and CONDITION 2
- * - Uses same "form-table" UI as other forms (like Stage4Form3)
- * - Diagram uses existing image asset (no inline SVG)
- */
-function Stage5Form4({ onSubmit, onPrevious, initialData, companyName, projectName }) {
+export function Stage5Form4({ onSubmit, onPrevious, initialData, companyName, projectName }) {
   const [formData, setFormData] = useState({
     // Condition 1 readings
     cond1_11_12: "",
@@ -8778,7 +8767,6 @@ export function Stage5Form7({
   )
 }
 
-
 export function Stage5Form8({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
   const [formData, setFormData] = useState({
     // Header section
@@ -9327,11 +9315,6 @@ export function Stage5Form8({ onSubmit, onPrevious, initialData, isLastFormOfSta
   )
 }
 
-
-
-
-// Stage 6 Form Components - Based on provided images
-// Stage 6 Form 1: Pre-Commissioning Checklist (UI updated to match reference image)
 export function Stage6Form1({
   onSubmit,
   onPrevious,
@@ -9698,7 +9681,6 @@ export function Stage6Form1({
           </tr>
         </tbody>
       </table>
-
       <PhotoUploadSection
         title="Pre-Commissioning Checklist"
         photos={photoRequirements}
@@ -9713,6 +9695,566 @@ export function Stage6Form1({
         )}
         <button type="submit" className="submit-btn">
           Next Form
+        </button>
+      </div>
+    </form>
+  )
+}
+
+function Stage6Form2({
+  onSubmit,
+  onPrevious,
+  initialData,
+  isLastFormOfStage,
+  companyName,
+  projectName,
+}) {
+  const [formData, setFormData] = useState({
+    protectionRelay: {},
+    accessoriesChecking: {},
+    octcTapPosition: {},
+    bushingTestTapEarthed: {},
+    oilValues: {},
+    finalIR: {},
+    oilLevelInConservator: "",
+    connectors: {},
+
+    // Additional tables (as per reference image)
+    connectorsLvJumpers: { "2.1": "", "2.2": "" }, // XI - LV Jumpers
+    ctCableAndGlandsSealed: "", // XII
+    anabondAppliedHvBushings: "", // 1
+    allJointsSealedAgainstWaterIngress: "", // 2
+    foreignMaterialCleared: "", // 3
+    temperature: { wti: "", oti: "" },
+    remarksChargingAsOn: "",
+    remarksText:
+      "All the necessary pre-commissioning checks and protection trials have been found satisfactory. Transformer has been cleared from all foreign material and is ready for charging.",
+    checkedBy: { name: "", signature: "", date: "" },
+    witnessedBy: { name: "", signature: "", date: "" },
+    reviewedBy: { name: "", signature: "", date: "" },
+    witnessedBy2: { name: "", signature: "", date: "" },
+
+    photos: {},
+    ...initialData,
+  })
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage6Form2`, {
+          params: { companyName, projectName },
+        })
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for Stage6Form2")
+          setFormData((prev) => ({ ...prev, ...response.data.data }))
+        } else {
+          console.log("There is no data in DB.")
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error)
+      }
+    }
+    fetchFormData()
+  }, [projectName, companyName])
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    onSubmit(formData)
+  }
+
+  const handlePhotoChange = (key, file) => {
+    setFormData((prev) => ({
+      ...prev,
+      photos: { ...prev.photos, [key]: file },
+    }))
+  }
+
+  // generic nested setter (path array)
+  const setByPath = (path, value) => {
+    setFormData((prev) => {
+      const next = { ...prev }
+      let cur = next
+      for (let i = 0; i < path.length - 1; i++) {
+        const k = path[i]
+        cur[k] = typeof cur[k] === "object" && cur[k] !== null ? { ...cur[k] } : {}
+        cur = cur[k]
+      }
+      cur[path[path.length - 1]] = value
+      return next
+    })
+  }
+
+  const stage6Form2Input = (path, style = {}) => (
+    <input
+      type="text"
+      value={path.reduce((acc, k) => (acc && acc[k] !== undefined ? acc[k] : ""), formData) || ""}
+      onChange={(e) => setByPath(path, e.target.value)}
+      style={{ width: "100%", minWidth: 70, ...style }}
+    />
+  )
+
+  const photoRequirements = [{ key: "stage6Form2", label: "Stage 6 Form 2 photo" }]
+
+  return (
+    <form onSubmit={handleSubmit} className="form-container">
+      <div className="company-header" style={{ marginBottom: 10 }}>
+        <h2 style={{ textAlign: "left", textDecoration: "underline", textUnderlineOffset: 6 }}>
+          PRE-COMMISSIONING CHECKLIST (CONT.)
+        </h2>
+      </div>
+
+      <table className="form-table" style={{ marginTop: 22 }}>
+        <tbody>
+          {/* IV Transformer Protection relay */}
+          <tr>
+            <td style={{ width: "6%", textAlign: "center", fontWeight: 700 }}>IV</td>
+            <td style={{ width: "38%", fontWeight: 700 }}>Transformer Protection relay</td>
+            <td style={{ width: "14%", textAlign: "center", fontWeight: 700 }}>Make</td>
+            <td style={{ width: "14%", textAlign: "center", fontWeight: 700 }}>sr.no.</td>
+            <td style={{ width: "14%", textAlign: "center", fontWeight: 700 }}>last tested date.</td>
+            <td style={{ width: "14%", textAlign: "center", fontWeight: 700 }}>Remark</td>
+          </tr>
+
+          {[
+            { code: "A", label: "Over-current relay" },
+            { code: "B", label: "Restricted Earth fault Relay" },
+            { code: "C", label: "Differential  Relay" },
+            { code: "D", label: "Master Trip Relay" },
+          ].map((r) => (
+            <tr key={`pr-${r.code}`}>
+              <td style={{ textAlign: "center", fontWeight: 700 }}>{r.code}</td>
+              <td style={{ fontWeight: 700 }}>{r.label}</td>
+              <td>{stage6Form2Input(["protectionRelay", r.code, "make"])}</td>
+              <td>{stage6Form2Input(["protectionRelay", r.code, "srNo"])}</td>
+              <td>{stage6Form2Input(["protectionRelay", r.code, "lastTested"])}</td>
+              <td>{stage6Form2Input(["protectionRelay", r.code, "remark"])}</td>
+            </tr>
+          ))}
+
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>E</td>
+            <td style={{ fontWeight: 700 }}>Separate earth pit for neutral earthling</td>
+            <td></td>
+            <td>{stage6Form2Input(["protectionRelay", "E", "yesNo"], { minWidth: 90 })}</td>
+            <td>{stage6Form2Input(["protectionRelay", "E", "lastTested"])}</td>
+            <td>{stage6Form2Input(["protectionRelay", "E", "remark"])}</td>
+          </tr>
+
+          {[
+            { code: "F", label: "Neutral earth pit resistance values" },
+            { code: "G", label: "Grid earth resistance values" },
+            { code: "H", label: "Cleaning & Checking for the main tank Earthing" },
+          ].map((r) => (
+            <tr key={`pr-${r.code}`}>
+              <td style={{ textAlign: "center", fontWeight: 700 }}>{r.code}</td>
+              <td style={{ fontWeight: 700 }}>{r.label}</td>
+              <td>{stage6Form2Input(["protectionRelay", r.code, "make"])}</td>
+              <td>{stage6Form2Input(["protectionRelay", r.code, "srNo"])}</td>
+              <td>{stage6Form2Input(["protectionRelay", r.code, "lastTested"])}</td>
+              <td>{stage6Form2Input(["protectionRelay", r.code, "remark"])}</td>
+            </tr>
+          ))}
+
+          {/* LA Counter reading */}
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }} rowSpan={2}>
+              I
+            </td>
+            <td style={{ fontWeight: 700 }} rowSpan={2}>
+              LA Counter reading
+            </td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>1.1</td>
+            <td>{stage6Form2Input(["protectionRelay", "I", "srNo", "1.1"])}</td>
+            <td>{stage6Form2Input(["protectionRelay", "I", "lastTested", "1.1"])}</td>
+            <td rowSpan={2}>{stage6Form2Input(["protectionRelay", "I", "remark"])}</td>
+          </tr>
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>1.2</td>
+            <td>{stage6Form2Input(["protectionRelay", "I", "srNo", "1.2"])}</td>
+            <td>{stage6Form2Input(["protectionRelay", "I", "lastTested", "1.2"])}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>2.1</td>
+            <td>{stage6Form2Input(["protectionRelay", "I", "srNo", "2.1"])}</td>
+            <td>{stage6Form2Input(["protectionRelay", "I", "lastTested", "2.1"])}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>2.2</td>
+            <td>{stage6Form2Input(["protectionRelay", "I", "srNo", "2.2"])}</td>
+            <td>{stage6Form2Input(["protectionRelay", "I", "lastTested", "2.2"])}</td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>J</td>
+            <td style={{ fontWeight: 700 }}>Whether LA Earthing checked</td>
+            <td>{stage6Form2Input(["protectionRelay", "J", "make"])}</td>
+            <td>{stage6Form2Input(["protectionRelay", "J", "srNo"])}</td>
+            <td>{stage6Form2Input(["protectionRelay", "J", "lastTested"])}</td>
+            <td>{stage6Form2Input(["protectionRelay", "J", "remark"])}</td>
+          </tr>
+
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>K</td>
+            <td style={{ fontWeight: 700 }}>IR Value of LA</td>
+            <td>{stage6Form2Input(["protectionRelay", "K", "make"])}</td>
+            <td>{stage6Form2Input(["protectionRelay", "K", "srNo"])}</td>
+            <td>{stage6Form2Input(["protectionRelay", "K", "lastTested"])}</td>
+            <td>{stage6Form2Input(["protectionRelay", "K", "remark"])}</td>
+          </tr>
+
+          {[
+            { code: "L", label: "Phase 1.1" },
+            { code: "M", label: "Phase 1.2" },
+            { code: "N", label: "Phase 2.1" },
+            { code: "O", label: "Phase 2.2" },
+          ].map((r) => (
+            <tr key={`pr-${r.code}`}>
+              <td style={{ textAlign: "center", fontWeight: 700 }}>{r.code}</td>
+              <td style={{ fontWeight: 700 }}>{r.label}</td>
+              <td>{stage6Form2Input(["protectionRelay", r.code, "make"])}</td>
+              <td>{stage6Form2Input(["protectionRelay", r.code, "srNo"])}</td>
+              <td>{stage6Form2Input(["protectionRelay", r.code, "lastTested"])}</td>
+              <td>{stage6Form2Input(["protectionRelay", r.code, "remark"])}</td>
+            </tr>
+          ))}
+
+          {/* IV Accessories Checking */}
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>IV</td>
+            <td style={{ fontWeight: 700 }}>Accessories&nbsp;&nbsp;Checking</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>SET Temp.</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }} colSpan={2}>
+              Checked
+            </td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>No. of Hrs. RUN</td>
+          </tr>
+
+          {[
+            { code: "A", label: "FAN START" },
+            { code: "B", label: "FAN STOP" },
+            { code: "C", label: "PUMP START" },
+            { code: "D", label: "PUMP START" },
+          ].map((r) => (
+            <tr key={`ac-${r.code}`}>
+              <td style={{ textAlign: "center", fontWeight: 700 }}>{r.code}</td>
+              <td style={{ fontWeight: 700 }}>{r.label}</td>
+              <td>{stage6Form2Input(["accessoriesChecking", r.code, "setTemp"])}</td>
+              <td colSpan={2}>{stage6Form2Input(["accessoriesChecking", r.code, "checked"])}</td>
+              <td>{stage6Form2Input(["accessoriesChecking", r.code, "hrsRun"])}</td>
+            </tr>
+          ))}
+
+          {/* V OCTC TAP Position */}
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>V</td>
+            <td style={{ fontWeight: 700 }}>OCTC TAP Position</td>
+            <td colSpan={4}></td>
+          </tr>
+          {[
+            { code: "A", label: "DIVERTER SWITCH" },
+            { code: "B", label: "DRIVE MECHANISM" },
+            { code: "C", label: "TPI - (RTCC)" },
+          ].map((r) => (
+            <tr key={`octc-${r.code}`}>
+              <td style={{ textAlign: "center", fontWeight: 700 }}>{r.code}</td>
+              <td style={{ fontWeight: 700 }}>{r.label}</td>
+              <td colSpan={4}>{stage6Form2Input(["octcTapPosition", r.code])}</td>
+            </tr>
+          ))}
+
+          {/* VI Bushing Test Tap Earthed */}
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>VI</td>
+            <td style={{ fontWeight: 700 }}>Bushing Test Tap Earthed</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>HV Checked</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>1.1</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>1.2</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{stage6Form2Input(["bushingTestTapEarthed", "hvChecked", "1.1"])}</td>
+            <td>{stage6Form2Input(["bushingTestTapEarthed", "hvChecked", "1.2"])}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>LV Checked</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>2.1</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>2.2</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{stage6Form2Input(["bushingTestTapEarthed", "lvChecked", "2.1"])}</td>
+            <td>{stage6Form2Input(["bushingTestTapEarthed", "lvChecked", "2.2"])}</td>
+            <td></td>
+          </tr>
+
+          {/* VII Oil Values */}
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>VII</td>
+            <td style={{ fontWeight: 700 }}>Oil Values</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>BDV</td>
+            <td colSpan={2} style={{ textAlign: "center", fontWeight: 700 }}>
+              KV
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>A</td>
+            <td style={{ fontWeight: 700 }}>BDV</td>
+            <td colSpan={3}>{stage6Form2Input(["oilValues", "bdvKV"])}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>B</td>
+            <td style={{ fontWeight: 700 }}>Moisture Content</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>PPM</td>
+            <td colSpan={2}>{stage6Form2Input(["oilValues", "moisturePPM"])}</td>
+            <td></td>
+          </tr>
+
+          {/* VIII Final IR Values */}
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>VIII</td>
+            <td style={{ fontWeight: 700 }}>Final IR Values in MΩ</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>10</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>60</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>600</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>P.I</td>
+          </tr>
+
+          {[
+            { key: "hvEarth", label: "HV-Earth" },
+            { key: "lvEarth", label: "LV-Earth" },
+            { key: "hvLv", label: "HV-LV" },
+          ].map((r) => (
+            <tr key={`ir-${r.key}`}>
+              <td></td>
+              <td style={{ fontWeight: 700 }}>{r.label}</td>
+              <td>{stage6Form2Input(["finalIR", r.key, "10"])}</td>
+              <td>{stage6Form2Input(["finalIR", r.key, "60"])}</td>
+              <td>{stage6Form2Input(["finalIR", r.key, "600"])}</td>
+              <td>{stage6Form2Input(["finalIR", r.key, "pi"])}</td>
+            </tr>
+          ))}
+
+          <tr>
+            <td></td>
+            <td style={{ fontWeight: 700 }}>Core to frame</td>
+            <td colSpan={4}>{stage6Form2Input(["finalIR", "coreToFrame"])}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td style={{ fontWeight: 700 }}>Frame to Tank</td>
+            <td colSpan={4}>{stage6Form2Input(["finalIR", "frameToTank"])}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td style={{ fontWeight: 700 }}>Removal link again tightens and check zero megger</td>
+            <td colSpan={4}>{stage6Form2Input(["finalIR", "removalLinkTightensAndCheckZeroMegger"])}</td>
+          </tr>
+
+          {/* IX */}
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>IX</td>
+            <td style={{ fontWeight: 700 }}>Oil Level in Conservator</td>
+            <td colSpan={4}>{stage6Form2Input(["oilLevelInConservator"])}</td>
+          </tr>
+
+          {/* X */}
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>X</td>
+            <td style={{ fontWeight: 700 }}>Connectors</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }} colSpan={2}>
+              Conditions
+            </td>
+            <td colSpan={2} style={{ fontWeight: 700 }}>
+              HV Jumpers
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td colSpan={2}>{stage6Form2Input(["connectors", "conditions"])}</td>
+            <td colSpan={2}>{stage6Form2Input(["connectors", "hvJumpers", "1.1"])}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td colSpan={2}></td>
+            <td colSpan={2}>{stage6Form2Input(["connectors", "hvJumpers", "1.2"])}</td>
+          </tr>
+
+          {/* XI (as per reference image): Connectors + LV Jumpers 2.1/2.2 */}
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>XI</td>
+            <td style={{ fontWeight: 700 }}>Connectors</td>
+            <td colSpan={2} style={{ fontWeight: 700 }}>
+              LV Jumpers
+              <br />
+              2.1
+              <br />
+              2.2
+            </td>
+            <td colSpan={2}>
+              <div style={{ display: "grid", gap: 6 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "60px 1fr", gap: 8, alignItems: "center" }}>
+                  <strong>2.1</strong>
+                  {stage6Form2Input(["connectorsLvJumpers", "2.1"])}
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "60px 1fr", gap: 8, alignItems: "center" }}>
+                  <strong>2.2</strong>
+                  {stage6Form2Input(["connectorsLvJumpers", "2.2"])}
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          {/* XII + 1/2/3 rows */}
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>XII</td>
+            <td style={{ fontWeight: 700 }} colSpan={5}>
+              All CT Cable Terminated and Glands Sealed
+              {stage6Form2Input(["ctCableAndGlandsSealed"], { marginTop: 6 })}
+            </td>
+          </tr>
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>1</td>
+            <td style={{ fontWeight: 700 }} colSpan={5}>
+              Anabond applied to HV Bushings
+              {stage6Form2Input(["anabondAppliedHvBushings"], { marginTop: 6 })}
+            </td>
+          </tr>
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>2</td>
+            <td style={{ fontWeight: 700 }} colSpan={5}>
+              All joints properly sealed against Water Ingress
+              {stage6Form2Input(["allJointsSealedAgainstWaterIngress"], { marginTop: 6 })}
+            </td>
+          </tr>
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>3</td>
+            <td style={{ fontWeight: 700 }} colSpan={5}>
+              All Foreign material cleared from Transformer
+              {stage6Form2Input(["foreignMaterialCleared"], { marginTop: 6 })}
+            </td>
+          </tr>
+
+          {/* Temperature row */}
+          <tr>
+            <td style={{ fontWeight: 700 }} colSpan={2}>
+              Temperature of&nbsp;&nbsp;&nbsp;&nbsp;°C
+            </td>
+            <td style={{ fontWeight: 700, textAlign: "center" }}>WTI</td>
+            <td>{stage6Form2Input(["temperature", "wti"])}</td>
+            <td style={{ fontWeight: 700, textAlign: "center" }}>OTI</td>
+            <td>{stage6Form2Input(["temperature", "oti"])}</td>
+          </tr>
+
+          {/* Remarks box */}
+          <tr>
+            <td colSpan={6} style={{ padding: 14, lineHeight: 1.6 }}>
+              <strong>Remarks:</strong>{" "}
+              The Transformer as mentioned above has been jointly cleared for charging as on{" "}
+              {stage6Form2Input(["remarksChargingAsOn"], { minWidth: 140 })}
+              . {stage6Form2Input(["remarksText"])}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* Signature blocks */}
+      <div style={{ display: "flex", gap: 18, marginTop: 18, justifyContent: "space-between" }}>
+        <table className="form-table" style={{ width: "50%", margin: 0 }}>
+          <tbody>
+            <tr>
+              <td style={{ width: "45%", fontWeight: 700 }}>Checked By :</td>
+              <td>{stage6Form2Input(["checkedBy", "name"])}</td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 700 }}>Signature :</td>
+              <td>{stage6Form2Input(["checkedBy", "signature"])}</td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 700 }}>Date :</td>
+              <td>{stage6Form2Input(["checkedBy", "date"])}</td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 700 }}>Reviewed By :</td>
+              <td>{stage6Form2Input(["reviewedBy", "name"])}</td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 700 }}>Signature :</td>
+              <td>{stage6Form2Input(["reviewedBy", "signature"])}</td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 700 }}>Date :</td>
+              <td>{stage6Form2Input(["reviewedBy", "date"])}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table className="form-table" style={{ width: "50%", margin: 0 }}>
+          <tbody>
+            <tr>
+              <td style={{ width: "45%", fontWeight: 700 }}>Witnessed By :</td>
+              <td>{stage6Form2Input(["witnessedBy", "name"])}</td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 700 }}>Signature :</td>
+              <td>{stage6Form2Input(["witnessedBy", "signature"])}</td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 700 }}>Date :</td>
+              <td>{stage6Form2Input(["witnessedBy", "date"])}</td>
+            </tr>
+            <tr>
+              <td style={{ width: "45%", fontWeight: 700 }}>Witnessed By :</td>
+              <td>{stage6Form2Input(["witnessedBy2", "name"])}</td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 700 }}>Signature :</td>
+              <td>{stage6Form2Input(["witnessedBy2", "signature"])}</td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 700 }}>Date :</td>
+              <td>{stage6Form2Input(["witnessedBy2", "date"])}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style={{ marginTop: 18, fontWeight: 700 }}>
+        Note :- Photographs to be added:-
+        <div style={{ marginTop: 6, fontWeight: 600 }}>
+          Earthing’s of main tank & bushing, sealing of Cable gland, bushing test tap & thimble, Buchholz terminal
+          plate, etc....
+        </div>
+      </div>
+
+      <PhotoUploadSection title="Stage 6 Form 2" photos={photoRequirements} onPhotoChange={handlePhotoChange} />
+
+      <div className="form-actions">
+        {onPrevious && (
+          <button type="button" onClick={onPrevious} className="prev-btn">
+            Previous Form
+          </button>
+        )}
+        <button type="submit" className="submit-btn">
+          {isLastFormOfStage ? "Submit Stage 6" : "Next Form"}
         </button>
       </div>
     </form>
@@ -10295,7 +10837,8 @@ const TractionTransformerForms = ({
       { component: Stage5Form8, name: "IR Values of Transformer" },
     ],
     6: [
-      { component: Stage6Form1, name: "Pre-Commissioning Checklist" }
+      { component: Stage6Form1, name: "Pre-Commissioning Checklist" },
+      { component: Stage6Form2, name: "Pre-Commissioning Checklist" }
     ]
   }
 

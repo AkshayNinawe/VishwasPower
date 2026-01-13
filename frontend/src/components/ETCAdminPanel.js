@@ -2741,9 +2741,23 @@ const ETCAdminPanel = ({
       // Show loading UI
       setIsDownloading(true);
 
+      // If-else block for three departments (same pattern as handleCompanyDelete)
+      let apiEndpoint;
+
+      if (selectedDepartment.name === "Auto Transformer") {
+        apiEndpoint = "/api/autoData/download-all-forms";
+      } else if (selectedDepartment.name === "Traction Transformer") {
+        apiEndpoint = "/api/tractionData/download-all-forms";
+      } else if (selectedDepartment.name === "V Connected 63 MVA Transformer") {
+        apiEndpoint = "/api/vconnectData/download-all-forms";
+      } else {
+        // Fallback to auto transformer API
+        apiEndpoint = "/api/autoData/download-all-forms";
+      }
+
       // Send request to backend
       const response = await axios.post(
-        `${BACKEND_API_BASE_URL}/api/autoData/download-all-forms`,
+        `${BACKEND_API_BASE_URL}${apiEndpoint}`,
         {
           projectName: selectedProjectForReview?.name,
           companyName: selectedProjectForReview?.companyName,
