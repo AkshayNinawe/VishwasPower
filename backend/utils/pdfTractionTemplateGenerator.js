@@ -2278,7 +2278,7 @@ export function generateHTMLTemplate(data, projectName, companyName) {
     for (let i = 1; i <= 7; i++) {
       const stageKey = `stage${i}`;
       if (data.autoTransformerData[stageKey]) {
-        stagesContent += generateStageContent(data.autoTransformerData[stageKey], i, headerImage);
+        stagesContent += generateStageContent(data.TractionData[stageKey], i, headerImage);
       }
     }
   }
