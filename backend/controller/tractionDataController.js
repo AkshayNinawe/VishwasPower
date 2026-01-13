@@ -3,6 +3,8 @@ import multer from "multer"
 import path from "path"
 import fs from "fs"
 import PDFDocument from "pdfkit"
+import puppeteer from "puppeteer"
+import { generateHTMLTemplate } from "../utils/pdfTractionTemplateGenerator.js"
 
 // Setup multer storage
 const storage = multer.diskStorage({
@@ -231,477 +233,157 @@ export const setTableData = async (req, res) => {
 
 export const generatePDF = async (req, res) => {
   try {
-    const { projectName, formData } = req.body
+    console.log("=== PDF Generation Request received ===");
+    
+    // Try different possible field names
+    const projectName = req.body.projectName || req.body.ProjectName || req.body.project_name;
+    const companyName = req.body.companyName || req.body.CompanyName || req.body.company_name;
 
-    const doc = new PDFDocument({ margin: 50 })
-    const filename = `${projectName || "project"}_all_stages_${new Date().toISOString().split("T")[0]}.pdf`
+    console.log("Extracted values:");
+    console.log("  projectName:", projectName);
+    console.log("  companyName:", companyName);
 
-    // Response headers
-    res.setHeader("Content-disposition", `attachment; filename="${filename}"`)
-    res.setHeader("Content-type", "application/pdf")
-    doc.pipe(res)
-
-    // Constants
-    const pageHeight = doc.page.height
-    const pageWidth = doc.page.width
-    const margin = 50
-    const headerHeight = 60 // Space reserved for header image
-    const keyColumnWidth = 220
-    const valueColumnWidth = 320
-    const rowHeight = 30 // slightly taller for better readability
-    const leftX = margin
-    const tableWidth = keyColumnWidth + valueColumnWidth
-    const colors = {
-      headerBg: "#E9EEF5", // was #F0F3F6
-      subHeaderBg: "#F2F6FB", // was #F7F9FB
-      rowStripe: "#F7F9FC", // was #FAFAFA
-      border: "#3D3D3D", // was #444444
-      text: "#000000",
+    if (!projectName || !companyName) {
+      console.error("❌ Missing required fields!");
+      console.error("  projectName:", projectName);
+      console.error("  companyName:", companyName);
+      console.error("  Available keys in body:", Object.keys(req.body));
+      console.error("  Full body:", req.body);
+      return res.status(400).json({ 
+        message: "Project name and company name are required.",
+        received: { projectName, companyName },
+        availableKeys: Object.keys(req.body),
+        fullBody: req.body
+      });
     }
-    doc.lineWidth(1.2).strokeColor(colors.border).fillColor(colors.text)
 
-    // Form titles mapping
-    const formTitles = {
-      stage1: {
-        form1: "Name Plate Details Transformer",
-        form2: "Protocol for Accessories Checking",
-        form3: "Core Insulation Check",
-        form4: "Pre-Erection Tan Delta and Capacitance Test on Bushing",
-        form5: "Record of Measurement of IR Values"
+    console.log(`Generating PDF for project: ${projectName}, company: ${companyName}`);
+
+    // Fetch complete data from MongoDB
+    console.log("Fetching data from MongoDB...");
+    const completeData = await Traction.findOne({
+      projectName,
+      companyName,
+    }).lean();
+
+    if (!completeData) {
+      console.error("No data found in MongoDB for:", { projectName, companyName });
+      return res.status(404).json({
+        message: "Project data not found.",
+        searchedFor: { projectName, companyName }
+      });
+    }
+
+    console.log("Data fetched successfully from MongoDB");
+
+    // Generate HTML with exact UI styling
+    console.log("Generating HTML template...");
+    const html = generateHTMLTemplate(completeData, projectName, companyName);
+    console.log("HTML template generated successfully");
+
+    // Launch Puppeteer with configuration for Render.com
+    console.log("Launching Puppeteer browser...");
+    
+    let launchOptions = {
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--disable-extensions',
+        '--disable-web-security',
+        '--no-first-run',
+        '--disable-features=VizDisplayCompositor',
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-renderer-backgrounding',
+        '--disable-ipc-flooding-protection',
+        '--disable-background-networking',
+        '--disable-default-apps',
+        '--disable-sync',
+        '--disable-translate',
+        '--hide-scrollbars',
+        '--metrics-recording-only',
+        '--mute-audio',
+        '--no-default-browser-check',
+        '--no-pings',
+        '--password-store=basic',
+        '--use-mock-keychain',
+        '--disable-blink-features=AutomationControlled',
+        // Memory optimization flags for Render's 512MB limit
+        '--memory-pressure-off',
+        '--max_old_space_size=256',
+        '--disable-background-mode',
+        '--disable-plugins',
+        '--disable-plugins-discovery',
+        '--disable-preconnect',
+        '--disable-prefetch',
+        '--no-zygote',
+        '--single-process'
+      ],
+      timeout: 30000,
+      ignoreDefaultArgs: ['--disable-extensions'],
+      handleSIGINT: false,
+      handleSIGTERM: false,
+      handleSIGHUP: false
+    };
+
+    // Let Puppeteer handle Chrome detection automatically
+    console.log("✅ Using Puppeteer's automatic Chrome detection");
+    // Don't set executablePath - let Puppeteer find its downloaded Chrome
+    
+    console.log("Launching browser with options:", { 
+      executablePath: 'default (Puppeteer auto-detect)',
+      headless: launchOptions.headless 
+    });
+    
+    const browser = await puppeteer.launch(launchOptions);
+
+    const page = await browser.newPage();
+    console.log("Browser page created");
+    
+    // Set content and wait for resources to load
+    console.log("Setting HTML content...");
+    await page.setContent(html, { 
+      waitUntil: 'networkidle0',
+      timeout: 30000 
+    });
+    console.log("HTML content loaded");
+
+    // Generate PDF with styling preserved
+    console.log("Generating PDF...");
+    const pdfBuffer = await page.pdf({
+      format: 'A4',
+      printBackground: true,
+      margin: {
+        top: '20px',
+        right: '20px',
+        bottom: '20px',
+        left: '20px'
       },
-      stage2: {
-        form1: "Record of Oil Handling",
-        form2: "IR After Erection"
-      },
-      stage3: {
-        form1: "Before Oil Filling and Pressure Test Report",
-        form2: "Record for Oil Filtration - Main Tank",
-        form3: "Oil Filtration of Radiator and Combine"
-      },
-      stage4: {
-        form1: "SFRA Test Record",
-        form2: "Record of Measurement of IR Values & Voltage Ratio Test",
-        form3: "Short Circuit Test",
-        form4: "Winding Resistance Test and Record of Measurement of IR & PI Values"
-      },
-      stage5: {
-        form1: "Pre-Charging Check List",
-        form2: "Pre-Charging Check List - Part 2"
-      },
-      stage6: {
-        form1: "Work Completion Report"
-      }
-    }
+      preferCSSPageSize: false
+    });
 
-    // Add cover page using the FirstPage.jpg image
-    const addCoverPage = () => {
-      try {
-        const coverImagePath = path.join(process.cwd(), 'src/FirstPage.jpg')
-        if (fs.existsSync(coverImagePath)) {
-          // Add the cover page image - fit it to the page
-          doc.image(coverImagePath, 0, 0, {
-            fit: [pageWidth, pageHeight],
-            align: 'center',
-            valign: 'center'
-          })
-          // Add a new page for the content
-          doc.addPage()
-        }
-      } catch (error) {
-        console.error('Error adding cover page:', error)
-        // Continue without cover page if there's an error
-      }
-    }
+    console.log("PDF generated successfully");
+    await browser.close();
+    console.log("Browser closed");
 
-    // Add last page using the LastPage.jpg image with stage6 data overlay
-    const addLastPage = () => {
-      try {
-        const lastPageImagePath = path.join(process.cwd(), 'src/LastPage.jpg')
-        if (fs.existsSync(lastPageImagePath)) {
-          // Add a new page for the last page
-          doc.addPage()
-          // Add the last page image - fit it to the page
-          doc.image(lastPageImagePath, 0, 0, {
-            fit: [pageWidth, pageHeight],
-            align: 'center',
-            valign: 'center'
-          })
+    // Send PDF to client
+    const filename = `${projectName}_complete_report_${new Date().toISOString().split("T")[0]}.pdf`;
+    res.setHeader("Content-disposition", `attachment; filename="${filename}"`);
+    res.setHeader("Content-type", "application/pdf");
+    console.log("Sending PDF to client...");
+    res.send(pdfBuffer);
+    console.log("PDF sent successfully");
 
-          // Overlay stage6 data if it exists
-          if (formData.stage6 && formData.stage6.form1) {
-            const stage6Data = formData.stage6.form1
-            
-            // Set font and color for overlay text
-            doc.fillColor('#000000')
-            doc.fontSize(10)
-            doc.font('Helvetica')
-
-            // Customer Information (adjust coordinates based on your LastPage.jpg layout)
-            if (stage6Data.customerName) {
-              doc.text(stage6Data.customerName, 128, 232, { width: 200 })
-            }
-            if (stage6Data.orderNumber) {
-              doc.text(stage6Data.orderNumber, 122, 245, { width: 150 })
-            }
-            if (stage6Data.location) {
-              doc.text(stage6Data.location, 90, 258, { width: 200 })
-            }
-
-            // Transformer Details
-            if (stage6Data.type) {
-              doc.text(stage6Data.type, 78, 313, { width: 150 })
-            }
-            if (stage6Data.capacity) {
-              doc.text(stage6Data.capacity, 90, 325, { width: 100 })
-            }
-            if (stage6Data.voltageRating) {
-              doc.text(stage6Data.voltageRating, 122, 338, { width: 100 })
-            }
-            if (stage6Data.make) {
-              doc.text(stage6Data.make, 76, 351, { width: 150 })
-            }
-            if (stage6Data.serialNumber) {
-              doc.text(stage6Data.serialNumber, 120, 364, { width: 200 })
-            }
-
-            // Dates
-            if (stage6Data.completionDate) {
-              doc.text(stage6Data.completionDate, 350, 440, { width: 150 })
-            }
-            if (stage6Data.chargingDate) {
-              doc.text(stage6Data.chargingDate, 350, 456, { width: 150 })
-            }
-            if (stage6Data.commissioningDate) {
-              doc.text(stage6Data.commissioningDate, 420, 455, { width: 150 })
-            }
-
-            // Signatures section
-            if (stage6Data.signatures) {
-              const signatures = stage6Data.signatures
-              
-              // VPES section (left side)
-              if (signatures.vpesName) {
-                doc.text(signatures.vpesName, 78, 537, { width: 150 })
-              }
-              if (signatures.vpesDesignation) {
-                doc.text(signatures.vpesDesignation, 103, 550, { width: 150 })
-              }
-              // Add signature images if they exist (base64 format)
-              if (signatures.vpesSignature && signatures.vpesSignature.startsWith('data:image/')) {
-                try {
-                  // Convert base64 to buffer and add to PDF
-                  const base64Data = signatures.vpesSignature.replace(/^data:image\/[a-z]+;base64,/, '')
-                  const signatureBuffer = Buffer.from(base64Data, 'base64')
-                  doc.image(signatureBuffer, 55, 553, { width: 120, height: 30 })
-                } catch (error) {
-                  console.error('Error adding VPES signature:', error)
-                }
-              }
-              if (signatures.vpesDate) {
-                doc.text(signatures.vpesDate, 73, 576, { width: 150 })
-              }
-
-              // Customer section (right side)
-              if (signatures.customerName) {
-                doc.text(signatures.customerName, 369, 537, { width: 150 })
-              }
-              if (signatures.customerDesignation) {
-                doc.text(signatures.customerDesignation, 398, 550, { width: 150 })
-              }
-              if (signatures.customerDate) {
-                doc.text(signatures.customerDate, 365, 576, { width: 150 })
-              }
-              if (signatures.customerSignature && signatures.customerSignature.startsWith('data:image/')) {
-                try {
-                  // Convert base64 to buffer and add to PDF
-                  const base64Data = signatures.customerSignature.replace(/^data:image\/[a-z]+;base64,/, '')
-                  const signatureBuffer = Buffer.from(base64Data, 'base64')
-                  doc.image(signatureBuffer, 355, 547, { width: 120, height: 30 })
-                } catch (error) {
-                  console.error('Error adding customer signature:', error)
-                }
-              }
-            }
-          }
-        }
-      } catch (error) {
-        console.error('Error adding last page:', error)
-        // Continue without last page if there's an error
-      }
-    }
-
-    // Add the cover page first
-    addCoverPage()
-
-    // Track if we're on the first page (cover page)
-    let isFirstPage = true
-
-    // Function to add header image to pages (except first page)
-    const addHeaderImage = () => {
-      if (isFirstPage) {
-        isFirstPage = false
-        return margin // Return normal margin for first content page
-      }
-      
-      try {
-        const headerImagePath = path.join(process.cwd(), 'src/Header.jpg')
-        if (fs.existsSync(headerImagePath)) {
-          // Add header image at the top of the page with small height
-          doc.image(headerImagePath, margin, 10, {
-            width: pageWidth - (margin * 2),
-            height: headerHeight - 20 // Keep it compact
-          })
-          return margin + headerHeight // Return adjusted margin to account for header
-        }
-      } catch (error) {
-        console.error('Error adding header image:', error)
-      }
-      return margin // Return normal margin if header fails
-    }
-
-    let stripe = false
-
-    const drawHeaderBand = (title, y) => {
-      const bandHeight = 28
-      // Page break check
-      if (y + bandHeight > pageHeight - margin) {
-        doc.addPage()
-        y = addHeaderImage() // Add header and get adjusted margin
-      }
-      doc.save().rect(leftX, y, tableWidth, bandHeight).fill(colors.headerBg).restore()
-      doc.rect(leftX, y, tableWidth, bandHeight).stroke()
-      doc
-        .font("Helvetica-Bold")
-        .fontSize(13)
-        .fillColor(colors.text)
-        .text(title, leftX + 5, y + 7)
-      return y + bandHeight + 8 // small gap after header
-    }
-
-    const drawSubHeader = (title, y) => {
-      const bandHeight = 22
-      if (y + bandHeight > pageHeight - margin) {
-        doc.addPage()
-        y = addHeaderImage() // Add header and get adjusted margin
-      }
-      doc.save().rect(leftX, y, tableWidth, bandHeight).fill(colors.subHeaderBg).restore()
-      doc.rect(leftX, y, tableWidth, bandHeight).stroke()
-      doc
-        .font("Helvetica-Bold")
-        .fontSize(11)
-        .fillColor(colors.text)
-        .text(title, leftX + 5, y + 5)
-      return y + bandHeight + 6
-    }
-
-    const drawColumnHeader = (y) => {
-      const bandHeight = 26
-      if (y + bandHeight > pageHeight - margin) {
-        doc.addPage()
-        y = addHeaderImage() // Add header and get adjusted margin
-      }
-      // background band across both columns
-      doc.save().rect(leftX, y, tableWidth, bandHeight).fill(colors.headerBg).restore()
-      // borders around each column
-      doc.rect(leftX, y, keyColumnWidth, bandHeight).stroke()
-      doc.rect(leftX + keyColumnWidth, y, valueColumnWidth, bandHeight).stroke()
-
-      doc.font("Helvetica-Bold").fontSize(11).fillColor(colors.text)
-      doc.text("Field", leftX + 6, y + 6, { width: keyColumnWidth - 12 })
-      doc.text("Value", leftX + keyColumnWidth + 6, y + 6, { width: valueColumnWidth - 12 })
-      return y + bandHeight
-    }
-
-    const drawRow = (key, value, y) => {
-      if (y + rowHeight > pageHeight - margin) {
-        doc.addPage()
-        y = addHeaderImage() // Add header and get adjusted margin
-      }
-
-      // Stripe background across the full width of both columns
-      if (stripe) {
-        doc.save().rect(leftX, y, tableWidth, rowHeight).fill(colors.rowStripe).restore()
-      }
-
-      // Cell borders
-      doc.rect(leftX, y, keyColumnWidth, rowHeight).stroke()
-      doc.rect(leftX + keyColumnWidth, y, valueColumnWidth, rowHeight).stroke()
-
-      // Key and value
-      doc
-        .font("Helvetica-Bold")
-        .fontSize(10)
-        .fillColor(colors.text)
-        .text(`${formatLabel(key)}:`, leftX + 5, y + 7, {
-          width: keyColumnWidth - 10,
-        })
-
-      doc
-        .font("Helvetica")
-        .fontSize(10)
-        .fillColor(colors.text)
-        .text(value !== undefined && value !== null ? String(value) : "", leftX + keyColumnWidth + 5, y + 7, {
-          width: valueColumnWidth - 10,
-        })
-
-      // Flip stripe for next row
-      stripe = !stripe
-      return y + rowHeight
-    }
-
-    const drawImageRow = (key, photoPath, y) => {
-      const imgMaxHeight = 150
-      const imgMaxWidth = valueColumnWidth - 10
-      let rowHeightDynamic = imgMaxHeight + 30
-
-      if (y + rowHeightDynamic > pageHeight - margin) {
-        doc.addPage()
-        y = addHeaderImage() // Add header and get adjusted margin
-      }
-
-      try {
-        const fullPath = path.join(process.cwd(), photoPath)
-        if (fs.existsSync(fullPath)) {
-          if (stripe) {
-            doc.save().rect(leftX, y, tableWidth, rowHeightDynamic).fill(colors.rowStripe).restore()
-          }
-
-          doc.rect(leftX, y, keyColumnWidth, rowHeightDynamic).stroke()
-          doc.rect(leftX + keyColumnWidth, y, valueColumnWidth, rowHeightDynamic).stroke()
-
-          doc
-            .font("Helvetica-Bold")
-            .fontSize(10)
-            .fillColor(colors.text)
-            .text(`${formatLabel(key)}:`, leftX + 5, y + 8)
-          doc.image(fullPath, leftX + keyColumnWidth + 5, y + 6, {
-            fit: [imgMaxWidth, imgMaxHeight],
-            align: "center",
-            valign: "top",
-          })
-
-          // Flip stripe for next row
-          stripe = !stripe
-        } else {
-          rowHeightDynamic = rowHeight
-          return drawRow(key, photoPath, y)
-        }
-      } catch {
-        rowHeightDynamic = rowHeight
-        return drawRow(key, photoPath, y)
-      }
-
-      return y + rowHeightDynamic
-    }
-
-    const drawTable = (data, startY) => {
-      let y = startY
-
-      for (const [key, value] of Object.entries(data)) {
-        if (y + rowHeight > pageHeight - margin) {
-          doc.addPage()
-          y = addHeaderImage() // Add header and get adjusted margin
-        }
-
-        if (value && typeof value === "object" && !Array.isArray(value)) {
-          if (String(key).toLowerCase() === "photos") {
-            for (const [photoKey, photoPath] of Object.entries(value)) {
-              y = drawImageRow(photoKey, photoPath, y)
-            }
-          } else {
-            // Subsection header with band
-            y = drawSubHeader(`${formatLabel(key)}`, y)
-            // Reset stripe for each subsection for a clean start
-            stripe = false
-            y = drawTable(value, y)
-          }
-        } else if (Array.isArray(value)) {
-          y = drawSubHeader(`${formatLabel(key)}`, y)
-          stripe = false
-          value.forEach((item, i) => {
-            if (typeof item === "object") {
-              const serialNumber = i + 1
-              
-              // Add space before each numbered section (except the first one)
-              if (i > 0) {
-                y += 20 // Add space between complete numbered sections
-              }
-              
-              // Check if we need a new page
-              if (y + rowHeight > pageHeight - margin) {
-                doc.addPage()
-                y = addHeaderImage()
-              }
-
-              // Draw the serial number as a regular row (no separate table)
-              const serialRowHeight = 30
-              doc.save().rect(leftX, y, tableWidth, serialRowHeight).fill("#E8F4FD").restore()
-              doc.rect(leftX, y, tableWidth, serialRowHeight).stroke()
-              
-              doc
-                .font("Helvetica-Bold")
-                .fontSize(12)
-                .fillColor(colors.text)
-                .text(`${serialNumber}`, leftX + 15, y + 8)
-              
-              y += serialRowHeight
-
-              // Reset stripe for the item data (no column headers, continuous table)
-              stripe = false
-              
-              // Draw the item data directly after serial number (continuous table)
-              y = drawTable(item, y)
-            } else {
-              y = drawRow(`Item ${i + 1}`, item, y)
-            }
-          })
-        } else {
-          y = drawRow(key, value, y)
-        }
-      }
-
-      return y
-    }
-
-    // Render content with proper form titles
-    doc.fontSize(20).font("Helvetica-Bold").text(`Project: ${projectName}`, { align: "center" })
-    doc.moveDown(0.5)
-
-    let isFirstForm = true
-    Object.keys(formData).forEach((stageKey, stageIndex) => {
-      const forms = formData[stageKey]
-      Object.entries(forms).forEach(([formKey, formValue], formIndex) => {
-        if (!isFirstForm) {
-          doc.addPage()
-          addHeaderImage() // Add header to new page
-        }
-        isFirstForm = false
-
-        let y = doc.y
-        
-        // Get the proper form title from the mapping
-        const stageNumber = stageKey.toLowerCase()
-        const formNumber = formKey.toLowerCase()
-        const formTitle = formTitles[stageNumber] && formTitles[stageNumber][formNumber] 
-          ? formTitles[stageNumber][formNumber] 
-          : `${formatLabel(formKey)}`
-
-        // Create the header with just the form title
-        y = drawHeaderBand(formTitle, y)
-        y = drawColumnHeader(y)
-        stripe = false
-
-        const endY = drawTable(formValue, y)
-        doc.y = endY + 6 // small gap after a form block
-      })
-    })
-
-    // Add the last page before ending the document
-    addLastPage()
-
-    doc.end()
   } catch (err) {
-    console.error("Error generating PDF:", err)
-    res.status(500).json({ error: "Failed to generate PDF" })
+    console.error("Error generating PDF:", err);
+    console.error("Error stack:", err.stack);
+    res.status(500).json({ 
+      error: "Failed to generate PDF",
+      details: err.message,
+      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    });
   }
-}
+};
