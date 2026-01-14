@@ -372,105 +372,110 @@ function generateStage1Form3(formData) {
   return `
     <div class="form-container">
       <div class="company-header">
-        <h2>CORE INSULATION CHECK: At 1 KV > 500 MΩ</h2>
+        <h2>CORE INSULATION CHECK: At 1KV &gt; 500 MΩ</h2>
       </div>
 
       <table class="form-table">
         <thead>
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
             <th></th>
-            <th>Obtained Value MΩ</th>
+            <th>Obtained Value</th>
             <th>Remarks</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Between Core – frame</strong></td>
-            <td>${formData.betweenCoreFrame || ""}</td>
-            <td>${formData.betweenCoreFrameRemarks || ""}</td>
+            <td><strong>Between Core - Frame</strong></td>
+            <td>${formData.coreFrame_obtainedValue || ""}</td>
+            <td>${formData.coreFrame_remarks || ""}</td>
           </tr>
           <tr>
-            <td><strong>Between Frame – tank</strong></td>
-            <td>${formData.betweenFrameTank || ""}</td>
-            <td>${formData.betweenFrameTankRemarks || ""}</td>
+            <td><strong>Between Frame - Tank</strong></td>
+            <td>${formData.frameTank_obtainedValue || ""}</td>
+            <td>${formData.frameTank_remarks || ""}</td>
           </tr>
           <tr>
-            <td><strong>Between core – tank</strong></td>
-            <td>${formData.betweenCoreTank || ""}</td>
-            <td>${formData.betweenCoreTankRemarks || ""}</td>
+            <td><strong>Between Core - Tank</strong></td>
+            <td>${formData.coreTank_obtainedValue || ""}</td>
+            <td>${formData.coreTank_remarks || ""}</td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style="margin-top: 40px; text-align: center;">CHECKLIST FOR CONFORMING AVAILABILITY OF EQUIPMENT AT SITE</h4>
-
-      <table class="form-table">
+      <h4 style="margin-top: 30px;"><strong>CHECKLIST FOR CONFORMING AVAILABILITY OF EQUIPMENT AT SITE</strong></h4>
+      <table class="form-table" style="margin-top: 20px;">
         <thead>
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th></th>
-            <th>Description</th>
-            <th>Rating/capacity</th>
-            <th>Checked by</th>
+            <th style="width: 10%;"></th>
+            <th style="width: 60%;">Description</th>
+            <th style="width: 30%;">Rating/Capacity</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>2.</strong></td>
+            <td><strong>1</strong></td>
             <td><strong>Whether the Filter Machine is Available</strong></td>
             <td>${formData.filterMachine || ""}</td>
-            <td>${formData.filterMachineChecked || ""}</td>
           </tr>
           <tr>
-            <td><strong>3.</strong></td>
+            <td><strong>2</strong></td>
             <td><strong>Capacity of Filter Machine</strong></td>
-            <td>${formData.filterCapacity || ""}</td>
-            <td>${formData.filterCapacityChecked || ""}</td>
+            <td>${formData.filterMachineCapacity || ""}</td>
           </tr>
           <tr>
-            <td><strong>4.</strong></td>
+            <td><strong>3</strong></td>
             <td><strong>Capacity of the Vacuum Pump to be used.</strong></td>
             <td>${formData.vacuumPumpCapacity || ""}</td>
-            <td>${formData.vacuumPumpCapacityChecked || ""}</td>
           </tr>
           <tr>
-            <td><strong>5.</strong></td>
+            <td><strong>4</strong></td>
             <td><strong>Whether the Reservoir is Available with valves and a breather.</strong></td>
             <td>${formData.reservoirAvailable || ""}</td>
-            <td>${formData.reservoirAvailableChecked || ""}</td>
           </tr>
           <tr>
-            <td><strong>6.</strong></td>
-            <td><strong>Capacity of Reservoirs.</strong></td>
+            <td><strong>5</strong></td>
+            <td><strong>Capacity of Reservoirs</strong></td>
             <td>${formData.reservoirCapacity || ""}</td>
-            <td>${formData.reservoirCapacityChecked || ""}</td>
           </tr>
           <tr>
-            <td><strong>8.</strong></td>
+            <td><strong>6</strong></td>
             <td><strong>Hose Pipes for the Filtration Process.</strong></td>
             <td>${formData.hosePipes || ""}</td>
-            <td>${formData.hosePipesChecked || ""}</td>
           </tr>
           <tr>
-            <td><strong>9.</strong></td>
+            <td><strong>7</strong></td>
             <td><strong>Whether Crane is Available in good condition</strong></td>
             <td>${formData.craneAvailable || ""}</td>
-            <td>${formData.craneAvailableChecked || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>8</strong></td>
+            <td><strong>Dry air</strong></td>
+            <td>${formData.dryAir || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>9</strong></td>
+            <td><strong>Dew point meter</strong></td>
+            <td>${formData.dewPointMeter || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>10</strong></td>
+            <td><strong>Mec Leod gauge</strong></td>
+            <td>${formData.mecLeodGauge || ""}</td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style="margin-top: 30px; text-align: center;">SAFETY EQUIPMENT</h4>
-
-      <table class="form-table">
+      <h4 style="margin-top: 30px;"><strong>SAFETY EQUIPMENT</strong></h4>
+      <table class="form-table" style="margin-top: 20px;">
         <thead>
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Descriptions</th>
-            <th>Confirmation</th>
+            <th style="width: 70%;">Description</th>
+            <th style="width: 30%;">Confirmation</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Fire extinguisher/ Fire sand bucket</strong></td>
+            <td><strong>Fire extinguisher/Fire sand bucket</strong></td>
             <td>${formData.fireExtinguisher || ""}</td>
           </tr>
           <tr>
@@ -478,7 +483,7 @@ function generateStage1Form3(formData) {
             <td>${formData.firstAidKit || ""}</td>
           </tr>
           <tr>
-            <td><strong>PPE for the working team of ETC agency, like- Safety shoes, Helmet, etc...</strong></td>
+            <td><strong>PPE for the working team of ETC agency, like - Safety shoes, Helmet, etc</strong></td>
             <td>${formData.ppeEquipment || ""}</td>
           </tr>
         </tbody>
@@ -489,116 +494,230 @@ function generateStage1Form3(formData) {
   `;
 }
 
-// Generate Stage 1 Form 4 - Pre-Erection Tan Delta and Capacitance Test on Bushing
+// Generate Stage 1 Form 4 - Pre erection Ratio test of turret CTs
 function generateStage1Form4(formData) {
   if (!formData) return "";
 
   return `
     <div class="form-container">
       <div class="company-header">
-        <h2>Pre-Erection Tan delta and capacitance test on bushing</h2>
+        <h2>Pre erection Ratio test of turret CTs</h2>
       </div>
 
-      <table class="form-table">
-        <tbody>
-          <tr>
-            <td><strong>METER USED:</strong></td>
-            <td>${formData.meterUsed || ""}</td>
-            <td><strong>DATE:</strong></td>
-            <td>${formData.date || ""}</td>
-            <td><strong>TIME:</strong></td>
-            <td>${formData.time || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>MODEL & S. NO.</strong></td>
-            <td>${formData.modelSrNo || ""}</td>
-            <td><strong>WTI:</strong></td>
-            <td>${formData.wti || ""}</td>
-            <td><strong>OTI:</strong></td>
-            <td>${formData.oti || ""}</td>
-          </tr>
-        </tbody>
-      </table>
+      <h3 style="text-align: center; margin-top: 30px;">CT Ratio CORE - S1-S2,S1-S3 Phase 1.1</h3>
 
-      <table class="form-table" style="margin-top: 20px;">
+      <h4>CT Ratio Test</h4>
+      <table class="form-table">
         <thead>
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th rowspan="2">BUSHING SR.NO.</th>
-            <th>1.1</th>
-            <th>1.2</th>
+            <th>Current %</th>
+            <th>Applied primary Current (A) S1-S2</th>
+            <th>Applied primary Current (A) S1-S3</th>
+            <th>Measured secondary current (A) S1-S2</th>
+            <th>Measured secondary current (A) S1-S3</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td></td>
-            <td>${formData.bushing11 || ""}</td>
-            <td>${formData.bushing12 || ""}</td>
+            <td><strong>20%</strong></td>
+            <td>${formData.phase31_20percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_20percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.phase31_20percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_20percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>40%</strong></td>
+            <td>${formData.phase31_40percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_40percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.phase31_40percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_40percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>60%</strong></td>
+            <td>${formData.phase31_60percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_60percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.phase31_60percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_60percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>80%</strong></td>
+            <td>${formData.phase31_80percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_80percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.phase31_80percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_80percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>100%</strong></td>
+            <td>${formData.phase31_100percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_100percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.phase31_100percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_100percent_measuredCurrent_s1s3 || ""}</td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style="margin-top: 30px; text-align: center;">AT 05 KV PHASE</h4>
-
+      <h4>Knee point Voltage</h4>
       <table class="form-table">
         <thead>
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th></th>
-            <th>PHASE</th>
-            <th>TAN DELTA %</th>
-            <th>CAPACITANCE (pF)</th>
-            <th>EXCITATION CURRENT (mA)</th>
-            <th>DIELECTRIC LOSS</th>
+            <th>Voltage %</th>
+            <th>Applied voltage S1-S2</th>
+            <th>Applied voltage S1-S3</th>
+            <th>Measured current (A) S1-S2</th>
+            <th>Measured current (A) S1-S3</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>1.1</strong></td>
-            <td>${formData.bushing11_05kv_phase || ""}</td>
-            <td>${formData.bushing11_05kv_tanDelta || ""}</td>
-            <td>${formData.bushing11_05kv_capacitance || ""}</td>
-            <td>${formData.bushing11_05kv_excitationCurrent || ""}</td>
-            <td>${formData.bushing11_05kv_dielectricLoss || ""}</td>
+            <td><strong>20%</strong></td>
+            <td>${formData.phase31_knee_20percent_appliedVoltage_s1s2 || ""}</td>
+            <td>${formData.phase31_knee_20percent_appliedVoltage_s1s3 || ""}</td>
+            <td>${formData.phase31_knee_20percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_knee_20percent_measuredCurrent_s1s3 || ""}</td>
           </tr>
           <tr>
-            <td><strong>1.2</strong></td>
-            <td>${formData.bushing12_05kv_phase || ""}</td>
-            <td>${formData.bushing12_05kv_tanDelta || ""}</td>
-            <td>${formData.bushing12_05kv_capacitance || ""}</td>
-            <td>${formData.bushing12_05kv_excitationCurrent || ""}</td>
-            <td>${formData.bushing12_05kv_dielectricLoss || ""}</td>
+            <td><strong>40%</strong></td>
+            <td>${formData.phase31_knee_40percent_appliedVoltage_s1s2 || ""}</td>
+            <td>${formData.phase31_knee_40percent_appliedVoltage_s1s3 || ""}</td>
+            <td>${formData.phase31_knee_40percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_knee_40percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>60%</strong></td>
+            <td>${formData.phase31_knee_60percent_appliedVoltage_s1s2 || ""}</td>
+            <td>${formData.phase31_knee_60percent_appliedVoltage_s1s3 || ""}</td>
+            <td>${formData.phase31_knee_60percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_knee_60percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>80%</strong></td>
+            <td>${formData.phase31_knee_80percent_appliedVoltage_s1s2 || ""}</td>
+            <td>${formData.phase31_knee_80percent_appliedVoltage_s1s3 || ""}</td>
+            <td>${formData.phase31_knee_80percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_knee_80percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>100%</strong></td>
+            <td>${formData.phase31_knee_100percent_appliedVoltage_s1s2 || ""}</td>
+            <td>${formData.phase31_knee_100percent_appliedVoltage_s1s3 || ""}</td>
+            <td>${formData.phase31_knee_100percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_knee_100percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>110%</strong></td>
+            <td>${formData.phase31_knee_110percent_appliedVoltage_s1s2 || ""}</td>
+            <td>${formData.phase31_knee_110percent_appliedVoltage_s1s3 || ""}</td>
+            <td>${formData.phase31_knee_110percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_knee_110percent_measuredCurrent_s1s3 || ""}</td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style="margin-top: 30px; text-align: center;">AT 10 KV PHASE</h4>
+      <h3 style="text-align: center; margin-top: 40px;">Phase 1.2</h3>
 
+      <h4>CT Ratio CORE – S1-S2, S1-S3</h4>
       <table class="form-table">
         <thead>
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th></th>
-            <th>PHASE</th>
-            <th>TAN DELTA %</th>
-            <th>CAPACITANCE (pF)</th>
-            <th>EXCITATION CURRENT (mA)</th>
-            <th>DIELECTRIC LOSS</th>
+            <th>Current %</th>
+            <th>Applied primary Current (A) S1-S2</th>
+            <th>Applied primary Current (A) S1-S3</th>
+            <th>Measured secondary current (A) S1-S2</th>
+            <th>Measured secondary current (A) S1-S3</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>1.1</strong></td>
-            <td>${formData.bushing11_10kv_phase || ""}</td>
-            <td>${formData.bushing11_10kv_tanDelta || ""}</td>
-            <td>${formData.bushing11_10kv_capacitance || ""}</td>
-            <td>${formData.bushing11_10kv_excitationCurrent || ""}</td>
-            <td>${formData.bushing11_10kv_dielectricLoss || ""}</td>
+            <td><strong>20%</strong></td>
+            <td>${formData.phase32_20percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_20percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.phase32_20percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_20percent_measuredCurrent_s1s3 || ""}</td>
           </tr>
           <tr>
-            <td><strong>1.2</strong></td>
-            <td>${formData.bushing12_10kv_phase || ""}</td>
-            <td>${formData.bushing12_10kv_tanDelta || ""}</td>
-            <td>${formData.bushing12_10kv_capacitance || ""}</td>
-            <td>${formData.bushing12_10kv_excitationCurrent || ""}</td>
-            <td>${formData.bushing12_10kv_dielectricLoss || ""}</td>
+            <td><strong>40%</strong></td>
+            <td>${formData.phase32_40percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_40percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.phase32_40percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_40percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>60%</strong></td>
+            <td>${formData.phase32_60percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_60percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.phase32_60percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_60percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>80%</strong></td>
+            <td>${formData.phase32_80percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_80percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.phase32_80percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_80percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>100%</strong></td>
+            <td>${formData.phase32_100percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_100percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.phase32_100percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_100percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Knee point Voltage</h4>
+      <table class="form-table">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th>Voltage %</th>
+            <th>Applied voltage S1-S2</th>
+            <th>Applied voltage S1-S3</th>
+            <th>Measured current (A) S1-S2</th>
+            <th>Measured current (A) S1-S3</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>20%</strong></td>
+            <td>${formData.phase32_knee_20percent_appliedVoltage_s1s2 || ""}</td>
+            <td>${formData.phase32_knee_20percent_appliedVoltage_s1s3 || ""}</td>
+            <td>${formData.phase32_knee_20percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_knee_20percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>40%</strong></td>
+            <td>${formData.phase32_knee_40percent_appliedVoltage_s1s2 || ""}</td>
+            <td>${formData.phase32_knee_40percent_appliedVoltage_s1s3 || ""}</td>
+            <td>${formData.phase32_knee_40percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_knee_40percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>60%</strong></td>
+            <td>${formData.phase32_knee_60percent_appliedVoltage_s1s2 || ""}</td>
+            <td>${formData.phase32_knee_60percent_appliedVoltage_s1s3 || ""}</td>
+            <td>${formData.phase32_knee_60percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_knee_60percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>80%</strong></td>
+            <td>${formData.phase32_knee_80percent_appliedVoltage_s1s2 || ""}</td>
+            <td>${formData.phase32_knee_80percent_appliedVoltage_s1s3 || ""}</td>
+            <td>${formData.phase32_knee_80percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_knee_80percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>100%</strong></td>
+            <td>${formData.phase32_knee_100percent_appliedVoltage_s1s2 || ""}</td>
+            <td>${formData.phase32_knee_100percent_appliedVoltage_s1s3 || ""}</td>
+            <td>${formData.phase32_knee_100percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_knee_100percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>110%</strong></td>
+            <td>${formData.phase32_knee_110percent_appliedVoltage_s1s2 || ""}</td>
+            <td>${formData.phase32_knee_110percent_appliedVoltage_s1s3 || ""}</td>
+            <td>${formData.phase32_knee_110percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_knee_110percent_measuredCurrent_s1s3 || ""}</td>
           </tr>
         </tbody>
       </table>
@@ -608,71 +727,626 @@ function generateStage1Form4(formData) {
   `;
 }
 
-// Generate Stage 1 Form 5 - Record of Measurement of IR Values
+// Generate Stage 1 Form 5 - Pre erection Ratio test of turret CTs (Phase 2.1, 2.2, and WTI)
 function generateStage1Form5(formData) {
   if (!formData) return "";
 
   return `
     <div class="form-container">
       <div class="company-header">
-        <h2>RECORD OF MEASUREMENT OF IR VALUES</h2>
+        <h2>Pre erection Ratio test of turret CTs</h2>
+      </div>
+
+      {/* Phase 2.1 Section */}
+      <h3 style="text-align: center; margin-top: 30px;">Phase 2.1</h3>
+
+      <h4>CT Ratio CORE – S1-S2, S1-S3</h4>
+      <table class="form-table">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th>Current %</th>
+            <th>Applied primary Current (A) S1-S2</th>
+            <th>Applied primary Current (A) S1-S3</th>
+            <th>Measured secondary current (A) S1-S2</th>
+            <th>Measured secondary current (A) S1-S3</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>20%</strong></td>
+            <td>${formData.phase31_20percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_20percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.phase31_20percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_20percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>40%</strong></td>
+            <td>${formData.phase31_40percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_40percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.phase31_40percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_40percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>60%</strong></td>
+            <td>${formData.phase31_60percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_60percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.phase31_60percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_60percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>80%</strong></td>
+            <td>${formData.phase31_80percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_80percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.phase31_80percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_80percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>100%</strong></td>
+            <td>${formData.phase31_100percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_100percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.phase31_100percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_100percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Knee point Voltage</h4>
+      <table class="form-table">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th>Voltage %</th>
+            <th>Applied Voltage S1-S2</th>
+            <th>Applied Voltage S1-S3</th>
+            <th>Measured current (A) S1-S2</th>
+            <th>Measured current (A) S1-S3</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>20%</strong></td>
+            <td>${formData.phase31_knee_20percent_appliedVoltage_s1s2 || ""}</td>
+            <td>${formData.phase31_knee_20percent_appliedVoltage_s1s3 || ""}</td>
+            <td>${formData.phase31_knee_20percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_knee_20percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>40%</strong></td>
+            <td>${formData.phase31_knee_40percent_appliedVoltage_s1s2 || ""}</td>
+            <td>${formData.phase31_knee_40percent_appliedVoltage_s1s3 || ""}</td>
+            <td>${formData.phase31_knee_40percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_knee_40percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>60%</strong></td>
+            <td>${formData.phase31_knee_60percent_appliedVoltage_s1s2 || ""}</td>
+            <td>${formData.phase31_knee_60percent_appliedVoltage_s1s3 || ""}</td>
+            <td>${formData.phase31_knee_60percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_knee_60percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>80%</strong></td>
+            <td>${formData.phase31_knee_80percent_appliedVoltage_s1s2 || ""}</td>
+            <td>${formData.phase31_knee_80percent_appliedVoltage_s1s3 || ""}</td>
+            <td>${formData.phase31_knee_80percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_knee_80percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>100%</strong></td>
+            <td>${formData.phase31_knee_100percent_appliedVoltage_s1s2 || ""}</td>
+            <td>${formData.phase31_knee_100percent_appliedVoltage_s1s3 || ""}</td>
+            <td>${formData.phase31_knee_100percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_knee_100percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>110%</strong></td>
+            <td>${formData.phase31_knee_110percent_appliedVoltage_s1s2 || ""}</td>
+            <td>${formData.phase31_knee_110percent_appliedVoltage_s1s3 || ""}</td>
+            <td>${formData.phase31_knee_110percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase31_knee_110percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* Phase 2.2 Section */}
+      <h3 style="text-align: center; margin-top: 40px;">Phase 2.2</h3>
+
+      <h4>CT Ratio CORE – S1-S2, S1-S3</h4>
+      <table class="form-table">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th>Current %</th>
+            <th>Applied primary Current (A) S1-S2</th>
+            <th>Applied primary Current (A) S1-S3</th>
+            <th>Measured secondary current (A) S1-S2</th>
+            <th>Measured secondary current (A) S1-S3</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>20%</strong></td>
+            <td>${formData.phase32_20percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_20percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.phase32_20percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_20percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>40%</strong></td>
+            <td>${formData.phase32_40percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_40percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.phase32_40percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_40percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>60%</strong></td>
+            <td>${formData.phase32_60percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_60percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.phase32_60percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_60percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>80%</strong></td>
+            <td>${formData.phase32_80percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_80percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.phase32_80percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_80percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>100%</strong></td>
+            <td>${formData.phase32_100percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_100percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.phase32_100percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_100percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Knee point Voltage</h4>
+      <table class="form-table">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th>Voltage %</th>
+            <th>Applied voltage S1-S2</th>
+            <th>Applied voltage S1-S3</th>
+            <th>Measured current (A) S1-S2</th>
+            <th>Measured current (A) S1-S3</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>20%</strong></td>
+            <td>${formData.phase32_knee_20percent_appliedVoltage_s1s2 || ""}</td>
+            <td>${formData.phase32_knee_20percent_appliedVoltage_s1s3 || ""}</td>
+            <td>${formData.phase32_knee_20percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_knee_20percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>40%</strong></td>
+            <td>${formData.phase32_knee_40percent_appliedVoltage_s1s2 || ""}</td>
+            <td>${formData.phase32_knee_40percent_appliedVoltage_s1s3 || ""}</td>
+            <td>${formData.phase32_knee_40percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_knee_40percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>60%</strong></td>
+            <td>${formData.phase32_knee_60percent_appliedVoltage_s1s2 || ""}</td>
+            <td>${formData.phase32_knee_60percent_appliedVoltage_s1s3 || ""}</td>
+            <td>${formData.phase32_knee_60percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_knee_60percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>80%</strong></td>
+            <td>${formData.phase32_knee_80percent_appliedVoltage_s1s2 || ""}</td>
+            <td>${formData.phase32_knee_80percent_appliedVoltage_s1s3 || ""}</td>
+            <td>${formData.phase32_knee_80percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_knee_80percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>100%</strong></td>
+            <td>${formData.phase32_knee_100percent_appliedVoltage_s1s2 || ""}</td>
+            <td>${formData.phase32_knee_100percent_appliedVoltage_s1s3 || ""}</td>
+            <td>${formData.phase32_knee_100percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_knee_100percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>110%</strong></td>
+            <td>${formData.phase32_knee_110percent_appliedVoltage_s1s2 || ""}</td>
+            <td>${formData.phase32_knee_110percent_appliedVoltage_s1s3 || ""}</td>
+            <td>${formData.phase32_knee_110percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.phase32_knee_110percent_measuredCurrent_s1s3 || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* WTI Section */}
+      <h3 style="text-align: center; margin-top: 40px;">WTI</h3>
+
+      <h4>CT Ratio CORE - S1-S2, S1-S3, S1-S4, S1-S5, S1-S6, S1-S7</h4>
+      <table class="form-table">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th>Current %</th>
+            <th>Applied primary Current (A) S1-S2</th>
+            <th>Applied primary Current (A) S1-S3</th>
+            <th>Applied primary Current (A) S1-S4</th>
+            <th>Measured secondary current (A) S1-S2</th>
+            <th>Measured secondary current (A) S1-S3</th>
+            <th>Measured secondary current (A) S1-S4</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>20%</strong></td>
+            <td>${formData.wti_20percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.wti_20percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.wti_20percent_appliedCurrent_s1s4 || ""}</td>
+            <td>${formData.wti_20percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.wti_20percent_measuredCurrent_s1s3 || ""}</td>
+            <td>${formData.wti_20percent_measuredCurrent_s1s4 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>40%</strong></td>
+            <td>${formData.wti_40percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.wti_40percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.wti_40percent_appliedCurrent_s1s4 || ""}</td>
+            <td>${formData.wti_40percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.wti_40percent_measuredCurrent_s1s3 || ""}</td>
+            <td>${formData.wti_40percent_measuredCurrent_s1s4 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>60%</strong></td>
+            <td>${formData.wti_60percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.wti_60percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.wti_60percent_appliedCurrent_s1s4 || ""}</td>
+            <td>${formData.wti_60percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.wti_60percent_measuredCurrent_s1s3 || ""}</td>
+            <td>${formData.wti_60percent_measuredCurrent_s1s4 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>80%</strong></td>
+            <td>${formData.wti_80percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.wti_80percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.wti_80percent_appliedCurrent_s1s4 || ""}</td>
+            <td>${formData.wti_80percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.wti_80percent_measuredCurrent_s1s3 || ""}</td>
+            <td>${formData.wti_80percent_measuredCurrent_s1s4 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>100%</strong></td>
+            <td>${formData.wti_100percent_appliedCurrent_s1s2 || ""}</td>
+            <td>${formData.wti_100percent_appliedCurrent_s1s3 || ""}</td>
+            <td>${formData.wti_100percent_appliedCurrent_s1s4 || ""}</td>
+            <td>${formData.wti_100percent_measuredCurrent_s1s2 || ""}</td>
+            <td>${formData.wti_100percent_measuredCurrent_s1s3 || ""}</td>
+            <td>${formData.wti_100percent_measuredCurrent_s1s4 || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>CT Ratio CORE - S1-S2, S1-S3, S1-S4, S1-S5, S1-S6, S1-S7</h4>
+      <table class="form-table">
+        <thead>
+          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+            <th>Current %</th>
+            <th>Applied primary Current (A) S1-S5</th>
+            <th>Applied primary Current (A) S1-S6</th>
+            <th>Applied primary Current (A) S1-S7</th>
+            <th>Measured secondary current (A) S1-S5</th>
+            <th>Measured secondary current (A) S1-S6</th>
+            <th>Measured secondary current (A) S1-S7</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>20%</strong></td>
+            <td>${formData.wti_20percent_appliedCurrent_s1s5 || ""}</td>
+            <td>${formData.wti_20percent_appliedCurrent_s1s6 || ""}</td>
+            <td>${formData.wti_20percent_appliedCurrent_s1s7 || ""}</td>
+            <td>${formData.wti_20percent_measuredCurrent_s1s5 || ""}</td>
+            <td>${formData.wti_20percent_measuredCurrent_s1s6 || ""}</td>
+            <td>${formData.wti_20percent_measuredCurrent_s1s7 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>40%</strong></td>
+            <td>${formData.wti_40percent_appliedCurrent_s1s5 || ""}</td>
+            <td>${formData.wti_40percent_appliedCurrent_s1s6 || ""}</td>
+            <td>${formData.wti_40percent_appliedCurrent_s1s7 || ""}</td>
+            <td>${formData.wti_40percent_measuredCurrent_s1s5 || ""}</td>
+            <td>${formData.wti_40percent_measuredCurrent_s1s6 || ""}</td>
+            <td>${formData.wti_40percent_measuredCurrent_s1s7 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>60%</strong></td>
+            <td>${formData.wti_60percent_appliedCurrent_s1s5 || ""}</td>
+            <td>${formData.wti_60percent_appliedCurrent_s1s6 || ""}</td>
+            <td>${formData.wti_60percent_appliedCurrent_s1s7 || ""}</td>
+            <td>${formData.wti_60percent_measuredCurrent_s1s5 || ""}</td>
+            <td>${formData.wti_60percent_measuredCurrent_s1s6 || ""}</td>
+            <td>${formData.wti_60percent_measuredCurrent_s1s7 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>80%</strong></td>
+            <td>${formData.wti_80percent_appliedCurrent_s1s5 || ""}</td>
+            <td>${formData.wti_80percent_appliedCurrent_s1s6 || ""}</td>
+            <td>${formData.wti_80percent_appliedCurrent_s1s7 || ""}</td>
+            <td>${formData.wti_80percent_measuredCurrent_s1s5 || ""}</td>
+            <td>${formData.wti_80percent_measuredCurrent_s1s6 || ""}</td>
+            <td>${formData.wti_80percent_measuredCurrent_s1s7 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>100%</strong></td>
+            <td>${formData.wti_100percent_appliedCurrent_s1s5 || ""}</td>
+            <td>${formData.wti_100percent_appliedCurrent_s1s6 || ""}</td>
+            <td>${formData.wti_100percent_appliedCurrent_s1s7 || ""}</td>
+            <td>${formData.wti_100percent_measuredCurrent_s1s5 || ""}</td>
+            <td>${formData.wti_100percent_measuredCurrent_s1s6 || ""}</td>
+            <td>${formData.wti_100percent_measuredCurrent_s1s7 || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      ${generatePhotoThumbnails(formData.photos)}
+    </div>
+  `;
+}
+
+// Generate Stage 1 Form 6 - Tan Delta and Capacitance Test on Bushing
+function generateStage1Form6(formData) {
+  if (!formData) return "";
+
+  return `
+    <div class="form-container">
+      <div class="company-header">
+        <h2>TAN DELTA AND CAPACITANCE TEST ON BUSHING</h2>
       </div>
 
       <table class="form-table">
         <tbody>
           <tr>
-            <td><strong>Date :</strong></td>
+            <td><strong>METER USED</strong></td>
+            <td>${formData.meterUsed || ""}</td>
+            <td><strong>DATE</strong></td>
             <td>${formData.date || ""}</td>
-            <td><strong>Time:</strong></td>
+            <td><strong>TIME</strong></td>
             <td>${formData.time || ""}</td>
-            <td colspan="2"><strong>Details of Insulation tester</strong></td>
           </tr>
           <tr>
-            <td><strong>Amb. Temp :</strong></td>
+            <td><strong>MODEL & S. NO.</strong></td>
+            <td>${formData.modelSrNo || ""}</td>
+            <td><strong>WTI</strong></td>
+            <td>${formData.wti || ""}</td>
+            <td><strong>OTI</strong></td>
+            <td>${formData.oti || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="form-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>1.1</th>
+            <th>1.2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>BUSHING SR. NO.HV</strong></td>
+            <td>${formData.hvBushing11_srNo || ""}</td>
+            <td>${formData.hvBushing12_srNo || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Status</h4>
+      <table class="form-table">
+        <thead>
+          <tr>
+            <th>AT 05 KV PHASE</th>
+            <th>TAN DELTA in %</th>
+            <th>CAPACITANCE (pF)</th>
+            <th>EXCITATION CURRENT (mA)</th>
+            <th>DIELECTRIC LOSS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1.1</strong></td>
+            <td>${formData.hvBushing11_05kv_tanDelta || ""}</td>
+            <td>${formData.hvBushing11_05kv_capacitance || ""}</td>
+            <td>${formData.hvBushing11_05kv_excitationCurrent || ""}</td>
+            <td>${formData.hvBushing11_05kv_dielectricLoss || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>1.2</strong></td>
+            <td>${formData.hvBushing12_05kv_tanDelta || ""}</td>
+            <td>${formData.hvBushing12_05kv_capacitance || ""}</td>
+            <td>${formData.hvBushing12_05kv_excitationCurrent || ""}</td>
+            <td>${formData.hvBushing12_05kv_dielectricLoss || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="form-table">
+        <thead>
+          <tr>
+            <th>AT 10 KV PHASE</th>
+            <th>TAN DELTA in %</th>
+            <th>CAPACITANCE (pF)</th>
+            <th>EXCITATION CURRENT (mA)</th>
+            <th>DIELECTRIC LOSS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1.1</strong></td>
+            <td>${formData.hvBushing11_10kv_tanDelta || ""}</td>
+            <td>${formData.hvBushing11_10kv_capacitance || ""}</td>
+            <td>${formData.hvBushing11_10kv_excitationCurrent || ""}</td>
+            <td>${formData.hvBushing11_10kv_dielectricLoss || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>1.2</strong></td>
+            <td>${formData.hvBushing12_10kv_tanDelta || ""}</td>
+            <td>${formData.hvBushing12_10kv_capacitance || ""}</td>
+            <td>${formData.hvBushing12_10kv_excitationCurrent || ""}</td>
+            <td>${formData.hvBushing12_10kv_dielectricLoss || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="text-align: center; margin-top: 40px;">TYPE OF TEST – TAN DELTA AND CAPACITANCE TEST ON LV BUSHING</h3>
+      <table class="form-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>2.1</th>
+            <th>2.2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>BUSHING SR. NO.LV</strong></td>
+            <td>${formData.lvBushing21_srNo || ""}</td>
+            <td>${formData.lvBushing22_srNo || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Status</h4>
+      <table class="form-table">
+        <thead>
+          <tr>
+            <th>AT 05 KV PHASE</th>
+            <th>TAN DELTA in %</th>
+            <th>CAPACITANCE (pF)</th>
+            <th>EXCITATION CURRENT (mA)</th>
+            <th>DIELECTRIC LOSS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>2.1</strong></td>
+            <td>${formData.lvBushing21_05kv_tanDelta || ""}</td>
+            <td>${formData.lvBushing21_05kv_capacitance || ""}</td>
+            <td>${formData.lvBushing21_05kv_excitationCurrent || ""}</td>
+            <td>${formData.lvBushing21_05kv_dielectricLoss || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>2.2</strong></td>
+            <td>${formData.lvBushing22_05kv_tanDelta || ""}</td>
+            <td>${formData.lvBushing22_05kv_capacitance || ""}</td>
+            <td>${formData.lvBushing22_05kv_excitationCurrent || ""}</td>
+            <td>${formData.lvBushing22_05kv_dielectricLoss || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="form-table">
+        <thead>
+          <tr>
+            <th>AT 10 KV PHASE</th>
+            <th>TAN DELTA in %</th>
+            <th>CAPACITANCE (pF)</th>
+            <th>EXCITATION CURRENT (mA)</th>
+            <th>DIELECTRIC LOSS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>2.1</strong></td>
+            <td>${formData.lvBushing21_10kv_tanDelta || ""}</td>
+            <td>${formData.lvBushing21_10kv_capacitance || ""}</td>
+            <td>${formData.lvBushing21_10kv_excitationCurrent || ""}</td>
+            <td>${formData.lvBushing21_10kv_dielectricLoss || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>2.2</strong></td>
+            <td>${formData.lvBushing22_10kv_tanDelta || ""}</td>
+            <td>${formData.lvBushing22_10kv_capacitance || ""}</td>
+            <td>${formData.lvBushing22_10kv_excitationCurrent || ""}</td>
+            <td>${formData.lvBushing22_10kv_dielectricLoss || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      ${generatePhotoThumbnails(formData.photos)}
+    </div>
+  `;
+}
+
+// Generate Stage 1 Form 7 - Record of Measurement of IR Values
+function generateStage1Form7(formData) {
+  if (!formData) return "";
+
+  return `
+    <div class="form-container">
+      <div class="company-header">
+        <h2>RECORD OF MEASUREMENT OF IR VALUES</h2>
+        <h3>Before Erection</h3>
+      </div>
+
+      <table class="form-table">
+        <tbody>
+          <tr>
+            <td><strong>Date</strong></td>
+            <td>${formData.date || ""}</td>
+            <td><strong>Time</strong></td>
+            <td>${formData.time || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>Amb Temp:</strong></td>
             <td>${formData.ambTemp || ""}</td>
-            <td><strong>Make :</strong></td>
+            <td><strong>Make:</strong></td>
             <td>${formData.make || ""}</td>
-            <td rowspan="4"></td>
-            <td rowspan="4"></td>
           </tr>
           <tr>
-            <td><strong>Oil Temp. :</strong></td>
+            <td><strong>Oil Temp:</strong></td>
             <td>${formData.oilTemp || ""}</td>
-            <td><strong>Sr. No. :</strong></td>
+            <td><strong>Sr No:</strong></td>
             <td>${formData.srNo || ""}</td>
           </tr>
           <tr>
-            <td><strong>Wdg. Temp. :</strong></td>
+            <td><strong>Wdg. Temp:</strong></td>
             <td>${formData.wdgTemp || ""}</td>
-            <td><strong>Range :</strong></td>
+            <td><strong>Range:</strong></td>
             <td>${formData.range || ""}</td>
           </tr>
           <tr>
-            <td><strong>Relative Humidity :</strong></td>
+            <td><strong>Relative Humidity</strong></td>
             <td>${formData.relativeHumidity || ""}</td>
-            <td><strong>Voltage Level :</strong></td>
+            <td><strong>Voltage Level:</strong></td>
             <td>${formData.voltageLevel || ""}</td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style="margin-top: 30px;">IR Before erection - RANGE ONLY 1 KV</h4>
-
-      <table class="form-table">
+      <table class="form-table" style="margin-top: 20px;">
         <thead>
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
             <th></th>
-            <th>15 Sec MΩ</th>
-            <th>60 Sec MΩ</th>
-            <th>Ratio of IR 60/IR 15</th>
+            <th>10 Sec (MΩ)</th>
+            <th>60 Sec (MΩ)</th>
+            <th>Ratio of IR 60/IR 10</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>HV-Earth</strong></td>
-            <td>${formData.hvEarth15Sec || ""}</td>
-            <td>${formData.hvEarth60Sec || ""}</td>
-            <td>${formData.ratioIR60IR15 || ""}</td>
+            <td>${formData.hvEarth_10sec || ""}</td>
+            <td>${formData.hvEarth_60sec || ""}</td>
+            <td>${formData.hvEarth_ratio || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>LV-Earth</strong></td>
+            <td>${formData.lvEarth_10sec || ""}</td>
+            <td>${formData.lvEarth_60sec || ""}</td>
+            <td>${formData.lvEarth_ratio || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>HV-LV</strong></td>
+            <td>${formData.hvLv_10sec || ""}</td>
+            <td>${formData.hvLv_60sec || ""}</td>
+            <td>${formData.hvLv_ratio || ""}</td>
           </tr>
         </tbody>
       </table>
@@ -2175,6 +2849,12 @@ function generateStageContent(stageData, stageNumber, headerImage) {
       }
       else if (stageNumber === 1 && formKey === "form5") {
         content += generateStage1Form5(formData);
+      }
+      else if (stageNumber === 1 && formKey === "form6") {
+        content += generateStage1Form6(formData);
+      }
+      else if (stageNumber === 1 && formKey === "form7") {
+        content += generateStage1Form7(formData);
       }
       // Stage 2 Forms
       else if (stageNumber === 2 && formKey === "form1") {
