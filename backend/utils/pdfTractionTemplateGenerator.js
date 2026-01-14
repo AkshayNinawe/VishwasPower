@@ -1360,15 +1360,16 @@ function generateStage1Form7(formData) {
 function generateStage2Form1(formData) {
   if (!formData) return "";
 
-  // Generate filtration records rows
-  const filtrationRows = (formData.filtrationRecords || Array(10).fill({})).map((record, index) => `
+  const photoBaseUrl = process.env.BACKEND_API_BASE_URL || "";
+
+  // Generate filtration records rows (15 rows to match frontend)
+  const filtrationRows = (formData.filtrationRecords || Array(15).fill({})).map((record, index) => `
     <tr>
       <td>${record.date || ""}</td>
       <td>${record.time || ""}</td>
       <td>${record.vacuumLevel || ""}</td>
       <td>${record.inletTemp || ""}</td>
       <td>${record.outletTemp || ""}</td>
-      <td>${record.remark || ""}</td>
     </tr>
   `).join("");
 
@@ -1379,7 +1380,7 @@ function generateStage2Form1(formData) {
         <h3>TEST VALUES PRIOR TO FILTERATION</h3>
       </div>
 
-      <h4>Oil Filling in the Reservoirs Tank:</h4>
+      <h4>Record of Oil Filling in the Reservoirs Tank:</h4>
 
       <table class="form-table">
         <thead>
@@ -1389,32 +1390,47 @@ function generateStage2Form1(formData) {
             <th>Started on Date & time</th>
             <th>Completed on Date & time</th>
             <th>BDV</th>
-            <th>MOISTURE CONTENT</th>
+            <th>PPM</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>Tank1</strong></td>
-            <td>${formData.tank1NoOfBarrels || ""}</td>
-            <td>${formData.tank1StartedDateTime || ""}</td>
-            <td>${formData.tank1CompletedDateTime || ""}</td>
-            <td>${formData.tank1BDV || ""}</td>
-            <td>${formData.tank1MoistureContent || ""}</td>
+            <td>${formData.tank1_noOfBarrels || ""}</td>
+            <td>${formData.tank1_startedDate || ""} ${formData.tank1_startedTime || ""}</td>
+            <td>${formData.tank1_completedDate || ""} ${formData.tank1_completedTime || ""}</td>
+            <td>${formData.tank1_bdv || ""}</td>
+            <td>${formData.tank1_ppm || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>Tank2</strong></td>
+            <td>${formData.tank2_noOfBarrels || ""}</td>
+            <td>${formData.tank2_startedDate || ""} ${formData.tank2_startedTime || ""}</td>
+            <td>${formData.tank2_completedDate || ""} ${formData.tank2_completedTime || ""}</td>
+            <td>${formData.tank2_bdv || ""}</td>
+            <td>${formData.tank2_ppm || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>Tank3</strong></td>
+            <td>${formData.tank3_noOfBarrels || ""}</td>
+            <td>${formData.tank3_startedDate || ""} ${formData.tank3_startedTime || ""}</td>
+            <td>${formData.tank3_completedDate || ""} ${formData.tank3_completedTime || ""}</td>
+            <td>${formData.tank3_bdv || ""}</td>
+            <td>${formData.tank3_ppm || ""}</td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style="margin-top: 40px;">RECORD FOR OIL FILTRATION IN RESERVOIR TANK</h4>
+      <h4 style="margin-top: 40px;">Reservoir Tank Filtration</h4>
 
       <table class="form-table">
         <thead>
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
             <th>Date</th>
             <th>Time</th>
-            <th>Vacuum Level (mm/hg or torr)</th>
-            <th>Inlet Temp°C</th>
-            <th>Outlet Temp°C</th>
-            <th>Remark</th>
+            <th>Vacuum Level (MM/HG or torr)</th>
+            <th>Inlet Temp.</th>
+            <th>Outlet Temp.</th>
           </tr>
         </thead>
         <tbody>
@@ -1422,7 +1438,7 @@ function generateStage2Form1(formData) {
         </tbody>
       </table>
 
-      ${generatePhotoThumbnails(formData.photos)}
+      ${generatePhotoThumbnails(formData.photos, photoBaseUrl)}
     </div>
   `;
 }
