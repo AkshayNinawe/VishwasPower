@@ -4,7 +4,7 @@ import path from "path"
 import fs from "fs"
 import PDFDocument from "pdfkit"
 import puppeteer from "puppeteer"
-import { generateHTMLTemplate } from "../utils/pdfTemplateGenerator.js"
+import { generateHTMLTemplate } from "../utils/pdfAutoTemplateGenerator.js"
 
 // Setup multer storage
 const storage = multer.diskStorage({
