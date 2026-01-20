@@ -2426,50 +2426,23 @@ export function Stage2Form1({
   projectName,
 }) {
   const [formData, setFormData] = useState({
-    // Line Lead Clearance in mm
-    hv_earth_11: "",
-    hv_earth_12: "",
-    lv1_earth_21: "",
-    lv1_earth_22: "",
-    lv2_earth_31: "",
-    lv2_earth_32: "",
+    // Record of Oil Filling in the Reservoirs Tank
+    reservoirTanks: {
+      tank1: { noOfBarrels: "", startedOn: "", completedOn: "", bdv: "", ppm: "" },
+      tank2: { noOfBarrels: "", startedOn: "", completedOn: "", bdv: "", ppm: "" },
+      tank3: { noOfBarrels: "", startedOn: "", completedOn: "", bdv: "", ppm: "" },
+    },
 
-    // IR Values After erection
-    date: "",
-    time: "",
-    insulationTesterDetails: "",
-    ambTemp: "",
-    make: "",
-    oilTemp: "",
-    srNo: "",
-    wdgTemp: "",
-    range: "",
-    relativeHumidity: "",
-    voltageLevel: "",
-
-    // IR measurements
-    hvEarth_15sec: "",
-    hvEarth_60sec: "",
-    hvEarth_ratio: "",
-    lv1Earth_15sec: "",
-    lv1Earth_60sec: "",
-    lv1Earth_ratio: "",
-    lv2Earth_15sec: "",
-    lv2Earth_60sec: "",
-    lv2Earth_ratio: "",
-    hvLv1_15sec: "",
-    hvLv1_60sec: "",
-    hvLv1_ratio: "",
-    hvLv2_15sec: "",
-    hvLv2_60sec: "",
-    hvLv2_ratio: "",
-    lv1Lv2_15sec: "",
-    lv1Lv2_60sec: "",
-    lv1Lv2_ratio: "",
-
-    // Before oil filling in main tank
-    bdv: "",
-    waterContent: "",
+    // Reservoir Tank Filtration records
+    filtrationRecords: Array(25)
+      .fill()
+      .map(() => ({
+        date: "",
+        time: "",
+        vacuumLevel: "",
+        inletTemp: "",
+        outletTemp: "",
+      })),
 
     photos: {},
     ...initialData,
@@ -2478,15 +2451,18 @@ export function Stage2Form1({
   useEffect(() => {
     const fetchFormData = async () => {
       try {
-        const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage2Form2`, {
-          params: {
-            companyName: companyName,
-            projectName: projectName,
+        const response = await axios.get(
+          `${BACKEND_API_BASE_URL}/api/vconnectData/getTable/Stage2Form1`,
+          {
+            params: {
+              companyName,
+              projectName,
+            },
           },
-        })
+        )
         if (response.data && response.data.data) {
-          console.log("Data fetched from DB for stage2Form2")
-          setFormData(response.data.data)
+          console.log("Data fetched from DB for Stage2Form1")
+          setFormData((prev) => ({ ...prev, ...response.data.data }))
         } else {
           console.log("There is no data in DB.")
         }
@@ -2502,6 +2478,28 @@ export function Stage2Form1({
     onSubmit(formData)
   }
 
+  const handleReservoirChange = (tankKey, field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      reservoirTanks: {
+        ...prev.reservoirTanks,
+        [tankKey]: {
+          ...(prev.reservoirTanks?.[tankKey] || {}),
+          [field]: value,
+        },
+      },
+    }))
+  }
+
+  const handleFiltrationRecordChange = (index, field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      filtrationRecords: prev.filtrationRecords.map((row, i) =>
+        i === index ? { ...row, [field]: value } : row,
+      ),
+    }))
+  }
+
   const handlePhotoChange = (key, file) => {
     setFormData((prev) => ({
       ...prev,
@@ -2510,415 +2508,171 @@ export function Stage2Form1({
   }
 
   const photoRequirements = [
-    { key: "dewPoint", label: "Dew Point" },
-    { key: "dryAirAttached", label: "dry air attached photo on transformer" },
-    { key: "leadClearances", label: "Lead clearances" },
-    { key: "anabond", label: "anabond on both bushing's thimble" },
-    { key: "radiators", label: "radiators" },
-    { key: "flashing", label: "flashing" },
-    { key: "conservator", label: "conservator internal inspection" },
-    { key: "fullTransformer", label: "full transformer photo" },
+    { key: "reservoirInternal", label: "Internal condition of reservoir tank" },
+    { key: "bdvPpmCalibration", label: "Calibration report of BDV & PPM kit" },
+    { key: "oilBarrelsCheck", label: "Oil barrels checking by water pest" },
+    { key: "ppmPhoto", label: "PPM Photo" },
+    { key: "bdvReading", label: "Reading of BDV value" },
   ]
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
       <div className="company-header">
-        <h2>Line Lead Clearance in mm :-</h2>
+        <h2>TEST VALUES PRIOR TO FILTERATION</h2>
+        <h3 style={{ marginTop: "6px", fontWeight: 900 }}>
+          Record of Oil Filling in the Reservoirs Tank
+        </h3>
       </div>
 
+      {/* Record of Oil Filling in the Reservoirs Tank */}
       <table className="form-table">
         <thead>
           <tr>
-            <th></th>
-            <th>1.1</th>
-            <th>1.2</th>
+            <th style={{ width: "16%" }}></th>
+            <th style={{ width: "17%" }}>No of barrels</th>
+            <th style={{ width: "22%" }}>Started on Date & time</th>
+            <th style={{ width: "22%" }}>Completed on Date & time</th>
+            <th style={{ width: "11%" }}>BDV</th>
+            <th style={{ width: "12%" }}>PPM</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <strong>HV with respect to earth</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hv_earth_11}
-                onChange={(e) => setFormData({ ...formData, hv_earth_11: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hv_earth_12}
-                onChange={(e) => setFormData({ ...formData, hv_earth_12: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>LV 1 with respect to earth</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1_earth_21}
-                onChange={(e) => setFormData({ ...formData, lv1_earth_21: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1_earth_22}
-                onChange={(e) => setFormData({ ...formData, lv1_earth_22: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>LV 2 with respect to earth</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2_earth_31}
-                onChange={(e) => setFormData({ ...formData, lv2_earth_31: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2_earth_32}
-                onChange={(e) => setFormData({ ...formData, lv2_earth_32: e.target.value })}
-              />
-            </td>
-          </tr>
+          {["tank1", "tank2", "tank3"].map((tankKey, idx) => {
+            const label = idx === 0 ? "Tank1" : idx === 1 ? "Tank2" : "Tank3"
+            const tank = formData.reservoirTanks?.[tankKey] || {}
+            return (
+              <tr key={tankKey}>
+                <td style={{ fontWeight: 800 }}>{label}</td>
+                <td>
+                  <input
+                    type="text"
+                    value={tank.noOfBarrels || ""}
+                    onChange={(e) =>
+                      handleReservoirChange(tankKey, "noOfBarrels", e.target.value)
+                    }
+                  />
+                </td>
+                <td>
+                  <input
+                    type="datetime-local"
+                    value={tank.startedOn || ""}
+                    onChange={(e) =>
+                      handleReservoirChange(tankKey, "startedOn", e.target.value)
+                    }
+                  />
+                </td>
+                <td>
+                  <input
+                    type="datetime-local"
+                    value={tank.completedOn || ""}
+                    onChange={(e) =>
+                      handleReservoirChange(tankKey, "completedOn", e.target.value)
+                    }
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={tank.bdv || ""}
+                    onChange={(e) => handleReservoirChange(tankKey, "bdv", e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={tank.ppm || ""}
+                    onChange={(e) => handleReservoirChange(tankKey, "ppm", e.target.value)}
+                  />
+                </td>
+              </tr>
+            )
+          })}
         </tbody>
       </table>
 
-      <h3 style={{ marginTop: "40px", textAlign: "center" }}>
-        IR Values After erection Temp OTI .......°C WTI.............°C, AMB .............°C RANGE ONLY 1 KV
-      </h3>
+      <div
+        style={{
+          marginTop: "30px",
+          textAlign: "center",
+          fontWeight: 900,
+          fontSize: "18px",
+        }}
+      >
+        Reservoir Tank Filtration
+      </div>
 
-      <table className="form-table">
-        <tbody>
-          <tr>
-            <td>
-              <strong>Date :</strong>
-            </td>
-            <td>
-              <input
-                type="date"
-                value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Time:</strong>
-            </td>
-            <td>
-              <input
-                type="time"
-                value={formData.time}
-                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Details of Insulation tester</strong>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Amb. Temp :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.ambTemp}
-                onChange={(e) => setFormData({ ...formData, ambTemp: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Make :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.make}
-                onChange={(e) => setFormData({ ...formData, make: e.target.value })}
-              />
-            </td>
-            <td rowSpan="4"></td>
-          </tr>
-          <tr>
-            <td>
-              <strong>NO. OF TAPS</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.noOfTaps}
-                onChange={(e) => setFormData({ ...formData, noOfTaps: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>TYPE OF OCTC</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.typeOfOctc}
-                onChange={(e) => setFormData({ ...formData, typeOfOctc: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Wdg. Temp. :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wdgTemp}
-                onChange={(e) => setFormData({ ...formData, wdgTemp: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Range :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.range}
-                onChange={(e) => setFormData({ ...formData, range: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Relative Humidity :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.relativeHumidity}
-                onChange={(e) => setFormData({ ...formData, relativeHumidity: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Voltage Level :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.voltageLevel}
-                onChange={(e) => setFormData({ ...formData, voltageLevel: e.target.value })}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <table className="form-table" style={{ marginTop: "30px" }}>
+      {/* Reservoir Tank Filtration table */}
+      <table className="form-table" style={{ marginTop: "10px" }}>
         <thead>
           <tr>
-            <th></th>
-            <th>15 Sec (MΩ)</th>
-            <th>60 Sec (MΩ)</th>
-            <th>Ratio of IR 60/IR 15</th>
+            <th style={{ width: "18%" }}>Date</th>
+            <th style={{ width: "18%" }}>Time</th>
+            <th style={{ width: "24%" }}>Vacuum Level (MM/HG or torr)</th>
+            <th style={{ width: "20%" }}>Inlet Temp.</th>
+            <th style={{ width: "20%" }}>Outlet Temp.</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <strong>HV-Earth</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvEarth_15sec}
-                onChange={(e) => setFormData({ ...formData, hvEarth_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvEarth_60sec}
-                onChange={(e) => setFormData({ ...formData, hvEarth_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvEarth_ratio}
-                onChange={(e) => setFormData({ ...formData, hvEarth_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>LV1-Earth</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Earth_15sec}
-                onChange={(e) => setFormData({ ...formData, lv1Earth_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Earth_60sec}
-                onChange={(e) => setFormData({ ...formData, lv1Earth_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Earth_ratio}
-                onChange={(e) => setFormData({ ...formData, lv1Earth_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>LV2-Earth</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_15sec}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_60sec}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv2Earth_ratio}
-                onChange={(e) => setFormData({ ...formData, lv2Earth_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>HV-LV1</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv1_15sec}
-                onChange={(e) => setFormData({ ...formData, hvLv1_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv1_60sec}
-                onChange={(e) => setFormData({ ...formData, hvLv1_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv1_ratio}
-                onChange={(e) => setFormData({ ...formData, hvLv1_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>HV-LV2</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_15sec}
-                onChange={(e) => setFormData({ ...formData, hvLv2_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_60sec}
-                onChange={(e) => setFormData({ ...formData, hvLv2_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.hvLv2_ratio}
-                onChange={(e) => setFormData({ ...formData, hvLv2_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>LV1-LV2</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_15sec}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_15sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_60sec}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_60sec: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.lv1Lv2_ratio}
-                onChange={(e) => setFormData({ ...formData, lv1Lv2_ratio: e.target.value })}
-              />
-            </td>
-          </tr>
+          {formData.filtrationRecords.map((row, index) => (
+            <tr key={index}>
+              <td>
+                <input
+                  type="date"
+                  value={row.date || ""}
+                  onChange={(e) =>
+                    handleFiltrationRecordChange(index, "date", e.target.value)
+                  }
+                />
+              </td>
+              <td>
+                <input
+                  type="time"
+                  value={row.time || ""}
+                  onChange={(e) =>
+                    handleFiltrationRecordChange(index, "time", e.target.value)
+                  }
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={row.vacuumLevel || ""}
+                  onChange={(e) =>
+                    handleFiltrationRecordChange(index, "vacuumLevel", e.target.value)
+                  }
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={row.inletTemp || ""}
+                  onChange={(e) =>
+                    handleFiltrationRecordChange(index, "inletTemp", e.target.value)
+                  }
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={row.outletTemp || ""}
+                  onChange={(e) =>
+                    handleFiltrationRecordChange(index, "outletTemp", e.target.value)
+                  }
+                />
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
 
-      <h4 style={{ marginTop: "40px" }}>Before oil filling in main tank</h4>
-      <table className="form-table">
-        <tbody>
-          <tr>
-            <td>
-              <strong>BDV: _______ KV</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.bdv}
-                onChange={(e) => setFormData({ ...formData, bdv: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Water Content: _______ PPM</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.waterContent}
-                onChange={(e) => setFormData({ ...formData, waterContent: e.target.value })}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div style={{ marginTop: "20px", fontWeight: 600 }}>
+        Note: - Photographs to be added: - Internal condition of reservoir tank,
+        Calibration report of BDV & PPM kit, Oil barrels checking by water pest,
+        PPM Photo, Reading of BDV value.
+      </div>
 
       <PhotoUploadSection
-        title="Dew Point, dry air attached photo on transformer, Lead clearances, anabond on both bushing's thimble, radiators, flashing, conservator internal inspection, full transformer photo."
+        title="Internal condition of reservoir tank, calibration report of BDV & PPM kit, oil barrels checking by water pest, PPM Photo, Reading of BDV value."
         photos={photoRequirements}
         onPhotoChange={handlePhotoChange}
       />
@@ -2930,7 +2684,7 @@ export function Stage2Form1({
           </button>
         )}
         <button type="submit" className="submit-btn">
-          Submit Stage 2
+          Next Form
         </button>
       </div>
     </form>

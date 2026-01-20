@@ -282,28 +282,59 @@ const Stage1Form8SubSchema = new mongoose.Schema(
   { _id: false }
 );
 
-// Sub-schema for Filtration records (nested within Stage2Form1)
-const FiltrationRecordSchema = new mongoose.Schema(
+/**
+ * Sub-schema for Reservoir Tank Filtration rows used in Stage 2 Form 1
+ * Matches filtrationRecords structure in frontend Stage2Form1
+ */
+const Stage2Form1FiltrationRecordSubSchema = new mongoose.Schema(
   {
     date: { type: String, trim: true, default: "" },
     time: { type: String, trim: true, default: "" },
     vacuumLevel: { type: String, trim: true, default: "" },
     inletTemp: { type: String, trim: true, default: "" },
     outletTemp: { type: String, trim: true, default: "" },
-    remark: { type: String, trim: true, default: "" },
   },
   { _id: false }
 );
 
-// Sub-schema for Stage 2 Form 1 (Oil Filtration)
+/**
+ * Sub-schema for Stage 2 Form 1
+ * TEST VALUES PRIOR TO FILTERATION
+ * - Record of Oil Filling in the Reservoirs Tank
+ * - Reservoir Tank Filtration
+ * Matches frontend Stage2Form1 in VConnected63MVATransformerForms.js
+ */
 const Stage2Form1SubSchema = new mongoose.Schema(
   {
-    tank1NoOfBarrels: { type: String, trim: true, default: "" },
-    tank1StartedDateTime: { type: String, trim: true, default: "" },
-    tank1CompletedDateTime: { type: String, trim: true, default: "" },
-    tank1BDV: { type: String, trim: true, default: "" },
-    tank1MoistureContent: { type: String, trim: true, default: "" },
-    filtrationRecords: [FiltrationRecordSchema],
+    reservoirTanks: {
+      tank1: {
+        noOfBarrels: { type: String, trim: true, default: "" },
+        startedOn: { type: String, trim: true, default: "" }, // datetime-local string
+        completedOn: { type: String, trim: true, default: "" }, // datetime-local string
+        bdv: { type: String, trim: true, default: "" },
+        ppm: { type: String, trim: true, default: "" },
+      },
+      tank2: {
+        noOfBarrels: { type: String, trim: true, default: "" },
+        startedOn: { type: String, trim: true, default: "" },
+        completedOn: { type: String, trim: true, default: "" },
+        bdv: { type: String, trim: true, default: "" },
+        ppm: { type: String, trim: true, default: "" },
+      },
+      tank3: {
+        noOfBarrels: { type: String, trim: true, default: "" },
+        startedOn: { type: String, trim: true, default: "" },
+        completedOn: { type: String, trim: true, default: "" },
+        bdv: { type: String, trim: true, default: "" },
+        ppm: { type: String, trim: true, default: "" },
+      },
+    },
+
+    filtrationRecords: {
+      type: [Stage2Form1FiltrationRecordSubSchema],
+      default: [],
+    },
+
     photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
