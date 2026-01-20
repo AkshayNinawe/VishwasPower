@@ -9,24 +9,34 @@ const Stage1Form1SubSchema = new mongoose.Schema(
     currentHV: { type: String, trim: true, default: "" },
     srNo: { type: String, trim: true, default: "" },
     currentLV: { type: String, trim: true, default: "" },
+
     mvaRating: { type: String, trim: true, default: "" },
     tempRiseOilC: { type: String, trim: true, default: "" },
+
     hvKv: { type: String, trim: true, default: "" },
     windingC: { type: String, trim: true, default: "" },
+
     lvKv: { type: String, trim: true, default: "" },
     oilQuantity: { type: String, trim: true, default: "" },
+
     impedancePercent: { type: String, trim: true, default: "" },
     weightCoreWdg: { type: String, trim: true, default: "" },
+
     yearOfMfg: { type: String, trim: true, default: "" },
     transportingWeight: { type: String, trim: true, default: "" },
+
     noOfCoolingFan: { type: String, trim: true, default: "" },
     totalWeight: { type: String, trim: true, default: "" },
+
     noOfOilPump: { type: String, trim: true, default: "" },
     noOfRadiators: { type: String, trim: true, default: "" },
+
     noOfTaps: { type: String, trim: true, default: "" },
     mfgOfOctc: { type: String, trim: true, default: "" },
+
     typeOfOctc: { type: String, trim: true, default: "" },
     srNoOctc: { type: String, trim: true, default: "" },
+
     photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
@@ -44,98 +54,229 @@ const AccessoryItemSchema = new mongoose.Schema(
   { _id: false }
 );
 
+const Stage1Form2RowSubSchema = new mongoose.Schema(
+  {
+    packingCaseNumber: { type: String, trim: true, default: "" },
+    materialDescription: { type: String, trim: true, default: "" },
+    qtyAsPerPL: { type: String, trim: true, default: "" },
+    qtyReceived: { type: String, trim: true, default: "" },
+    shortQty: { type: String, trim: true, default: "" },
+    damagedQty: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
 const Stage1Form2SubSchema = new mongoose.Schema(
   {
-    accessories: { type: Map, of: AccessoryItemSchema, default: {} },
+    accessoriesRows: { type: [Stage1Form2RowSubSchema], default: [] },
     photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );
 
-// Sub-schema for Stage 1 Form 3 (Safety and Equipment Checklist)
+// Sub-schema for Stage 1 Form 3 (Core insulation + Equipment checklist + Safety equipment)
+const CoreInsulationRowSubSchema = new mongoose.Schema(
+  {
+    obtainedValue: { type: String, trim: true, default: "" },
+    remarks: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+const Stage1Form3EquipmentRowSubSchema = new mongoose.Schema(
+  {
+    srNo: { type: Number, default: 0 },
+    description: { type: String, trim: true, default: "" },
+    ratingCapacity: { type: String, trim: true, default: "" },
+    checkedBy: { type: String, trim: true, default: "" },
+    ratingHint: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+const Stage1Form3SafetyRowSubSchema = new mongoose.Schema(
+  {
+    description: { type: String, trim: true, default: "" },
+    confirmation: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
 const Stage1Form3SubSchema = new mongoose.Schema(
   {
-    betweenCoreFrame: { type: String, trim: true, default: "" },
-    betweenCoreFrameRemarks: { type: String, trim: true, default: "" },
-    betweenFrameTank: { type: String, trim: true, default: "" },
-    betweenFrameTankRemarks: { type: String, trim: true, default: "" },
-    betweenCoreTank: { type: String, trim: true, default: "" },
-    betweenCoreTankRemarks: { type: String, trim: true, default: "" },
-    filterMachine: { type: String, trim: true, default: "" },
-    filterMachineChecked: { type: String, default: "" },
-    filterCapacity: { type: String, trim: true, default: "" },
-    filterCapacityChecked: { type: String, default: "" },
-    vacuumPumpCapacity: { type: String, trim: true, default: "" },
-    vacuumPumpCapacityChecked: { type: String, default: "" },
-    reservoirAvailable: { type: String, trim: true, default: "" },
-    reservoirAvailableChecked: { type: String, default: "" },
-    reservoirCapacity: { type: String, trim: true, default: "" },
-    reservoirCapacityChecked: { type: String, default: "" },
-    hosePipes: { type: String, trim: true, default: "" },
-    hosePipesChecked: { type: String, default: "" },
-    craneAvailable: { type: String, trim: true, default: "" },
-    craneAvailableChecked: { type: String, default: "" },
-    fireExtinguisher: { type: String, trim: true, default: "" },
-    firstAidKit: { type: String, trim: true, default: "" },
-    ppeEquipment: { type: String, trim: true, default: "" },
+    coreInsulation: {
+      coreToFrame: { type: CoreInsulationRowSubSchema, default: () => ({}) },
+      frameToTank: { type: CoreInsulationRowSubSchema, default: () => ({}) },
+      coreToTank: { type: CoreInsulationRowSubSchema, default: () => ({}) },
+    },
+
+    equipment: { type: [Stage1Form3EquipmentRowSubSchema], default: [] },
+    safety: { type: [Stage1Form3SafetyRowSubSchema], default: [] },
+
     photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );
 
-// Sub-schema for Stage 1 Form 4 (Measurement Details)
+const Stage1Form4CTRatioRowSubSchema = new mongoose.Schema(
+  {
+    appliedPrimaryCurrentA: { type: String, trim: true, default: "" },
+    measuredSecondaryCurrentA: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+const Stage1Form4KneePointRowSubSchema = new mongoose.Schema(
+  {
+    appliedVoltage: { type: String, trim: true, default: "" },
+    measuredCurrentA: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+// Sub-schema for Stage 1 Form 4 (Pre erection Ratio test of turret CTs - Phase 1.1 & 1.2)
 const Stage1Form4SubSchema = new mongoose.Schema(
   {
-    meterUsed: { type: String, trim: true, default: "" },
-    date: { type: String, trim: true, default: "" },
-    time: { type: String, trim: true, default: "" },
-    modelSrNo: { type: String, trim: true, default: "" },
-    wti: { type: String, trim: true, default: "" },
-    oti: { type: String, trim: true, default: "" },
-    bushing11: { type: String, trim: true, default: "" },
-    bushing12: { type: String, trim: true, default: "" },
-    bushing11_05kv_phase: { type: String, trim: true, default: "" },
-    bushing11_05kv_tanDelta: { type: String, trim: true, default: "" },
-    bushing11_05kv_capacitance: { type: String, trim: true, default: "" },
-    bushing11_05kv_excitationCurrent: { type: String, trim: true, default: "" },
-    bushing11_05kv_dielectricLoss: { type: String, trim: true, default: "" },
-    bushing12_05kv_phase: { type: String, trim: true, default: "" },
-    bushing12_05kv_tanDelta: { type: String, trim: true, default: "" },
-    bushing12_05kv_capacitance: { type: String, trim: true, default: "" },
-    bushing12_05kv_excitationCurrent: { type: String, trim: true, default: "" },
-    bushing12_05kv_dielectricLoss: { type: String, trim: true, default: "" },
-    bushing11_10kv_phase: { type: String, trim: true, default: "" },
-    bushing11_10kv_tanDelta: { type: String, trim: true, default: "" },
-    bushing11_10kv_capacitance: { type: String, trim: true, default: "" },
-    bushing11_10kv_excitationCurrent: { type: String, trim: true, default: "" },
-    bushing11_10kv_dielectricLoss: { type: String, trim: true, default: "" },
-    bushing12_10kv_phase: { type: String, trim: true, default: "" },
-    bushing12_10kv_tanDelta: { type: String, trim: true, default: "" },
-    bushing12_10kv_capacitance: { type: String, trim: true, default: "" },
-    bushing12_10kv_excitationCurrent: { type: String, trim: true, default: "" },
-    bushing12_10kv_dielectricLoss: { type: String, trim: true, default: "" },
+    phase11: {
+      ctRatioCoreS1S2: { type: Map, of: Stage1Form4CTRatioRowSubSchema, default: {} },
+      kneePointVoltage: { type: Map, of: Stage1Form4KneePointRowSubSchema, default: {} },
+    },
+    phase12: {
+      ctRatioCoreS1S2: { type: Map, of: Stage1Form4CTRatioRowSubSchema, default: {} },
+      kneePointVoltage: { type: Map, of: Stage1Form4KneePointRowSubSchema, default: {} },
+    },
     photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );
 
-// Sub-schema for Stage 1 Form 5 (Insulation Resistance)
+/**
+ * Sub-schema for Stage 1 Form 5 (Pre erection Ratio test of turret CTs - Phase 2.1 & 2.2)
+ * Matches frontend Stage1Form5 in VConnected63MVATransformerForms.js
+ */
 const Stage1Form5SubSchema = new mongoose.Schema(
+  {
+    phase21: {
+      ctRatioCoreS1S2: { type: Map, of: Stage1Form4CTRatioRowSubSchema, default: {} },
+      kneePointVoltage: { type: Map, of: Stage1Form4KneePointRowSubSchema, default: {} },
+    },
+    phase22: {
+      ctRatioCoreS1S2: { type: Map, of: Stage1Form4CTRatioRowSubSchema, default: {} },
+      kneePointVoltage: { type: Map, of: Stage1Form4KneePointRowSubSchema, default: {} },
+    },
+  },
+  { _id: false }
+);
+
+/**
+ * Sub-schema for Stage 1 Form 6 (Pre erection Ratio test of turret CTs - Phase 3.1 & 3.2 + WTI)
+ * Matches frontend Stage1Form6 in VConnected63MVATransformerForms.js
+ */
+const Stage1Form6WTIRowSubSchema = new mongoose.Schema(
+  {
+    appliedPrimaryCurrentA: { type: String, trim: true, default: "" },
+    measuredSecondaryCurrentS1S2A: { type: String, trim: true, default: "" },
+    measuredSecondaryCurrentS1S3A: { type: String, trim: true, default: "" },
+    measuredSecondaryCurrentS1S4A: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+const Stage1Form6SubSchema = new mongoose.Schema(
+  {
+    phase31: {
+      ctRatioCoreS1S2: { type: Map, of: Stage1Form4CTRatioRowSubSchema, default: {} },
+      kneePointVoltage: { type: Map, of: Stage1Form4KneePointRowSubSchema, default: {} },
+    },
+    phase32: {
+      ctRatioCoreS1S2: { type: Map, of: Stage1Form4CTRatioRowSubSchema, default: {} },
+      kneePointVoltage: { type: Map, of: Stage1Form4KneePointRowSubSchema, default: {} },
+    },
+    wti: { type: Map, of: Stage1Form6WTIRowSubSchema, default: {} },
+  },
+  { _id: false }
+);
+
+/**
+ * Sub-schema for Stage 1 Form 7 (Tan Delta & Capacitance test on bushing)
+ * Matches frontend Stage1Form7 in VConnected63MVATransformerForms.js
+ */
+const Stage1Form7StatusRowSubSchema = new mongoose.Schema(
+  {
+    phase: { type: String, trim: true, default: "" },
+    tanDeltaPercent: { type: String, trim: true, default: "" },
+    capacitancePf: { type: String, trim: true, default: "" },
+    excitationCurrent: { type: String, trim: true, default: "" },
+    dielectricLoss: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+const Stage1Form7SubSchema = new mongoose.Schema(
+  {
+    meterUsed: { type: String, trim: true, default: "" },
+    modelAndSerialNo: { type: String, trim: true, default: "" },
+    date: { type: String, trim: true, default: "" },
+    time: { type: String, trim: true, default: "" },
+    wti: { type: String, trim: true, default: "" },
+    oti: { type: String, trim: true, default: "" },
+
+    bushingSrNoHv: { type: String, trim: true, default: "" },
+    hvAt5kv: { type: [Stage1Form7StatusRowSubSchema], default: [] },
+    hvAt10kv: { type: [Stage1Form7StatusRowSubSchema], default: [] },
+
+    bushingSrNoLv: { type: String, trim: true, default: "" },
+    lvAt5kv: { type: [Stage1Form7StatusRowSubSchema], default: [] },
+    lvAt10kv: { type: [Stage1Form7StatusRowSubSchema], default: [] },
+
+    photos: { type: Map, of: String, default: {} },
+  },
+  { _id: false }
+);
+
+/**
+ * Sub-schema for Stage 1 Form 8 (Record of Measurement of IR Values - Before Erection)
+ * Matches frontend Stage1Form8 in VConnected63MVATransformerForms.js
+ */
+const Stage1Form8SubSchema = new mongoose.Schema(
   {
     date: { type: String, trim: true, default: "" },
     time: { type: String, trim: true, default: "" },
-    make: { type: String, trim: true, default: "" },
-    srNo: { type: String, trim: true, default: "" },
-    insulationTesterDetails: { type: String, trim: true, default: "" },
     ambTemp: { type: String, trim: true, default: "" },
     oilTemp: { type: String, trim: true, default: "" },
     wdgTemp: { type: String, trim: true, default: "" },
-    range: { type: String, trim: true, default: "" },
     relativeHumidity: { type: String, trim: true, default: "" },
+    insulationTesterDetails: { type: String, trim: true, default: "" },
+
+    make: { type: String, trim: true, default: "" },
+    srNo: { type: String, trim: true, default: "" },
+    range: { type: String, trim: true, default: "" },
     voltageLevel: { type: String, trim: true, default: "" },
-    hvEarth15Sec: { type: String, trim: true, default: "" },
-    hvEarth60Sec: { type: String, trim: true, default: "" },
-    ratioIR60IR15: { type: String, trim: true, default: "" },
+
+    hvEarth_10sec: { type: String, trim: true, default: "" },
+    hvEarth_60sec: { type: String, trim: true, default: "" },
+    hvEarth_ratio: { type: String, trim: true, default: "" },
+
+    lv1Earth_10sec: { type: String, trim: true, default: "" },
+    lv1Earth_60sec: { type: String, trim: true, default: "" },
+    lv1Earth_ratio: { type: String, trim: true, default: "" },
+
+    lv2Earth_10sec: { type: String, trim: true, default: "" },
+    lv2Earth_60sec: { type: String, trim: true, default: "" },
+    lv2Earth_ratio: { type: String, trim: true, default: "" },
+
+    hvLv1_10sec: { type: String, trim: true, default: "" },
+    hvLv1_60sec: { type: String, trim: true, default: "" },
+    hvLv1_ratio: { type: String, trim: true, default: "" },
+
+    hvLv2_10sec: { type: String, trim: true, default: "" },
+    hvLv2_60sec: { type: String, trim: true, default: "" },
+    hvLv2_ratio: { type: String, trim: true, default: "" },
+
+    lv1Lv2_10sec: { type: String, trim: true, default: "" },
+    lv1Lv2_60sec: { type: String, trim: true, default: "" },
+    lv1Lv2_ratio: { type: String, trim: true, default: "" },
+
     photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
@@ -612,6 +753,9 @@ const VConnectSchema = new mongoose.Schema(
         form3: { type: Stage1Form3SubSchema, default: () => ({}) },
         form4: { type: Stage1Form4SubSchema, default: () => ({}) },
         form5: { type: Stage1Form5SubSchema, default: () => ({}) },
+        form6: { type: Stage1Form6SubSchema, default: () => ({}) },
+        form7: { type: Stage1Form7SubSchema, default: () => ({}) },
+        form8: { type: Stage1Form8SubSchema, default: () => ({}) },
       },
       stage2: {
         form1: { type: Stage2Form1SubSchema, default: () => ({}) },
