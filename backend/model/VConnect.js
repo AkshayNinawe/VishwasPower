@@ -359,35 +359,76 @@ const Stage2Form2SubSchema = new mongoose.Schema(
 
 // --- SUB-SCHEMAS FOR STAGE 3 ---
 
-// Sub-schema for pressure test records
+/**
+ * Sub-schema for pressure test records - Stage 3 Form 1
+ * Matches `pressureTests` rows in VacuumCycleRecordingForm (Stage3Form1) frontend
+ */
 const PressureTestRecordSubSchema = new mongoose.Schema(
   {
-    srNo: { type: String, trim: true, default: "" },
     timeStarted: { type: String, trim: true, default: "" },
-    pressureKgCm2: { type: String, trim: true, default: "" },
+    pressure: { type: String, trim: true, default: "" },
     tempAmb: { type: String, trim: true, default: "" },
-    tempOTI: { type: String, trim: true, default: "" },
-    tempWTI: { type: String, trim: true, default: "" },
+    tempOti: { type: String, trim: true, default: "" },
+    tempWti: { type: String, trim: true, default: "" },
   },
   { _id: false }
-);
+)
 
-// Sub-schema for Stage 3 Form 1
+/**
+ * Sub-schema for Stage 3 Form 1 (Vacuum Cycle Recording + IR after topping + Pressure test)
+ * Matches frontend VacuumCycleRecordingForm in VConnected63MVATransformerForms.js
+ */
 const Stage3Form1SubSchema = new mongoose.Schema(
   {
-    bdvKV: { type: String, trim: true, default: "" },
-    waterContentPPM: { type: String, trim: true, default: "" },
-    tempOTI: { type: String, trim: true, default: "" },
-    tempWTI: { type: String, trim: true, default: "" },
-    tempAMB: { type: String, trim: true, default: "" },
-    hvEarth15Sec: { type: String, trim: true, default: "" },
-    hvEarth60Sec: { type: String, trim: true, default: "" },
-    ratioIR60IR15: { type: String, trim: true, default: "" },
+    // Vacuum cycle header
+    vacuumHoseCheckedBy: { type: String, trim: true, default: "" },
+    vacuumHoseConnectedTo: { type: String, trim: true, default: "" },
+    evacuationStartedAt: { type: String, trim: true, default: "" },
+    evacuationStartedOn: { type: String, trim: true, default: "" },
+
+    // Vacuum cycle table
+    vacuumRecords: [
+      {
+        date: { type: String, trim: true, default: "" },
+        time: { type: String, trim: true, default: "" },
+        vacuumLevelMic: { type: String, trim: true, default: "" },
+        vacuumLevelTransformer: { type: String, trim: true, default: "" },
+      },
+    ],
+
+    // IR After oil Topping up To Conservator (10s / 60s / ratio)
+    hvEarth_15sec: { type: String, trim: true, default: "" },
+    hvEarth_60sec: { type: String, trim: true, default: "" },
+    hvEarth_ratio: { type: String, trim: true, default: "" },
+
+    lv1Earth_15sec: { type: String, trim: true, default: "" },
+    lv1Earth_60sec: { type: String, trim: true, default: "" },
+    lv1Earth_ratio: { type: String, trim: true, default: "" },
+
+    lv2Earth_15sec: { type: String, trim: true, default: "" },
+    lv2Earth_60sec: { type: String, trim: true, default: "" },
+    lv2Earth_ratio: { type: String, trim: true, default: "" },
+
+    hvLv1_15sec: { type: String, trim: true, default: "" },
+    hvLv1_60sec: { type: String, trim: true, default: "" },
+    hvLv1_ratio: { type: String, trim: true, default: "" },
+
+    hvLv2_15sec: { type: String, trim: true, default: "" },
+    hvLv2_60sec: { type: String, trim: true, default: "" },
+    hvLv2_ratio: { type: String, trim: true, default: "" },
+
+    lv1Lv2_15sec: { type: String, trim: true, default: "" },
+    lv1Lv2_60sec: { type: String, trim: true, default: "" },
+    lv1Lv2_ratio: { type: String, trim: true, default: "" },
+
+    // Pressure Test Report
     pressureTestDate: { type: String, trim: true, default: "" },
-    pressureTestRecords: [PressureTestRecordSubSchema],
+    pressureTests: { type: [PressureTestRecordSubSchema], default: [] },
+
+    photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
-);
+)
 
 // Sub-schema for individual filtration records for Stage 3 Form 2
 const Stage3FiltrationRecordSubSchema = new mongoose.Schema(
@@ -580,37 +621,60 @@ const Stage4Form3SubSchema = new mongoose.Schema(
   { _id: false }
 );
 
-// Sub-schema for Stage 4 Form 4
+/**
+ * Sub-schema for Stage 4 Form 4 (IR & PI Value after filtration)
+ * Matches frontend Stage4Form4 in VConnected63MVATransformerForms.js
+ */
 const Stage4Form4SubSchema = new mongoose.Schema(
   {
-    meterUsed: { type: String, trim: true, default: "" },
+    // Header fields
     date: { type: String, trim: true, default: "" },
     time: { type: String, trim: true, default: "" },
-    meterMakeSrNo: { type: String, trim: true, default: "" },
-    wti: { type: String, trim: true, default: "" },
-    oti: { type: String, trim: true, default: "" },
-    range: { type: String, trim: true, default: "" },
-    ambient: { type: String, trim: true, default: "" },
-    winding11_12: { type: String, trim: true, default: "" },
-    winding11_21: { type: String, trim: true, default: "" },
-    winding21_12: { type: String, trim: true, default: "" },
-    dateIR: { type: String, trim: true, default: "" },
-    timeIR: { type: String, trim: true, default: "" },
     insulationTesterDetails: { type: String, trim: true, default: "" },
-    ambTempIR: { type: String, trim: true, default: "" },
-    makeIR: { type: String, trim: true, default: "" },
-    oilTempIR: { type: String, trim: true, default: "" },
-    srNoIR: { type: String, trim: true, default: "" },
-    wdgTempIR: { type: String, trim: true, default: "" },
-    rangeIR: { type: String, trim: true, default: "" },
-    relativeHumidityIR: { type: String, trim: true, default: "" },
-    voltageLevelIR: { type: String, trim: true, default: "" },
-    hvEarth10Sec: { type: String, trim: true, default: "" },
-    hvEarth60Sec: { type: String, trim: true, default: "" },
-    hvEarth600Sec: { type: String, trim: true, default: "" },
-    ratioIR60IR10: { type: String, trim: true, default: "" },
-    ratioIR600IR60: { type: String, trim: true, default: "" },
-    signatures: { type: SignatureSubSchema, default: () => ({}) },
+    ambTemp: { type: String, trim: true, default: "" },
+    make: { type: String, trim: true, default: "" },
+    oilTemp: { type: String, trim: true, default: "" },
+    srNo: { type: String, trim: true, default: "" },
+    wdgTemp: { type: String, trim: true, default: "" },
+    range: { type: String, trim: true, default: "" },
+    relativeHumidity: { type: String, trim: true, default: "" },
+    voltageLevel: { type: String, trim: true, default: "" },
+
+    // IR & PI measurements (10 / 60 / 600 sec + PI)
+    hvEarth_10sec: { type: String, trim: true, default: "" },
+    hvEarth_60sec: { type: String, trim: true, default: "" },
+    hvEarth_600sec: { type: String, trim: true, default: "" },
+    hvEarth_ratio: { type: String, trim: true, default: "" },
+
+    lv1Earth_10sec: { type: String, trim: true, default: "" },
+    lv1Earth_60sec: { type: String, trim: true, default: "" },
+    lv1Earth_600sec: { type: String, trim: true, default: "" },
+    lv1Earth_ratio: { type: String, trim: true, default: "" },
+
+    lv2Earth_10sec: { type: String, trim: true, default: "" },
+    lv2Earth_60sec: { type: String, trim: true, default: "" },
+    lv2Earth_600sec: { type: String, trim: true, default: "" },
+    lv2Earth_ratio: { type: String, trim: true, default: "" },
+
+    hvLv1_10sec: { type: String, trim: true, default: "" },
+    hvLv1_60sec: { type: String, trim: true, default: "" },
+    hvLv1_600sec: { type: String, trim: true, default: "" },
+    hvLv1_ratio: { type: String, trim: true, default: "" },
+
+    hvLv2_10sec: { type: String, trim: true, default: "" },
+    hvLv2_60sec: { type: String, trim: true, default: "" },
+    hvLv2_600sec: { type: String, trim: true, default: "" },
+    hvLv2_ratio: { type: String, trim: true, default: "" },
+
+    lv1Lv2_10sec: { type: String, trim: true, default: "" },
+    lv1Lv2_60sec: { type: String, trim: true, default: "" },
+    lv1Lv2_600sec: { type: String, trim: true, default: "" },
+    lv1Lv2_ratio: { type: String, trim: true, default: "" },
+
+    // After Oil Filtration of main tank
+    bdv: { type: String, trim: true, default: "" },
+    waterContent: { type: String, trim: true, default: "" },
+
     photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
