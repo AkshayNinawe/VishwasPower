@@ -732,29 +732,59 @@ const Stage5Form1SubSchema = new mongoose.Schema(
   { _id: false }
 );
 
-// Sub-schema for Stage 5 Form 2
+/**
+ * Sub-schema for Stage 5 Form 2 (RATIO TEST)
+ * Matches frontend Stage5Form2 in VConnected63MVATransformerForms.js
+ */
+const Stage5Form2TapRowSubSchema = new mongoose.Schema(
+  {
+    tapNo: { type: Number, default: 0 },
+    namePlateRatio: { type: String, trim: true, default: "" },
+    measuredRatio: { type: String, trim: true, default: "" },
+    deviationPercent: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+const Stage5Form2RatioSetSubSchema = new mongoose.Schema(
+  {
+    namePlateText: { type: String, trim: true, default: "" },
+    measuredText: { type: String, trim: true, default: "" },
+    taps: { type: [Stage5Form2TapRowSubSchema], default: [] },
+  },
+  { _id: false }
+);
+
 const Stage5Form2SubSchema = new mongoose.Schema(
   {
-    bdvKV: { type: String, trim: true, default: "" },
-    moistureContentPPM: { type: String, trim: true, default: "" },
-    hvEarth15Sec: { type: String, trim: true, default: "" },
-    hvEarth60Sec: { type: String, trim: true, default: "" },
-    hvEarth600Sec: { type: String, trim: true, default: "" },
-    oilLevelConservator: { type: String, trim: true, default: "" },
-    hvJumpersConnected: { type: String, enum: ["Yes", "No", ""], default: "" },
-    lvJumpersConnected: { type: String, enum: ["Yes", "No", ""], default: "" },
-    incomingLACounter: { type: String, trim: true, default: "" },
-    outgoingLACounter: { type: String, trim: true, default: "" },
-    allCTCableTerminated: { type: String, trim: true, default: "" },
-    protectionRelaysChecked: { type: String, trim: true, default: "" },
-    anabondAppliedHVBushings: { type: String, trim: true, default: "" },
-    allJointsSealed: { type: String, trim: true, default: "" },
-    allForeignMaterialCleared: { type: String, trim: true, default: "" },
-    temperatureWTI: { type: String, trim: true, default: "" },
-    temperatureOTI: { type: String, trim: true, default: "" },
-    remarks: { type: String, trim: true, default: "" },
-    signatures: { type: DetailedSignatureSubSchema, default: () => ({}) },
+    // Header fields
+    meterUsed: { type: String, trim: true, default: "" },
+    modelSrNo: { type: String, trim: true, default: "" },
+    date: { type: String, trim: true, default: "" },
+    time: { type: String, trim: true, default: "" },
+    ambient: { type: String, trim: true, default: "" },
+    oti: { type: String, trim: true, default: "" },
+    wti: { type: String, trim: true, default: "" },
+    vectorGroup: { type: String, trim: true, default: "" },
+    mf: { type: String, trim: true, default: "" },
+
+    // Two ratio sets (two blocks in the table)
+    ratioSet1: { type: Stage5Form2RatioSetSubSchema, default: () => ({}) },
+    ratioSet2: { type: Stage5Form2RatioSetSubSchema, default: () => ({}) },
+
     photos: { type: Map, of: String, default: {} },
+  },
+  { _id: false }
+);
+
+/**
+ * Sub-schema for Stage 5 Form 4 (Polarity Test)
+ * Stored as a generic mixed object; frontend sends all fields from Stage5Form4.
+ * This mirrors how Stage5Form2 data is stored (single mixed blob per form).
+ */
+const Stage5Form4SubSchema = new mongoose.Schema(
+  {
+    data: { type: mongoose.Schema.Types.Mixed, default: {} },
   },
   { _id: false }
 );
@@ -870,6 +900,7 @@ const VConnectSchema = new mongoose.Schema(
       stage5: {
         form1: { type: Stage5Form1SubSchema, default: () => ({}) },
         form2: { type: Stage5Form2SubSchema, default: () => ({}) },
+        form4: { type: Stage5Form4SubSchema, default: () => ({}) },
       },
       stage6: {
         form1: { type: Stage6Form1SubSchema, default: () => ({}) },

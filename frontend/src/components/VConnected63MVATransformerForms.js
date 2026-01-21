@@ -4496,125 +4496,6 @@ export function Stage4Form4({
         </h2>
       </div>
 
-      <table className="form-table">
-        <tbody>
-          <tr>
-            <td>
-              <strong>Date :</strong>
-            </td>
-            <td>
-              <input
-                type="date"
-                value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Time:</strong>
-            </td>
-            <td>
-              <input
-                type="time"
-                value={formData.time}
-                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Details of Insulation tester</strong>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Amb. Temp :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.ambTemp}
-                onChange={(e) => setFormData({ ...formData, ambTemp: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Make :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.make}
-                onChange={(e) => setFormData({ ...formData, make: e.target.value })}
-              />
-            </td>
-            <td rowSpan="4"></td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Oil Temp. :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.oilTemp}
-                onChange={(e) => setFormData({ ...formData, oilTemp: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Sr. No. :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.srNo}
-                onChange={(e) => setFormData({ ...formData, srNo: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Wdg. Temp. :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wdgTemp}
-                onChange={(e) => setFormData({ ...formData, wdgTemp: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Range :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.range}
-                onChange={(e) => setFormData({ ...formData, range: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Relative Humidity :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.relativeHumidity}
-                onChange={(e) => setFormData({ ...formData, relativeHumidity: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>Voltage Level :</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.voltageLevel}
-                onChange={(e) => setFormData({ ...formData, voltageLevel: e.target.value })}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
       <table className="form-table" style={{ marginTop: "30px" }}>
         <thead>
           <tr>
@@ -4878,17 +4759,18 @@ export function Stage4Form4({
 }
 
 // Stage 5 Forms - Based on provided images
-function SFRATestRecordV63Form({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
+export function Stage5Form1({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
   const [formData, setFormData] = useState({
     makeOfMeter: "",
     modelSrNo: "",
     date: "",
     ambient: "",
+    otiTemp: "",
     wtiTemp: "",
     testReportReviewedBy: "",
     acceptanceOfTest: "",
 
-    // IR Values measurements
+    // IR Values measurements header
     irDate: "",
     irTime: "",
     irAmbTemp: "",
@@ -4899,8 +4781,9 @@ function SFRATestRecordV63Form({ onSubmit, onPrevious, initialData, isLastFormOf
     irSrNo: "",
     irRange: "",
     irVoltageLevel: "",
+    insulationTesterDetails: "",
 
-    // IR measurements
+    // IR measurements (15 / 60 sec and ratio)
     hvEarth_15sec: "",
     hvEarth_60sec: "",
     hvEarth_ratio: "",
@@ -4958,673 +4841,379 @@ function SFRATestRecordV63Form({ onSubmit, onPrevious, initialData, isLastFormOf
     }))
   }
 
-  const photoRequirements = [{ key: "ctRatioKit", label: "CT Ratio kit calibration" }]
+  const photoRequirements = [
+    { key: "irTester", label: "IR tester" },
+    { key: "calibrationReport", label: "Calibration report" },
+    { key: "ir60SecValue", label: "60 sec IR value" },
+  ]
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
+      {/* SFRA TEST RECORD HEADER */}
       <div className="company-header">
-        <h2>VISHVAS POWER ENGINEERING SERVICES PVT. LTD. NAGPUR</h2>
-        <h3>Pre erection Ratio test of turret CTs</h3>
+        <h2>SFRA TEST RECORD</h2>
       </div>
 
-      {/* Phase 3.1 Section */}
-      <h3 style={{ textAlign: "center", marginTop: "30px" }}>Phase 3.1</h3>
-
-      <h4>CT Ratio CORE – S1-S2</h4>
       <table className="form-table">
-        <thead>
-          <tr>
-            <th>Current %</th>
-            <th>Applied primary Current (A)</th>
-            <th>Measured secondary current (A)</th>
-          </tr>
-        </thead>
         <tbody>
           <tr>
             <td>
-              <strong>20%</strong>
+              <strong>MAKE OF METER</strong>
             </td>
             <td>
               <input
                 type="text"
-                value={formData.phase31_20percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_20percent_appliedCurrent: e.target.value })}
+                value={formData.makeOfMeter || ""}
+                onChange={(e) => setFormData({ ...formData, makeOfMeter: e.target.value })}
               />
             </td>
             <td>
-              <input
-                type="text"
-                value={formData.phase31_20percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_20percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>40%</strong>
+              <strong>DATE</strong>
             </td>
             <td>
               <input
-                type="text"
-                value={formData.phase31_40percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_40percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_40percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_40percent_measuredCurrent: e.target.value })}
+                type="date"
+                value={formData.date || ""}
+                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
               />
             </td>
           </tr>
+
           <tr>
             <td>
-              <strong>60%</strong>
+              <strong>MODEL & S. NO.</strong>
             </td>
             <td>
               <input
                 type="text"
-                value={formData.phase31_60percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_60percent_appliedCurrent: e.target.value })}
+                value={formData.modelSrNo || ""}
+                onChange={(e) => setFormData({ ...formData, modelSrNo: e.target.value })}
               />
             </td>
             <td>
+              <strong>AMBIENT:</strong>
+            </td>
+            <td>
               <input
                 type="text"
-                value={formData.phase31_60percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_60percent_measuredCurrent: e.target.value })}
+                value={formData.ambient || ""}
+                onChange={(e) => setFormData({ ...formData, ambient: e.target.value })}
               />
             </td>
           </tr>
+
           <tr>
             <td>
-              <strong>80%</strong>
+              <strong>OTI in °C</strong>
             </td>
             <td>
               <input
                 type="text"
-                value={formData.phase31_80percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_80percent_appliedCurrent: e.target.value })}
+                value={formData.otiTemp || ""}
+                onChange={(e) => setFormData({ ...formData, otiTemp: e.target.value })}
               />
             </td>
             <td>
+              <strong>WTI in °C</strong>
+            </td>
+            <td>
               <input
                 type="text"
-                value={formData.phase31_80percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_80percent_measuredCurrent: e.target.value })}
+                value={formData.wtiTemp || ""}
+                onChange={(e) => setFormData({ ...formData, wtiTemp: e.target.value })}
               />
             </td>
           </tr>
+
           <tr>
             <td>
-              <strong>100%</strong>
+              <strong>Test report reviewed by</strong>
             </td>
             <td>
               <input
                 type="text"
-                value={formData.phase31_100percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_100percent_appliedCurrent: e.target.value })}
+                value={formData.testReportReviewedBy || ""}
+                onChange={(e) => setFormData({ ...formData, testReportReviewedBy: e.target.value })}
               />
             </td>
             <td>
+              <strong>Acceptance of the test</strong>
+            </td>
+            <td>
               <input
                 type="text"
-                value={formData.phase31_100percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_100percent_measuredCurrent: e.target.value })}
+                placeholder="Yes / No"
+                value={formData.acceptanceOfTest || ""}
+                onChange={(e) => setFormData({ ...formData, acceptanceOfTest: e.target.value })}
               />
             </td>
           </tr>
         </tbody>
       </table>
 
-      <h4>Knee point Voltage</h4>
-      <table className="form-table">
-        <thead>
-          <tr>
-            <th>Voltage %</th>
-            <th>Applied voltage</th>
-            <th>Measured current (A)</th>
-          </tr>
-        </thead>
+      {/* RECORD OF MEASUREMENT OF IR VALUES */}
+      <div style={{ marginTop: "40px", textAlign: "center", fontWeight: 900 }}>
+        RECORD OF MEASUREMENT OF IR VALUES
+      </div>
+
+      <table className="form-table" style={{ marginTop: "12px" }}>
         <tbody>
           <tr>
-            <td>
-              <strong>20%</strong>
-            </td>
-            <td>
+            <td style={{ width: "15%", fontWeight: 800 }}>Date :</td>
+            <td style={{ width: "20%" }}>
               <input
-                type="text"
-                value={formData.phase31_knee_20percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_appliedVoltage: e.target.value })}
+                type="date"
+                value={formData.irDate || ""}
+                onChange={(e) => setFormData({ ...formData, irDate: e.target.value })}
               />
             </td>
-            <td>
+            <td style={{ width: "15%", fontWeight: 800 }}>Time:</td>
+            <td style={{ width: "20%" }}>
               <input
-                type="text"
-                value={formData.phase31_knee_20percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>40%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_40percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_40percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_40percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_40percent_measuredCurrent: e.target.value })}
+                type="time"
+                value={formData.irTime || ""}
+                onChange={(e) => setFormData({ ...formData, irTime: e.target.value })}
               />
             </td>
           </tr>
+
           <tr>
-            <td>
-              <strong>60%</strong>
-            </td>
+            <td style={{ fontWeight: 800 }}>Amb. Temp :</td>
             <td>
               <input
                 type="text"
-                value={formData.phase31_knee_60percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_60percent_appliedVoltage: e.target.value })}
+                value={formData.irAmbTemp || ""}
+                onChange={(e) => setFormData({ ...formData, irAmbTemp: e.target.value })}
               />
             </td>
+            <td style={{ fontWeight: 800 }}>Make :</td>
             <td>
               <input
                 type="text"
-                value={formData.phase31_knee_60percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_60percent_measuredCurrent: e.target.value })}
+                value={formData.irMake || ""}
+                onChange={(e) => setFormData({ ...formData, irMake: e.target.value })}
               />
             </td>
           </tr>
+
           <tr>
-            <td>
-              <strong>80%</strong>
-            </td>
+            <td style={{ fontWeight: 800 }}>Oil Temp. :</td>
             <td>
               <input
                 type="text"
-                value={formData.phase31_knee_80percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_80percent_appliedVoltage: e.target.value })}
+                value={formData.irOilTemp || ""}
+                onChange={(e) => setFormData({ ...formData, irOilTemp: e.target.value })}
               />
             </td>
+            <td style={{ fontWeight: 800 }}>Sr. No. :</td>
             <td>
               <input
                 type="text"
-                value={formData.phase31_knee_80percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_80percent_measuredCurrent: e.target.value })}
+                value={formData.irSrNo || ""}
+                onChange={(e) => setFormData({ ...formData, irSrNo: e.target.value })}
               />
             </td>
           </tr>
+
           <tr>
-            <td>
-              <strong>100%</strong>
-            </td>
+            <td style={{ fontWeight: 800 }}>Wdg. Temp. :</td>
             <td>
               <input
                 type="text"
-                value={formData.phase31_knee_100percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_100percent_appliedVoltage: e.target.value })}
+                value={formData.irWdgTemp || ""}
+                onChange={(e) => setFormData({ ...formData, irWdgTemp: e.target.value })}
               />
             </td>
+            <td style={{ fontWeight: 800 }}>Range :</td>
             <td>
               <input
                 type="text"
-                value={formData.phase31_knee_100percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_100percent_measuredCurrent: e.target.value })}
+                value={formData.irRange || ""}
+                onChange={(e) => setFormData({ ...formData, irRange: e.target.value })}
               />
             </td>
           </tr>
+
           <tr>
-            <td>
-              <strong>110%</strong>
-            </td>
+            <td style={{ fontWeight: 800 }}>Relative Humidity :</td>
             <td>
               <input
                 type="text"
-                value={formData.phase31_knee_110percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_110percent_appliedVoltage: e.target.value })}
+                value={formData.irRelativeHumidity || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, irRelativeHumidity: e.target.value })
+                }
               />
             </td>
+            <td style={{ fontWeight: 800 }}>Voltage Level :</td>
             <td>
               <input
                 type="text"
-                value={formData.phase31_knee_110percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_110percent_measuredCurrent: e.target.value })}
+                value={formData.irVoltageLevel || ""}
+                onChange={(e) => setFormData({ ...formData, irVoltageLevel: e.target.value })}
               />
             </td>
           </tr>
         </tbody>
       </table>
 
-      {/* Phase 3.2 Section */}
-      <h3 style={{ textAlign: "center", marginTop: "40px" }}>Phase 3.2</h3>
-
-      <h4>CT Ratio CORE – S1-S2</h4>
-      <table className="form-table">
+      {/* IR VALUES TABLE */}
+      <table className="form-table" style={{ marginTop: "26px" }}>
         <thead>
           <tr>
-            <th>Current %</th>
-            <th>Applied primary Current (A)</th>
-            <th>Measured secondary current (A)</th>
+            <th style={{ width: "26%" }}></th>
+            <th style={{ width: "18%" }}>15 Sec (MΩ)</th>
+            <th style={{ width: "18%" }}>60 Sec (MΩ)</th>
+            <th style={{ width: "38%" }}>Ratio of IR 60/IR 15</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>
-              <strong>20%</strong>
-            </td>
+            <td style={{ fontWeight: 800 }}>HV-Earth</td>
             <td>
               <input
                 type="text"
-                value={formData.phase32_20percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_20percent_appliedCurrent: e.target.value })}
+                value={formData.hvEarth_15sec || ""}
+                onChange={(e) => setFormData({ ...formData, hvEarth_15sec: e.target.value })}
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.phase32_20percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_20percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>40%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_40percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_40percent_appliedCurrent: e.target.value })}
+                value={formData.hvEarth_60sec || ""}
+                onChange={(e) => setFormData({ ...formData, hvEarth_60sec: e.target.value })}
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.phase32_40percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_40percent_measuredCurrent: e.target.value })}
+                value={formData.hvEarth_ratio || ""}
+                onChange={(e) => setFormData({ ...formData, hvEarth_ratio: e.target.value })}
               />
             </td>
           </tr>
-          <tr>
-            <td>
-              <strong>60%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_60percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_60percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_60percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_60percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>80%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_80percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_80percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_80percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_80percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>100%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_100percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_100percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_100percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_100percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
 
-      <h4>Knee point Voltage</h4>
-      <table className="form-table">
-        <thead>
           <tr>
-            <th>Voltage %</th>
-            <th>Applied voltage</th>
-            <th>Measured current (A)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <strong>20%</strong>
-            </td>
+            <td style={{ fontWeight: 800 }}>LV1-Earth</td>
             <td>
               <input
                 type="text"
-                value={formData.phase32_knee_20percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_appliedVoltage: e.target.value })}
+                value={formData.lv1Earth_15sec || ""}
+                onChange={(e) => setFormData({ ...formData, lv1Earth_15sec: e.target.value })}
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.phase32_knee_20percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_measuredCurrent: e.target.value })}
+                value={formData.lv1Earth_60sec || ""}
+                onChange={(e) => setFormData({ ...formData, lv1Earth_60sec: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.lv1Earth_ratio || ""}
+                onChange={(e) => setFormData({ ...formData, lv1Earth_ratio: e.target.value })}
               />
             </td>
           </tr>
-          <tr>
-            <td>
-              <strong>40%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_40percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_40percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_40percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_40percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>60%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_60percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_60percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_60percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_60percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>80%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_80percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_80percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_80percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_80percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>100%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_100percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_100percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_100percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_100percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>110%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_110percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_110percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_110percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_110percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
 
-      {/* WTI Section */}
-      <h3 style={{ textAlign: "center", marginTop: "40px" }}>WTI</h3>
+          <tr>
+            <td style={{ fontWeight: 800 }}>LV2-Earth</td>
+            <td>
+              <input
+                type="text"
+                value={formData.lv2Earth_15sec || ""}
+                onChange={(e) => setFormData({ ...formData, lv2Earth_15sec: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.lv2Earth_60sec || ""}
+                onChange={(e) => setFormData({ ...formData, lv2Earth_60sec: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.lv2Earth_ratio || ""}
+                onChange={(e) => setFormData({ ...formData, lv2Earth_ratio: e.target.value })}
+              />
+            </td>
+          </tr>
 
-      <h4>CT Ratio CORE - S1-S2, S1-S3, S1-S4</h4>
-      <table className="form-table">
-        <thead>
           <tr>
-            <th>Current %</th>
-            <th>Applied primary Current (A)</th>
-            <th colSpan="3">Measured secondary current (A)</th>
-          </tr>
-          <tr>
-            <th></th>
-            <th></th>
-            <th>S1-S2</th>
-            <th>S1-S3</th>
-            <th>S1-S4</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <strong>20%</strong>
-            </td>
+            <td style={{ fontWeight: 800 }}>HV-LV1</td>
             <td>
               <input
                 type="text"
-                value={formData.wti_20percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_20percent_appliedCurrent: e.target.value })}
+                value={formData.hvLv1_15sec || ""}
+                onChange={(e) => setFormData({ ...formData, hvLv1_15sec: e.target.value })}
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.wti_20percent_s1s2_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_20percent_s1s2_measuredCurrent: e.target.value })}
+                value={formData.hvLv1_60sec || ""}
+                onChange={(e) => setFormData({ ...formData, hvLv1_60sec: e.target.value })}
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.wti_20percent_s1s3_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_20percent_s1s3_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_20percent_s1s4_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_20percent_s1s4_measuredCurrent: e.target.value })}
+                value={formData.hvLv1_ratio || ""}
+                onChange={(e) => setFormData({ ...formData, hvLv1_ratio: e.target.value })}
               />
             </td>
           </tr>
+
           <tr>
-            <td>
-              <strong>40%</strong>
-            </td>
+            <td style={{ fontWeight: 800 }}>HV-LV2</td>
             <td>
               <input
                 type="text"
-                value={formData.wti_40percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_40percent_appliedCurrent: e.target.value })}
+                value={formData.hvLv2_15sec || ""}
+                onChange={(e) => setFormData({ ...formData, hvLv2_15sec: e.target.value })}
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.wti_40percent_s1s2_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s2_measuredCurrent: e.target.value })}
+                value={formData.hvLv2_60sec || ""}
+                onChange={(e) => setFormData({ ...formData, hvLv2_60sec: e.target.value })}
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.wti_40percent_s1s3_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s3_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_40percent_s1s4_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s4_measuredCurrent: e.target.value })}
+                value={formData.hvLv2_ratio || ""}
+                onChange={(e) => setFormData({ ...formData, hvLv2_ratio: e.target.value })}
               />
             </td>
           </tr>
+
           <tr>
-            <td>
-              <strong>60%</strong>
-            </td>
+            <td style={{ fontWeight: 800 }}>LV1-LV2</td>
             <td>
               <input
                 type="text"
-                value={formData.wti_60percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_60percent_appliedCurrent: e.target.value })}
+                value={formData.lv1Lv2_15sec || ""}
+                onChange={(e) => setFormData({ ...formData, lv1Lv2_15sec: e.target.value })}
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.wti_60percent_s1s2_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_60percent_s1s2_measuredCurrent: e.target.value })}
+                value={formData.lv1Lv2_60sec || ""}
+                onChange={(e) => setFormData({ ...formData, lv1Lv2_60sec: e.target.value })}
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.wti_60percent_s1s3_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_60percent_s1s3_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_60percent_s1s4_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_60percent_s1s4_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>80%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_80percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_80percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_80percent_s1s2_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_80percent_s1s2_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_80percent_s1s3_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_80percent_s1s3_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_80percent_s1s4_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_80percent_s1s4_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>100%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_100percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_100percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_100percent_s1s2_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_100percent_s1s2_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_100percent_s1s3_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_100percent_s1s3_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_100percent_s1s4_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_100percent_s1s4_measuredCurrent: e.target.value })}
+                value={formData.lv1Lv2_ratio || ""}
+                onChange={(e) => setFormData({ ...formData, lv1Lv2_ratio: e.target.value })}
               />
             </td>
           </tr>
@@ -5632,7 +5221,7 @@ function SFRATestRecordV63Form({ onSubmit, onPrevious, initialData, isLastFormOf
       </table>
 
       <PhotoUploadSection
-        title="CT Ratio kit calibration"
+        title="IR tester, calibration report, 60 sec IR value."
         photos={photoRequirements}
         onPhotoChange={handlePhotoChange}
       />
@@ -5651,8 +5240,7 @@ function SFRATestRecordV63Form({ onSubmit, onPrevious, initialData, isLastFormOf
   )
 }
 
-// Form 5: Pre Erection Ratio Test of Turret CTs - Phase 3 (V Connected 63 MVA)
-function PreErectionRatioTestPhase3Form({
+export function Stage5Form2({
   onSubmit,
   onPrevious,
   initialData,
@@ -5661,79 +5249,44 @@ function PreErectionRatioTestPhase3Form({
   projectName,
 }) {
   const [formData, setFormData] = useState({
-    // Phase 3.1 CT Ratio CORE - S1-S2
-    phase31_20percent_appliedCurrent: "",
-    phase31_20percent_measuredCurrent: "",
-    phase31_40percent_appliedCurrent: "",
-    phase31_40percent_measuredCurrent: "",
-    phase31_60percent_appliedCurrent: "",
-    phase31_60percent_measuredCurrent: "",
-    phase31_80percent_appliedCurrent: "",
-    phase31_80percent_measuredCurrent: "",
-    phase31_100percent_appliedCurrent: "",
-    phase31_100percent_measuredCurrent: "",
+    // Header fields
+    meterUsed: "",
+    modelSrNo: "",
+    date: "",
+    time: "",
+    ambient: "",
+    oti: "",
+    wti: "",
+    vectorGroup: "",
+    mf: "",
 
-    // Phase 3.1 Knee point Voltage
-    phase31_knee_20percent_appliedVoltage: "",
-    phase31_knee_20percent_measuredCurrent: "",
-    phase31_knee_40percent_appliedVoltage: "",
-    phase31_knee_40percent_measuredCurrent: "",
-    phase31_knee_60percent_appliedVoltage: "",
-    phase31_knee_60percent_measuredCurrent: "",
-    phase31_knee_80percent_appliedVoltage: "",
-    phase31_knee_80percent_measuredCurrent: "",
-    phase31_knee_100percent_appliedVoltage: "",
-    phase31_knee_100percent_measuredCurrent: "",
-    phase31_knee_110percent_appliedVoltage: "",
-    phase31_knee_110percent_measuredCurrent: "",
+    // First ratio set: 1.1 – 1.2 in between 2.1 -2.2
+    ratioSet1: {
+      namePlateText: "1.1 – 1.2 in between 2.1 -2.2",
+      measuredText: "1.1 – 1.2 in between 2.1 -2.2",
+      taps: [
+        { tapNo: 1, namePlateRatio: "", measuredRatio: "", deviationPercent: "" },
+        { tapNo: 2, namePlateRatio: "", measuredRatio: "", deviationPercent: "" },
+        { tapNo: 3, namePlateRatio: "", measuredRatio: "", deviationPercent: "" },
+        { tapNo: 4, namePlateRatio: "", measuredRatio: "", deviationPercent: "" },
+        { tapNo: 5, namePlateRatio: "", measuredRatio: "", deviationPercent: "" },
+        { tapNo: 6, namePlateRatio: "", measuredRatio: "", deviationPercent: "" },
+      ],
+    },
 
-    // Phase 3.2 CT Ratio CORE - S1-S2
-    phase32_20percent_appliedCurrent: "",
-    phase32_20percent_measuredCurrent: "",
-    phase32_40percent_appliedCurrent: "",
-    phase32_40percent_measuredCurrent: "",
-    phase32_60percent_appliedCurrent: "",
-    phase32_60percent_measuredCurrent: "",
-    phase32_80percent_appliedCurrent: "",
-    phase32_80percent_measuredCurrent: "",
-    phase32_100percent_appliedCurrent: "",
-    phase32_100percent_measuredCurrent: "",
-
-    // Phase 3.2 Knee point Voltage
-    phase32_knee_20percent_appliedVoltage: "",
-    phase32_knee_20percent_measuredCurrent: "",
-    phase32_knee_40percent_appliedVoltage: "",
-    phase32_knee_40percent_measuredCurrent: "",
-    phase32_knee_60percent_appliedVoltage: "",
-    phase32_knee_60percent_measuredCurrent: "",
-    phase32_knee_80percent_appliedVoltage: "",
-    phase32_knee_80percent_measuredCurrent: "",
-    phase32_knee_100percent_appliedVoltage: "",
-    phase32_knee_100percent_measuredCurrent: "",
-    phase32_knee_110percent_appliedVoltage: "",
-    phase32_knee_110percent_measuredCurrent: "",
-
-    // WTI CT Ratio CORE - S1-S2, S1-S3, S1-S4
-    wti_20percent_appliedCurrent: "",
-    wti_20percent_s1s2_measuredCurrent: "",
-    wti_20percent_s1s3_measuredCurrent: "",
-    wti_20percent_s1s4_measuredCurrent: "",
-    wti_40percent_appliedCurrent: "",
-    wti_40percent_s1s2_measuredCurrent: "",
-    wti_40percent_s1s3_measuredCurrent: "",
-    wti_40percent_s1s4_measuredCurrent: "",
-    wti_60percent_appliedCurrent: "",
-    wti_60percent_s1s2_measuredCurrent: "",
-    wti_60percent_s1s3_measuredCurrent: "",
-    wti_60percent_s1s4_measuredCurrent: "",
-    wti_80percent_appliedCurrent: "",
-    wti_80percent_s1s2_measuredCurrent: "",
-    wti_80percent_s1s3_measuredCurrent: "",
-    wti_80percent_s1s4_measuredCurrent: "",
-    wti_100percent_appliedCurrent: "",
-    wti_100percent_s1s2_measuredCurrent: "",
-    wti_100percent_s1s3_measuredCurrent: "",
-    wti_100percent_s1s4_measuredCurrent: "",
+    // Second ratio set: 1.1 – 1.2 in between 3.1 -3.2
+    ratioSet2: {
+      namePlateText: "1.1 – 1.2 in between 3.1 -3.2",
+      measuredText: "1.1 – 1.2 in between 3.1 -3.2",
+      taps: [
+        { tapNo: 1, namePlateRatio: "", measuredRatio: "", deviationPercent: "" },
+        { tapNo: 2, namePlateRatio: "", measuredRatio: "", deviationPercent: "" },
+        { tapNo: 3, namePlateRatio: "", measuredRatio: "", deviationPercent: "" },
+        { tapNo: 4, namePlateRatio: "", measuredRatio: "", deviationPercent: "" },
+        { tapNo: 5, namePlateRatio: "", measuredRatio: "", deviationPercent: "" },
+        { tapNo: 6, namePlateRatio: "", measuredRatio: "", deviationPercent: "" },
+      ],
+    },
 
     photos: {},
     ...initialData,
@@ -5742,15 +5295,18 @@ function PreErectionRatioTestPhase3Form({
   useEffect(() => {
     const fetchFormData = async () => {
       try {
-        const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage1Form5`, {
-          params: {
-            companyName: companyName,
-            projectName: projectName,
+        const response = await axios.get(
+          `${BACKEND_API_BASE_URL}/api/vconnectData/getTable/Stage5Form2`,
+          {
+            params: {
+              companyName,
+              projectName,
+            },
           },
-        })
+        )
         if (response.data && response.data.data) {
-          console.log("Data fetched from DB for stage1Form5")
-          setFormData(response.data.data)
+          console.log("Data fetched from DB for Stage5Form2")
+          setFormData((prev) => ({ ...prev, ...response.data.data }))
         } else {
           console.log("There is no data in DB.")
         }
@@ -5766,6 +5322,18 @@ function PreErectionRatioTestPhase3Form({
     onSubmit(formData)
   }
 
+  const setTapValue = (setKey, index, field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [setKey]: {
+        ...(prev[setKey] || {}),
+        taps: (prev[setKey]?.taps || []).map((row, i) =>
+          i === index ? { ...row, [field]: value } : row,
+        ),
+      },
+    }))
+  }
+
   const handlePhotoChange = (key, file) => {
     setFormData((prev) => ({
       ...prev,
@@ -5773,681 +5341,196 @@ function PreErectionRatioTestPhase3Form({
     }))
   }
 
-  const photoRequirements = [{ key: "ctRatioKit", label: "CT Ratio kit calibration" }]
+  const photoRequirements = [
+    { key: "ratioTestSetup", label: "Ratio test setup" },
+    { key: "ratioTestReadings", label: "Ratio test meter readings" },
+  ]
+
+  const renderRatioBlock = (setKey, index) => {
+    const set = formData[setKey] || {}
+    const defaultNameText =
+      index === 0
+        ? "1.1 – 1.2 in between 2.1 -2.2"
+        : "1.1 – 1.2 in between 3.1 -3.2"
+
+    return (
+      <div key={setKey} style={{ marginTop: index === 0 ? "24px" : "32px" }}>
+        <table className="form-table">
+          <thead>
+            <tr>
+              <th style={{ width: "10%" }}>TAP NO</th>
+              <th style={{ width: "30%" }}>Name Plate Ratio</th>
+              <th style={{ width: "30%" }}>Measured ratio</th>
+              <th style={{ width: "30%" }}>Deviation %</th>
+            </tr>
+            <tr>
+              <th></th>
+              <th style={{ fontWeight: 700 }}>
+                {set.namePlateText || defaultNameText}
+              </th>
+              <th style={{ fontWeight: 700 }}>
+                {set.measuredText || defaultNameText}
+              </th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {(set.taps || []).map((row, idx) => (
+              <tr key={`${setKey}-tap-${row.tapNo || idx + 1}`}>
+                <td style={{ textAlign: "center", fontWeight: 700 }}>
+                  {row.tapNo || idx + 1}
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.namePlateRatio || ""}
+                    onChange={(e) =>
+                      setTapValue(setKey, idx, "namePlateRatio", e.target.value)
+                    }
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.measuredRatio || ""}
+                    onChange={(e) =>
+                      setTapValue(setKey, idx, "measuredRatio", e.target.value)
+                    }
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.deviationPercent || ""}
+                    onChange={(e) =>
+                      setTapValue(setKey, idx, "deviationPercent", e.target.value)
+                    }
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )
+  }
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
       <div className="company-header">
-        <h2>VISHVAS POWER ENGINEERING SERVICES PVT. LTD. NAGPUR</h2>
-        <h3>Pre erection Ratio test of turret CTs</h3>
+        <h2>RATIO TEST</h2>
       </div>
 
-      {/* Phase 3.1 Section */}
-      <h3 style={{ textAlign: "center", marginTop: "30px" }}>Phase 3.1</h3>
-
-      <h4>CT Ratio CORE – S1-S2</h4>
+      {/* Header section */}
       <table className="form-table">
-        <thead>
-          <tr>
-            <th>Current %</th>
-            <th>Applied primary Current (A)</th>
-            <th>Measured secondary current (A)</th>
-          </tr>
-        </thead>
         <tbody>
           <tr>
-            <td>
-              <strong>20%</strong>
-            </td>
-            <td>
+            <td style={{ width: "20%", fontWeight: 800 }}>METER USED</td>
+            <td style={{ width: "30%" }}>
               <input
                 type="text"
-                value={formData.phase31_20percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_20percent_appliedCurrent: e.target.value })}
+                value={formData.meterUsed || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, meterUsed: e.target.value })
+                }
               />
             </td>
-            <td>
+            <td style={{ width: "20%", fontWeight: 800 }}>DATE:</td>
+            <td style={{ width: "30%" }}>
               <input
-                type="text"
-                value={formData.phase31_20percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_20percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>40%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_40percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_40percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_40percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_40percent_measuredCurrent: e.target.value })}
+                type="date"
+                value={formData.date || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, date: e.target.value })
+                }
               />
             </td>
           </tr>
           <tr>
-            <td>
-              <strong>60%</strong>
-            </td>
+            <td style={{ fontWeight: 800 }}>MODEL & S. NO.</td>
             <td>
               <input
                 type="text"
-                value={formData.phase31_60percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_60percent_appliedCurrent: e.target.value })}
+                value={formData.modelSrNo || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, modelSrNo: e.target.value })
+                }
               />
             </td>
+            <td style={{ fontWeight: 800 }}>TIME :</td>
             <td>
               <input
-                type="text"
-                value={formData.phase31_60percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_60percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>80%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_80percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_80percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_80percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_80percent_measuredCurrent: e.target.value })}
+                type="time"
+                value={formData.time || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, time: e.target.value })
+                }
               />
             </td>
           </tr>
           <tr>
-            <td>
-              <strong>100%</strong>
-            </td>
+            <td style={{ fontWeight: 800 }}>OTI (°C)</td>
             <td>
               <input
                 type="text"
-                value={formData.phase31_100percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_100percent_appliedCurrent: e.target.value })}
+                value={formData.oti || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, oti: e.target.value })
+                }
               />
             </td>
+            <td style={{ fontWeight: 800 }}>WTI (°C)</td>
             <td>
               <input
                 type="text"
-                value={formData.phase31_100percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_100percent_measuredCurrent: e.target.value })}
+                value={formData.wti || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, wti: e.target.value })
+                }
+              />
+            </td>
+          </tr>
+          <tr>
+            <td style={{ fontWeight: 800 }}>AMBIENT:</td>
+            <td>
+              <input
+                type="text"
+                value={formData.ambient || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, ambient: e.target.value })
+                }
+              />
+            </td>
+            <td colSpan={2} style={{ textAlign: "center", fontWeight: 800 }}>
+              VECTOR GROUP
+              <input
+                type="text"
+                value={formData.vectorGroup || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, vectorGroup: e.target.value })
+                }
+                style={{ marginLeft: "8px", width: "120px" }}
+              />
+              &nbsp; M.F.
+              <input
+                type="text"
+                value={formData.mf || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, mf: e.target.value })
+                }
+                style={{ marginLeft: "8px", width: "80px" }}
               />
             </td>
           </tr>
         </tbody>
       </table>
 
-      <h4>Knee point Voltage</h4>
-      <table className="form-table">
-        <thead>
-          <tr>
-            <th>Voltage %</th>
-            <th>Applied voltage</th>
-            <th>Measured current (A)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <strong>20%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_20percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_20percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_20percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>40%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_40percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_40percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_40percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_40percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>60%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_60percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_60percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_60percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_60percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>80%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_80percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_80percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_80percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_80percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>100%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_100percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_100percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_100percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_100percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>110%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_110percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_110percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase31_knee_110percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase31_knee_110percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      {/* Phase 3.2 Section */}
-      <h3 style={{ textAlign: "center", marginTop: "40px" }}>Phase 3.2</h3>
-
-      <h4>CT Ratio CORE – S1-S2</h4>
-      <table className="form-table">
-        <thead>
-          <tr>
-            <th>Current %</th>
-            <th>Applied primary Current (A)</th>
-            <th>Measured secondary current (A)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <strong>20%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_20percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_20percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_20percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_20percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>40%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_40percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_40percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_40percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_40percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>60%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_60percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_60percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_60percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_60percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>80%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_80percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_80percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_80percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_80percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>100%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_100percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_100percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_100percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_100percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h4>Knee point Voltage</h4>
-      <table className="form-table">
-        <thead>
-          <tr>
-            <th>Voltage %</th>
-            <th>Applied voltage</th>
-            <th>Measured current (A)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <strong>20%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_20percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_20percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_20percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>40%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_40percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_40percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_40percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_40percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>60%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_60percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_60percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_60percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_60percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>80%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_80percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_80percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_80percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_80percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>100%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_100percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_100percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_100percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_100percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>110%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_110percent_appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_110percent_appliedVoltage: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.phase32_knee_110percent_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, phase32_knee_110percent_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      {/* WTI Section */}
-      <h3 style={{ textAlign: "center", marginTop: "40px" }}>WTI</h3>
-
-      <h4>CT Ratio CORE - S1-S2, S1-S3, S1-S4</h4>
-      <table className="form-table">
-        <thead>
-          <tr>
-            <th>Current %</th>
-            <th>Applied primary Current (A)</th>
-            <th colSpan="3">Measured secondary current (A)</th>
-          </tr>
-          <tr>
-            <th></th>
-            <th></th>
-            <th>S1-S2</th>
-            <th>S1-S3</th>
-            <th>S1-S4</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <strong>20%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_20percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_20percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_20percent_s1s2_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_20percent_s1s2_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_20percent_s1s3_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_20percent_s1s3_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_20percent_s1s4_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_20percent_s1s4_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>40%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_40percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_40percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_40percent_s1s2_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s2_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_40percent_s1s3_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s3_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_40percent_s1s4_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_40percent_s1s4_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>60%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_60percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_60percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_60percent_s1s2_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_60percent_s1s2_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_60percent_s1s3_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_60percent_s1s3_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_60percent_s1s4_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_60percent_s1s4_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>80%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_80percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_80percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_80percent_s1s2_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_80percent_s1s2_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_80percent_s1s3_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_80percent_s1s3_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_80percent_s1s4_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_80percent_s1s4_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>100%</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_100percent_appliedCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_100percent_appliedCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_100percent_s1s2_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_100percent_s1s2_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_100percent_s1s3_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_100percent_s1s3_measuredCurrent: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.wti_100percent_s1s4_measuredCurrent}
-                onChange={(e) => setFormData({ ...formData, wti_100percent_s1s4_measuredCurrent: e.target.value })}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      {/* Two ratio blocks */}
+      {renderRatioBlock("ratioSet1", 0)}
+      {renderRatioBlock("ratioSet2", 1)}
 
       <PhotoUploadSection
-        title="CT Ratio kit calibration"
+        title="Ratio test – tap wise readings and setup."
         photos={photoRequirements}
         onPhotoChange={handlePhotoChange}
       />
@@ -6466,8 +5549,7 @@ function PreErectionRatioTestPhase3Form({
   )
 }
 
-// Form 7: Magnetizing Current Test (V Connected 63 MVA)
-function MagnetizingCurrentTestForm({
+export function Stage5Form3({
   onSubmit,
   onPrevious,
   initialData,
@@ -6475,17 +5557,26 @@ function MagnetizingCurrentTestForm({
   companyName,
   projectName,
 }) {
+  // Rows for HV side (TAP 1–6)
+  const hvTapRows = [1, 2, 3, 4, 5, 6]
+
   const [formData, setFormData] = useState({
     appliedVoltage: "",
     date: "",
     time: "",
     meterMakeSrNo: "",
 
-    // Magnetizing Current Test
-    test11_12_measuredCurrent11: "",
-    test11_12_measuredCurrent12_21: "",
-    test12_21_measuredCurrent12: "",
-    test12_21_measuredCurrent11_21: "",
+    // Magnetizing current measurement in milliampere
+    hvMeasurements: hvTapRows.map((tapNo) => ({
+      tapNo,
+      hvVoltage: "",
+      hvCurrent: "",
+    })),
+
+    lv1Voltage: "",
+    lv1Current: "",
+    lv2Voltage: "",
+    lv2Current: "",
 
     photos: {},
     ...initialData,
@@ -6494,6 +5585,7 @@ function MagnetizingCurrentTestForm({
   useEffect(() => {
     const fetchFormData = async () => {
       try {
+        // Persisted name kept as Stage5Form7 for backward compatibility
         const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage5Form7`, {
           params: {
             companyName: companyName,
@@ -6518,6 +5610,15 @@ function MagnetizingCurrentTestForm({
     onSubmit(formData)
   }
 
+  const setHvMeasurement = (index, field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      hvMeasurements: (prev.hvMeasurements || []).map((row, i) =>
+        i === index ? { ...row, [field]: value } : row,
+      ),
+    }))
+  }
+
   const handlePhotoChange = (key, file) => {
     setFormData((prev) => ({
       ...prev,
@@ -6530,41 +5631,50 @@ function MagnetizingCurrentTestForm({
   return (
     <form onSubmit={handleSubmit} className="form-container">
       <div className="company-header">
-        <h2>TYPE OF TEST – MAGNETISING CURRENT TEST</h2>
+        <h2>TYPE OF TEST – MAGNETISING CURRENT TEST LV and HV</h2>
       </div>
 
       <table className="form-table">
         <tbody>
           <tr>
-            <td>
-              <strong>APPLIED VOLTAGE:</strong>
+            <td style={{ width: "18%" }}>
+              <strong>APPLIED VOLTAGE :</strong>
             </td>
-            <td>
+            <td style={{ width: "18%" }}>
               <input
                 type="text"
-                value={formData.appliedVoltage}
-                onChange={(e) => setFormData({ ...formData, appliedVoltage: e.target.value })}
+                value={formData.appliedVoltage || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, appliedVoltage: e.target.value })
+                }
                 placeholder="VOLTS"
               />
             </td>
-            <td>
+            <td style={{ width: "14%" }}>
+              <strong>VOLTS</strong>
+            </td>
+            <td style={{ width: "18%" }}>
               <strong>DATE:</strong>
             </td>
-            <td>
+            <td style={{ width: "16%" }}>
               <input
                 type="date"
-                value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                value={formData.date || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, date: e.target.value })
+                }
               />
             </td>
-            <td>
+            <td style={{ width: "8%" }}>
               <strong>TIME :</strong>
             </td>
-            <td>
+            <td style={{ width: "18%" }}>
               <input
                 type="time"
-                value={formData.time}
-                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                value={formData.time || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, time: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -6572,78 +5682,128 @@ function MagnetizingCurrentTestForm({
             <td>
               <strong>METER MAKE SR. NO.</strong>
             </td>
-            <td colSpan="5">
+            <td colSpan={6}>
               <input
                 type="text"
-                value={formData.meterMakeSrNo}
-                onChange={(e) => setFormData({ ...formData, meterMakeSrNo: e.target.value })}
+                value={formData.meterMakeSrNo || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, meterMakeSrNo: e.target.value })
+                }
               />
             </td>
           </tr>
         </tbody>
       </table>
 
+      <div
+        style={{
+          marginTop: "16px",
+          fontWeight: 900,
+          padding: "6px 8px",
+          border: "1px solid #000",
+        }}
+      >
+        Magnetizing current measurement in milliampere
+      </div>
+
+      {/* HV SIDE TABLE */}
+      <table className="form-table" style={{ marginTop: "10px" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "15%" }}>TAP NO.</th>
+            <th style={{ width: "45%" }}>VOLTAGE APPLIED ON HV SIDE</th>
+            <th style={{ width: "40%" }}>CURRENT MEASURED ON HV SIDE</th>
+          </tr>
+        </thead>
+        <tbody>
+          {(formData.hvMeasurements || hvTapRows.map((tap) => ({ tapNo: tap }))).map(
+            (row, idx) => (
+              <tr key={row.tapNo ?? idx + 1}>
+                <td style={{ textAlign: "center", fontWeight: 700 }}>
+                  {row.tapNo}
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.hvVoltage || ""}
+                    onChange={(e) =>
+                      setHvMeasurement(idx, "hvVoltage", e.target.value)
+                    }
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.hvCurrent || ""}
+                    onChange={(e) =>
+                      setHvMeasurement(idx, "hvCurrent", e.target.value)
+                    }
+                  />
+                </td>
+              </tr>
+            ),
+          )}
+        </tbody>
+      </table>
+
+      {/* LV1 SIDE */}
       <table className="form-table" style={{ marginTop: "20px" }}>
         <thead>
           <tr>
-            <th>APPLIED VOLTAGE</th>
-            <th colSpan="2">Measured Current</th>
+            <th style={{ width: "50%" }}>VOLTAGE APPLIED ON LV1 SIDE</th>
+            <th style={{ width: "50%" }}>CURRENT MEASURED ON LV1 SIDE</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>
-              <strong>1.1 – 1.2</strong>
-            </td>
-            <td>
-              <strong>1.1</strong>
-            </td>
-            <td>
-              <strong>1.2 – 2.1 SHORTED</strong>
-            </td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>
               <input
                 type="text"
-                value={formData.test11_12_measuredCurrent11}
-                onChange={(e) => setFormData({ ...formData, test11_12_measuredCurrent11: e.target.value })}
+                value={formData.lv1Voltage || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, lv1Voltage: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.test11_12_measuredCurrent12_21}
-                onChange={(e) => setFormData({ ...formData, test11_12_measuredCurrent12_21: e.target.value })}
+                value={formData.lv1Current || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, lv1Current: e.target.value })
+                }
               />
             </td>
           </tr>
+        </tbody>
+      </table>
+
+      {/* LV2 SIDE */}
+      <table className="form-table" style={{ marginTop: "10px" }}>
+        <thead>
           <tr>
-            <td>
-              <strong>1.2 – 2.1</strong>
-            </td>
-            <td>
-              <strong>1.2</strong>
-            </td>
-            <td>
-              <strong>1.1 – 2.1 SHORTED</strong>
-            </td>
+            <th style={{ width: "50%" }}>VOLTAGE APPLIED ON LV2 SIDE</th>
+            <th style={{ width: "50%" }}>CURRENT MEASURED ON LV2 SIDE</th>
           </tr>
+        </thead>
+        <tbody>
           <tr>
-            <td></td>
             <td>
               <input
                 type="text"
-                value={formData.test12_21_measuredCurrent12}
-                onChange={(e) => setFormData({ ...formData, test12_21_measuredCurrent12: e.target.value })}
+                value={formData.lv2Voltage || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, lv2Voltage: e.target.value })
+                }
               />
             </td>
             <td>
               <input
                 type="text"
-                value={formData.test12_21_measuredCurrent11_21}
-                onChange={(e) => setFormData({ ...formData, test12_21_measuredCurrent11_21: e.target.value })}
+                value={formData.lv2Current || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, lv2Current: e.target.value })
+                }
               />
             </td>
           </tr>
@@ -6670,14 +5830,28 @@ function MagnetizingCurrentTestForm({
   )
 }
 
-// Form 8: Polarity Test (V Connected 63 MVA)
-function PolarityTestForm({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
+export function Stage5Form4({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
   const [formData, setFormData] = useState({
-    // Polarity Test
-    condition1_terminal1: "",
-    condition1_terminal2: "",
-    condition2_terminal1: "",
-    condition2_terminal2: "",
+    // Polarity Test – Condition 1 (2.1/2.2)
+    condition1_11_12_22: "",
+    condition1_21_22_22: "",
+    condition1_11_22_22: "",
+    condition1_calc_22: "",
+    // Polarity Test – Condition 2 (2.1/2.2)
+    condition2_11_12_22: "",
+    condition2_21_22_22: "",
+    condition2_11_21_22: "",
+    condition2_calc_22: "",
+    // Polarity Test – Condition 1 (3.1/3.2)
+    condition1_11_12_32: "",
+    condition1_31_32_32: "",
+    condition1_11_32_32: "",
+    condition1_calc_32: "",
+    // Polarity Test – Condition 2 (3.1/3.2)
+    condition2_11_12_32: "",
+    condition2_31_32_32: "",
+    condition2_11_31_32: "",
+    condition2_calc_32: "",
 
     photos: {},
     ...initialData,
@@ -6725,62 +5899,296 @@ function PolarityTestForm({ onSubmit, onPrevious, initialData, isLastFormOfStage
         <h2>TYPE OF TEST – POLARITY TEST</h2>
       </div>
 
-      <h3 style={{ textAlign: "center", marginTop: "30px" }}>Condition 1</h3>
-      <table className="form-table">
+      {/* CONDITION 1 – 2.1 / 2.2 */}
+      <table className="form-table" style={{ marginTop: "20px" }}>
+        <thead>
+          <tr>
+            <th colSpan={2} style={{ textAlign: "center", fontWeight: 900 }}>
+              CONDITION 1
+            </th>
+          </tr>
+        </thead>
         <tbody>
           <tr>
-            <td>
-              <strong>Terminal 1</strong>
+            {/* Left section with expressions & inputs */}
+            <td style={{ width: "55%", padding: 0, verticalAlign: "top" }}>
+              <table className="form-table" style={{ marginTop: 0 }}>
+                <tbody>
+                  <tr>
+                    <td style={{ width: "55%", fontWeight: 700 }}>1.1 – 1.2 =</td>
+                    <td style={{ width: "45%" }}>
+                      <input
+                        type="text"
+                        value={formData.condition1_11_12_22 || ""}
+                        onChange={(e) =>
+                          setFormData({ ...formData, condition1_11_12_22: e.target.value })
+                        }
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: 700 }}>2.1 – 2.2 =</td>
+                    <td>
+                      <input
+                        type="text"
+                        value={formData.condition1_21_22_22 || ""}
+                        onChange={(e) =>
+                          setFormData({ ...formData, condition1_21_22_22: e.target.value })
+                        }
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: 700 }}>1.1 – 2.2 =</td>
+                    <td>
+                      <input
+                        type="text"
+                        value={formData.condition1_11_22_22 || ""}
+                        onChange={(e) =>
+                          setFormData({ ...formData, condition1_11_22_22: e.target.value })
+                        }
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: 700 }}>
+                      (1.1 – 2.2) = (1.1 – 1.2) + (2.1 – 2.2)
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        value={formData.condition1_calc_22 || ""}
+                        onChange={(e) =>
+                          setFormData({ ...formData, condition1_calc_22: e.target.value })
+                        }
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </td>
-            <td>
-              <input
-                type="text"
-                value={formData.condition1_terminal1}
-                onChange={(e) => setFormData({ ...formData, condition1_terminal1: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Terminal 2</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.condition1_terminal2}
-                onChange={(e) => setFormData({ ...formData, condition1_terminal2: e.target.value })}
-              />
-            </td>
+
+            {/* Right section left blank for diagram as in format */}
+            <td style={{ width: "45%", minHeight: "160px" }}></td>
           </tr>
         </tbody>
       </table>
 
-      <h3 style={{ textAlign: "center", marginTop: "30px" }}>Condition 2</h3>
-      <table className="form-table">
+      {/* CONDITION 2 – 2.1 / 2.2 */}
+      <table className="form-table" style={{ marginTop: "30px" }}>
+        <thead>
+          <tr>
+            <th colSpan={2} style={{ textAlign: "center", fontWeight: 900 }}>
+              CONDITION 2
+            </th>
+          </tr>
+        </thead>
         <tbody>
           <tr>
-            <td>
-              <strong>Terminal 1</strong>
+            {/* Left section with expressions & inputs */}
+            <td style={{ width: "55%", padding: 0, verticalAlign: "top" }}>
+              <table className="form-table" style={{ marginTop: 0 }}>
+                <tbody>
+                  <tr>
+                    <td style={{ width: "55%", fontWeight: 700 }}>1.1 – 1.2 =</td>
+                    <td style={{ width: "45%" }}>
+                      <input
+                        type="text"
+                        value={formData.condition2_11_12_22 || ""}
+                        onChange={(e) =>
+                          setFormData({ ...formData, condition2_11_12_22: e.target.value })
+                        }
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: 700 }}>2.1 – 2.2 =</td>
+                    <td>
+                      <input
+                        type="text"
+                        value={formData.condition2_21_22_22 || ""}
+                        onChange={(e) =>
+                          setFormData({ ...formData, condition2_21_22_22: e.target.value })
+                        }
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: 700 }}>1.1 – 2.1 =</td>
+                    <td>
+                      <input
+                        type="text"
+                        value={formData.condition2_11_21_22 || ""}
+                        onChange={(e) =>
+                          setFormData({ ...formData, condition2_11_21_22: e.target.value })
+                        }
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: 700 }}>
+                      (1.1 – 2.1) = (1.1 – 1.2) - (2.1 – 2.2)
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        value={formData.condition2_calc_22 || ""}
+                        onChange={(e) =>
+                          setFormData({ ...formData, condition2_calc_22: e.target.value })
+                        }
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </td>
-            <td>
-              <input
-                type="text"
-                value={formData.condition2_terminal1}
-                onChange={(e) => setFormData({ ...formData, condition2_terminal1: e.target.value })}
-              />
-            </td>
+
+            {/* Right section blank for diagram */}
+            <td style={{ width: "45%", minHeight: "160px" }}></td>
           </tr>
+        </tbody>
+      </table>
+
+      {/* CONDITION 1 – 3.1 / 3.2 */}
+      <table className="form-table" style={{ marginTop: "40px" }}>
+        <thead>
           <tr>
-            <td>
-              <strong>Terminal 2</strong>
+            <th colSpan={2} style={{ textAlign: "center", fontWeight: 900 }}>
+              CONDITION 1
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style={{ width: "55%", padding: 0, verticalAlign: "top" }}>
+              <table className="form-table" style={{ marginTop: 0 }}>
+                <tbody>
+                  <tr>
+                    <td style={{ width: "55%", fontWeight: 700 }}>1.1 – 1.2 =</td>
+                    <td style={{ width: "45%" }}>
+                      <input
+                        type="text"
+                        value={formData.condition1_11_12_32 || ""}
+                        onChange={(e) =>
+                          setFormData({ ...formData, condition1_11_12_32: e.target.value })
+                        }
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: 700 }}>3.1 – 3.2 =</td>
+                    <td>
+                      <input
+                        type="text"
+                        value={formData.condition1_31_32_32 || ""}
+                        onChange={(e) =>
+                          setFormData({ ...formData, condition1_31_32_32: e.target.value })
+                        }
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: 700 }}>1.1 – 3.2 =</td>
+                    <td>
+                      <input
+                        type="text"
+                        value={formData.condition1_11_32_32 || ""}
+                        onChange={(e) =>
+                          setFormData({ ...formData, condition1_11_32_32: e.target.value })
+                        }
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: 700 }}>
+                      (1.1 – 3.2) = (1.1 – 1.2) + (3.1 – 3.2)
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        value={formData.condition1_calc_32 || ""}
+                        onChange={(e) =>
+                          setFormData({ ...formData, condition1_calc_32: e.target.value })
+                        }
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </td>
-            <td>
-              <input
-                type="text"
-                value={formData.condition2_terminal2}
-                onChange={(e) => setFormData({ ...formData, condition2_terminal2: e.target.value })}
-              />
+            <td style={{ width: "45%", minHeight: "160px" }}></td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* CONDITION 2 – 3.1 / 3.2 */}
+      <table className="form-table" style={{ marginTop: "30px" }}>
+        <thead>
+          <tr>
+            <th colSpan={2} style={{ textAlign: "center", fontWeight: 900 }}>
+              CONDITION 2
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style={{ width: "55%", padding: 0, verticalAlign: "top" }}>
+              <table className="form-table" style={{ marginTop: 0 }}>
+                <tbody>
+                  <tr>
+                    <td style={{ width: "55%", fontWeight: 700 }}>1.1 – 1.2 =</td>
+                    <td style={{ width: "45%" }}>
+                      <input
+                        type="text"
+                        value={formData.condition2_11_12_32 || ""}
+                        onChange={(e) =>
+                          setFormData({ ...formData, condition2_11_12_32: e.target.value })
+                        }
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: 700 }}>3.1 – 3.2 =</td>
+                    <td>
+                      <input
+                        type="text"
+                        value={formData.condition2_31_32_32 || ""}
+                        onChange={(e) =>
+                          setFormData({ ...formData, condition2_31_32_32: e.target.value })
+                        }
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: 700 }}>1.1 – 3.1 =</td>
+                    <td>
+                      <input
+                        type="text"
+                        value={formData.condition2_11_31_32 || ""}
+                        onChange={(e) =>
+                          setFormData({ ...formData, condition2_11_31_32: e.target.value })
+                        }
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: 700 }}>
+                      (1.1 – 3.1) = (1.1 – 1.2) - (3.1 – 3.2)
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        value={formData.condition2_calc_32 || ""}
+                        onChange={(e) =>
+                          setFormData({ ...formData, condition2_calc_32: e.target.value })
+                        }
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </td>
+            <td style={{ width: "45%", minHeight: "160px" }}></td>
           </tr>
         </tbody>
       </table>
@@ -6801,19 +6209,22 @@ function PolarityTestForm({ onSubmit, onPrevious, initialData, isLastFormOfStage
   )
 }
 
-// Form 9: Short Circuit Test (V Connected 63 MVA)
-function ShortCircuitTestV63Form({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
+export function Stage5Form5({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
   const [formData, setFormData] = useState({
     appliedVoltage: "",
     date: "",
     time: "",
     meterMakeSrNo: "",
 
-    // Short circuit test measurements
-    test11_12_measuredCurrent11: "",
-    test11_12_measuredCurrent12_21: "",
-    test12_21_measuredCurrent12: "",
-    test12_21_measuredCurrent11_21: "",
+    // Short circuit test measurements by tap (1–6)
+    taps: [
+      { tapNo: 1, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 2, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 3, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 4, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 5, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 6, voltage: "", hvCurrent: "", lvCurrent: "" },
+    ],
 
     // Impedance calculation
     appliedVoltageHV: "",
@@ -6851,6 +6262,13 @@ function ShortCircuitTestV63Form({ onSubmit, onPrevious, initialData, isLastForm
   const handleSubmit = (e) => {
     e.preventDefault()
     onSubmit(formData)
+  }
+
+  const setTapRow = (index, field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      taps: (prev.taps || []).map((row, i) => (i === index ? { ...row, [field]: value } : row)),
+    }))
   }
 
   const handlePhotoChange = (key, file) => {
@@ -6921,67 +6339,39 @@ function ShortCircuitTestV63Form({ onSubmit, onPrevious, initialData, isLastForm
       <table className="form-table" style={{ marginTop: "20px" }}>
         <thead>
           <tr>
-            <th>APPLIED VOLTAGE</th>
-            <th colSpan="2">Measured Current</th>
+            <th style={{ width: "15%" }}>TAP NO.</th>
+            <th style={{ width: "25%" }}>VOLTAGE</th>
+            <th style={{ width: "30%" }}>HV CURRENT (Amp)</th>
+            <th style={{ width: "30%" }}>LV CURRENT (Amp)</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <strong>1.1 – 1.2</strong>
-            </td>
-            <td>
-              <strong>1.1</strong>
-            </td>
-            <td>
-              <strong>1.2 – 2.1 SHORTED</strong>
-            </td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>
-              <input
-                type="text"
-                value={formData.test11_12_measuredCurrent11}
-                onChange={(e) => setFormData({ ...formData, test11_12_measuredCurrent11: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.test11_12_measuredCurrent12_21}
-                onChange={(e) => setFormData({ ...formData, test11_12_measuredCurrent12_21: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>1.2 – 2.1</strong>
-            </td>
-            <td>
-              <strong>1.2</strong>
-            </td>
-            <td>
-              <strong>1.1 – 2.1 SHORTED</strong>
-            </td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>
-              <input
-                type="text"
-                value={formData.test12_21_measuredCurrent12}
-                onChange={(e) => setFormData({ ...formData, test12_21_measuredCurrent12: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.test12_21_measuredCurrent11_21}
-                onChange={(e) => setFormData({ ...formData, test12_21_measuredCurrent11_21: e.target.value })}
-              />
-            </td>
-          </tr>
+          {(formData.taps || []).map((row, idx) => (
+            <tr key={row.tapNo || idx + 1}>
+              <td style={{ textAlign: "center", fontWeight: 700 }}>{row.tapNo || idx + 1}</td>
+              <td>
+                <input
+                  type="text"
+                  value={row.voltage || ""}
+                  onChange={(e) => setTapRow(idx, "voltage", e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={row.hvCurrent || ""}
+                  onChange={(e) => setTapRow(idx, "hvCurrent", e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={row.lvCurrent || ""}
+                  onChange={(e) => setTapRow(idx, "lvCurrent", e.target.value)}
+                />
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
 
@@ -7072,8 +6462,7 @@ function ShortCircuitTestV63Form({ onSubmit, onPrevious, initialData, isLastForm
   )
 }
 
-// Form 10: Short Circuit and Winding Resistance Test (V Connected 63 MVA)
-function ShortCircuitWindingResistanceTestForm({
+export function Stage5Form6({
   onSubmit,
   onPrevious,
   initialData,
@@ -7082,38 +6471,35 @@ function ShortCircuitWindingResistanceTestForm({
   projectName,
 }) {
   const [formData, setFormData] = useState({
-    appliedVoltage: "",
+    meterUsed: "",
     date: "",
     time: "",
     meterMakeSrNo: "",
+    wti: "",
+    oti: "",
+    range: "",
+    ambient: "",
 
-    // Short circuit test measurements
-    test11_12_measuredCurrent11: "",
-    test11_12_measuredCurrent12_21: "",
-    test12_21_measuredCurrent12: "",
-    test12_21_measuredCurrent11_21: "",
+    hvSide: [
+      { tapNo: 1, resistance_11_12: "" },
+      { tapNo: 2, resistance_11_12: "" },
+      { tapNo: 3, resistance_11_12: "" },
+      { tapNo: 4, resistance_11_12: "" },
+      { tapNo: 5, resistance_11_12: "" },
+      { tapNo: 6, resistance_11_12: "" },
+    ],
 
-    // Impedance calculation
-    appliedVoltageHV: "",
-    ratedCurrentLV: "",
-    percentZ: "",
-    ratedVoltageHV: "",
-    measuredCurrentLV: "",
+    lvSide21_22: [
+      { rowNo: 1, resistance_21_22: "" },
+      { rowNo: 2, resistance_21_22: "" },
+      { rowNo: 3, resistance_21_22: "" },
+    ],
 
-    // Winding Resistance Test
-    windingMeterUsed: "",
-    windingDate: "",
-    windingTime: "",
-    windingMeterMakeSrNo: "",
-    windingWti: "",
-    windingOti: "",
-    windingRange: "",
-    windingAmbient: "",
-
-    // Winding resistance measurements
-    winding11_12: "",
-    winding11_21: "",
-    winding21_12: "",
+    lvSide31_32: [
+      { rowNo: 1, resistance_31_32: "" },
+      { rowNo: 2, resistance_31_32: "" },
+      { rowNo: 3, resistance_31_32: "" },
+    ],
 
     photos: {},
     ...initialData,
@@ -7122,14 +6508,342 @@ function ShortCircuitWindingResistanceTestForm({
   useEffect(() => {
     const fetchFormData = async () => {
       try {
-        const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage5Form10`, {
+        const response = await axios.get(
+          `${BACKEND_API_BASE_URL}/api/vconnectData/getTable/Stage5Form6`,
+          {
+            params: {
+              companyName,
+              projectName,
+            },
+          },
+        )
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for Stage5Form6")
+          setFormData((prev) => ({ ...prev, ...response.data.data }))
+        } else {
+          console.log("There is no data in DB.")
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error)
+      }
+    }
+    fetchFormData()
+  }, [projectName, companyName])
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    onSubmit(formData)
+  }
+
+  const setHvRow = (index, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      hvSide: (prev.hvSide || []).map((row, i) =>
+        i === index ? { ...row, resistance_11_12: value } : row,
+      ),
+    }))
+  }
+
+  const setLv21Row = (index, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      lvSide21_22: (prev.lvSide21_22 || []).map((row, i) =>
+        i === index ? { ...row, resistance_21_22: value } : row,
+      ),
+    }))
+  }
+
+  const setLv31Row = (index, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      lvSide31_32: (prev.lvSide31_32 || []).map((row, i) =>
+        i === index ? { ...row, resistance_31_32: value } : row,
+      ),
+    }))
+  }
+
+  const handlePhotoChange = (key, file) => {
+    setFormData((prev) => ({
+      ...prev,
+      photos: { ...prev.photos, [key]: file },
+    }))
+  }
+
+  const photoRequirements = [
+    { key: "windingResistanceSetup", label: "Winding resistance kit & test setup" },
+  ]
+
+  return (
+    <form onSubmit={handleSubmit} className="form-container">
+      <div className="company-header">
+        <h2>TYPE OF TEST – WINDING RESISTANCE TEST</h2>
+      </div>
+
+      {/* Header block */}
+      <table className="form-table">
+        <tbody>
+          <tr>
+            <td style={{ width: "20%", fontWeight: 800 }}>METER USED</td>
+            <td style={{ width: "30%" }}>
+              <input
+                type="text"
+                value={formData.meterUsed || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, meterUsed: e.target.value })
+                }
+              />
+            </td>
+            <td style={{ width: "20%", fontWeight: 800 }}>DATE:</td>
+            <td style={{ width: "30%" }}>
+              <input
+                type="date"
+                value={formData.date || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, date: e.target.value })
+                }
+              />
+            </td>
+          </tr>
+          <tr>
+            <td style={{ fontWeight: 800 }}>METER MAKE SR. NO.</td>
+            <td>
+              <input
+                type="text"
+                value={formData.meterMakeSrNo || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, meterMakeSrNo: e.target.value })
+                }
+              />
+            </td>
+            <td style={{ fontWeight: 800 }}>TIME :</td>
+            <td>
+              <input
+                type="time"
+                value={formData.time || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, time: e.target.value })
+                }
+              />
+            </td>
+          </tr>
+          <tr>
+            <td style={{ fontWeight: 800 }}>RANGE</td>
+            <td>
+              <input
+                type="text"
+                value={formData.range || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, range: e.target.value })
+                }
+              />
+            </td>
+            <td style={{ fontWeight: 800 }}>WTI:</td>
+            <td>
+              <input
+                type="text"
+                value={formData.wti || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, wti: e.target.value })
+                }
+              />
+            </td>
+          </tr>
+          <tr>
+            <td style={{ fontWeight: 800 }}>AMBIENT:</td>
+            <td>
+              <input
+                type="text"
+                value={formData.ambient || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, ambient: e.target.value })
+                }
+              />
+            </td>
+            <td style={{ fontWeight: 800 }}>OTI:</td>
+            <td>
+              <input
+                type="text"
+                value={formData.oti || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, oti: e.target.value })
+                }
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* HV / LV layout */}
+      <div
+        style={{
+          display: "flex",
+          gap: "40px",
+          marginTop: "30px",
+          alignItems: "flex-start",
+        }}
+      >
+        {/* HV SIDE */}
+        <div style={{ flex: 1 }}>
+          <div
+            style={{
+              textAlign: "center",
+              fontWeight: 900,
+              marginBottom: "8px",
+            }}
+          >
+            HV SIDE
+          </div>
+          <table className="form-table">
+            <thead>
+              <tr>
+                <th style={{ width: "30%" }}>TAP NO.</th>
+                <th style={{ width: "70%" }}>1.1 – 1.2 (Ω)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(formData.hvSide || []).map((row, idx) => (
+                <tr key={row.tapNo || idx + 1}>
+                  <td style={{ textAlign: "center", fontWeight: 700 }}>
+                    {row.tapNo}
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      value={row.resistance_11_12 || ""}
+                      onChange={(e) => setHvRow(idx, e.target.value)}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* LV SIDE */}
+        <div style={{ flex: 1 }}>
+          <div
+            style={{
+              textAlign: "center",
+              fontWeight: 900,
+              marginBottom: "8px",
+            }}
+          >
+            LV SIDE
+          </div>
+
+          {/* 2.1 – 2.2 */}
+          <table className="form-table">
+            <thead>
+              <tr>
+                <th style={{ width: "40%" }}>ROW</th>
+                <th style={{ width: "60%" }}>2.1 – 2.2 (Ω)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(formData.lvSide21_22 || []).map((row, idx) => (
+                <tr key={`21-22-${idx}`}>
+                  <td style={{ textAlign: "center", fontWeight: 700 }}>
+                    {row.rowNo}
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      value={row.resistance_21_22 || ""}
+                      onChange={(e) => setLv21Row(idx, e.target.value)}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* 3.1 – 3.2 */}
+          <table className="form-table" style={{ marginTop: "16px" }}>
+            <thead>
+              <tr>
+                <th style={{ width: "40%" }}>ROW</th>
+                <th style={{ width: "60%" }}>3.1 – 3.2 (Ω)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(formData.lvSide31_32 || []).map((row, idx) => (
+                <tr key={`31-32-${idx}`}>
+                  <td style={{ textAlign: "center", fontWeight: 700 }}>
+                    {row.rowNo}
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      value={row.resistance_31_32 || ""}
+                      onChange={(e) => setLv31Row(idx, e.target.value)}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <PhotoUploadSection
+        title="Winding resistance test – HV and LV side"
+        photos={photoRequirements}
+        onPhotoChange={handlePhotoChange}
+      />
+
+      <div className="form-actions">
+        {onPrevious && (
+          <button type="button" onClick={onPrevious} className="prev-btn">
+            Previous Form
+          </button>
+        )}
+        <button type="submit" className="submit-btn">
+          Next Form
+        </button>
+      </div>
+    </form>
+  )
+}
+
+export function Stage5Form7({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
+  const [formData, setFormData] = useState({
+    appliedVoltage: "",
+    date: "",
+    time: "",
+    meterMakeSrNo: "",
+
+    // Short circuit test measurements by tap (1–6)
+    taps: [
+      { tapNo: 1, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 2, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 3, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 4, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 5, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 6, voltage: "", hvCurrent: "", lvCurrent: "" },
+    ],
+
+    // Impedance calculation
+    appliedVoltageHV: "",
+    ratedCurrentLV: "",
+    percentZ: "",
+    ratedVoltageHV: "",
+    measuredCurrentLV: "",
+
+    photos: {},
+    ...initialData,
+  })
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage5Form9`, {
           params: {
             companyName: companyName,
             projectName: projectName,
           },
         })
         if (response.data && response.data.data) {
-          console.log("Data fetched from DB for stage5Form10")
+          console.log("Data fetched from DB for stage5Form9")
           setFormData(response.data.data)
         } else {
           console.log("There is no data in DB.")
@@ -7146,17 +6860,12 @@ function ShortCircuitWindingResistanceTestForm({
     onSubmit(formData)
   }
 
-  const handleSignatureChange = (key, type, value) => {
+  const setTapRow = (index, field, value) => {
     setFormData((prev) => ({
       ...prev,
-      signatures: {
-        ...prev.signatures,
-        [`${key}${
-          type === "name" ? "Name" : type === "date" ? "Date" : "Signature"
-        }`]: value,
-      },
-    }));
-  };
+      taps: (prev.taps || []).map((row, i) => (i === index ? { ...row, [field]: value } : row)),
+    }))
+  }
 
   const handlePhotoChange = (key, file) => {
     setFormData((prev) => ({
@@ -7226,67 +6935,39 @@ function ShortCircuitWindingResistanceTestForm({
       <table className="form-table" style={{ marginTop: "20px" }}>
         <thead>
           <tr>
-            <th>APPLIED VOLTAGE</th>
-            <th colSpan="2">Measured Current</th>
+            <th style={{ width: "15%" }}>TAP NO.</th>
+            <th style={{ width: "25%" }}>VOLTAGE</th>
+            <th style={{ width: "30%" }}>HV CURRENT (Amp)</th>
+            <th style={{ width: "30%" }}>LV CURRENT (Amp)</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <strong>1.1 – 1.2</strong>
-            </td>
-            <td>
-              <strong>1.1</strong>
-            </td>
-            <td>
-              <strong>1.2 – 2.1 SHORTED</strong>
-            </td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>
-              <input
-                type="text"
-                value={formData.test11_12_measuredCurrent11}
-                onChange={(e) => setFormData({ ...formData, test11_12_measuredCurrent11: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.test11_12_measuredCurrent12_21}
-                onChange={(e) => setFormData({ ...formData, test11_12_measuredCurrent12_21: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>1.2 – 2.1</strong>
-            </td>
-            <td>
-              <strong>1.2</strong>
-            </td>
-            <td>
-              <strong>1.1 – 2.1 SHORTED</strong>
-            </td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>
-              <input
-                type="text"
-                value={formData.test12_21_measuredCurrent12}
-                onChange={(e) => setFormData({ ...formData, test12_21_measuredCurrent12: e.target.value })}
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.test12_21_measuredCurrent11_21}
-                onChange={(e) => setFormData({ ...formData, test12_21_measuredCurrent11_21: e.target.value })}
-              />
-            </td>
-          </tr>
+          {(formData.taps || []).map((row, idx) => (
+            <tr key={row.tapNo || idx + 1}>
+              <td style={{ textAlign: "center", fontWeight: 700 }}>{row.tapNo || idx + 1}</td>
+              <td>
+                <input
+                  type="text"
+                  value={row.voltage || ""}
+                  onChange={(e) => setTapRow(idx, "voltage", e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={row.hvCurrent || ""}
+                  onChange={(e) => setTapRow(idx, "hvCurrent", e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={row.lvCurrent || ""}
+                  onChange={(e) => setTapRow(idx, "lvCurrent", e.target.value)}
+                />
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
 
@@ -7327,9 +7008,7 @@ function ShortCircuitWindingResistanceTestForm({
           </tr>
           <tr>
             <td>
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
-              >
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                 <input
                   type="text"
                   value={formData.percentZ}
@@ -7362,197 +7041,9 @@ function ShortCircuitWindingResistanceTestForm({
         </tbody>
       </table>
 
-      <h3 style={{ marginTop: "40px", textAlign: "center" }}>TYPE OF TEST – WINDING RESISTANCE TEST</h3>
+      <PhotoUploadSection title="Short Circuit Test" photos={photoRequirements} onPhotoChange={handlePhotoChange} />
 
-      <table className="form-table">
-        <tbody>
-          <tr>
-            <td>
-              <strong>METER USED</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.windingMeterUsed}
-                onChange={(e) => setFormData({ ...formData, windingMeterUsed: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>DATE:</strong>
-            </td>
-            <td>
-              <input
-                type="date"
-                value={formData.windingDate}
-                onChange={(e) => setFormData({ ...formData, windingDate: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>TIME :</strong>
-            </td>
-            <td>
-              <input
-                type="time"
-                value={formData.windingTime}
-                onChange={(e) => setFormData({ ...formData, windingTime: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>METER MAKE SR. NO.</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.windingMeterMakeSrNo}
-                onChange={(e) => setFormData({ ...formData, windingMeterMakeSrNo: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>WTI:</strong>
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.windingWti}
-                onChange={(e) => setFormData({ ...formData, windingWti: e.target.value })}
-              />
-            </td>
-            <td>
-              <strong>OTI:</strong>
-            </td>
-            <td>
-                <input
-                type="text"
-                value={formData.windingWti}
-                onChange={(e) => setFormData({ ...formData, windingWti: e.target.value })}
-              />
-              </td>
-              </tr>
-              </tbody>
-              </table>
-              <table className="form-table" style={{ marginTop: "20px" }}>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <strong>Temperature of</strong>
-                          </td>
-                          <td>
-                            <strong>°C</strong>
-                          </td>
-                          <td>
-                            <strong>WTI</strong>
-                          </td>
-                          <td>
-                            <input
-                              type="text"
-                              value={formData.temperatureWTI}
-                              onChange={(e) =>
-                                setFormData({ ...formData, temperatureWTI: e.target.value })
-                              }
-                            />
-                          </td>
-                          <td>
-                            <strong>OTI</strong>
-                          </td>
-                          <td>
-                            <input
-                              type="text"
-                              value={formData.temperatureOTI}
-                              onChange={(e) =>
-                                setFormData({ ...formData, temperatureOTI: e.target.value })
-                              }
-                            />
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-              
-                    <div className="form-group" style={{ marginTop: "30px" }}>
-                      <label>
-                        <strong>
-                          Remarks: The Transformer as mentioned above has been jointly cleared
-                          for charging as on _____. All the necessary pre-commissioning checks
-                          and protection trials have been found satisfactory. Transformer has
-                          been cleared from all foreign material and is ready for charging.
-                        </strong>
-                      </label>
-                      <textarea
-                        rows="4"
-                        value={formData.remarks}
-                        onChange={(e) =>
-                          setFormData({ ...formData, remarks: e.target.value })
-                        }
-                        placeholder="Enter any additional remarks..."
-                      />
-                    </div>
-              
-                    <PhotoUploadSection
-                      title="Earthing's of main tank & bushing, sealing of Cable gland, bushing test tap & thimble, Buchholz terminal plate, etc...., Full Photo of transformer"
-                      photos={photoRequirements}
-                      onPhotoChange={handlePhotoChange}
-                    />
-              
-                    <div className="signature-section">
-                      <div className="signature-box">
-                        <label>Checked by VPES:</label>
-                        <input
-                          type="text"
-                          placeholder="Name"
-                          value={formData.signatures.vpesName}
-                          onChange={(e) =>
-                            handleSignatureChange("vpes", "name", e.target.value)
-                          }
-                        />
-                        <SignatureBox
-                          label=""
-                          nameValue=""
-                          onNameChange={() => {}}
-                          onSignatureChange={(signature) =>
-                            handleSignatureChange("vpes", "signature", signature)
-                          }
-                          initialSignature={formData.signatures.vpesSignature}
-                        />
-                        <input
-                          type="date"
-                          value={formData.signatures.vpesDate}
-                          onChange={(e) =>
-                            handleSignatureChange("vpes", "date", e.target.value)
-                          }
-                        />
-                      </div>
-              
-                      <div className="signature-box">
-                        <label>Witnessed By Customer:</label>
-                        <input
-                          type="text"
-                          placeholder="Name"
-                          value={formData.signatures.customerName}
-                          onChange={(e) =>
-                            handleSignatureChange("customer", "name", e.target.value)
-                          }
-                        />
-                        <SignatureBox
-                          label=""
-                          nameValue=""
-                          onNameChange={() => {}}
-                          onSignatureChange={(signature) =>
-                            handleSignatureChange("customer", "signature", signature)
-                          }
-                          initialSignature={formData.signatures.customerSignature}
-                        />
-                        <input
-                          type="date"
-                          value={formData.signatures.customerDate}
-                          onChange={(e) =>
-                            handleSignatureChange("customer", "date", e.target.value)
-                          }
-                        />
-                      </div>
-                    </div>
-              
-                    <div className="form-actions">
+      <div className="form-actions">
         {onPrevious && (
           <button type="button" onClick={onPrevious} className="prev-btn">
             Previous Form
@@ -7562,9 +7053,263 @@ function ShortCircuitWindingResistanceTestForm({
           Next Form
         </button>
       </div>
-                  </form>
-                );
-              }
+    </form>
+    
+  )
+}
+
+export function Stage5Form8({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
+  const [formData, setFormData] = useState({
+    appliedVoltage: "",
+    date: "",
+    time: "",
+    meterMakeSrNo: "",
+
+    // Short circuit test measurements by tap (1–6)
+    taps: [
+      { tapNo: 1, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 2, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 3, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 4, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 5, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 6, voltage: "", hvCurrent: "", lvCurrent: "" },
+    ],
+
+    // Impedance calculation
+    appliedVoltageHV: "",
+    ratedCurrentLV: "",
+    percentZ: "",
+    ratedVoltageHV: "",
+    measuredCurrentLV: "",
+
+    photos: {},
+    ...initialData,
+  })
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage5Form9`, {
+          params: {
+            companyName: companyName,
+            projectName: projectName,
+          },
+        })
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage5Form9")
+          setFormData(response.data.data)
+        } else {
+          console.log("There is no data in DB.")
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error)
+      }
+    }
+    fetchFormData()
+  }, [projectName, companyName])
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    onSubmit(formData)
+  }
+
+  const setTapRow = (index, field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      taps: (prev.taps || []).map((row, i) => (i === index ? { ...row, [field]: value } : row)),
+    }))
+  }
+
+  const handlePhotoChange = (key, file) => {
+    setFormData((prev) => ({
+      ...prev,
+      photos: { ...prev.photos, [key]: file },
+    }))
+  }
+
+  const photoRequirements = [{ key: "shortCircuitTest", label: "Short Circuit Test" }]
+
+  return (
+    <form onSubmit={handleSubmit} className="form-container">
+      <div className="company-header">
+        <h2>TYPE OF TEST – SHORT CIRCUIT TEST</h2>
+      </div>
+
+      <table className="form-table">
+        <tbody>
+          <tr>
+            <td>
+              <strong>APPLIED VOLTAGE:</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, appliedVoltage: e.target.value })}
+                placeholder="VOLTS"
+              />
+            </td>
+            <td>
+              <strong>DATE:</strong>
+            </td>
+            <td>
+              <input
+                type="date"
+                value={formData.date}
+                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+              />
+            </td>
+            <td>
+              <strong>TIME :</strong>
+            </td>
+            <td>
+              <input
+                type="time"
+                value={formData.time}
+                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>METER MAKE SR. NO.</strong>
+            </td>
+            <td colSpan="5">
+              <input
+                type="text"
+                value={formData.meterMakeSrNo}
+                onChange={(e) => setFormData({ ...formData, meterMakeSrNo: e.target.value })}
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table className="form-table" style={{ marginTop: "20px" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "15%" }}>TAP NO.</th>
+            <th style={{ width: "25%" }}>VOLTAGE</th>
+            <th style={{ width: "30%" }}>HV CURRENT (Amp)</th>
+            <th style={{ width: "30%" }}>LV CURRENT (Amp)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {(formData.taps || []).map((row, idx) => (
+            <tr key={row.tapNo || idx + 1}>
+              <td style={{ textAlign: "center", fontWeight: 700 }}>{row.tapNo || idx + 1}</td>
+              <td>
+                <input
+                  type="text"
+                  value={row.voltage || ""}
+                  onChange={(e) => setTapRow(idx, "voltage", e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={row.hvCurrent || ""}
+                  onChange={(e) => setTapRow(idx, "hvCurrent", e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={row.lvCurrent || ""}
+                  onChange={(e) => setTapRow(idx, "lvCurrent", e.target.value)}
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <table className="form-table" style={{ marginTop: "20px" }}>
+        <tbody>
+          <tr>
+            <td rowSpan="4">
+              <strong>Impedance calculation</strong>
+            </td>
+            <td>
+              <strong>Applied Voltage HV</strong>
+            </td>
+            <td>
+              <strong>Rated Current LV</strong>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input
+                type="text"
+                value={formData.appliedVoltageHV}
+                onChange={(e) => setFormData({ ...formData, appliedVoltageHV: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.ratedCurrentLV}
+                onChange={(e) => setFormData({ ...formData, ratedCurrentLV: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>%Z = _____________ X _____________ X 100</strong>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <input
+                  type="text"
+                  value={formData.percentZ}
+                  onChange={(e) => setFormData({ ...formData, percentZ: e.target.value })}
+                  placeholder="%Z ="
+                  style={{ width: "80px" }}
+                />
+                <span>
+                  <strong>Rated voltage HV</strong>
+                </span>
+                <input
+                  type="text"
+                  value={formData.ratedVoltageHV}
+                  onChange={(e) => setFormData({ ...formData, ratedVoltageHV: e.target.value })}
+                  style={{ width: "120px" }}
+                />
+                <span>
+                  <strong>Measured current LV</strong>
+                </span>
+                <input
+                  type="text"
+                  value={formData.measuredCurrentLV}
+                  onChange={(e) => setFormData({ ...formData, measuredCurrentLV: e.target.value })}
+                  style={{ width: "120px" }}
+                />
+              </div>
+            </td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <PhotoUploadSection title="Short Circuit Test" photos={photoRequirements} onPhotoChange={handlePhotoChange} />
+
+      <div className="form-actions">
+        {onPrevious && (
+          <button type="button" onClick={onPrevious} className="prev-btn">
+            Previous Form
+          </button>
+        )}
+        <button type="submit" className="submit-btn">
+          Next Form
+        </button>
+      </div>
+    </form>
+    
+  )
+}
 
 export function IRValuesTransformerForm({
   onSubmit,
@@ -10780,12 +10525,14 @@ const VConnected63MVATransformerForms = ({
       { component: Stage4Form4, name: "IR & PI Value After Filtration" },
     ],
     5: [
-      { component: SFRATestRecordV63Form, name: "SFRA Test Record" },
-      { component: MagnetizingCurrentTestForm, name: "Magnetizing Current Test" },
-      { component: PolarityTestForm, name: "Polarity Test" },
-      { component: ShortCircuitTestV63Form, name: "Short Circuit Test" },
-      { component: ShortCircuitWindingResistanceTestForm, name: "Short Circuit and Winding Resistance Test" },
-      { component: IRValuesTransformerForm, name: "IR Values of Transformer" },
+      { component: Stage5Form1, name: "SFRA Test Record" },
+      { component: Stage5Form2, name: "Magnetizing Current Test" },
+      { component: Stage5Form3, name: "Polarity Test" },
+      { component: Stage5Form4, name: "Short Circuit Test" },
+      { component: Stage5Form5, name: "Short Circuit and Winding Resistance Test" },
+      { component: Stage5Form6, name: "Short Circuit and Winding Resistance Test" },
+      { component: Stage5Form7, name: "Short Circuit and Winding Resistance Test" },
+      { component: Stage5Form8, name: "Short Circuit and Winding Resistance Test" },
     ],
     6: [
       { component: PreCommissioningChecklistForm, name: "Pre-Commissioning Checklist" },
