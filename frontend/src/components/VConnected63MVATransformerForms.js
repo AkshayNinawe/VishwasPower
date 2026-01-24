@@ -8278,89 +8278,80 @@ export function Stage6Form1({
   companyName,
   projectName,
 }) {
-  const defaultIrRows = [
-    { label: "HV-Earth", key: "hvEarth" },
-    { label: "LV1-Earth", key: "lv1Earth" },
-    { label: "LV2-Earth", key: "lv2Earth" },
-    { label: "HV-LV1", key: "hvLv1" },
-    { label: "HV-LV2", key: "hvLv2" },
-    { label: "LV1-LV2", key: "lv1Lv2" },
+  const valveRows = [
+    { sr: "A", particulars: "Bucholz to Conservator", key: "bucholzToConservator", qtyLabel: "" },
+    { sr: "B", particulars: "Main Tank to Bucholz", key: "mainTankToBucholz", qtyLabel: "" },
+    { sr: "C", particulars: "Radiator Top Valves", key: "radiatorTopValves", qtyLabel: "" },
+    { sr: "D", particulars: "Radiator Bottom Valves", key: "radiatorBottomValves", qtyLabel: "" },
+    { sr: "E", particulars: "Top 200mm Pipeline", key: "top200mmPipeline", qtyLabel: "" },
+    { sr: "F", particulars: "Top Header", key: "topHeader", qtyLabel: "" },
+    { sr: "G", particulars: "Bottom Header", key: "bottomHeader", qtyLabel: "" },
+    { sr: "H", particulars: "Main Tank to Radiator Bank", key: "mainTankToRadiatorBank", qtyLabel: "" },
+    { sr: "I", particulars: "Oil Pump to R.F.B.D.", key: "oilPumpToRFBD", qtyLabel: "" },
+    { sr: "J", particulars: "Oil Pump to Radiator Bank", key: "oilPumpToRadiatorBank", qtyLabel: "" },
+    { sr: "K", particulars: "Top Filter Valve", key: "topFilterValve", qtyLabel: "" },
+    { sr: "L", particulars: "Bottom Filter Valve", key: "bottomFilterValve", qtyLabel: "" },
+    { sr: "M", particulars: "Drain Valve", key: "drainValve", qtyLabel: "" },
+  ]
+
+  const airVentingSimpleRows = [
+    { sr: "A", particulars: "Main Tank", key: "mainTank" },
+    { sr: "E", particulars: "Pipe Line Top", key: "pipeLineTop" },
+    { sr: "F", particulars: "Pipe Line Bottom", key: "pipeLineBottom" },
+    { sr: "I", particulars: "Radiator – Top", key: "radiatorTop" },
+    { sr: "J", particulars: "RFBD", key: "rfbd" },
+    { sr: "L", particulars: "Diverter Switch", key: "diverterSwitch" },
+  ]
+
+  const protectionRows = [
+    { sr: "A", particulars: "BUCHHOLZ", label: "ALARM", key: "buchholzAlarm" },
+    { sr: "", particulars: "", label: "TRIP", key: "buchholzTrip" },
+    { sr: "B", particulars: "MOG", label: "ALARM", key: "mogAlarm" },
+    { sr: "C", particulars: "PRV", label: "TRIP", key: "prvTrip" },
+    { sr: "D", particulars: "OTI", label: "ALARM", key: "otiAlarm" },
+    { sr: "", particulars: "", label: "TRIP", key: "otiTrip" },
+    { sr: "E", particulars: "WTI", label: "ALARM", key: "wtiAlarm" },
+    { sr: "", particulars: "", label: "TRIP", key: "wtiTrip" },
   ]
 
   const [formData, setFormData] = useState({
-    // Header fields
-    date: "",
-    time: "",
-    ambTemp: "",
-    oilTemp: "",
-    wdgTemp: "",
-    relativeHumidity: "",
-    insulationTesterDetails: "",
-
-    make: "",
+    customerName: "",
+    projectCompanyName: "",
+    nameOfTSS: "",
+    ratingMVA: "",
+    ratingVoltage: "",
     srNo: "",
-    range: "",
-    voltageLevel: "",
+    manufacturerName: "",
 
-    // IR table fields (15 / 60 / 600 and ratios)
-    hvEarth_15sec: "",
-    hvEarth_60sec: "",
-    hvEarth_600sec: "",
-    hvEarth_ratio_ir60: "",
-    hvEarth_ratio_ir600: "",
+    valveStatus: valveRows.reduce((acc, r) => {
+      acc[r.key] = { qty: "", open: "", shut: "", na: "" }
+      return acc
+    }, {}),
 
-    lv1Earth_15sec: "",
-    lv1Earth_60sec: "",
-    lv1Earth_600sec: "",
-    lv1Earth_ratio_ir60: "",
-    lv1Earth_ratio_ir600: "",
-
-    lv2Earth_15sec: "",
-    lv2Earth_60sec: "",
-    lv2Earth_600sec: "",
-    lv2Earth_ratio_ir60: "",
-    lv2Earth_ratio_ir600: "",
-
-    hvLv1_15sec: "",
-    hvLv1_60sec: "",
-    hvLv1_600sec: "",
-    hvLv1_ratio_ir60: "",
-    hvLv1_ratio_ir600: "",
-
-    hvLv2_15sec: "",
-    hvLv2_60sec: "",
-    hvLv2_600sec: "",
-    hvLv2_ratio_ir60: "",
-    hvLv2_ratio_ir600: "",
-
-    lv1Lv2_15sec: "",
-    lv1Lv2_60sec: "",
-    lv1Lv2_600sec: "",
-    lv1Lv2_ratio_ir60: "",
-    lv1Lv2_ratio_ir600: "",
-
-    signatures: {
-      vpesName: "",
-      vpesSignature: "",
-      vpesDate: "",
-      customerName: "",
-      customerSignature: "",
-      customerDate: "",
+    airVenting: {
+      mainTank: "",
+      pipeLineTop: "",
+      pipeLineBottom: "",
+      radiatorTop: "",
+      rfbd: "",
+      diverterSwitch: "",
+      bucholzRelay: { location1: "", location2: "" },
+      hvBushing: { location11: "", location12: "" },
+      lvBushing: { location21: "", location22: "", location31: "", location32: "" },
+      headerTop: { location1: "", location2: "" },
+      headerBottom: { location1: "", location2: "" },
+      oilPump: { location1: "", location2: "", location3: "", location4: "" },
     },
+
+    protectionTrails: protectionRows.reduce((acc, r) => {
+      acc[r.key] = ""
+      return acc
+    }, {}),
+    otiSetTemperature: "",
 
     photos: {},
     ...initialData,
   })
-
-  const handleSignatureChange = (key, type, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      signatures: {
-        ...(prev.signatures || {}),
-        [`${key}${type.charAt(0).toUpperCase() + type.slice(1)}`]: value,
-      },
-    }))
-  }
 
   useEffect(() => {
     const fetchFormData = async () => {
@@ -8369,13 +8360,44 @@ export function Stage6Form1({
           params: { companyName, projectName },
         })
         if (response.data && response.data.data) {
-          console.log("Data fetched from DB for Stage6Form1")
           const incoming = response.data.data || {}
-          setFormData((prev) => ({
-            ...prev,
-            ...incoming,
-            signatures: { ...prev.signatures, ...(incoming.signatures || {}) },
-          }))
+          setFormData((prev) => {
+            const mergedValveStatus = valveRows.reduce((acc, r) => {
+              const src = (incoming.valveStatus || {})[r.key] || {}
+              acc[r.key] = {
+                qty: src.qty ?? "",
+                open: src.open ?? "",
+                shut: src.shut ?? "",
+                na: src.na ?? "",
+              }
+              return acc
+            }, {})
+
+            const mergedAirVenting = {
+              ...prev.airVenting,
+              ...(incoming.airVenting || {}),
+              bucholzRelay: { ...(prev.airVenting?.bucholzRelay || {}), ...((incoming.airVenting || {}).bucholzRelay || {}) },
+              hvBushing: { ...(prev.airVenting?.hvBushing || {}), ...((incoming.airVenting || {}).hvBushing || {}) },
+              lvBushing: { ...(prev.airVenting?.lvBushing || {}), ...((incoming.airVenting || {}).lvBushing || {}) },
+              headerTop: { ...(prev.airVenting?.headerTop || {}), ...((incoming.airVenting || {}).headerTop || {}) },
+              headerBottom: { ...(prev.airVenting?.headerBottom || {}), ...((incoming.airVenting || {}).headerBottom || {}) },
+              oilPump: { ...(prev.airVenting?.oilPump || {}), ...((incoming.airVenting || {}).oilPump || {}) },
+            }
+
+            const mergedProtectionTrails = protectionRows.reduce((acc, r) => {
+              acc[r.key] = (incoming.protectionTrails || {})[r.key] ?? prev.protectionTrails?.[r.key] ?? ""
+              return acc
+            }, {})
+
+            return {
+              ...prev,
+              ...incoming,
+              valveStatus: mergedValveStatus,
+              airVenting: mergedAirVenting,
+              protectionTrails: mergedProtectionTrails,
+              otiSetTemperature: incoming.otiSetTemperature ?? prev.otiSetTemperature ?? "",
+            }
+          })
         } else {
           console.log("There is no data in DB for Stage6Form1.")
         }
@@ -8391,6 +8413,40 @@ export function Stage6Form1({
     onSubmit(formData)
   }
 
+  const setValveCell = (rowKey, field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      valveStatus: {
+        ...(prev.valveStatus || {}),
+        [rowKey]: { ...((prev.valveStatus || {})[rowKey] || {}), [field]: value },
+      },
+    }))
+  }
+
+  const setAirVentingSimple = (key, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      airVenting: { ...(prev.airVenting || {}), [key]: value },
+    }))
+  }
+
+  const setAirVentingNested = (group, field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      airVenting: {
+        ...(prev.airVenting || {}),
+        [group]: { ...((prev.airVenting || {})[group] || {}), [field]: value },
+      },
+    }))
+  }
+
+  const setProtection = (key, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      protectionTrails: { ...(prev.protectionTrails || {}), [key]: value },
+    }))
+  }
+
   const handlePhotoChange = (key, file) => {
     setFormData((prev) => ({
       ...prev,
@@ -8400,216 +8456,419 @@ export function Stage6Form1({
 
   const photoRequirements = [
     {
-      key: "irTesterCalibration",
-      label: "IR tester / calibration report / test setup photo",
+      key: "preCommissioningChecklist",
+      label: "Pre-commissioning checklist / site condition photograph",
     },
   ]
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
       <div className="company-header">
-        <h2>IR VALUES OF TRANSFORMER</h2>
+        <h2>PRE-COMMISSIONING CHECKLIST</h2>
       </div>
 
       <table className="form-table">
         <tbody>
           <tr>
-            <td>
-              <strong>Date :</strong>
-            </td>
-            <td>
-              <input type="date" value={formData.date || ""} onChange={(e) => setFormData({ ...formData, date: e.target.value })} />
-            </td>
-            <td>
-              <strong>Time:</strong>
-            </td>
-            <td>
-              <input type="time" value={formData.time || ""} onChange={(e) => setFormData({ ...formData, time: e.target.value })} />
-            </td>
-            <td>
-              <strong>Details of Insulation tester</strong>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Amb. Temp :</strong>
-            </td>
-            <td>
-              <input type="text" value={formData.ambTemp || ""} onChange={(e) => setFormData({ ...formData, ambTemp: e.target.value })} />
-            </td>
-            <td>
-              <strong>Make :</strong>
-            </td>
-            <td>
-              <input type="text" value={formData.make || ""} onChange={(e) => setFormData({ ...formData, make: e.target.value })} />
-            </td>
-            <td rowSpan="4">
+            <td style={{ width: "25%", fontWeight: 800 }}>Name of end customer</td>
+            <td style={{ width: "25%" }}>
               <input
                 type="text"
-                value={formData.insulationTesterDetails || ""}
-                onChange={(e) => setFormData({ ...formData, insulationTesterDetails: e.target.value })}
-                placeholder="Enter insulation tester details"
-                style={{ width: "100%", height: "100%" }}
+                value={formData.customerName || ""}
+                onChange={(e) => setFormData({ ...formData, customerName: e.target.value })}
+              />
+            </td>
+            <td style={{ width: "25%", fontWeight: 800 }}>Rating MVA</td>
+            <td style={{ width: "25%" }}>
+              <input
+                type="text"
+                value={formData.ratingMVA || ""}
+                onChange={(e) => setFormData({ ...formData, ratingMVA: e.target.value })}
               />
             </td>
           </tr>
+
           <tr>
-            <td>
-              <strong>Oil Temp. :</strong>
-            </td>
-            <td>
-              <input type="text" value={formData.oilTemp || ""} onChange={(e) => setFormData({ ...formData, oilTemp: e.target.value })} />
-            </td>
-            <td>
-              <strong>Sr. No. :</strong>
-            </td>
-            <td>
-              <input type="text" value={formData.srNo || ""} onChange={(e) => setFormData({ ...formData, srNo: e.target.value })} />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Wdg. Temp. :</strong>
-            </td>
-            <td>
-              <input type="text" value={formData.wdgTemp || ""} onChange={(e) => setFormData({ ...formData, wdgTemp: e.target.value })} />
-            </td>
-            <td>
-              <strong>Range :</strong>
-            </td>
-            <td>
-              <input type="text" value={formData.range || ""} onChange={(e) => setFormData({ ...formData, range: e.target.value })} />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Relative Humidity :</strong>
-            </td>
+            <td style={{ fontWeight: 800 }}>Name of project company</td>
             <td>
               <input
                 type="text"
-                value={formData.relativeHumidity || ""}
-                onChange={(e) => setFormData({ ...formData, relativeHumidity: e.target.value })}
+                value={formData.projectCompanyName || ""}
+                onChange={(e) => setFormData({ ...formData, projectCompanyName: e.target.value })}
               />
             </td>
+            <td style={{ fontWeight: 800 }}>Rating Voltage</td>
             <td>
-              <strong>Voltage Level :</strong>
+              <input
+                type="text"
+                value={formData.ratingVoltage || ""}
+                onChange={(e) => setFormData({ ...formData, ratingVoltage: e.target.value })}
+              />
             </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800 }}>Name of TSS</td>
             <td>
-              <input type="text" value={formData.voltageLevel || ""} onChange={(e) => setFormData({ ...formData, voltageLevel: e.target.value })} />
+              <input
+                type="text"
+                value={formData.nameOfTSS || ""}
+                onChange={(e) => setFormData({ ...formData, nameOfTSS: e.target.value })}
+              />
+            </td>
+            <td style={{ fontWeight: 800 }}>Sr. no.</td>
+            <td>
+              <input
+                type="text"
+                value={formData.srNo || ""}
+                onChange={(e) => setFormData({ ...formData, srNo: e.target.value })}
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800 }}>Manufacturer name</td>
+            <td colSpan={3}>
+              <input
+                type="text"
+                value={formData.manufacturerName || ""}
+                onChange={(e) => setFormData({ ...formData, manufacturerName: e.target.value })}
+                style={{ width: "100%" }}
+              />
             </td>
           </tr>
         </tbody>
       </table>
 
-      <table className="form-table" style={{ marginTop: "30px" }}>
+      <table className="form-table" style={{ marginTop: "20px" }}>
         <thead>
           <tr>
-            <th></th>
-            <th>15 Sec (MΩ)</th>
-            <th>60 Sec (MΩ)</th>
-            <th>600 Sec (MΩ)</th>
-            <th>Ratio of IR 60/IR 15</th>
-            <th>Ratio of IR 600/IR 60</th>
+            <th style={{ width: "8%" }}>Sr.No.</th>
+            <th style={{ width: "36%" }}>Particulars</th>
+            <th style={{ width: "10%" }}>Qty</th>
+            <th colSpan={3} style={{ width: "46%" }}>
+              Status
+              <div style={{ display: "flex" }}>
+                <div style={{ width: "33.33%", textAlign: "center", fontWeight: 800 }}>Open</div>
+                <div style={{ width: "33.33%", textAlign: "center", fontWeight: 800 }}>Shut</div>
+                <div style={{ width: "33.33%", textAlign: "center", fontWeight: 800 }}>N/A</div>
+              </div>
+            </th>
           </tr>
         </thead>
         <tbody>
-          {defaultIrRows.map(({ label, key }) => (
-            <tr key={key}>
-              <td>
-                <strong>{label}</strong>
-              </td>
+          <tr>
+            <td style={{ fontWeight: 900, textAlign: "center" }}>I</td>
+            <td style={{ fontWeight: 900 }}>Valve Status</td>
+            <td>
+              <input
+                type="text"
+                value={formData.valveStatusSectionQty || ""}
+                onChange={(e) => setFormData({ ...formData, valveStatusSectionQty: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.valveStatusSectionOpen || ""}
+                onChange={(e) => setFormData({ ...formData, valveStatusSectionOpen: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.valveStatusSectionShut || ""}
+                onChange={(e) => setFormData({ ...formData, valveStatusSectionShut: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.valveStatusSectionNa || ""}
+                onChange={(e) => setFormData({ ...formData, valveStatusSectionNa: e.target.value })}
+              />
+            </td>
+          </tr>
+
+          {valveRows.map((r) => (
+            <tr key={r.key}>
+              <td style={{ fontWeight: 800, textAlign: "center" }}>{r.sr}</td>
+              <td style={{ fontWeight: 800 }}>{r.particulars}</td>
+
+              {/* Qty column (editable). If you later want fixed labels like 1/2, set r.qtyLabel and render it instead */}
               <td>
                 <input
                   type="text"
-                  value={formData[`${key}_15sec`] || ""}
-                  onChange={(e) => setFormData({ ...formData, [`${key}_15sec`]: e.target.value })}
+                  value={formData.valveStatus?.[r.key]?.qty || ""}
+                  onChange={(e) => setValveCell(r.key, "qty", e.target.value)}
+                  placeholder={r.qtyLabel || ""}
+                />
+              </td>
+
+              <td>
+                <input
+                  type="text"
+                  value={formData.valveStatus?.[r.key]?.open || ""}
+                  onChange={(e) => setValveCell(r.key, "open", e.target.value)}
                 />
               </td>
               <td>
                 <input
                   type="text"
-                  value={formData[`${key}_60sec`] || ""}
-                  onChange={(e) => setFormData({ ...formData, [`${key}_60sec`]: e.target.value })}
+                  value={formData.valveStatus?.[r.key]?.shut || ""}
+                  onChange={(e) => setValveCell(r.key, "shut", e.target.value)}
                 />
               </td>
               <td>
                 <input
                   type="text"
-                  value={formData[`${key}_600sec`] || ""}
-                  onChange={(e) => setFormData({ ...formData, [`${key}_600sec`]: e.target.value })}
+                  value={formData.valveStatus?.[r.key]?.na || ""}
+                  onChange={(e) => setValveCell(r.key, "na", e.target.value)}
                 />
               </td>
-              <td>
+            </tr>
+          ))}
+
+          <tr>
+            <td style={{ fontWeight: 900, textAlign: "center" }}>II</td>
+            <td style={{ fontWeight: 900 }}>Air Venting</td>
+            <td colSpan={3} style={{ fontWeight: 900 }}>
+              Done from the Following Locations:
+            </td>
+            <td></td>
+          </tr>
+
+          {airVentingSimpleRows.map((r) => (
+            <tr key={r.key}>
+              <td style={{ fontWeight: 800, textAlign: "center" }}>{r.sr}</td>
+              <td style={{ fontWeight: 800 }}>{r.particulars}</td>
+              <td></td>
+              <td colSpan={3}>
                 <input
                   type="text"
-                  value={formData[`${key}_ratio_ir60`] || ""}
-                  onChange={(e) => setFormData({ ...formData, [`${key}_ratio_ir60`]: e.target.value })}
+                  value={formData.airVenting?.[r.key] || ""}
+                  onChange={(e) => setAirVentingSimple(r.key, e.target.value)}
                 />
               </td>
-              <td>
+            </tr>
+          ))}
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>B</td>
+            <td style={{ fontWeight: 800 }}>Bucholz Relay</td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>1</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.bucholzRelay?.location1 || ""}
+                onChange={(e) => setAirVentingNested("bucholzRelay", "location1", e.target.value)}
+              />
+            </td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>2</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.bucholzRelay?.location2 || ""}
+                onChange={(e) => setAirVentingNested("bucholzRelay", "location2", e.target.value)}
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>C</td>
+            <td style={{ fontWeight: 800 }}>HV Bushing</td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>1.1</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.hvBushing?.location11 || ""}
+                onChange={(e) => setAirVentingNested("hvBushing", "location11", e.target.value)}
+              />
+            </td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>1.2</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.hvBushing?.location12 || ""}
+                onChange={(e) => setAirVentingNested("hvBushing", "location12", e.target.value)}
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>D</td>
+            <td style={{ fontWeight: 800 }}>LV Bushing</td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>2.1</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.lvBushing?.location21 || ""}
+                onChange={(e) => setAirVentingNested("lvBushing", "location21", e.target.value)}
+              />
+            </td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>2.2</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.lvBushing?.location22 || ""}
+                onChange={(e) => setAirVentingNested("lvBushing", "location22", e.target.value)}
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td></td>
+            <td></td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>3.1</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.lvBushing?.location31 || ""}
+                onChange={(e) => setAirVentingNested("lvBushing", "location31", e.target.value)}
+              />
+            </td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>3.2</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.lvBushing?.location32 || ""}
+                onChange={(e) => setAirVentingNested("lvBushing", "location32", e.target.value)}
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>G</td>
+            <td style={{ fontWeight: 800 }}>Header – Top</td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>1</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.headerTop?.location1 || ""}
+                onChange={(e) => setAirVentingNested("headerTop", "location1", e.target.value)}
+              />
+            </td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>2</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.headerTop?.location2 || ""}
+                onChange={(e) => setAirVentingNested("headerTop", "location2", e.target.value)}
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>H</td>
+            <td style={{ fontWeight: 800 }}>Header – Bottom</td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>1</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.headerBottom?.location1 || ""}
+                onChange={(e) => setAirVentingNested("headerBottom", "location1", e.target.value)}
+              />
+            </td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>2</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.headerBottom?.location2 || ""}
+                onChange={(e) => setAirVentingNested("headerBottom", "location2", e.target.value)}
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>K</td>
+            <td style={{ fontWeight: 800 }}>Oil Pump</td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>1</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.oilPump?.location1 || ""}
+                onChange={(e) => setAirVentingNested("oilPump", "location1", e.target.value)}
+              />
+            </td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>2</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.oilPump?.location2 || ""}
+                onChange={(e) => setAirVentingNested("oilPump", "location2", e.target.value)}
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td></td>
+            <td></td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>3</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.oilPump?.location3 || ""}
+                onChange={(e) => setAirVentingNested("oilPump", "location3", e.target.value)}
+              />
+            </td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>4</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.oilPump?.location4 || ""}
+                onChange={(e) => setAirVentingNested("oilPump", "location4", e.target.value)}
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 900, textAlign: "center" }}>III</td>
+            <td style={{ fontWeight: 900 }}>Protection Trails</td>
+            <td colSpan={3} style={{ fontWeight: 900, textAlign: "center" }}>
+              Checked
+            </td>
+            <td></td>
+          </tr>
+
+          {protectionRows.map((r) => (
+            <tr key={r.key}>
+              <td style={{ fontWeight: 800, textAlign: "center" }}>{r.sr}</td>
+              <td style={{ fontWeight: 800 }}>{r.particulars}</td>
+              <td style={{ fontWeight: 800, textAlign: "center" }}>{r.label}</td>
+              <td colSpan={r.key === "otiAlarm" ? 1 : 3}>
                 <input
                   type="text"
-                  value={formData[`${key}_ratio_ir600`] || ""}
-                  onChange={(e) => setFormData({ ...formData, [`${key}_ratio_ir600`]: e.target.value })}
+                  value={formData.protectionTrails?.[r.key] || ""}
+                  onChange={(e) => setProtection(r.key, e.target.value)}
                 />
               </td>
+              {r.key === "otiAlarm" ? (
+                <>
+                  <td style={{ fontWeight: 800, textAlign: "center" }}>Set Temperature</td>
+                  <td>
+                    <input
+                      type="text"
+                      value={formData.otiSetTemperature || ""}
+                      onChange={(e) => setFormData({ ...formData, otiSetTemperature: e.target.value })}
+                    />
+                  </td>
+                </>
+              ) : (
+                <>
+                  <td></td>
+                  <td></td>
+                </>
+              )}
             </tr>
           ))}
         </tbody>
       </table>
 
       <PhotoUploadSection
-        title="IR tester / calibration report / test setup photo"
+        title="Pre-commissioning checklist photographs"
         photos={photoRequirements}
         onPhotoChange={handlePhotoChange}
       />
-
-      <div className="signature-section">
-        <div className="signature-box">
-          <label>Checked By VPES :</label>
-          <input
-            type="text"
-            placeholder="Name"
-            value={formData.signatures.vpesName}
-            onChange={(e) => handleSignatureChange("vpes", "name", e.target.value)}
-          />
-          <SignatureBox
-            label=""
-            nameValue=""
-            onNameChange={() => {}}
-            onSignatureChange={(signature) => handleSignatureChange("vpes", "signature", signature)}
-            initialSignature={formData.signatures.vpesSignature}
-          />
-          <input
-            type="date"
-            value={formData.signatures.vpesDate}
-            onChange={(e) => handleSignatureChange("vpes", "date", e.target.value)}
-          />
-        </div>
-
-        <div className="signature-box">
-          <label>Witnessed by customer :</label>
-          <input
-            type="text"
-            placeholder="Name"
-            value={formData.signatures.customerName}
-            onChange={(e) => handleSignatureChange("customer", "name", e.target.value)}
-          />
-          <SignatureBox
-            label=""
-            nameValue=""
-            onNameChange={() => {}}
-            onSignatureChange={(signature) => handleSignatureChange("customer", "signature", signature)}
-            initialSignature={formData.signatures.customerSignature}
-          />
-          <input
-            type="date"
-            value={formData.signatures.customerDate}
-            onChange={(e) => handleSignatureChange("customer", "date", e.target.value)}
-          />
-        </div>
-      </div>
 
       <div className="form-actions">
         {onPrevious && (
@@ -9394,71 +9653,35 @@ export function PreCommissioningChecklistForm({
   )
 }
 
-// Stage 6 Form 2: Transformer Protection and Accessories
-export function TransformerProtectionAccessoriesForm({
-  onSubmit,
-  onPrevious,
-  initialData,
-  isLastFormOfStage,
-  companyName,
-  projectName,
-}) {
+export function Stage6Form2({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
   const [formData, setFormData] = useState({
-    // Transformer Protection relay
-    transformerProtectionRelay: {
-      make: "",
-      srNo: "",
-      lastTestedDate: "",
-      remark: "",
-    },
+    // IV Transformer Protection relay (as per format image)
+    overCurrentRelay: { make: "", srNo: "", lastTestedDate: "", remark: "" }, // A
+    restrictedEarthFaultRelay: { make: "", srNo: "", lastTestedDate: "", remark: "" }, // B
+    differentialRelay: { make: "", srNo: "", lastTestedDate: "", remark: "" }, // C
+    masterTripRelay: { make: "", srNo: "", lastTestedDate: "", remark: "" }, // D
+    separateEarthPit: "", // E yes/no
 
-    // Over current relay
-    overCurrentRelay: {
-      make: "",
-      srNo: "",
-      lastTestedDate: "",
-      remark: "",
-    },
+    // F/G/H simple text fields (single cell)
+    neutralEarthPitResistanceValues: "",
+    gridEarthResistanceValues: "",
+    cleaningCheckingMainTankEarthing: "",
 
-    // Differential Relay
-    differentialRelay: {
-      make: "",
-      srNo: "",
-      lastTestedDate: "",
-      remark: "",
-    },
-
-    // Master Trip Relay
-    masterTripRelay: {
-      make: "",
-      srNo: "",
-      lastTestedDate: "",
-      remark: "",
-    },
-
-    // Separate earth pit for neutral earthing
-    separateEarthPit: "yes/no",
-
-    // Neutral earth pit resistance values
-    neutralEarthPitResistance: "yes/no",
-
-    // Oil surge & Checking for the main tank Earthing
-    oilSurgeChecking: {
+    // I LA Counter reading (3 columns: 1.1/2.1/3.1 and 1.2/2.2/3.2)
+    laCounterReading: {
       1.1: "",
-      1.2: "",
       2.1: "",
-      2.2: "",
       3.1: "",
+      1.2: "",
+      2.2: "",
       3.2: "",
     },
 
-    // Whether LA Earthing checked
-    laEarthingChecked: "",
+    // J/K simple
+    whetherLaEarthingChecked: "",
+    irValueOfLa: "",
 
-    // IR values of LA
-    irValuesLA: "",
-
-    // Phase 1.1, 1.2, 2.1, 2.2, 3.1, 3.2
+    // L-M-N-O-P-Q phases
     phases: {
       1.1: "",
       1.2: "",
@@ -9468,52 +9691,109 @@ export function TransformerProtectionAccessoriesForm({
       3.2: "",
     },
 
-    // Accessories Checking
+    // IV Accessories Checking
     accessories: {
       fanStart: { setTemp: "", checked: "", noOfHrsRun: "" },
       fanStop: { setTemp: "", checked: "", noOfHrsRun: "" },
-      pumpStart: { setTemp: "", checked: "", noOfHrsRun: "" },
-      pumpStop: { setTemp: "", checked: "", noOfHrsRun: "" },
-      octcTapPosition: { setTemp: "", checked: "", noOfHrsRun: "" },
-      diverseSwitch: { setTemp: "", checked: "", noOfHrsRun: "" },
-      oilLevel: { setTemp: "", checked: "", noOfHrsRun: "" },
-      tpi: { setTemp: "", checked: "", noOfHrsRun: "" },
-      bushingTapEarthed: {
-        hvChecked: { 1.1: "", 1.2: "" },
-        lvChecked: { 2.1: "", 2.2: "", 3.1: "", 3.2: "" },
-      },
+      pumpStart1: { setTemp: "", checked: "", noOfHrsRun: "" }, // C
+      pumpStart2: { setTemp: "", checked: "", noOfHrsRun: "" }, // D (as per image duplicate)
+      octcTapPosition: { setTemp: "", checked: "", noOfHrsRun: "" }, // V
+      diverterSwitch: { setTemp: "", checked: "", noOfHrsRun: "" }, // A
+      driveMechanism: { setTemp: "", checked: "", noOfHrsRun: "" }, // B
+      tpiRtcc: { setTemp: "", checked: "", noOfHrsRun: "" }, // C
     },
 
-    // Oil Values
+    // VI Bushing Test Tap Earthed
+    bushingTestTapEarthed: {
+      hvChecked: { 1.1: "", 1.2: "" },
+      lvChecked: { 2.1: "", 2.2: "", 3.1: "", 3.2: "" },
+    },
+
+    // VII Oil Values
     oilValues: {
-      bdv: "",
-      moistureContent: "",
-      finalOilValues: {
-        hvEarth: "",
-        lv1Earth: "",
-        lv2Earth: "",
-        hvLv1: "",
-        hvLv2: "",
-        lv1Lv2: "",
-        coreToFrame: "",
-        frameToTank: "",
-      },
+      bdvKv: "",
+      moistureContentPpm: "",
     },
 
-    // Oil Level in Conservator
-    oilLevelConservator: {
-      conditions: {
-        hvJumpers: { 1.1: "", 1.2: "" },
-      },
+    // VIII Final IR Values (10/60/600/PI)
+    finalIrValues: {
+      hvEarth: { at10: "", at60: "", at600: "", pi: "" },
+      lv1Earth: { at10: "", at60: "", at600: "", pi: "" },
+      lv2Earth: { at10: "", at60: "", at600: "", pi: "" },
+      hvLv1: { at10: "", at60: "", at600: "", pi: "" },
+      hvLv2: { at10: "", at60: "", at600: "", pi: "" },
+      lv1Lv2: { at10: "", at60: "", at600: "", pi: "" },
+      coreToFrame: { at10: "", at60: "", at600: "", pi: "" },
+      frameToTank: { at10: "", at60: "", at600: "", pi: "" },
+      removalLinkAgainTightensAndCheckZeroMegger: { at10: "", at60: "", at600: "", pi: "" },
     },
+
+    // IX
+    oilLevelInConservator: "",
+
+    // X Connectors - HV Jumpers 1.1/1.2
+    connectorsHvJumpers: { 1.1: "", 1.2: "" },
 
     photos: {},
     ...initialData,
   })
 
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_API_BASE_URL}/api/vconnectData/getTable/Stage6Form2`, {
+          params: { companyName, projectName },
+        })
+        if (response.data && response.data.data) {
+          setFormData((prev) => ({ ...prev, ...response.data.data }))
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error)
+      }
+    }
+    fetchFormData()
+  }, [projectName, companyName])
+
   const handleSubmit = (e) => {
     e.preventDefault()
     onSubmit(formData)
+  }
+
+  const setRelayField = (relayKey, field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [relayKey]: { ...(prev[relayKey] || {}), [field]: value },
+    }))
+  }
+
+  const setAccessoryField = (rowKey, field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      accessories: {
+        ...(prev.accessories || {}),
+        [rowKey]: { ...((prev.accessories || {})[rowKey] || {}), [field]: value },
+      },
+    }))
+  }
+
+  const setBushingTapEarthed = (group, key, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      bushingTestTapEarthed: {
+        ...(prev.bushingTestTapEarthed || {}),
+        [group]: { ...((prev.bushingTestTapEarthed || {})[group] || {}), [key]: value },
+      },
+    }))
+  }
+
+  const setFinalIr = (rowKey, field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      finalIrValues: {
+        ...(prev.finalIrValues || {}),
+        [rowKey]: { ...((prev.finalIrValues || {})[rowKey] || {}), [field]: value },
+      },
+    }))
   }
 
   const handlePhotoChange = (key, file) => {
@@ -9523,875 +9803,1039 @@ export function TransformerProtectionAccessoriesForm({
     }))
   }
 
-  const photoRequirements = [{ key: "transformerProtection", label: "Transformer Protection and Accessories" }]
+  // Keep only the photo label from the requirement image
+  const photoRequirements = [{ key: "stage6Form2", label: "Transformer Protection relay / Accessories / IR values" }]
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
       <div className="company-header">
-        <h2>Transformer Protection and Accessories</h2>
+        <h2>Transformer Protection relay / Accessories Checking / IR Values</h2>
       </div>
 
+      {/* IV Transformer Protection relay */}
       <table className="form-table">
         <thead>
           <tr>
-            <th>IV</th>
-            <th>Transformer Protection relay</th>
-            <th>Make</th>
-            <th>Sr no.</th>
-            <th>last tested date</th>
-            <th>Remark</th>
+            <th style={{ width: "6%" }}>IV</th>
+            <th style={{ width: "44%" }}>Transformer Protection relay</th>
+            <th style={{ width: "12%" }}>Make</th>
+            <th style={{ width: "12%" }}>sr.no.</th>
+            <th style={{ width: "14%" }}>last tested date.</th>
+            <th style={{ width: "12%" }}>Remark</th>
           </tr>
         </thead>
         <tbody>
           <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>A</td>
+            <td style={{ fontWeight: 800 }}>Over-current relay</td>
             <td>
-              <strong>A</strong>
-            </td>
-            <td>Over current relay</td>
-            <td>
-              <input
-                type="text"
-                value={formData.overCurrentRelay.make}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    overCurrentRelay: { ...formData.overCurrentRelay, make: e.target.value },
-                  })
-                }
-              />
+              <input type="text" value={formData.overCurrentRelay?.make || ""} onChange={(e) => setRelayField("overCurrentRelay", "make", e.target.value)} />
             </td>
             <td>
-              <input
-                type="text"
-                value={formData.overCurrentRelay.srNo}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    overCurrentRelay: { ...formData.overCurrentRelay, srNo: e.target.value },
-                  })
-                }
-              />
+              <input type="text" value={formData.overCurrentRelay?.srNo || ""} onChange={(e) => setRelayField("overCurrentRelay", "srNo", e.target.value)} />
             </td>
             <td>
-              <input
-                type="date"
-                value={formData.overCurrentRelay.lastTestedDate}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    overCurrentRelay: { ...formData.overCurrentRelay, lastTestedDate: e.target.value },
-                  })
-                }
-              />
+              <input type="date" value={formData.overCurrentRelay?.lastTestedDate || ""} onChange={(e) => setRelayField("overCurrentRelay", "lastTestedDate", e.target.value)} />
             </td>
             <td>
-              <input
-                type="text"
-                value={formData.overCurrentRelay.remark}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    overCurrentRelay: { ...formData.overCurrentRelay, remark: e.target.value },
-                  })
-                }
-              />
+              <input type="text" value={formData.overCurrentRelay?.remark || ""} onChange={(e) => setRelayField("overCurrentRelay", "remark", e.target.value)} />
             </td>
           </tr>
+
           <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>B</td>
+            <td style={{ fontWeight: 800 }}>Restricted Earth fault Relay</td>
             <td>
-              <strong>B</strong>
+              <input type="text" value={formData.restrictedEarthFaultRelay?.make || ""} onChange={(e) => setRelayField("restrictedEarthFaultRelay", "make", e.target.value)} />
             </td>
-            <td>Earth Fault Relay</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>
+              <input type="text" value={formData.restrictedEarthFaultRelay?.srNo || ""} onChange={(e) => setRelayField("restrictedEarthFaultRelay", "srNo", e.target.value)} />
+            </td>
+            <td>
+              <input type="date" value={formData.restrictedEarthFaultRelay?.lastTestedDate || ""} onChange={(e) => setRelayField("restrictedEarthFaultRelay", "lastTestedDate", e.target.value)} />
+            </td>
+            <td>
+              <input type="text" value={formData.restrictedEarthFaultRelay?.remark || ""} onChange={(e) => setRelayField("restrictedEarthFaultRelay", "remark", e.target.value)} />
+            </td>
           </tr>
+
           <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>C</td>
+            <td style={{ fontWeight: 800 }}>Differential Relay</td>
             <td>
-              <strong>C</strong>
-            </td>
-            <td>Differential Relay</td>
-            <td>
-              <input
-                type="text"
-                value={formData.differentialRelay.make}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    differentialRelay: { ...formData.differentialRelay, make: e.target.value },
-                  })
-                }
-              />
+              <input type="text" value={formData.differentialRelay?.make || ""} onChange={(e) => setRelayField("differentialRelay", "make", e.target.value)} />
             </td>
             <td>
-              <input
-                type="text"
-                value={formData.differentialRelay.srNo}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    differentialRelay: { ...formData.differentialRelay, srNo: e.target.value },
-                  })
-                }
-              />
+              <input type="text" value={formData.differentialRelay?.srNo || ""} onChange={(e) => setRelayField("differentialRelay", "srNo", e.target.value)} />
             </td>
             <td>
-              <input
-                type="date"
-                value={formData.differentialRelay.lastTestedDate}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    differentialRelay: { ...formData.differentialRelay, lastTestedDate: e.target.value },
-                  })
-                }
-              />
+              <input type="date" value={formData.differentialRelay?.lastTestedDate || ""} onChange={(e) => setRelayField("differentialRelay", "lastTestedDate", e.target.value)} />
             </td>
             <td>
-              <input
-                type="text"
-                value={formData.differentialRelay.remark}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    differentialRelay: { ...formData.differentialRelay, remark: e.target.value },
-                  })
-                }
-              />
+              <input type="text" value={formData.differentialRelay?.remark || ""} onChange={(e) => setRelayField("differentialRelay", "remark", e.target.value)} />
             </td>
           </tr>
+
           <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>D</td>
+            <td style={{ fontWeight: 800 }}>Master Trip Relay</td>
             <td>
-              <strong>D</strong>
-            </td>
-            <td>Master Trip Relay</td>
-            <td>
-              <input
-                type="text"
-                value={formData.masterTripRelay.make}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    masterTripRelay: { ...formData.masterTripRelay, make: e.target.value },
-                  })
-                }
-              />
+              <input type="text" value={formData.masterTripRelay?.make || ""} onChange={(e) => setRelayField("masterTripRelay", "make", e.target.value)} />
             </td>
             <td>
-              <input
-                type="text"
-                value={formData.masterTripRelay.srNo}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    masterTripRelay: { ...formData.masterTripRelay, srNo: e.target.value },
-                  })
-                }
-              />
+              <input type="text" value={formData.masterTripRelay?.srNo || ""} onChange={(e) => setRelayField("masterTripRelay", "srNo", e.target.value)} />
             </td>
             <td>
-              <input
-                type="date"
-                value={formData.masterTripRelay.lastTestedDate}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    masterTripRelay: { ...formData.masterTripRelay, lastTestedDate: e.target.value },
-                  })
-                }
-              />
+              <input type="date" value={formData.masterTripRelay?.lastTestedDate || ""} onChange={(e) => setRelayField("masterTripRelay", "lastTestedDate", e.target.value)} />
             </td>
             <td>
-              <input
-                type="text"
-                value={formData.masterTripRelay.remark}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    masterTripRelay: { ...formData.masterTripRelay, remark: e.target.value },
-                  })
-                }
-              />
+              <input type="text" value={formData.masterTripRelay?.remark || ""} onChange={(e) => setRelayField("masterTripRelay", "remark", e.target.value)} />
             </td>
           </tr>
+
           <tr>
-            <td>
-              <strong>E</strong>
-            </td>
-            <td>Separate earth pit for neutral earthing</td>
-            <td colSpan="4">
-              <select
-                value={formData.separateEarthPit}
-                onChange={(e) => setFormData({ ...formData, separateEarthPit: e.target.value })}
-              >
-                <option value="">Select</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-              </select>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>E</td>
+            <td style={{ fontWeight: 800 }}>Separate earth pit for neutral earthing</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>yes/no</td>
+            <td colSpan={3}>
+              <input type="text" value={formData.separateEarthPit || ""} onChange={(e) => setFormData({ ...formData, separateEarthPit: e.target.value })} />
             </td>
           </tr>
+
           <tr>
-            <td>
-              <strong>F</strong>
-            </td>
-            <td>Neutral earth pit resistance values</td>
-            <td colSpan="4">
-              <select
-                value={formData.neutralEarthPitResistance}
-                onChange={(e) => setFormData({ ...formData, neutralEarthPitResistance: e.target.value })}
-              >
-                <option value="">Select</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-              </select>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>F</td>
+            <td style={{ fontWeight: 800 }}>Neutral earth pit resistance values</td>
+            <td colSpan={4}>
+              <input
+                type="text"
+                value={formData.neutralEarthPitResistanceValues || ""}
+                onChange={(e) => setFormData({ ...formData, neutralEarthPitResistanceValues: e.target.value })}
+              />
             </td>
           </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>G</td>
+            <td style={{ fontWeight: 800 }}>Grid earth resistance values</td>
+            <td colSpan={4}>
+              <input
+                type="text"
+                value={formData.gridEarthResistanceValues || ""}
+                onChange={(e) => setFormData({ ...formData, gridEarthResistanceValues: e.target.value })}
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>H</td>
+            <td style={{ fontWeight: 800 }}>Cleaning & Checking for the main tank Earthling</td>
+            <td colSpan={4}>
+              <input
+                type="text"
+                value={formData.cleaningCheckingMainTankEarthing || ""}
+                onChange={(e) => setFormData({ ...formData, cleaningCheckingMainTankEarthing: e.target.value })}
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>I</td>
+            <td style={{ fontWeight: 800 }}>LA Counter reading</td>
+            <td colSpan={4} style={{ padding: 0 }}>
+              <table className="form-table" style={{ marginTop: 0 }}>
+                <thead>
+                  <tr>
+                    <th style={{ width: "33.33%" }}>1.1</th>
+                    <th style={{ width: "33.33%" }}>2.1</th>
+                    <th style={{ width: "33.33%" }}>3.1</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="text" value={formData.laCounterReading?.["1.1"] || ""} onChange={(e) => setFormData({ ...formData, laCounterReading: { ...(formData.laCounterReading || {}), 1.1: e.target.value } })} /></td>
+                    <td><input type="text" value={formData.laCounterReading?.["2.1"] || ""} onChange={(e) => setFormData({ ...formData, laCounterReading: { ...(formData.laCounterReading || {}), 2.1: e.target.value } })} /></td>
+                    <td><input type="text" value={formData.laCounterReading?.["3.1"] || ""} onChange={(e) => setFormData({ ...formData, laCounterReading: { ...(formData.laCounterReading || {}), 3.1: e.target.value } })} /></td>
+                  </tr>
+                </tbody>
+                <thead>
+                  <tr>
+                    <th>1.2</th>
+                    <th>2.2</th>
+                    <th>3.2</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="text" value={formData.laCounterReading?.["1.2"] || ""} onChange={(e) => setFormData({ ...formData, laCounterReading: { ...(formData.laCounterReading || {}), 1.2: e.target.value } })} /></td>
+                    <td><input type="text" value={formData.laCounterReading?.["2.2"] || ""} onChange={(e) => setFormData({ ...formData, laCounterReading: { ...(formData.laCounterReading || {}), 2.2: e.target.value } })} /></td>
+                    <td><input type="text" value={formData.laCounterReading?.["3.2"] || ""} onChange={(e) => setFormData({ ...formData, laCounterReading: { ...(formData.laCounterReading || {}), 3.2: e.target.value } })} /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>J</td>
+            <td style={{ fontWeight: 800 }}>Whether LA Earthling checked</td>
+            <td colSpan={4}>
+              <input type="text" value={formData.whetherLaEarthingChecked || ""} onChange={(e) => setFormData({ ...formData, whetherLaEarthingChecked: e.target.value })} />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>K</td>
+            <td style={{ fontWeight: 800 }}>IR Value of LA</td>
+            <td colSpan={4}>
+              <input type="text" value={formData.irValueOfLa || ""} onChange={(e) => setFormData({ ...formData, irValueOfLa: e.target.value })} />
+            </td>
+          </tr>
+
+          {[
+            ["L", "Phase 1.1", "1.1"],
+            ["M", "Phase 1.2", "1.2"],
+            ["N", "Phase 2.1", "2.1"],
+            ["O", "Phase 2.2", "2.2"],
+            ["P", "Phase 3.1", "3.1"],
+            ["Q", "Phase 3.2", "3.2"],
+          ].map(([sr, label, key]) => (
+            <tr key={key}>
+              <td style={{ fontWeight: 800, textAlign: "center" }}>{sr}</td>
+              <td style={{ fontWeight: 800 }}>{label}</td>
+              <td colSpan={4}>
+                <input type="text" value={formData.phases?.[key] || ""} onChange={(e) => setFormData({ ...formData, phases: { ...(formData.phases || {}), [key]: e.target.value } })} />
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
 
-      <h4 style={{ marginTop: "30px" }}>Oil surge & Checking for the main tank Earthing</h4>
-      <table className="form-table">
-        <thead>
-          <tr>
-            <th>G</th>
-            <th>LA Earthing & Checking for the main tank Earthing</th>
-            <th>1.1</th>
-            <th>2.1</th>
-            <th>3.1</th>
-            <th></th>
-          </tr>
-          <tr>
-            <th>H</th>
-            <th>LA Earthing</th>
-            <th>1.2</th>
-            <th>2.2</th>
-            <th>3.2</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td></td>
-            <td></td>
-            <td>
-              <input
-                type="text"
-                value={formData.oilSurgeChecking["1.1"]}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    oilSurgeChecking: { ...formData.oilSurgeChecking, 1.1: e.target.value },
-                  })
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.oilSurgeChecking["2.1"]}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    oilSurgeChecking: { ...formData.oilSurgeChecking, 2.1: e.target.value },
-                  })
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.oilSurgeChecking["3.1"]}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    oilSurgeChecking: { ...formData.oilSurgeChecking, 3.1: e.target.value },
-                  })
-                }
-              />
-            </td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td>
-              <input
-                type="text"
-                value={formData.oilSurgeChecking["1.2"]}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    oilSurgeChecking: { ...formData.oilSurgeChecking, 1.2: e.target.value },
-                  })
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.oilSurgeChecking["2.2"]}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    oilSurgeChecking: { ...formData.oilSurgeChecking, 2.2: e.target.value },
-                  })
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.oilSurgeChecking["3.2"]}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    oilSurgeChecking: { ...formData.oilSurgeChecking, 3.2: e.target.value },
-                  })
-                }
-              />
-            </td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
-
+      {/* IV Accessories Checking */}
       <table className="form-table" style={{ marginTop: "20px" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "6%" }}>IV</th>
+            <th style={{ width: "44%" }}>Accessories Checking</th>
+            <th style={{ width: "16%" }}>SET Temp.</th>
+            <th style={{ width: "16%" }}>Checked</th>
+            <th style={{ width: "18%" }}>No. of Hrs. RUN</th>
+          </tr>
+        </thead>
+        <tbody>
+          {[
+            ["A", "FAN START", "fanStart"],
+            ["B", "FAN STOP", "fanStop"],
+            ["C", "PUMP START", "pumpStart1"],
+            ["D", "PUMP START", "pumpStart2"],
+          ].map(([sr, label, key]) => (
+            <tr key={key}>
+              <td style={{ fontWeight: 800, textAlign: "center" }}>{sr}</td>
+              <td style={{ fontWeight: 800 }}>{label}</td>
+              <td><input type="text" value={formData.accessories?.[key]?.setTemp || ""} onChange={(e) => setAccessoryField(key, "setTemp", e.target.value)} /></td>
+              <td><input type="text" value={formData.accessories?.[key]?.checked || ""} onChange={(e) => setAccessoryField(key, "checked", e.target.value)} /></td>
+              <td><input type="text" value={formData.accessories?.[key]?.noOfHrsRun || ""} onChange={(e) => setAccessoryField(key, "noOfHrsRun", e.target.value)} /></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* V OCTC TAP Position */}
+      <table className="form-table" style={{ marginTop: "10px" }}>
         <tbody>
           <tr>
-            <td>
-              <strong>I</strong>
+            <td style={{ width: "6%", fontWeight: 900, textAlign: "center" }}>V</td>
+            <td style={{ width: "44%", fontWeight: 900 }}>OCTC TAP Position</td>
+            <td style={{ width: "16%" }}>
+              <input type="text" value={formData.accessories?.octcTapPosition?.setTemp || ""} onChange={(e) => setAccessoryField("octcTapPosition", "setTemp", e.target.value)} />
             </td>
-            <td>Whether LA Earthing checked</td>
-            <td>
-              <input
-                type="text"
-                value={formData.laEarthingChecked}
-                onChange={(e) => setFormData({ ...formData, laEarthingChecked: e.target.value })}
-              />
+            <td style={{ width: "16%" }}>
+              <input type="text" value={formData.accessories?.octcTapPosition?.checked || ""} onChange={(e) => setAccessoryField("octcTapPosition", "checked", e.target.value)} />
             </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>J</strong>
-            </td>
-            <td>IR values of LA</td>
-            <td>
-              <input
-                type="text"
-                value={formData.irValuesLA}
-                onChange={(e) => setFormData({ ...formData, irValuesLA: e.target.value })}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>K</strong>
-            </td>
-            <td>Phase 1.1</td>
-            <td>
-              <input
-                type="text"
-                value={formData.phases["1.1"]}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    phases: { ...formData.phases, 1.1: e.target.value },
-                  })
-                }
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>L</strong>
-            </td>
-            <td>Phase 1.2</td>
-            <td>
-              <input
-                type="text"
-                value={formData.phases["1.2"]}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    phases: { ...formData.phases, 1.2: e.target.value },
-                  })
-                }
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>M</strong>
-            </td>
-            <td>Phase 2.1</td>
-            <td>
-              <input
-                type="text"
-                value={formData.phases["2.1"]}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    phases: { ...formData.phases, 2.1: e.target.value },
-                  })
-                }
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>N</strong>
-            </td>
-            <td>Phase 2.2</td>
-            <td>
-              <input
-                type="text"
-                value={formData.phases["2.2"]}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    phases: { ...formData.phases, 2.2: e.target.value },
-                  })
-                }
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>O</strong>
-            </td>
-            <td>Phase 3.1</td>
-            <td>
-              <input
-                type="text"
-                value={formData.phases["3.1"]}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    phases: { ...formData.phases, 3.1: e.target.value },
-                  })
-                }
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>P</strong>
-            </td>
-            <td>Phase 3.2</td>
-            <td>
-              <input
-                type="text"
-                value={formData.phases["3.2"]}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    phases: { ...formData.phases, 3.2: e.target.value },
-                  })
-                }
-              />
+            <td style={{ width: "18%" }}>
+              <input type="text" value={formData.accessories?.octcTapPosition?.noOfHrsRun || ""} onChange={(e) => setAccessoryField("octcTapPosition", "noOfHrsRun", e.target.value)} />
             </td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style={{ marginTop: "30px" }}>Accessories Checking</h4>
-      <table className="form-table">
+      {/* A/B/C under V (as per image) */}
+      <table className="form-table" style={{ marginTop: "0px" }}>
+        <tbody>
+          {[
+            ["A", "DIVERTER SWITCH", "diverterSwitch"],
+            ["B", "DRIVE MECHANISM", "driveMechanism"],
+            ["C", "TPI - (RTCC)", "tpiRtcc"],
+          ].map(([sr, label, key]) => (
+            <tr key={key}>
+              <td style={{ width: "6%", fontWeight: 800, textAlign: "center" }}>{sr}</td>
+              <td style={{ width: "44%", fontWeight: 800 }}>{label}</td>
+              <td style={{ width: "16%" }}>
+                <input type="text" value={formData.accessories?.[key]?.setTemp || ""} onChange={(e) => setAccessoryField(key, "setTemp", e.target.value)} />
+              </td>
+              <td style={{ width: "16%" }}>
+                <input type="text" value={formData.accessories?.[key]?.checked || ""} onChange={(e) => setAccessoryField(key, "checked", e.target.value)} />
+              </td>
+              <td style={{ width: "18%" }}>
+                <input type="text" value={formData.accessories?.[key]?.noOfHrsRun || ""} onChange={(e) => setAccessoryField(key, "noOfHrsRun", e.target.value)} />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* VI Bushing Test Tap Earthed */}
+      <table className="form-table" style={{ marginTop: "10px" }}>
         <thead>
           <tr>
-            <th>IV</th>
-            <th>Accessories Checking</th>
-            <th>SET Temp.</th>
-            <th>Checked</th>
-            <th>No. of Hrs. RUN</th>
+            <th style={{ width: "50%" }}>VI &nbsp; Bushing Test Tap Earthed</th>
+            <th style={{ width: "25%" }}>1.1</th>
+            <th style={{ width: "25%" }}>1.2</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>
-              <strong>A</strong>
-            </td>
-            <td>FAN START</td>
-            <td>
-              <input
-                type="text"
-                value={formData.accessories.fanStart.setTemp}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    accessories: {
-                      ...formData.accessories,
-                      fanStart: { ...formData.accessories.fanStart, setTemp: e.target.value },
-                    },
-                  })
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.accessories.fanStart.checked}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    accessories: {
-                      ...formData.accessories,
-                      fanStart: { ...formData.accessories.fanStart, checked: e.target.value },
-                    },
-                  })
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.accessories.fanStart.noOfHrsRun}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    accessories: {
-                      ...formData.accessories,
-                      fanStart: { ...formData.accessories.fanStart, noOfHrsRun: e.target.value },
-                    },
-                  })
-                }
-              />
-            </td>
+            <td style={{ fontWeight: 800 }}>HV Checked</td>
+            <td><input type="text" value={formData.bushingTestTapEarthed?.hvChecked?.["1.1"] || ""} onChange={(e) => setBushingTapEarthed("hvChecked", "1.1", e.target.value)} /></td>
+            <td><input type="text" value={formData.bushingTestTapEarthed?.hvChecked?.["1.2"] || ""} onChange={(e) => setBushingTapEarthed("hvChecked", "1.2", e.target.value)} /></td>
           </tr>
           <tr>
-            <td>
-              <strong>B</strong>
-            </td>
-            <td>FAN STOP</td>
-            <td>
-              <input
-                type="text"
-                value={formData.accessories.fanStop.setTemp}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    accessories: {
-                      ...formData.accessories,
-                      fanStop: { ...formData.accessories.fanStop, setTemp: e.target.value },
-                    },
-                  })
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.accessories.fanStop.checked}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    accessories: {
-                      ...formData.accessories,
-                      fanStop: { ...formData.accessories.fanStop, checked: e.target.value },
-                    },
-                  })
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.accessories.fanStop.noOfHrsRun}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    accessories: {
-                      ...formData.accessories,
-                      fanStop: { ...formData.accessories.fanStop, noOfHrsRun: e.target.value },
-                    },
-                  })
-                }
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>C</strong>
-            </td>
-            <td>PUMP START</td>
-            <td>
-              <input
-                type="text"
-                value={formData.accessories.pumpStart.setTemp}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    accessories: {
-                      ...formData.accessories,
-                      pumpStart: { ...formData.accessories.pumpStart, setTemp: e.target.value },
-                    },
-                  })
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.accessories.pumpStart.checked}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    accessories: {
-                      ...formData.accessories,
-                      pumpStart: { ...formData.accessories.pumpStart, checked: e.target.value },
-                    },
-                  })
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.accessories.pumpStart.noOfHrsRun}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    accessories: {
-                      ...formData.accessories,
-                      pumpStart: { ...formData.accessories.pumpStart, noOfHrsRun: e.target.value },
-                    },
-                  })
-                }
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>D</strong>
-            </td>
-            <td>PUMP STOP</td>
-            <td>
-              <input
-                type="text"
-                value={formData.accessories.pumpStop.setTemp}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    accessories: {
-                      ...formData.accessories,
-                      pumpStop: { ...formData.accessories.pumpStop, setTemp: e.target.value },
-                    },
-                  })
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.accessories.pumpStop.checked}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    accessories: {
-                      ...formData.accessories,
-                      pumpStop: { ...formData.accessories.pumpStop, checked: e.target.value },
-                    },
-                  })
-                }
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData.accessories.pumpStop.noOfHrsRun}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    accessories: {
-                      ...formData.accessories,
-                      pumpStop: { ...formData.accessories.pumpStop, noOfHrsRun: e.target.value },
-                    },
-                  })
-                }
-              />
+            <td style={{ fontWeight: 800 }}>LV Checked</td>
+            <td colSpan={2} style={{ padding: 0 }}>
+              <table className="form-table" style={{ marginTop: 0 }}>
+                <thead>
+                  <tr>
+                    <th style={{ width: "25%" }}>2.1</th>
+                    <th style={{ width: "25%" }}>2.2</th>
+                    <th style={{ width: "25%" }}>3.1</th>
+                    <th style={{ width: "25%" }}>3.2</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="text" value={formData.bushingTestTapEarthed?.lvChecked?.["2.1"] || ""} onChange={(e) => setBushingTapEarthed("lvChecked", "2.1", e.target.value)} /></td>
+                    <td><input type="text" value={formData.bushingTestTapEarthed?.lvChecked?.["2.2"] || ""} onChange={(e) => setBushingTapEarthed("lvChecked", "2.2", e.target.value)} /></td>
+                    <td><input type="text" value={formData.bushingTestTapEarthed?.lvChecked?.["3.1"] || ""} onChange={(e) => setBushingTapEarthed("lvChecked", "3.1", e.target.value)} /></td>
+                    <td><input type="text" value={formData.bushingTestTapEarthed?.lvChecked?.["3.2"] || ""} onChange={(e) => setBushingTapEarthed("lvChecked", "3.2", e.target.value)} /></td>
+                  </tr>
+                </tbody>
+              </table>
             </td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style={{ marginTop: "30px" }}>Oil Values</h4>
+      {/* VII Oil Values */}
+      <table className="form-table" style={{ marginTop: "10px" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "8%" }}>VII</th>
+            <th style={{ width: "62%" }}>Oil Values</th>
+            <th style={{ width: "30%" }}></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>A</td>
+            <td style={{ fontWeight: 800 }}>BDV</td>
+            <td style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+              <strong>KV</strong>
+              <input type="text" value={formData.oilValues?.bdvKv || ""} onChange={(e) => setFormData({ ...formData, oilValues: { ...(formData.oilValues || {}), bdvKv: e.target.value } })} />
+            </td>
+          </tr>
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>B</td>
+            <td style={{ fontWeight: 800 }}>Moisture Content</td>
+            <td style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+              <strong>PPM</strong>
+              <input type="text" value={formData.oilValues?.moistureContentPpm || ""} onChange={(e) => setFormData({ ...formData, oilValues: { ...(formData.oilValues || {}), moistureContentPpm: e.target.value } })} />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* VIII Final IR Values */}
+      <table className="form-table" style={{ marginTop: "10px" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "8%" }}>VIII</th>
+            <th style={{ width: "42%" }}>Final IR Values</th>
+            <th style={{ width: "12%" }}>10</th>
+            <th style={{ width: "12%" }}>60</th>
+            <th style={{ width: "12%" }}>600</th>
+            <th style={{ width: "14%" }}>P.I</th>
+          </tr>
+        </thead>
+        <tbody>
+          {[
+            ["HV-Earth", "hvEarth"],
+            ["LV1-Earth", "lv1Earth"],
+            ["LV2-Earth", "lv2Earth"],
+            ["HV-LV1", "hvLv1"],
+            ["HV-LV2", "hvLv2"],
+            ["LV1-LV2", "lv1Lv2"],
+            ["Core to frame", "coreToFrame"],
+            ["Frame to Tank", "frameToTank"],
+            ["Removal link again tightens and check zero megger", "removalLinkAgainTightensAndCheckZeroMegger"],
+          ].map(([label, key]) => (
+            <tr key={key}>
+              <td></td>
+              <td style={{ fontWeight: 800 }}>{label}</td>
+              <td><input type="text" value={formData.finalIrValues?.[key]?.at10 || ""} onChange={(e) => setFinalIr(key, "at10", e.target.value)} /></td>
+              <td><input type="text" value={formData.finalIrValues?.[key]?.at60 || ""} onChange={(e) => setFinalIr(key, "at60", e.target.value)} /></td>
+              <td><input type="text" value={formData.finalIrValues?.[key]?.at600 || ""} onChange={(e) => setFinalIr(key, "at600", e.target.value)} /></td>
+              <td><input type="text" value={formData.finalIrValues?.[key]?.pi || ""} onChange={(e) => setFinalIr(key, "pi", e.target.value)} /></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* IX Oil Level in Conservator */}
+      <table className="form-table" style={{ marginTop: "10px" }}>
+        <tbody>
+          <tr>
+            <td style={{ width: "8%", fontWeight: 900, textAlign: "center" }}>IX</td>
+            <td style={{ width: "42%", fontWeight: 900 }}>Oil Level in Conservator</td>
+            <td colSpan={4}>
+              <input type="text" value={formData.oilLevelInConservator || ""} onChange={(e) => setFormData({ ...formData, oilLevelInConservator: e.target.value })} />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* X Connectors */}
+      <table className="form-table" style={{ marginTop: "10px" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "8%" }}>X</th>
+            <th style={{ width: "42%", textAlign: "left" }}>Connectors</th>
+            <th style={{ width: "50%" }}>Conditions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td></td>
+            <td></td>
+            <td style={{ fontWeight: 800 }}>HV Jumpers</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td>
+              <div style={{ display: "flex", gap: "10px" }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 800 }}>1.1</div>
+                  <input type="text" value={formData.connectorsHvJumpers?.["1.1"] || ""} onChange={(e) => setFormData({ ...formData, connectorsHvJumpers: { ...(formData.connectorsHvJumpers || {}), 1.1: e.target.value } })} />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 800 }}>1.2</div>
+                  <input type="text" value={formData.connectorsHvJumpers?.["1.2"] || ""} onChange={(e) => setFormData({ ...formData, connectorsHvJumpers: { ...(formData.connectorsHvJumpers || {}), 1.2: e.target.value } })} />
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <PhotoUploadSection title="Transformer Protection relay / Accessories / IR values" photos={photoRequirements} onPhotoChange={handlePhotoChange} />
+
+      <div className="form-actions">
+        {onPrevious && (
+          <button type="button" onClick={onPrevious} className="prev-btn">
+            Previous Form
+          </button>
+        )}
+        <button type="submit" className="submit-btn">
+          Next Form
+        </button>
+      </div>
+    </form>
+  )
+}
+
+export function Stage6Form3({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
+  const [formData, setFormData] = useState({
+    // IV Transformer Protection relay (as per format image)
+    overCurrentRelay: { make: "", srNo: "", lastTestedDate: "", remark: "" }, // A
+    restrictedEarthFaultRelay: { make: "", srNo: "", lastTestedDate: "", remark: "" }, // B
+    differentialRelay: { make: "", srNo: "", lastTestedDate: "", remark: "" }, // C
+    masterTripRelay: { make: "", srNo: "", lastTestedDate: "", remark: "" }, // D
+    separateEarthPit: "", // E yes/no
+
+    // F/G/H simple text fields (single cell)
+    neutralEarthPitResistanceValues: "",
+    gridEarthResistanceValues: "",
+    cleaningCheckingMainTankEarthing: "",
+
+    // I LA Counter reading (3 columns: 1.1/2.1/3.1 and 1.2/2.2/3.2)
+    laCounterReading: {
+      1.1: "",
+      2.1: "",
+      3.1: "",
+      1.2: "",
+      2.2: "",
+      3.2: "",
+    },
+
+    // J/K simple
+    whetherLaEarthingChecked: "",
+    irValueOfLa: "",
+
+    // L-M-N-O-P-Q phases
+    phases: {
+      1.1: "",
+      1.2: "",
+      2.1: "",
+      2.2: "",
+      3.1: "",
+      3.2: "",
+    },
+
+    // IV Accessories Checking
+    accessories: {
+      fanStart: { setTemp: "", checked: "", noOfHrsRun: "" },
+      fanStop: { setTemp: "", checked: "", noOfHrsRun: "" },
+      pumpStart1: { setTemp: "", checked: "", noOfHrsRun: "" }, // C
+      pumpStart2: { setTemp: "", checked: "", noOfHrsRun: "" }, // D (as per image duplicate)
+      octcTapPosition: { setTemp: "", checked: "", noOfHrsRun: "" }, // V
+      diverterSwitch: { setTemp: "", checked: "", noOfHrsRun: "" }, // A
+      driveMechanism: { setTemp: "", checked: "", noOfHrsRun: "" }, // B
+      tpiRtcc: { setTemp: "", checked: "", noOfHrsRun: "" }, // C
+    },
+
+    // VI Bushing Test Tap Earthed
+    bushingTestTapEarthed: {
+      hvChecked: { 1.1: "", 1.2: "" },
+      lvChecked: { 2.1: "", 2.2: "", 3.1: "", 3.2: "" },
+    },
+
+    // VII Oil Values
+    oilValues: {
+      bdvKv: "",
+      moistureContentPpm: "",
+    },
+
+    // VIII Final IR Values (10/60/600/PI)
+    finalIrValues: {
+      hvEarth: { at10: "", at60: "", at600: "", pi: "" },
+      lv1Earth: { at10: "", at60: "", at600: "", pi: "" },
+      lv2Earth: { at10: "", at60: "", at600: "", pi: "" },
+      hvLv1: { at10: "", at60: "", at600: "", pi: "" },
+      hvLv2: { at10: "", at60: "", at600: "", pi: "" },
+      lv1Lv2: { at10: "", at60: "", at600: "", pi: "" },
+      coreToFrame: { at10: "", at60: "", at600: "", pi: "" },
+      frameToTank: { at10: "", at60: "", at600: "", pi: "" },
+      removalLinkAgainTightensAndCheckZeroMegger: { at10: "", at60: "", at600: "", pi: "" },
+    },
+
+    // IX
+    oilLevelInConservator: "",
+
+    // X Connectors - HV Jumpers 1.1/1.2
+    connectorsHvJumpers: { 1.1: "", 1.2: "" },
+
+    photos: {},
+    ...initialData,
+  })
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_API_BASE_URL}/api/vconnectData/getTable/Stage6Form2`, {
+          params: { companyName, projectName },
+        })
+        if (response.data && response.data.data) {
+          setFormData((prev) => ({ ...prev, ...response.data.data }))
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error)
+      }
+    }
+    fetchFormData()
+  }, [projectName, companyName])
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    onSubmit(formData)
+  }
+
+  const setRelayField = (relayKey, field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [relayKey]: { ...(prev[relayKey] || {}), [field]: value },
+    }))
+  }
+
+  const setAccessoryField = (rowKey, field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      accessories: {
+        ...(prev.accessories || {}),
+        [rowKey]: { ...((prev.accessories || {})[rowKey] || {}), [field]: value },
+      },
+    }))
+  }
+
+  const setBushingTapEarthed = (group, key, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      bushingTestTapEarthed: {
+        ...(prev.bushingTestTapEarthed || {}),
+        [group]: { ...((prev.bushingTestTapEarthed || {})[group] || {}), [key]: value },
+      },
+    }))
+  }
+
+  const setFinalIr = (rowKey, field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      finalIrValues: {
+        ...(prev.finalIrValues || {}),
+        [rowKey]: { ...((prev.finalIrValues || {})[rowKey] || {}), [field]: value },
+      },
+    }))
+  }
+
+  const handlePhotoChange = (key, file) => {
+    setFormData((prev) => ({
+      ...prev,
+      photos: { ...prev.photos, [key]: file },
+    }))
+  }
+
+  // Keep only the photo label from the requirement image
+  const photoRequirements = [{ key: "stage6Form2", label: "Transformer Protection relay / Accessories / IR values" }]
+
+  return (
+    <form onSubmit={handleSubmit} className="form-container">
+      <div className="company-header">
+        <h2>Transformer Protection relay / Accessories Checking / IR Values</h2>
+      </div>
+
+      {/* IV Transformer Protection relay */}
       <table className="form-table">
+        <thead>
+          <tr>
+            <th style={{ width: "6%" }}>IV</th>
+            <th style={{ width: "44%" }}>Transformer Protection relay</th>
+            <th style={{ width: "12%" }}>Make</th>
+            <th style={{ width: "12%" }}>sr.no.</th>
+            <th style={{ width: "14%" }}>last tested date.</th>
+            <th style={{ width: "12%" }}>Remark</th>
+          </tr>
+        </thead>
         <tbody>
           <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>A</td>
+            <td style={{ fontWeight: 800 }}>Over-current relay</td>
             <td>
-              <strong>VIII</strong>
+              <input type="text" value={formData.overCurrentRelay?.make || ""} onChange={(e) => setRelayField("overCurrentRelay", "make", e.target.value)} />
             </td>
-            <td>Oil Values</td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>
+              <input type="text" value={formData.overCurrentRelay?.srNo || ""} onChange={(e) => setRelayField("overCurrentRelay", "srNo", e.target.value)} />
+            </td>
+            <td>
+              <input type="date" value={formData.overCurrentRelay?.lastTestedDate || ""} onChange={(e) => setRelayField("overCurrentRelay", "lastTestedDate", e.target.value)} />
+            </td>
+            <td>
+              <input type="text" value={formData.overCurrentRelay?.remark || ""} onChange={(e) => setRelayField("overCurrentRelay", "remark", e.target.value)} />
+            </td>
           </tr>
+
           <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>B</td>
+            <td style={{ fontWeight: 800 }}>Restricted Earth fault Relay</td>
             <td>
-              <strong>A</strong>
+              <input type="text" value={formData.restrictedEarthFaultRelay?.make || ""} onChange={(e) => setRelayField("restrictedEarthFaultRelay", "make", e.target.value)} />
             </td>
-            <td>BDV</td>
-            <td>KV</td>
-            <td></td>
-            <td></td>
+            <td>
+              <input type="text" value={formData.restrictedEarthFaultRelay?.srNo || ""} onChange={(e) => setRelayField("restrictedEarthFaultRelay", "srNo", e.target.value)} />
+            </td>
+            <td>
+              <input type="date" value={formData.restrictedEarthFaultRelay?.lastTestedDate || ""} onChange={(e) => setRelayField("restrictedEarthFaultRelay", "lastTestedDate", e.target.value)} />
+            </td>
+            <td>
+              <input type="text" value={formData.restrictedEarthFaultRelay?.remark || ""} onChange={(e) => setRelayField("restrictedEarthFaultRelay", "remark", e.target.value)} />
+            </td>
           </tr>
+
           <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>C</td>
+            <td style={{ fontWeight: 800 }}>Differential Relay</td>
             <td>
-              <strong>B</strong>
+              <input type="text" value={formData.differentialRelay?.make || ""} onChange={(e) => setRelayField("differentialRelay", "make", e.target.value)} />
             </td>
-            <td>Moisture Content</td>
-            <td>PPM</td>
-            <td></td>
-            <td></td>
+            <td>
+              <input type="text" value={formData.differentialRelay?.srNo || ""} onChange={(e) => setRelayField("differentialRelay", "srNo", e.target.value)} />
+            </td>
+            <td>
+              <input type="date" value={formData.differentialRelay?.lastTestedDate || ""} onChange={(e) => setRelayField("differentialRelay", "lastTestedDate", e.target.value)} />
+            </td>
+            <td>
+              <input type="text" value={formData.differentialRelay?.remark || ""} onChange={(e) => setRelayField("differentialRelay", "remark", e.target.value)} />
+            </td>
           </tr>
+
           <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>D</td>
+            <td style={{ fontWeight: 800 }}>Master Trip Relay</td>
             <td>
-              <strong>C</strong>
+              <input type="text" value={formData.masterTripRelay?.make || ""} onChange={(e) => setRelayField("masterTripRelay", "make", e.target.value)} />
             </td>
-            <td>Final Oil Values</td>
-            <td>10</td>
-            <td>60</td>
-            <td>600</td>
+            <td>
+              <input type="text" value={formData.masterTripRelay?.srNo || ""} onChange={(e) => setRelayField("masterTripRelay", "srNo", e.target.value)} />
+            </td>
+            <td>
+              <input type="date" value={formData.masterTripRelay?.lastTestedDate || ""} onChange={(e) => setRelayField("masterTripRelay", "lastTestedDate", e.target.value)} />
+            </td>
+            <td>
+              <input type="text" value={formData.masterTripRelay?.remark || ""} onChange={(e) => setRelayField("masterTripRelay", "remark", e.target.value)} />
+            </td>
           </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>E</td>
+            <td style={{ fontWeight: 800 }}>Separate earth pit for neutral earthing</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>yes/no</td>
+            <td colSpan={3}>
+              <input type="text" value={formData.separateEarthPit || ""} onChange={(e) => setFormData({ ...formData, separateEarthPit: e.target.value })} />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>F</td>
+            <td style={{ fontWeight: 800 }}>Neutral earth pit resistance values</td>
+            <td colSpan={4}>
+              <input
+                type="text"
+                value={formData.neutralEarthPitResistanceValues || ""}
+                onChange={(e) => setFormData({ ...formData, neutralEarthPitResistanceValues: e.target.value })}
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>G</td>
+            <td style={{ fontWeight: 800 }}>Grid earth resistance values</td>
+            <td colSpan={4}>
+              <input
+                type="text"
+                value={formData.gridEarthResistanceValues || ""}
+                onChange={(e) => setFormData({ ...formData, gridEarthResistanceValues: e.target.value })}
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>H</td>
+            <td style={{ fontWeight: 800 }}>Cleaning & Checking for the main tank Earthling</td>
+            <td colSpan={4}>
+              <input
+                type="text"
+                value={formData.cleaningCheckingMainTankEarthing || ""}
+                onChange={(e) => setFormData({ ...formData, cleaningCheckingMainTankEarthing: e.target.value })}
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>I</td>
+            <td style={{ fontWeight: 800 }}>LA Counter reading</td>
+            <td colSpan={4} style={{ padding: 0 }}>
+              <table className="form-table" style={{ marginTop: 0 }}>
+                <thead>
+                  <tr>
+                    <th style={{ width: "33.33%" }}>1.1</th>
+                    <th style={{ width: "33.33%" }}>2.1</th>
+                    <th style={{ width: "33.33%" }}>3.1</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="text" value={formData.laCounterReading?.["1.1"] || ""} onChange={(e) => setFormData({ ...formData, laCounterReading: { ...(formData.laCounterReading || {}), 1.1: e.target.value } })} /></td>
+                    <td><input type="text" value={formData.laCounterReading?.["2.1"] || ""} onChange={(e) => setFormData({ ...formData, laCounterReading: { ...(formData.laCounterReading || {}), 2.1: e.target.value } })} /></td>
+                    <td><input type="text" value={formData.laCounterReading?.["3.1"] || ""} onChange={(e) => setFormData({ ...formData, laCounterReading: { ...(formData.laCounterReading || {}), 3.1: e.target.value } })} /></td>
+                  </tr>
+                </tbody>
+                <thead>
+                  <tr>
+                    <th>1.2</th>
+                    <th>2.2</th>
+                    <th>3.2</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="text" value={formData.laCounterReading?.["1.2"] || ""} onChange={(e) => setFormData({ ...formData, laCounterReading: { ...(formData.laCounterReading || {}), 1.2: e.target.value } })} /></td>
+                    <td><input type="text" value={formData.laCounterReading?.["2.2"] || ""} onChange={(e) => setFormData({ ...formData, laCounterReading: { ...(formData.laCounterReading || {}), 2.2: e.target.value } })} /></td>
+                    <td><input type="text" value={formData.laCounterReading?.["3.2"] || ""} onChange={(e) => setFormData({ ...formData, laCounterReading: { ...(formData.laCounterReading || {}), 3.2: e.target.value } })} /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>J</td>
+            <td style={{ fontWeight: 800 }}>Whether LA Earthling checked</td>
+            <td colSpan={4}>
+              <input type="text" value={formData.whetherLaEarthingChecked || ""} onChange={(e) => setFormData({ ...formData, whetherLaEarthingChecked: e.target.value })} />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>K</td>
+            <td style={{ fontWeight: 800 }}>IR Value of LA</td>
+            <td colSpan={4}>
+              <input type="text" value={formData.irValueOfLa || ""} onChange={(e) => setFormData({ ...formData, irValueOfLa: e.target.value })} />
+            </td>
+          </tr>
+
+          {[
+            ["L", "Phase 1.1", "1.1"],
+            ["M", "Phase 1.2", "1.2"],
+            ["N", "Phase 2.1", "2.1"],
+            ["O", "Phase 2.2", "2.2"],
+            ["P", "Phase 3.1", "3.1"],
+            ["Q", "Phase 3.2", "3.2"],
+          ].map(([sr, label, key]) => (
+            <tr key={key}>
+              <td style={{ fontWeight: 800, textAlign: "center" }}>{sr}</td>
+              <td style={{ fontWeight: 800 }}>{label}</td>
+              <td colSpan={4}>
+                <input type="text" value={formData.phases?.[key] || ""} onChange={(e) => setFormData({ ...formData, phases: { ...(formData.phases || {}), [key]: e.target.value } })} />
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
 
+      {/* IV Accessories Checking */}
       <table className="form-table" style={{ marginTop: "20px" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "6%" }}>IV</th>
+            <th style={{ width: "44%" }}>Accessories Checking</th>
+            <th style={{ width: "16%" }}>SET Temp.</th>
+            <th style={{ width: "16%" }}>Checked</th>
+            <th style={{ width: "18%" }}>No. of Hrs. RUN</th>
+          </tr>
+        </thead>
+        <tbody>
+          {[
+            ["A", "FAN START", "fanStart"],
+            ["B", "FAN STOP", "fanStop"],
+            ["C", "PUMP START", "pumpStart1"],
+            ["D", "PUMP START", "pumpStart2"],
+          ].map(([sr, label, key]) => (
+            <tr key={key}>
+              <td style={{ fontWeight: 800, textAlign: "center" }}>{sr}</td>
+              <td style={{ fontWeight: 800 }}>{label}</td>
+              <td><input type="text" value={formData.accessories?.[key]?.setTemp || ""} onChange={(e) => setAccessoryField(key, "setTemp", e.target.value)} /></td>
+              <td><input type="text" value={formData.accessories?.[key]?.checked || ""} onChange={(e) => setAccessoryField(key, "checked", e.target.value)} /></td>
+              <td><input type="text" value={formData.accessories?.[key]?.noOfHrsRun || ""} onChange={(e) => setAccessoryField(key, "noOfHrsRun", e.target.value)} /></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* V OCTC TAP Position */}
+      <table className="form-table" style={{ marginTop: "10px" }}>
         <tbody>
           <tr>
-            <td></td>
-            <td>HV-Earth</td>
-            <td>
-              <input
-                type="text"
-                value={formData.oilValues.finalOilValues.hvEarth}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    oilValues: {
-                      ...formData.oilValues,
-                      finalOilValues: { ...formData.oilValues.finalOilValues, hvEarth: e.target.value },
-                    },
-                  })
-                }
-              />
+            <td style={{ width: "6%", fontWeight: 900, textAlign: "center" }}>V</td>
+            <td style={{ width: "44%", fontWeight: 900 }}>OCTC TAP Position</td>
+            <td style={{ width: "16%" }}>
+              <input type="text" value={formData.accessories?.octcTapPosition?.setTemp || ""} onChange={(e) => setAccessoryField("octcTapPosition", "setTemp", e.target.value)} />
             </td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>LV1-Earth</td>
-            <td>
-              <input
-                type="text"
-                value={formData.oilValues.finalOilValues.lv1Earth}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    oilValues: {
-                      ...formData.oilValues,
-                      finalOilValues: { ...formData.oilValues.finalOilValues, lv1Earth: e.target.value },
-                    },
-                  })
-                }
-              />
+            <td style={{ width: "16%" }}>
+              <input type="text" value={formData.accessories?.octcTapPosition?.checked || ""} onChange={(e) => setAccessoryField("octcTapPosition", "checked", e.target.value)} />
             </td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>LV2-Earth</td>
-            <td>
-              <input
-                type="text"
-                value={formData.oilValues.finalOilValues.lv2Earth}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    oilValues: {
-                      ...formData.oilValues,
-                      finalOilValues: { ...formData.oilValues.finalOilValues, lv2Earth: e.target.value },
-                    },
-                  })
-                }
-              />
+            <td style={{ width: "18%" }}>
+              <input type="text" value={formData.accessories?.octcTapPosition?.noOfHrsRun || ""} onChange={(e) => setAccessoryField("octcTapPosition", "noOfHrsRun", e.target.value)} />
             </td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>HV-LV1</td>
-            <td>
-              <input
-                type="text"
-                value={formData.oilValues.finalOilValues.hvLv1}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    oilValues: {
-                      ...formData.oilValues,
-                      finalOilValues: { ...formData.oilValues.finalOilValues, hvLv1: e.target.value },
-                    },
-                  })
-                }
-              />
-            </td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>HV-LV2</td>
-            <td>
-              <input
-                type="text"
-                value={formData.oilValues.finalOilValues.hvLv2}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    oilValues: {
-                      ...formData.oilValues,
-                      finalOilValues: { ...formData.oilValues.finalOilValues, hvLv2: e.target.value },
-                    },
-                  })
-                }
-              />
-            </td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>LV1-LV2</td>
-            <td>
-              <input
-                type="text"
-                value={formData.oilValues.finalOilValues.lv1Lv2}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    oilValues: {
-                      ...formData.oilValues,
-                      finalOilValues: { ...formData.oilValues.finalOilValues, lv1Lv2: e.target.value },
-                    },
-                  })
-                }
-              />
-            </td>
-            <td></td>
-            <td></td>
           </tr>
         </tbody>
       </table>
 
-      <PhotoUploadSection
-        title="Transformer Protection and Accessories"
-        photos={photoRequirements}
-        onPhotoChange={handlePhotoChange}
-      />
+      {/* A/B/C under V (as per image) */}
+      <table className="form-table" style={{ marginTop: "0px" }}>
+        <tbody>
+          {[
+            ["A", "DIVERTER SWITCH", "diverterSwitch"],
+            ["B", "DRIVE MECHANISM", "driveMechanism"],
+            ["C", "TPI - (RTCC)", "tpiRtcc"],
+          ].map(([sr, label, key]) => (
+            <tr key={key}>
+              <td style={{ width: "6%", fontWeight: 800, textAlign: "center" }}>{sr}</td>
+              <td style={{ width: "44%", fontWeight: 800 }}>{label}</td>
+              <td style={{ width: "16%" }}>
+                <input type="text" value={formData.accessories?.[key]?.setTemp || ""} onChange={(e) => setAccessoryField(key, "setTemp", e.target.value)} />
+              </td>
+              <td style={{ width: "16%" }}>
+                <input type="text" value={formData.accessories?.[key]?.checked || ""} onChange={(e) => setAccessoryField(key, "checked", e.target.value)} />
+              </td>
+              <td style={{ width: "18%" }}>
+                <input type="text" value={formData.accessories?.[key]?.noOfHrsRun || ""} onChange={(e) => setAccessoryField(key, "noOfHrsRun", e.target.value)} />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* VI Bushing Test Tap Earthed */}
+      <table className="form-table" style={{ marginTop: "10px" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "50%" }}>VI &nbsp; Bushing Test Tap Earthed</th>
+            <th style={{ width: "25%" }}>1.1</th>
+            <th style={{ width: "25%" }}>1.2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style={{ fontWeight: 800 }}>HV Checked</td>
+            <td><input type="text" value={formData.bushingTestTapEarthed?.hvChecked?.["1.1"] || ""} onChange={(e) => setBushingTapEarthed("hvChecked", "1.1", e.target.value)} /></td>
+            <td><input type="text" value={formData.bushingTestTapEarthed?.hvChecked?.["1.2"] || ""} onChange={(e) => setBushingTapEarthed("hvChecked", "1.2", e.target.value)} /></td>
+          </tr>
+          <tr>
+            <td style={{ fontWeight: 800 }}>LV Checked</td>
+            <td colSpan={2} style={{ padding: 0 }}>
+              <table className="form-table" style={{ marginTop: 0 }}>
+                <thead>
+                  <tr>
+                    <th style={{ width: "25%" }}>2.1</th>
+                    <th style={{ width: "25%" }}>2.2</th>
+                    <th style={{ width: "25%" }}>3.1</th>
+                    <th style={{ width: "25%" }}>3.2</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="text" value={formData.bushingTestTapEarthed?.lvChecked?.["2.1"] || ""} onChange={(e) => setBushingTapEarthed("lvChecked", "2.1", e.target.value)} /></td>
+                    <td><input type="text" value={formData.bushingTestTapEarthed?.lvChecked?.["2.2"] || ""} onChange={(e) => setBushingTapEarthed("lvChecked", "2.2", e.target.value)} /></td>
+                    <td><input type="text" value={formData.bushingTestTapEarthed?.lvChecked?.["3.1"] || ""} onChange={(e) => setBushingTapEarthed("lvChecked", "3.1", e.target.value)} /></td>
+                    <td><input type="text" value={formData.bushingTestTapEarthed?.lvChecked?.["3.2"] || ""} onChange={(e) => setBushingTapEarthed("lvChecked", "3.2", e.target.value)} /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* VII Oil Values */}
+      <table className="form-table" style={{ marginTop: "10px" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "8%" }}>VII</th>
+            <th style={{ width: "62%" }}>Oil Values</th>
+            <th style={{ width: "30%" }}></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>A</td>
+            <td style={{ fontWeight: 800 }}>BDV</td>
+            <td style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+              <strong>KV</strong>
+              <input type="text" value={formData.oilValues?.bdvKv || ""} onChange={(e) => setFormData({ ...formData, oilValues: { ...(formData.oilValues || {}), bdvKv: e.target.value } })} />
+            </td>
+          </tr>
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>B</td>
+            <td style={{ fontWeight: 800 }}>Moisture Content</td>
+            <td style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+              <strong>PPM</strong>
+              <input type="text" value={formData.oilValues?.moistureContentPpm || ""} onChange={(e) => setFormData({ ...formData, oilValues: { ...(formData.oilValues || {}), moistureContentPpm: e.target.value } })} />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* VIII Final IR Values */}
+      <table className="form-table" style={{ marginTop: "10px" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "8%" }}>VIII</th>
+            <th style={{ width: "42%" }}>Final IR Values</th>
+            <th style={{ width: "12%" }}>10</th>
+            <th style={{ width: "12%" }}>60</th>
+            <th style={{ width: "12%" }}>600</th>
+            <th style={{ width: "14%" }}>P.I</th>
+          </tr>
+        </thead>
+        <tbody>
+          {[
+            ["HV-Earth", "hvEarth"],
+            ["LV1-Earth", "lv1Earth"],
+            ["LV2-Earth", "lv2Earth"],
+            ["HV-LV1", "hvLv1"],
+            ["HV-LV2", "hvLv2"],
+            ["LV1-LV2", "lv1Lv2"],
+            ["Core to frame", "coreToFrame"],
+            ["Frame to Tank", "frameToTank"],
+            ["Removal link again tightens and check zero megger", "removalLinkAgainTightensAndCheckZeroMegger"],
+          ].map(([label, key]) => (
+            <tr key={key}>
+              <td></td>
+              <td style={{ fontWeight: 800 }}>{label}</td>
+              <td><input type="text" value={formData.finalIrValues?.[key]?.at10 || ""} onChange={(e) => setFinalIr(key, "at10", e.target.value)} /></td>
+              <td><input type="text" value={formData.finalIrValues?.[key]?.at60 || ""} onChange={(e) => setFinalIr(key, "at60", e.target.value)} /></td>
+              <td><input type="text" value={formData.finalIrValues?.[key]?.at600 || ""} onChange={(e) => setFinalIr(key, "at600", e.target.value)} /></td>
+              <td><input type="text" value={formData.finalIrValues?.[key]?.pi || ""} onChange={(e) => setFinalIr(key, "pi", e.target.value)} /></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* IX Oil Level in Conservator */}
+      <table className="form-table" style={{ marginTop: "10px" }}>
+        <tbody>
+          <tr>
+            <td style={{ width: "8%", fontWeight: 900, textAlign: "center" }}>IX</td>
+            <td style={{ width: "42%", fontWeight: 900 }}>Oil Level in Conservator</td>
+            <td colSpan={4}>
+              <input type="text" value={formData.oilLevelInConservator || ""} onChange={(e) => setFormData({ ...formData, oilLevelInConservator: e.target.value })} />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* X Connectors */}
+      <table className="form-table" style={{ marginTop: "10px" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "8%" }}>X</th>
+            <th style={{ width: "42%", textAlign: "left" }}>Connectors</th>
+            <th style={{ width: "50%" }}>Conditions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td></td>
+            <td></td>
+            <td style={{ fontWeight: 800 }}>HV Jumpers</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td>
+              <div style={{ display: "flex", gap: "10px" }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 800 }}>1.1</div>
+                  <input type="text" value={formData.connectorsHvJumpers?.["1.1"] || ""} onChange={(e) => setFormData({ ...formData, connectorsHvJumpers: { ...(formData.connectorsHvJumpers || {}), 1.1: e.target.value } })} />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 800 }}>1.2</div>
+                  <input type="text" value={formData.connectorsHvJumpers?.["1.2"] || ""} onChange={(e) => setFormData({ ...formData, connectorsHvJumpers: { ...(formData.connectorsHvJumpers || {}), 1.2: e.target.value } })} />
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <PhotoUploadSection title="Transformer Protection relay / Accessories / IR values" photos={photoRequirements} onPhotoChange={handlePhotoChange} />
 
       <div className="form-actions">
         {onPrevious && (
@@ -11304,7 +11748,7 @@ const VConnected63MVATransformerForms = ({
     ],
     6: [
       { component: Stage6Form1, name: "Pre-Commissioning Checklist" },
-      { component: TransformerProtectionAccessoriesForm, name: "Transformer Protection and Accessories" },
+      { component: Stage6Form2, name: "Transformer Protection and Accessories" },
       { component: FinalChecklistClearanceForm, name: "Final Checklist and Clearance" },
     ],
     7: [
