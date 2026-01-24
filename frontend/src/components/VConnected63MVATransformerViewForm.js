@@ -7,6 +7,9 @@ import {
   Stage1Form3,
   Stage1Form4,
   Stage1Form5,
+  Stage1Form6,
+  Stage1Form7,
+  Stage1Form8,
   Stage2Form1,
   Stage2Form2,
   Stage3Form1,
@@ -600,6 +603,21 @@ const Stage1ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
       id: "record-measurement-ir-values",
       title: "Record of Measurement of IR Values",
       component: Stage1Form5
+    },
+    {
+      id: "record-measurement-ir-values",
+      title: "Record of Measurement of IR Values",
+      component: Stage1Form6
+    },
+    {
+      id: "record-measurement-ir-values",
+      title: "Record of Measurement of IR Values",
+      component: Stage1Form7
+    },
+    {
+      id: "record-measurement-ir-values",
+      title: "Record of Measurement of IR Values",
+      component: Stage1Form8
     }
   ];
 

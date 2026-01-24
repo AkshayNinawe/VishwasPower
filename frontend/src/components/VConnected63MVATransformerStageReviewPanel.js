@@ -1,7 +1,10 @@
 import React from 'react';
 import { BACKEND_API_BASE_URL, BACKEND_IMG_API_BASE_URL } from './constant';
 
-// Stage 1 Form 1: Name Plate Details Transformer
+/**
+ * Stage 1 Form 1: Name Plate Details Transformer (Review)
+ * UI should match input table UI from VConnected63MVATransformerForms.js Stage1Form1.
+ */
 const Stage1Form1 = ({ formData }) => (
   <div className="form-container">
     <div className="company-header">
@@ -15,4130 +18,174 @@ const Stage1Form1 = ({ formData }) => (
             <strong>MAKE</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.make || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.make || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
-            <strong>CURRENT HV (A)</strong>
+            <strong>CURRENT HV</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.currentHV || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.currentHV || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
+
         <tr>
           <td>
             <strong>SR. NO.</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.srNo || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.srNo || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
-            <strong>LV (A)</strong>
+            <strong>LV</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.currentLV || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.currentLV || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
+
         <tr>
           <td>
             <strong>MVA Rating</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.mvaRating || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.mvaRating || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
-            <strong>Temp. Rise over amb. Oil in °C</strong>
+            <strong>Temp. Rise over amb. Oil (°C)</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.tempRiseOilC || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.tempRiseOilC || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
+
         <tr>
           <td>
             <strong>HV (KV)</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.hvKv || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.hvKv || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
-            <strong>Winding in °C</strong>
+            <strong>Winding (°C)</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.windingC || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.windingC || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
+
         <tr>
           <td>
             <strong>LV (KV)</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.lvKv || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.lvKv || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
             <strong>Oil Quantity</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.oilQuantity || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.oilQuantity || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
+
         <tr>
           <td>
             <strong>% Impedance</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.impedancePercent || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.impedancePercent || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
             <strong>Weight of Core & Wdg.</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.weightCoreWdg || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.weightCoreWdg || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
+
         <tr>
           <td>
             <strong>Year of Mfg.</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.yearOfMfg || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.yearOfMfg || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
             <strong>TRANSPORTING WEIGHT</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.transportingWeight || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.transportingWeight || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
+
         <tr>
           <td>
             <strong>NO. OF COOLING FAN</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.noOfCoolingFan || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.noOfCoolingFan || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
             <strong>Total Weight</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.totalWeight || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.totalWeight || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
+
         <tr>
           <td>
-            {/* <strong>NO OF OIL PUMP</strong> */}
+            <strong>NO OF OIL PUMP</strong>
           </td>
           <td>
-            {/* <input
-              type="text"
-              value={formData.noOfOilPump || ""}
-              disabled
-              className="form-input disabled preview"
-            /> */}
+            <input type="text" value={formData.noOfOilPump || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
             <strong>NO. OF RADIATORS</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.noOfRadiators || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.noOfRadiators || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
+
         <tr>
           <td>
             <strong>NO. OF TAPS</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.noOfTaps || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.noOfTaps || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
             <strong>MFG. OF OCTC</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.mfgOfOctc || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.mfgOfOctc || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
+
         <tr>
           <td>
             <strong>TYPE OF OCTC</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.typeOfOctc || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.typeOfOctc || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
             <strong>SR. NO. OCTC</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.srNoOctc || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.srNoOctc || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
       </tbody>
     </table>
 
-    {/* Photo Upload Section for Review */}
+    {/* Photo section remains same behavior; only heading/description matches input */}
     <div className="photo-upload-section">
       <h4>Note: - Photographs to be added: -</h4>
       <p style={{ textAlign: "center", marginBottom: "20px", fontWeight: "600" }}>
         Transformer, Oil Level gauge, Wheel Locking, Transformer Foundation Level condition.
       </p>
-
-      {formData.photos && (
-        <div className="photo-display-grid" style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: "15px",
-          marginTop: "10px"
-        }}>
-          {Object.entries(formData.photos).map(([photoKey, url]) => {
-            let fullUrl;
-            if (typeof url === 'string') {
-              if (url.startsWith("data:image/")) {
-                fullUrl = url;
-              } else if (url.startsWith("http")) {
-                fullUrl = url;
-              } else if (url.includes("cloudinary.com") || url.startsWith("v1")) {
-                fullUrl = `${BACKEND_IMG_API_BASE_URL}${url}`;
-              } else if (url.startsWith("/")) {
-                fullUrl = `${BACKEND_API_BASE_URL}${url}`;
-              } else {
-                fullUrl = `${BACKEND_API_BASE_URL}/${url}`;
-              }
-            } else {
-              fullUrl = "/placeholder.svg";
-            }
-
-            return (
-              <div key={photoKey} className="photo-item" style={{
-                border: "1px solid #e5e7eb",
-                borderRadius: "8px",
-                padding: "10px",
-                backgroundColor: "#f9fafb"
-              }}>
-                <span className="photo-label" style={{
-                  display: "block",
-                  fontSize: "0.85rem",
-                  fontWeight: "600",
-                  color: "#374151",
-                  marginBottom: "8px",
-                  textAlign: "center"
-                }}>
-                  {photoKey}
-                </span>
-                <img
-                  src={fullUrl}
-                  alt={photoKey}
-                  className="photo-preview-img"
-                  style={{
-                    width: "100%",
-                    height: "150px",
-                    objectFit: "cover",
-                    borderRadius: "6px",
-                    border: "1px solid #d1d5db",
-                    cursor: "pointer"
-                  }}
-                  onError={(e) => {
-                    console.error(`Failed to load image: ${fullUrl}`);
-                    e.target.src = "/placeholder.svg";
-                  }}
-                  onClick={() => {
-                    window.open(fullUrl, '_blank');
-                  }}
-                />
-                <div style={{ marginTop: "8px", textAlign: "center" }}>
-                  <a
-                    href={fullUrl}
-                    download={`${photoKey}.jpg`}
-                    style={{
-                      display: "inline-block",
-                      padding: "4px 8px",
-                      backgroundColor: "#3b82f6",
-                      color: "white",
-                      textDecoration: "none",
-                      borderRadius: "4px",
-                      fontSize: "0.75rem"
-                    }}
-                  >
-                    📥 Download
-                  </a>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </div>
-  </div>
-);
-
-// Stage 1 Form 2: Protocol for Accessories Checking
-const Stage1Form2 = ({ formData }) => {
-  const accessoryItems = [
-    { id: 1, description: "HV bushing" },
-    { id: 2, description: "LV Bushing" },
-    { id: 3, description: "Radiators" },
-    { id: 4, description: "Buchholz" },
-    { id: 5, description: "PRV" },
-    { id: 6, description: "CPR" },
-    { id: 7, description: "Breather" },
-    { id: 8, description: "Bushing Connector" },
-    { id: 9, description: "FAN" },
-    { id: 10, description: "Turrents" },
-    { id: 11, description: "Valves" },
-  ];
-
-  return (
-    <div className="form-container">
-      <div className="company-header">
-        <h2>PROTOCOL FOR ACCESSORIES CHECKING.</h2>
-      </div>
-
-      <table className="form-table">
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>Packing case Number</th>
-            <th>Material Description</th>
-            <th>Qty as per P. L.</th>
-            <th>Qty. Received</th>
-            <th>Short Qty</th>
-            <th>Damaged Qty.</th>
-          </tr>
-        </thead>
-        <tbody>
-          {accessoryItems.map((item) => (
-            <tr key={item.id}>
-              <td>{item.id}</td>
-              <td>
-                <input
-                  type="text"
-                  value={formData?.accessories?.[item.id]?.packingCase || ""}
-                  disabled
-                  className="form-input disabled preview"
-                />
-              </td>
-              <td>
-                <strong>{item.description}</strong>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={formData?.accessories?.[item.id]?.qtyPerPL || ""}
-                  disabled
-                  className="form-input disabled preview"
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={formData?.accessories?.[item.id]?.qtyReceived || ""}
-                  disabled
-                  className="form-input disabled preview"
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={formData?.accessories?.[item.id]?.shortQty || ""}
-                  disabled
-                  className="form-input disabled preview"
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={formData?.accessories?.[item.id]?.damagedQty || ""}
-                  disabled
-                  className="form-input disabled preview"
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* Photo Upload Section for Review */}
-      <div className="photo-upload-section">
-        <h4>Note: - Photographs to be added: -</h4>
-        <p style={{ textAlign: "center", marginBottom: "20px", fontWeight: "600" }}>
-          Transformer Accessories
-        </p>
-
-        {formData.photos && (
-          <div className="photo-display-grid" style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            gap: "15px",
-            marginTop: "10px"
-          }}>
-            {Object.entries(formData.photos).map(([photoKey, url]) => {
-              let fullUrl;
-              if (typeof url === 'string') {
-                if (url.startsWith("data:image/")) {
-                  fullUrl = url;
-                } else if (url.startsWith("http")) {
-                  fullUrl = url;
-                } else if (url.includes("cloudinary.com") || url.startsWith("v1")) {
-                  fullUrl = `${BACKEND_IMG_API_BASE_URL}${url}`;
-                } else if (url.startsWith("/")) {
-                  fullUrl = `${BACKEND_API_BASE_URL}${url}`;
-                } else {
-                  fullUrl = `${BACKEND_API_BASE_URL}/${url}`;
-                }
-              } else {
-                fullUrl = "/placeholder.svg";
-              }
-
-              return (
-                <div key={photoKey} className="photo-item" style={{
-                  border: "1px solid #e5e7eb",
-                  borderRadius: "8px",
-                  padding: "10px",
-                  backgroundColor: "#f9fafb"
-                }}>
-                  <span className="photo-label" style={{
-                    display: "block",
-                    fontSize: "0.85rem",
-                    fontWeight: "600",
-                    color: "#374151",
-                    marginBottom: "8px",
-                    textAlign: "center"
-                  }}>
-                    {photoKey}
-                  </span>
-                  <img
-                    src={fullUrl}
-                    alt={photoKey}
-                    className="photo-preview-img"
-                    style={{
-                      width: "100%",
-                      height: "150px",
-                      objectFit: "cover",
-                      borderRadius: "6px",
-                      border: "1px solid #d1d5db",
-                      cursor: "pointer"
-                    }}
-                    onError={(e) => {
-                      console.error(`Failed to load image: ${fullUrl}`);
-                      e.target.src = "/placeholder.svg";
-                    }}
-                    onClick={() => {
-                      window.open(fullUrl, '_blank');
-                    }}
-                  />
-                  <div style={{ marginTop: "8px", textAlign: "center" }}>
-                    <a
-                      href={fullUrl}
-                      download={`${photoKey}.jpg`}
-                      style={{
-                        display: "inline-block",
-                        padding: "4px 8px",
-                        backgroundColor: "#3b82f6",
-                        color: "white",
-                        textDecoration: "none",
-                        borderRadius: "4px",
-                        fontSize: "0.75rem"
-                      }}
-                    >
-                      📥 Download
-                    </a>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-// Stage 1 Form 3: Core Insulation Check
-const Stage1Form3 = ({ formData }) => (
-  <div className="form-container">
-    <div className="company-header">
-      <h2>CORE INSULATION CHECK: At 1KV &gt; 500 MΩ </h2>
-    </div>
-
-    <table className="form-table">
-      <thead>
-        <tr>
-          <th> </th>
-          <th>Obtained Value</th>
-          <th>Remarks</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <strong>Between Core - Frame</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.coreFrame_obtainedValue || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.coreFrame_remarks || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>Between Frame - Tank</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.frameTank_obtainedValue || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.frameTank_remarks || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>Between Core - Tank</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.coreTank_obtainedValue || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.coreTank_remarks || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <strong>CHECKLIST FOR CONFORMING AVAILABILITY OF EQUIPMENT AT SITE</strong>
-    <table className="form-table" style={{ marginTop: "20px" }}>
-      <thead>
-        <tr>
-          <th> </th>
-          <th>Decription</th>
-          <th>Rating/Capacity</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <strong>1</strong>
-          </td>
-          <td>
-            <strong>Whether the Filter Machine is Available </strong>
-          </td>
-          
-          <td>
-            <select
-              value={formData.filterMachine || ""}
-              disabled
-              className="form-input disabled preview"
-            >
-              <option value="">(Yes/No)</option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>2</strong>
-          </td>
-          <td>
-            <strong>Capacity of Filter Machine</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.filterMachineCapacity || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>3</strong>
-          </td>
-          <td>
-            <strong>Capacity of the Vacuum Pump to be used. </strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.vacuumPumpCapacity || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>4</strong>
-          </td>
-          <td>
-            <strong>Whether the Reservoir is Available with valves and a breather. </strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.reservoirAvailable || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>5</strong>
-          </td>
-          <td>
-            <strong>Capacity of Reservoirs </strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.reservoirCapacity || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>6</strong>
-          </td>
-          <td>
-            <strong>Hose Pipes for the Filtration Process.  </strong>
-          </td>
-          <td>
-            <select
-              value={formData.hosePipes || ""}
-              disabled
-              className="form-input disabled preview"
-            >
-              <option value="">(Yes/No)</option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>7</strong>
-          </td>
-          <td>
-            <strong>Whether Crane is Available in good condition </strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.craneAvailable || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>8</strong>
-          </td>
-          <td>
-            <strong>Dry air  </strong>
-          </td>
-          <td>
-            <select
-              value={formData.dryAir || ""}
-              disabled
-              className="form-input disabled preview"
-            >
-              <option value="">(Yes/No)</option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>9</strong>
-          </td>
-          <td>
-            <strong>Dew point meter </strong>
-          </td>
-          <td>
-            <select
-              value={formData.dewPointMeter || ""}
-              disabled
-              className="form-input disabled preview"
-            >
-              <option value="">(Yes/No)</option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>10</strong>
-          </td>
-          <td>
-            <strong>Mec Leod gauge  </strong>
-          </td>
-          <td>
-            <select
-              value={formData.mecLeodGauge || ""}
-              disabled
-              className="form-input disabled preview"
-            >
-              <option value="">(Yes/No)</option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </td>
-        </tr>
-
-      </tbody>
-    </table>
-
-    <strong>SAFETY EQUIPMENT</strong>
-    <table className="form-table" style={{ marginTop: "20px" }}>
-      <thead>
-        <tr>
-          <th>Decription</th>
-          <th>Confirmation</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <strong>Fire extinguisher/Fire sand bucket</strong>
-          </td>
-          
-          <td>
-            <select
-              value={formData.fireExtinguisher || ""}
-              disabled
-              className="form-input disabled preview"
-            >
-              <option value="">(Yes/No)</option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>First aid kit</strong>
-          </td>
-          <td>
-            <select
-              value={formData.firstAidKit || ""}
-              disabled
-              className="form-input disabled preview"
-            >
-              <option value="">(Yes/No)</option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>PPE for the working team of ETC agency, like - Safety shoes, Helmet, etc</strong>
-          </td>
-         <td>
-            <select
-              value={formData.ppeEquipment || ""}
-              disabled
-              className="form-input disabled preview"
-            >
-              <option value="">(Yes/No)</option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    {/* Photo Upload Section for Review */}
-    <div className="photo-upload-section">
-      <h4>Note: - Photographs to be added: -</h4>
-      <p style={{ textAlign: "center", marginBottom: "20px", fontWeight: "600" }}>
-        Ten delta kit, calibration report, during ten delta of bushing photo
-      </p>
-
-      {formData.photos && (
-        <div className="photo-display-grid" style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: "15px",
-          marginTop: "10px"
-        }}>
-          {Object.entries(formData.photos).map(([photoKey, url]) => {
-            let fullUrl;
-            if (typeof url === 'string') {
-              if (url.startsWith("data:image/")) {
-                fullUrl = url;
-              } else if (url.startsWith("http")) {
-                fullUrl = url;
-              } else if (url.includes("cloudinary.com") || url.startsWith("v1")) {
-                fullUrl = `${BACKEND_IMG_API_BASE_URL}${url}`;
-              } else if (url.startsWith("/")) {
-                fullUrl = `${BACKEND_API_BASE_URL}${url}`;
-              } else {
-                fullUrl = `${BACKEND_API_BASE_URL}/${url}`;
-              }
-            } else {
-              fullUrl = "/placeholder.svg";
-            }
-
-            return (
-              <div key={photoKey} className="photo-item" style={{
-                border: "1px solid #e5e7eb",
-                borderRadius: "8px",
-                padding: "10px",
-                backgroundColor: "#f9fafb"
-              }}>
-                <span className="photo-label" style={{
-                  display: "block",
-                  fontSize: "0.85rem",
-                  fontWeight: "600",
-                  color: "#374151",
-                  marginBottom: "8px",
-                  textAlign: "center"
-                }}>
-                  {photoKey}
-                </span>
-                <img
-                  src={fullUrl}
-                  alt={photoKey}
-                  className="photo-preview-img"
-                  style={{
-                    width: "100%",
-                    height: "150px",
-                    objectFit: "cover",
-                    borderRadius: "6px",
-                    border: "1px solid #d1d5db",
-                    cursor: "pointer"
-                  }}
-                  onError={(e) => {
-                    console.error(`Failed to load image: ${fullUrl}`);
-                    e.target.src = "/placeholder.svg";
-                  }}
-                  onClick={() => {
-                    window.open(fullUrl, '_blank');
-                  }}
-                />
-                <div style={{ marginTop: "8px", textAlign: "center" }}>
-                  <a
-                    href={fullUrl}
-                    download={`${photoKey}.jpg`}
-                    style={{
-                      display: "inline-block",
-                      padding: "4px 8px",
-                      backgroundColor: "#3b82f6",
-                      color: "white",
-                      textDecoration: "none",
-                      borderRadius: "4px",
-                      fontSize: "0.75rem"
-                    }}
-                  >
-                    📥 Download
-                  </a>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </div>
-  </div>
-);
-
-// Stage 1 Form 4: Pre erection Ratio test of turret CTs
-const Stage1Form4 = ({ formData }) => (
-  <div className="form-container">
-    <div className="company-header">
-      <h2>Pre erection Ratio test of turret CTs</h2>
-    </div>
-
-    {/* Phase 1.1 Section */}
-    <h3 style={{ textAlign: "center", marginTop: "30px" }}>CT Ratio CORE - S1-S2,S1-S3 Phase 1.1</h3>
-
-    <h4>CT Ratio Test</h4>
-    <table className="form-table">
-      <thead>
-        <tr>
-          <th>Current %</th>
-          <th>Applied primary Current (A) S1-S2</th>
-          <th>Applied primary Current (A) S1-S3</th>
-          <th>Measured secondary current (A) S1-S2</th>
-          <th>Measured secondary current (A) S1-S3</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <strong>20%</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_20percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_20percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_20percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_20percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>40%</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_40percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_40percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_40percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_40percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>60%</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_60percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_60percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_60percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_60percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>80%</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_80percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_80percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_80percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_80percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>100%</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_100percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_100percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_100percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_100percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h4>Knee point Voltage</h4>
-    <table className="form-table">
-      <thead>
-        <tr>
-          <th>Voltage %</th>
-          <th>Applied voltage S1-S2</th>
-          <th>Applied voltage S1-S3</th>
-          <th>Measured current (A) S1-S2</th>
-          <th>Measured current (A) S1-S3</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <strong>20%</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_20percent_appliedVoltage_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_20percent_appliedVoltage_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_20percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_20percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>40%</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_40percent_appliedVoltage_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_40percent_appliedVoltage_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_40percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_40percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>60%</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_60percent_appliedVoltage_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_60percent_appliedVoltage_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_60percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_60percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>80%</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_80percent_appliedVoltage_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_80percent_appliedVoltage_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_80percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_80percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>100%</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_100percent_appliedVoltage_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_100percent_appliedVoltage_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_100percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_100percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>110%</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_110percent_appliedVoltage_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_110percent_appliedVoltage_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_110percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_110percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    {/* Phase 1.2 Section */}
-    <h3 style={{ textAlign: "center", marginTop: "40px" }}>Phase 1.2</h3>
-
-    <h4>CT Ratio CORE – S1-S2, S1-S3</h4>
-    <table className="form-table">
-      <thead>
-        <tr>
-          <th>Current %</th>
-          <th>Applied primary Current (A) S1-S2</th>
-          <th>Applied primary Current (A) S1-S3</th>
-          <th>Measured secondary current (A) S1-S2</th>
-          <th>Measured secondary current (A) S1-S3</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <strong>20%</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_20percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_20percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_20percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_20percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>40%</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_40percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_40percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_40percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_40percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>60%</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_60percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_60percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_60percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_60percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>80%</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_80percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_80percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_80percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_80percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>100%</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_100percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_100percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_100percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_100percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h4>Knee point Voltage</h4>
-    <table className="form-table">
-      <thead>
-        <tr>
-          <th>Voltage %</th>
-          <th>Applied voltage S1-S2</th>
-          <th>Applied voltage S1-S3</th>
-          <th>Measured current (A) S1-S2</th>
-          <th>Measured current (A) S1-S3</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <strong>20%</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_20percent_appliedVoltage_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_20percent_appliedVoltage_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_20percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_20percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>40%</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_40percent_appliedVoltage_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_40percent_appliedVoltage_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_40percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_40percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>60%</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_60percent_appliedVoltage_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_60percent_appliedVoltage_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_60percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_60percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>80%</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_80percent_appliedVoltage_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_80percent_appliedVoltage_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_80percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_80percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>100%</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_100percent_appliedVoltage_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_100percent_appliedVoltage_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_100percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_100percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>110%</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_110percent_appliedVoltage_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_110percent_appliedVoltage_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_110percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_110percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    {/* Photo Upload Section for Review */}
-    <div className="photo-upload-section">
-      <h4>Note: - Photographs to be added: -</h4>
-      <p style={{ textAlign: "center", marginBottom: "20px", fontWeight: "600" }}>
-        CT Ratio kit calibration
-      </p>
-
-      {formData.photos && (
-        <div className="photo-display-grid" style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: "15px",
-          marginTop: "10px"
-        }}>
-          {Object.entries(formData.photos).map(([photoKey, url]) => {
-            let fullUrl;
-            if (typeof url === 'string') {
-              if (url.startsWith("data:image/")) {
-                fullUrl = url;
-              } else if (url.startsWith("http")) {
-                fullUrl = url;
-              } else if (url.includes("cloudinary.com") || url.startsWith("v1")) {
-                fullUrl = `${BACKEND_IMG_API_BASE_URL}${url}`;
-              } else if (url.startsWith("/")) {
-                fullUrl = `${BACKEND_API_BASE_URL}${url}`;
-              } else {
-                fullUrl = `${BACKEND_API_BASE_URL}/${url}`;
-              }
-            } else {
-              fullUrl = "/placeholder.svg";
-            }
-
-            return (
-              <div key={photoKey} className="photo-item" style={{
-                border: "1px solid #e5e7eb",
-                borderRadius: "8px",
-                padding: "10px",
-                backgroundColor: "#f9fafb"
-              }}>
-                <span className="photo-label" style={{
-                  display: "block",
-                  fontSize: "0.85rem",
-                  fontWeight: "600",
-                  color: "#374151",
-                  marginBottom: "8px",
-                  textAlign: "center"
-                }}>
-                  {photoKey}
-                </span>
-                <img
-                  src={fullUrl}
-                  alt={photoKey}
-                  className="photo-preview-img"
-                  style={{
-                    width: "100%",
-                    height: "150px",
-                    objectFit: "cover",
-                    borderRadius: "6px",
-                    border: "1px solid #d1d5db",
-                    cursor: "pointer"
-                  }}
-                  onError={(e) => {
-                    console.error(`Failed to load image: ${fullUrl}`);
-                    e.target.src = "/placeholder.svg";
-                  }}
-                  onClick={() => {
-                    window.open(fullUrl, '_blank');
-                  }}
-                />
-                <div style={{ marginTop: "8px", textAlign: "center" }}>
-                  <a
-                    href={fullUrl}
-                    download={`${photoKey}.jpg`}
-                    style={{
-                      display: "inline-block",
-                      padding: "4px 8px",
-                      backgroundColor: "#3b82f6",
-                      color: "white",
-                      textDecoration: "none",
-                      borderRadius: "4px",
-                      fontSize: "0.75rem"
-                    }}
-                  >
-                    📥 Download
-                  </a>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </div>
-  </div>
-);
-
-// Stage 1 Form 5: Pre erection Ratio test of turret CTs
-const Stage1Form5 = ({ formData }) => (
-  <div className="form-container">
-    <div className="company-header">
-      <h2>Pre erection Ratio test of turret CTs</h2>
-    </div>
-
-    {/* Phase 2.1 Section */}
-    <h3 style={{ textAlign: "center", marginTop: "30px" }}>Phase 2.1</h3>
-
-    <h4>CT Ratio CORE – S1-S2, S1-S3</h4>
-    <table className="form-table">
-      <thead>
-        <tr>
-          <th>Current %</th>
-          <th>Applied primary Current (A) S1-S2</th>
-          <th>Applied primary Current (A) S1-S3</th>
-          <th>Measured secondary current (A) S1-S2</th>
-          <th>Measured secondary current (A) S1-S3</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>20%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_20percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_20percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_20percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_20percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>40%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_40percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_40percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_40percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_40percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>60%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_60percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_60percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_60percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_60percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>80%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_80percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_80percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_80percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_80percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>100%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_100percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_100percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_100percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_100percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h4>Knee point Voltage</h4>
-    <table className="form-table">
-      <thead>
-        <tr>
-          <th>Voltage %</th>
-          <th>Applied Voltage S1-S2</th>
-          <th>Applied Voltage S1-S3</th>
-          <th>Measured current (A) S1-S2</th>
-          <th>Measured current (A) S1-S3</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>20%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_20percent_appliedVoltage_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_20percent_appliedVoltage_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_20percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_20percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>40%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_40percent_appliedVoltage_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_40percent_appliedVoltage_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_40percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_40percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>60%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_60percent_appliedVoltage_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_60percent_appliedVoltage_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_60percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_60percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>80%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_80percent_appliedVoltage_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_80percent_appliedVoltage_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_80percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_80percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>100%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_100percent_appliedVoltage_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_100percent_appliedVoltage_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_100percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_100percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>110%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_110percent_appliedVoltage_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_110percent_appliedVoltage_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_110percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase31_knee_110percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    {/* Phase 2.2 Section */}
-    <h3 style={{ textAlign: "center", marginTop: "40px" }}>Phase 2.2</h3>
-
-    <h4>CT Ratio CORE – S1-S2, S1-S3</h4>
-    <table className="form-table">
-      <thead>
-        <tr>
-          <th>Current %</th>
-          <th>Applied primary Current (A) S1-S2</th>
-          <th>Applied primary Current (A) S1-S3</th>
-          <th>Measured secondary current (A) S1-S2</th>
-          <th>Measured secondary current (A) S1-S3</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>20%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_20percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_20percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_20percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_20percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>40%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_40percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_40percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_40percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_40percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>60%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_60percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_60percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_60percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_60percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>80%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_80percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_80percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_80percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_80percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>100%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_100percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_100percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_100percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_100percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h4>Knee point Voltage</h4>
-    <table className="form-table">
-      <thead>
-        <tr>
-          <th>Voltage %</th>
-          <th>Applied voltage S1-S2</th>
-          <th>Applied voltage S1-S3</th>
-          <th>Measured current (A) S1-S2</th>
-          <th>Measured current (A) S1-S3</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>20%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_20percent_appliedVoltage_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_20percent_appliedVoltage_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_20percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_20percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>40%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_40percent_appliedVoltage_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_40percent_appliedVoltage_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_40percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_40percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>60%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_60percent_appliedVoltage_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_60percent_appliedVoltage_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_60percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_60percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>80%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_80percent_appliedVoltage_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_80percent_appliedVoltage_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_80percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_80percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>100%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_100percent_appliedVoltage_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_100percent_appliedVoltage_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_100percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_100percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>110%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_110percent_appliedVoltage_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_110percent_appliedVoltage_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_110percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.phase32_knee_110percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    {/* WTI Section */}
-    <h3 style={{ textAlign: "center", marginTop: "40px" }}>WTI</h3>
-
-    <h4>CT Ratio CORE - S1-S2, S1-S3, S1-S4, S1-S5, S1-S6, S1-S7</h4>
-    <table className="form-table">
-      <thead>
-        <tr>
-          <th>Current %</th>
-          <th>Applied primary Current (A) S1-S2</th>
-          <th>Applied primary Current (A) S1-S3</th>
-          <th>Applied primary Current (A) S1-S4</th>
-          <th>Measured secondary current (A) S1-S2</th>
-          <th>Measured secondary current (A) S1-S3</th>
-          <th>Measured secondary current (A) S1-S4</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>20%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_20percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_20percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_20percent_appliedCurrent_s1s4 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_20percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_20percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_20percent_measuredCurrent_s1s4 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>40%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_40percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_40percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_40percent_appliedCurrent_s1s4 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_40percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_40percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_40percent_measuredCurrent_s1s4 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>60%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_60percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_60percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_60percent_appliedCurrent_s1s4 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_60percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_60percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_60percent_measuredCurrent_s1s4 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>80%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_80percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_80percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_80percent_appliedCurrent_s1s4 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_80percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_80percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_80percent_measuredCurrent_s1s4 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>100%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_100percent_appliedCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_100percent_appliedCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_100percent_appliedCurrent_s1s4 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_100percent_measuredCurrent_s1s2 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_100percent_measuredCurrent_s1s3 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_100percent_measuredCurrent_s1s4 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h4>CT Ratio CORE - S1-S2, S1-S3, S1-S4, S1-S5, S1-S6, S1-S7</h4>
-    <table className="form-table">
-      <thead>
-        <tr>
-          <th>Current %</th>
-          <th>Applied primary Current (A) S1-S5</th>
-          <th>Applied primary Current (A) S1-S6</th>
-          <th>Applied primary Current (A) S1-S7</th>
-          <th>Measured secondary current (A) S1-S5</th>
-          <th>Measured secondary current (A) S1-S6</th>
-          <th>Measured secondary current (A) S1-S7</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>20%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_20percent_appliedCurrent_s1s5 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_20percent_appliedCurrent_s1s6 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_20percent_appliedCurrent_s1s7 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_20percent_measuredCurrent_s1s5 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_20percent_measuredCurrent_s1s6 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_20percent_measuredCurrent_s1s7 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>40%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_40percent_appliedCurrent_s1s5 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_40percent_appliedCurrent_s1s6 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_40percent_appliedCurrent_s1s7 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_40percent_measuredCurrent_s1s5 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_40percent_measuredCurrent_s1s6 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_40percent_measuredCurrent_s1s7 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>60%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_60percent_appliedCurrent_s1s5 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_60percent_appliedCurrent_s1s6 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_60percent_appliedCurrent_s1s7 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_60percent_measuredCurrent_s1s5 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_60percent_measuredCurrent_s1s6 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_60percent_measuredCurrent_s1s7 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>80%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_80percent_appliedCurrent_s1s5 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_80percent_appliedCurrent_s1s6 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_80percent_appliedCurrent_s1s7 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_80percent_measuredCurrent_s1s5 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_80percent_measuredCurrent_s1s6 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_80percent_measuredCurrent_s1s7 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>100%</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_100percent_appliedCurrent_s1s5 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_100percent_appliedCurrent_s1s6 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_100percent_appliedCurrent_s1s7 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_100percent_measuredCurrent_s1s5 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_100percent_measuredCurrent_s1s6 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti_100percent_measuredCurrent_s1s7 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    {/* Photo Upload Section for Review */}
-    <div className="photo-upload-section">
-      <h4>Note: - Photographs to be added: -</h4>
-      <p style={{ textAlign: "center", marginBottom: "20px", fontWeight: "600" }}>
-        CT Ratio kit calibration
-      </p>
-
-      {formData.photos && (
-        <div className="photo-display-grid" style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: "15px",
-          marginTop: "10px"
-        }}>
-          {Object.entries(formData.photos).map(([photoKey, url]) => {
-            let fullUrl;
-            if (typeof url === 'string') {
-              if (url.startsWith("data:image/")) {
-                fullUrl = url;
-              } else if (url.startsWith("http")) {
-                fullUrl = url;
-              } else if (url.includes("cloudinary.com") || url.startsWith("v1")) {
-                fullUrl = `${BACKEND_IMG_API_BASE_URL}${url}`;
-              } else if (url.startsWith("/")) {
-                fullUrl = `${BACKEND_API_BASE_URL}${url}`;
-              } else {
-                fullUrl = `${BACKEND_API_BASE_URL}/${url}`;
-              }
-            } else {
-              fullUrl = "/placeholder.svg";
-            }
-
-            return (
-              <div key={photoKey} className="photo-item" style={{
-                border: "1px solid #e5e7eb",
-                borderRadius: "8px",
-                padding: "10px",
-                backgroundColor: "#f9fafb"
-              }}>
-                <span className="photo-label" style={{
-                  display: "block",
-                  fontSize: "0.85rem",
-                  fontWeight: "600",
-                  color: "#374151",
-                  marginBottom: "8px",
-                  textAlign: "center"
-                }}>
-                  {photoKey}
-                </span>
-                <img
-                  src={fullUrl}
-                  alt={photoKey}
-                  className="photo-preview-img"
-                  style={{
-                    width: "100%",
-                    height: "150px",
-                    objectFit: "cover",
-                    borderRadius: "6px",
-                    border: "1px solid #d1d5db",
-                    cursor: "pointer"
-                  }}
-                  onError={(e) => {
-                    console.error(`Failed to load image: ${fullUrl}`);
-                    e.target.src = "/placeholder.svg";
-                  }}
-                  onClick={() => {
-                    window.open(fullUrl, '_blank');
-                  }}
-                />
-                <div style={{ marginTop: "8px", textAlign: "center" }}>
-                  <a
-                    href={fullUrl}
-                    download={`${photoKey}.jpg`}
-                    style={{
-                      display: "inline-block",
-                      padding: "4px 8px",
-                      backgroundColor: "#3b82f6",
-                      color: "white",
-                      textDecoration: "none",
-                      borderRadius: "4px",
-                      fontSize: "0.75rem"
-                    }}
-                  >
-                    📥 Download
-                  </a>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </div>
-  </div>
-);
-
-const Stage1Form6 = ({ formData }) => (
-  <div className="form-container">
-    <div className="company-header">
-      <h2>TAN DELTA AND CAPACITANCE TEST ON BUSHING</h2>
-    </div>
-
-    <table className="form-table">
-      <tbody>
-        <tr>
-          <td><strong>METER USED</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.meterUsed || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td><strong>DATE</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.date || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td><strong>TIME</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.time || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>MODEL & S. NO.</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.modelSrNo || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td><strong>WTI</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.wti || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td><strong>OTI</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.oti || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <table className="form-table">
-      <thead>
-        <tr>
-          <th> </th>
-          <th>1.1</th>
-          <th>1.2</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>BUSHING SR. NO.HV</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.hvBushing11_srNo || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.hvBushing12_srNo || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h4>Status</h4>
-    <table className="form-table">
-      <thead>
-        <tr>
-          <th>AT 05 KV PHASE</th>
-          <th>TAN DELTA in %</th>
-          <th>CAPACITANCE (pF)</th>
-          <th>EXCITATION CURRENT (mA)</th>
-          <th>DIELECTRIC LOSS</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>1.1</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.hvBushing11_05kv_tanDelta || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.hvBushing11_05kv_capacitance || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.hvBushing11_05kv_excitationCurrent || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.hvBushing11_05kv_dielectricLoss || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>1.2</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.hvBushing12_05kv_tanDelta || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.hvBushing12_05kv_capacitance || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.hvBushing12_05kv_excitationCurrent || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.hvBushing12_05kv_dielectricLoss || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <table className="form-table">
-      <thead>
-        <tr>
-          <th>AT 10 KV PHASE</th>
-          <th>TAN DELTA in %</th>
-          <th>CAPACITANCE (pF)</th>
-          <th>EXCITATION CURRENT (mA)</th>
-          <th>DIELECTRIC LOSS</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>1.1</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.hvBushing11_10kv_tanDelta || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.hvBushing11_10kv_capacitance || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.hvBushing11_10kv_excitationCurrent || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.hvBushing11_10kv_dielectricLoss || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>1.2</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.hvBushing12_10kv_tanDelta || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.hvBushing12_10kv_capacitance || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.hvBushing12_10kv_excitationCurrent || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.hvBushing12_10kv_dielectricLoss || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h3 style={{ textAlign: "center", marginTop: "40px" }}>TYPE OF TEST – TAN DELTA AND CAPACITANCE TEST ON LV BUSHING</h3>
-    <table className="form-table">
-      <thead>
-        <tr>
-          <th></th>
-          <th>2.1</th>
-          <th>2.2</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>BUSHING SR. NO.LV</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.lvBushing21_srNo || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lvBushing22_srNo || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h4>Status</h4>
-    <table className="form-table">
-      <thead>
-        <tr>
-          <th>AT 05 KV PHASE</th>
-          <th>TAN DELTA in %</th>
-          <th>CAPACITANCE (pF)</th>
-          <th>EXCITATION CURRENT (mA)</th>
-          <th>DIELECTRIC LOSS</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>2.1</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.lvBushing21_05kv_tanDelta || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lvBushing21_05kv_capacitance || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lvBushing21_05kv_excitationCurrent || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lvBushing21_05kv_dielectricLoss || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>2.2</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.lvBushing22_05kv_tanDelta || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lvBushing22_05kv_capacitance || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lvBushing22_05kv_excitationCurrent || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lvBushing22_05kv_dielectricLoss || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <table className="form-table">
-      <thead>
-        <tr>
-          <th>AT 10 KV PHASE</th>
-          <th>TAN DELTA in %</th>
-          <th>CAPACITANCE (pF)</th>
-          <th>EXCITATION CURRENT (mA)</th>
-          <th>DIELECTRIC LOSS</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>2.1</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.lvBushing21_10kv_tanDelta || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lvBushing21_10kv_capacitance || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lvBushing21_10kv_excitationCurrent || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lvBushing21_10kv_dielectricLoss || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>2.2</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.lvBushing22_10kv_tanDelta || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lvBushing22_10kv_capacitance || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lvBushing22_10kv_excitationCurrent || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.lvBushing22_10kv_dielectricLoss || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    {/* Photo Upload Section for Review */}
-    <div className="photo-upload-section">
-      <h4>Note: - Photographs to be added: -</h4>
-      <p style={{ textAlign: "center", marginBottom: "20px", fontWeight: "600" }}>
-        Tan Delta Kit, Calibration Report, During Tan Delta of bushing photo
-      </p>
-
-      {formData.photos && (
-        <div className="photo-display-grid" style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: "15px",
-          marginTop: "10px"
-        }}>
-          {Object.entries(formData.photos).map(([photoKey, url]) => {
-            let fullUrl;
-            if (typeof url === 'string') {
-              if (url.startsWith("data:image/")) {
-                fullUrl = url;
-              } else if (url.startsWith("http")) {
-                fullUrl = url;
-              } else if (url.includes("cloudinary.com") || url.startsWith("v1")) {
-                fullUrl = `${BACKEND_IMG_API_BASE_URL}${url}`;
-              } else if (url.startsWith("/")) {
-                fullUrl = `${BACKEND_API_BASE_URL}${url}`;
-              } else {
-                fullUrl = `${BACKEND_API_BASE_URL}/${url}`;
-              }
-            } else {
-              fullUrl = "/placeholder.svg";
-            }
-
-            return (
-              <div key={photoKey} className="photo-item" style={{
-                border: "1px solid #e5e7eb",
-                borderRadius: "8px",
-                padding: "10px",
-                backgroundColor: "#f9fafb"
-              }}>
-                <span className="photo-label" style={{
-                  display: "block",
-                  fontSize: "0.85rem",
-                  fontWeight: "600",
-                  color: "#374151",
-                  marginBottom: "8px",
-                  textAlign: "center"
-                }}>
-                  {photoKey}
-                </span>
-                <img
-                  src={fullUrl}
-                  alt={photoKey}
-                  className="photo-preview-img"
-                  style={{
-                    width: "100%",
-                    height: "150px",
-                    objectFit: "cover",
-                    borderRadius: "6px",
-                    border: "1px solid #d1d5db",
-                    cursor: "pointer"
-                  }}
-                  onError={(e) => {
-                    console.error(`Failed to load image: ${fullUrl}`);
-                    e.target.src = "/placeholder.svg";
-                  }}
-                  onClick={() => {
-                    window.open(fullUrl, '_blank');
-                  }}
-                />
-                <div style={{ marginTop: "8px", textAlign: "center" }}>
-                  <a
-                    href={fullUrl}
-                    download={`${photoKey}.jpg`}
-                    style={{
-                      display: "inline-block",
-                      padding: "4px 8px",
-                      backgroundColor: "#3b82f6",
-                      color: "white",
-                      textDecoration: "none",
-                      borderRadius: "4px",
-                      fontSize: "0.75rem"
-                    }}
-                  >
-                    📥 Download
-                  </a>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </div>
-  </div>
-);
-
-
-const Stage1Form7 = ({ formData }) => (
-  <div className="form-container">
-    <div className="company-header">
-      <h2>RECORD OF MEASUREMENT OF IR VALUES</h2>
-    </div>
-    <h3>Before Erection</h3>
-
-    <table className="form-table">
-      <tbody>
-        <tr>
-          <td><strong>Date</strong></td>
-          <td>
-            <input type="text" value={formData.date || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td><strong>Time</strong></td>
-          <td>
-            <input type="text" value={formData.time || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Amb Temp:</strong></td>
-          <td>
-            <input type="text" value={formData.ambTemp || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td><strong>Make:</strong></td>
-          <td>
-            <input type="text" value={formData.make || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Oil Temp:</strong></td>
-          <td>
-            <input type="text" value={formData.oilTemp || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td><strong>Sr No:</strong></td>
-          <td>
-            <input type="text" value={formData.srNo || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Wdg. Temp:</strong></td>
-          <td>
-            <input type="text" value={formData.wdgTemp || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td><strong>Range:</strong></td>
-          <td>
-            <input type="text" value={formData.range || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Relative Humidity</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.relativeHumidity || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td><strong>Voltage Level:</strong></td>
-          <td>
-            <input
-              type="text"
-              value={formData.voltageLevel || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <table className="form-table">
-      <thead>
-        <tr>
-          <th> </th>
-          <th>10 Sec (MΩ)</th>
-          <th>60 Sec (MΩ)</th>
-          <th>Ratio of IR 60/IR 10</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>HV-Earth</strong></td>
-          <td>
-            <input type="text" value={formData.hvEarth_10sec || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td>
-            <input type="text" value={formData.hvEarth_60sec || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td>
-            <input type="text" value={formData.hvEarth_ratio || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>LV-Earth</strong></td>
-          <td>
-            <input type="text" value={formData.lvEarth_10sec || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td>
-            <input type="text" value={formData.lvEarth_60sec || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td>
-            <input type="text" value={formData.lvEarth_ratio || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-        <tr>
-          <td><strong>HV-LV</strong></td>
-          <td>
-            <input type="text" value={formData.hvLv_10sec || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td>
-            <input type="text" value={formData.hvLv_60sec || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td>
-            <input type="text" value={formData.hvLv_ratio || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    {/* Photo Upload Section for Review */}
-    <div className="photo-upload-section">
-      <h4>Note: - Photographs to be added: -</h4>
 
       {formData.photos && (
         <div
@@ -4238,128 +285,536 @@ const Stage1Form7 = ({ formData }) => (
   </div>
 );
 
-// Stage 2 Form 1: Record of Oil Handling
-const Stage2Form1 = ({ formData }) => (
-  <div className="form-container">
-    <div className="company-header">
-      <h2>RECORD OF OIL HANDLING</h2>
-      <h3>TEST VALUES PRIOR TO FILTERATION</h3>
-    </div>
+/**
+ * Stage 1 Form 2: Accessories Checking (Review)
+ * UI should match input table UI from VConnected63MVATransformerForms.js Stage1Form2.
+ */
+const Stage1Form2 = ({ formData }) => {
+  const defaultRows = [
+    { materialDescription: "HV bushing" },
+    { materialDescription: "LV Bushing" },
+    { materialDescription: "Radiators" },
+    { materialDescription: "Buchholz" },
+    { materialDescription: "PRV" },
+    { materialDescription: "CPR" },
+    { materialDescription: "Breather" },
+    { materialDescription: "Bushing Connector" },
+    { materialDescription: "Oil pump" },
+    { materialDescription: "RFBD" },
+    { materialDescription: "FAN" },
+    { materialDescription: "turrets" },
+    { materialDescription: "Valves" },
+  ];
 
-    <h4>Record of Oil Filling in the Reservoirs Tank:</h4>
-    <table className="form-table">
-      <thead>
-        <tr>
-          <th></th>
-          <th>No of barrels</th>
-          <th>Started on Date & time</th>
-          <th>Completed on Date & time</th>
-          <th>BDV</th>
-          <th>PPM</th>
-        </tr>
-      </thead>
-      <tbody>
-        {[
-          { label: "Tank1", prefix: "tank1" },
-          { label: "Tank2", prefix: "tank2" },
-          { label: "Tank3", prefix: "tank3" },
-        ].map(({ label, prefix }) => (
-          <tr key={prefix}>
-            <td>
-              <strong>{label}</strong>
-            </td>
+  const rows = Array.isArray(formData?.accessoriesRows) ? formData.accessoriesRows : [];
+
+  return (
+    <div className="form-container">
+      <div className="company-header">
+        <h2>ACCESSORIES CHECKING</h2>
+      </div>
+
+      <table className="form-table" style={{ tableLayout: "fixed" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "6%" }}>No</th>
+            <th style={{ width: "19%" }}>Packing case Number</th>
+            <th style={{ width: "20%" }}>Material Description</th>
+            <th style={{ width: "13%" }}>Qty as per P. L</th>
+            <th style={{ width: "13%" }}>Qty. Received</th>
+            <th style={{ width: "13%" }}>Short Qty</th>
+            <th style={{ width: "16%" }}>Damaged Qty.</th>
+          </tr>
+        </thead>
+        <tbody>
+          {defaultRows.map((r, idx) => {
+            const row = rows[idx] || {};
+            return (
+              <tr key={idx}>
+                <td style={{ textAlign: "center", fontWeight: 700 }}>{idx + 1}</td>
+                <td>
+                  <input type="text" value={row.packingCaseNumber || ""} disabled className="form-input disabled preview" />
+                </td>
+                <td style={{ fontWeight: 700, padding: "10px 12px" }}>{r.materialDescription}</td>
+                <td>
+                  <input type="text" value={row.qtyAsPerPL || ""} disabled className="form-input disabled preview" />
+                </td>
+                <td>
+                  <input type="text" value={row.qtyReceived || ""} disabled className="form-input disabled preview" />
+                </td>
+                <td>
+                  <input type="text" value={row.shortQty || ""} disabled className="form-input disabled preview" />
+                </td>
+                <td>
+                  <input type="text" value={row.damagedQty || ""} disabled className="form-input disabled preview" />
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+
+      {/* Photo section label matches input */}
+      <div className="photo-upload-section">
+        <h4>Note: - Photographs to be added: -</h4>
+        <p style={{ textAlign: "center", marginBottom: "20px", fontWeight: "600" }}>Accessories</p>
+
+        {formData.photos && (
+          <div
+            className="photo-display-grid"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+              gap: "15px",
+              marginTop: "10px",
+            }}
+          >
+            {Object.entries(formData.photos).map(([photoKey, url]) => {
+              let fullUrl;
+              if (typeof url === "string") {
+                if (url.startsWith("data:image/")) {
+                  fullUrl = url;
+                } else if (url.startsWith("http")) {
+                  fullUrl = url;
+                } else if (url.includes("cloudinary.com") || url.startsWith("v1")) {
+                  fullUrl = `${BACKEND_IMG_API_BASE_URL}${url}`;
+                } else if (url.startsWith("/")) {
+                  fullUrl = `${BACKEND_API_BASE_URL}${url}`;
+                } else {
+                  fullUrl = `${BACKEND_API_BASE_URL}/${url}`;
+                }
+              } else {
+                fullUrl = "/placeholder.svg";
+              }
+
+              return (
+                <div
+                  key={photoKey}
+                  className="photo-item"
+                  style={{
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "8px",
+                    padding: "10px",
+                    backgroundColor: "#f9fafb",
+                  }}
+                >
+                  <span
+                    className="photo-label"
+                    style={{
+                      display: "block",
+                      fontSize: "0.85rem",
+                      fontWeight: "600",
+                      color: "#374151",
+                      marginBottom: "8px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {photoKey}
+                  </span>
+                  <img
+                    src={fullUrl}
+                    alt={photoKey}
+                    className="photo-preview-img"
+                    style={{
+                      width: "100%",
+                      height: "150px",
+                      objectFit: "cover",
+                      borderRadius: "6px",
+                      border: "1px solid #d1d5db",
+                      cursor: "pointer",
+                    }}
+                    onError={(e) => {
+                      console.error(`Failed to load image: ${fullUrl}`);
+                      e.target.src = "/placeholder.svg";
+                    }}
+                    onClick={() => {
+                      window.open(fullUrl, "_blank");
+                    }}
+                  />
+                  <div style={{ marginTop: "8px", textAlign: "center" }}>
+                    <a
+                      href={fullUrl}
+                      download={`${photoKey}.jpg`}
+                      style={{
+                        display: "inline-block",
+                        padding: "4px 8px",
+                        backgroundColor: "#3b82f6",
+                        color: "white",
+                        textDecoration: "none",
+                        borderRadius: "4px",
+                        fontSize: "0.75rem",
+                      }}
+                    >
+                      📥 Download
+                    </a>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+/**
+ * Stage 1 Form 3: Core Insulation + Equipment + Safety (Review)
+ * UI matches VConnected63MVATransformerForms.js Stage1Form3, but read-only.
+ */
+const Stage1Form3 = ({ formData }) => {
+  const defaultEquipmentItems = [
+    { srNo: 2, description: "Whether the Filter Machine is Available", ratingHint: "(Yes/No)" },
+    { srNo: 3, description: "Capacity of Filter Machine", ratingHint: "" },
+    { srNo: 4, description: "Capacity of the Vacuum Pump to be used.", ratingHint: "" },
+    { srNo: 5, description: "Whether the Reservoir is Available with valves and a breather.", ratingHint: "" },
+    { srNo: 6, description: "Capacity of Reservoirs.", ratingHint: "" },
+    { srNo: 8, description: "Hose Pipes for the Filtration Process.", ratingHint: "(Yes/No)" },
+    { srNo: 9, description: "Whether Crane is Available in good condition", ratingHint: "" },
+    { srNo: 10, description: "Dry air", ratingHint: "(Yes/No)" },
+    { srNo: 11, description: "Dew point meter", ratingHint: "(Yes/No)" },
+    { srNo: 12, description: "Mec Leod gauge", ratingHint: "(Yes/No)" },
+  ];
+
+  const defaultSafetyItems = [
+    { description: "Fire extinguisher/ Fire sand bucket" },
+    { description: "First aid kit" },
+    { description: "PPE for the working team of ETC agency, like- Safety shoes, Helmet, etc..." },
+  ];
+
+  const equipmentRows = Array.isArray(formData?.equipment) ? formData.equipment : [];
+  const safetyRows = Array.isArray(formData?.safety) ? formData.safety : [];
+
+  return (
+    <div className="form-container">
+      <div style={{ marginTop: "10px", textAlign: "center", fontWeight: 900, fontSize: "18px" }}>
+        CORE INSULATION CHECK:&nbsp;&nbsp; At 1 KV {"\u003E"} 500 MΩ
+      </div>
+
+      <table className="form-table" style={{ marginTop: "12px", tableLayout: "fixed" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "38%" }}></th>
+            <th style={{ width: "31%" }}>Obtained Value</th>
+            <th style={{ width: "31%" }}>Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style={{ fontWeight: 800 }}>Between Core – frame</td>
             <td>
               <input
                 type="text"
-                value={formData?.[`${prefix}_noOfBarrels`] || ""}
+                value={formData?.coreInsulation?.coreToFrame?.obtainedValue || ""}
                 disabled
                 className="form-input disabled preview"
               />
             </td>
             <td>
-              <div style={{ display: "flex", gap: "5px" }}>
-                <input
-                  type="date"
-                  value={formData?.[`${prefix}_startedDate`] || ""}
-                  disabled
-                  className="form-input disabled preview"
-                  style={{ width: "50%" }}
-                />
-                <input
-                  type="time"
-                  value={formData?.[`${prefix}_startedTime`] || ""}
-                  disabled
-                  className="form-input disabled preview"
-                  style={{ width: "50%" }}
-                />
-              </div>
-            </td>
-            <td>
-              <div style={{ display: "flex", gap: "5px" }}>
-                <input
-                  type="date"
-                  value={formData?.[`${prefix}_completedDate`] || ""}
-                  disabled
-                  className="form-input disabled preview"
-                  style={{ width: "50%" }}
-                />
-                <input
-                  type="time"
-                  value={formData?.[`${prefix}_completedTime`] || ""}
-                  disabled
-                  className="form-input disabled preview"
-                  style={{ width: "50%" }}
-                />
-              </div>
-            </td>
-            <td>
               <input
                 type="text"
-                value={formData?.[`${prefix}_bdv`] || ""}
-                disabled
-                className="form-input disabled preview"
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                value={formData?.[`${prefix}_ppm`] || ""}
+                value={formData?.coreInsulation?.coreToFrame?.remarks || ""}
                 disabled
                 className="form-input disabled preview"
               />
             </td>
           </tr>
-        ))}
-      </tbody>
-    </table>
 
-    <h4 style={{ marginTop: "40px" }}>Reservoir Tank Filtration</h4>
-    <table className="form-table">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Time</th>
-          <th>Vacuum Level (MM/HG or torr)</th>
-          <th>Inlet Temp.</th>
-          <th>Outlet Temp.</th>
-        </tr>
-      </thead>
-      <tbody>
-        {formData.filtrationRecords &&
-          formData.filtrationRecords.map((record, index) => (
-            <tr key={index}>
+          <tr>
+            <td style={{ fontWeight: 800 }}>Between Frame – tank</td>
+            <td>
+              <input
+                type="text"
+                value={formData?.coreInsulation?.frameToTank?.obtainedValue || ""}
+                disabled
+                className="form-input disabled preview"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData?.coreInsulation?.frameToTank?.remarks || ""}
+                disabled
+                className="form-input disabled preview"
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800 }}>Between core – tank</td>
+            <td>
+              <input
+                type="text"
+                value={formData?.coreInsulation?.coreToTank?.obtainedValue || ""}
+                disabled
+                className="form-input disabled preview"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData?.coreInsulation?.coreToTank?.remarks || ""}
+                disabled
+                className="form-input disabled preview"
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style={{ marginTop: "28px", textAlign: "center", fontWeight: 900, fontSize: "16px" }}>
+        CHECKLIST FOR CONFORMING AVAILABILITY OF EQUIPMENT AT SITE
+      </div>
+
+      <table className="form-table" style={{ marginTop: "12px", tableLayout: "fixed" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "7%" }}></th>
+            <th style={{ width: "48%" }}>Description</th>
+            <th style={{ width: "25%" }}>Rating/capacity</th>
+            <th style={{ width: "20%" }}>Checked by</th>
+          </tr>
+        </thead>
+        <tbody>
+          {defaultEquipmentItems.map((it, idx) => {
+            const row = equipmentRows[idx] || {};
+            return (
+              <tr key={it.srNo}>
+                <td style={{ textAlign: "center", fontWeight: 800 }}>{it.srNo}.</td>
+                <td style={{ fontWeight: 800, padding: "10px 12px" }}>{it.description}</td>
+                <td>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                    {it.ratingHint ? <div style={{ fontWeight: 700, color: "#111" }}>{it.ratingHint}</div> : null}
+                    <input
+                      type="text"
+                      value={row.ratingCapacity || ""}
+                      disabled
+                      className="form-input disabled preview"
+                    />
+                  </div>
+                </td>
+                <td>
+                  <input type="text" value={row.checkedBy || ""} disabled className="form-input disabled preview" />
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+
+      <div style={{ marginTop: "18px", textAlign: "center", fontWeight: 900 }}>SAFETY EQUIPMENT</div>
+
+      <table className="form-table" style={{ marginTop: "10px", tableLayout: "fixed" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "70%" }}>Descriptions</th>
+            <th style={{ width: "30%" }}>Confirmation</th>
+          </tr>
+        </thead>
+        <tbody>
+          {defaultSafetyItems.map((it, idx) => {
+            const row = safetyRows[idx] || {};
+            return (
+              <tr key={idx}>
+                <td style={{ fontWeight: 800, padding: "10px 12px" }}>{it.description}</td>
+                <td>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                    <div style={{ fontWeight: 700 }}>(Yes/No)</div>
+                    <input
+                      type="text"
+                      value={row.confirmation || ""}
+                      disabled
+                      className="form-input disabled preview"
+                    />
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+
+      {/* Photo section label matches input */}
+      <div className="photo-upload-section">
+        <h4>Note: - Photographs to be added: -</h4>
+        <p style={{ textAlign: "center", marginBottom: "20px", fontWeight: "600" }}>
+          Note: - Photographs to be added of Above-mentioned point. Dry Air Arrangement, dew point meter, Mec Leod gauge
+        </p>
+
+        {formData.photos && (
+          <div
+            className="photo-display-grid"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+              gap: "15px",
+              marginTop: "10px",
+            }}
+          >
+            {Object.entries(formData.photos).map(([photoKey, url]) => {
+              let fullUrl;
+              if (typeof url === "string") {
+                if (url.startsWith("data:image/")) {
+                  fullUrl = url;
+                } else if (url.startsWith("http")) {
+                  fullUrl = url;
+                } else if (url.includes("cloudinary.com") || url.startsWith("v1")) {
+                  fullUrl = `${BACKEND_IMG_API_BASE_URL}${url}`;
+                } else if (url.startsWith("/")) {
+                  fullUrl = `${BACKEND_API_BASE_URL}${url}`;
+                } else {
+                  fullUrl = `${BACKEND_API_BASE_URL}/${url}`;
+                }
+              } else {
+                fullUrl = "/placeholder.svg";
+              }
+
+              return (
+                <div
+                  key={photoKey}
+                  className="photo-item"
+                  style={{
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "8px",
+                    padding: "10px",
+                    backgroundColor: "#f9fafb",
+                  }}
+                >
+                  <span
+                    className="photo-label"
+                    style={{
+                      display: "block",
+                      fontSize: "0.85rem",
+                      fontWeight: "600",
+                      color: "#374151",
+                      marginBottom: "8px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {photoKey}
+                  </span>
+                  <img
+                    src={fullUrl}
+                    alt={photoKey}
+                    className="photo-preview-img"
+                    style={{
+                      width: "100%",
+                      height: "150px",
+                      objectFit: "cover",
+                      borderRadius: "6px",
+                      border: "1px solid #d1d5db",
+                      cursor: "pointer",
+                    }}
+                    onError={(e) => {
+                      console.error(`Failed to load image: ${fullUrl}`);
+                      e.target.src = "/placeholder.svg";
+                    }}
+                    onClick={() => {
+                      window.open(fullUrl, "_blank");
+                    }}
+                  />
+                  <div style={{ marginTop: "8px", textAlign: "center" }}>
+                    <a
+                      href={fullUrl}
+                      download={`${photoKey}.jpg`}
+                      style={{
+                        display: "inline-block",
+                        padding: "4px 8px",
+                        backgroundColor: "#3b82f6",
+                        color: "white",
+                        textDecoration: "none",
+                        borderRadius: "4px",
+                        fontSize: "0.75rem",
+                      }}
+                    >
+                      📥 Download
+                    </a>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+/**
+ * Stage 1 Form 4: Pre erection Ratio test of turret CTs (Review)
+ * UI should match input table UI from VConnected63MVATransformerForms.js Stage1Form4.
+ */
+const Stage1Form4 = ({ formData }) => {
+  const currentPercentRows = [20, 40, 60, 80, 100];
+  const kneePercentRows = [20, 40, 60, 80, 100, 110];
+
+  const renderPhaseBlock = (title, phaseKey) => (
+    <div style={{ marginTop: "26px" }}>
+      <table className="form-table">
+        <thead>
+          <tr>
+            <th style={{ width: "40%", textAlign: "left" }}>CT Ratio CORE – S1-S2</th>
+            <th style={{ width: "60%", textAlign: "center", fontSize: "18px", fontWeight: 900 }}>{title}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colSpan="2" style={{ padding: 0 }}>
+              <table className="form-table" style={{ marginTop: 0, border: "none" }}>
+                <thead>
+                  <tr>
+                    <th style={{ width: "20%" }}>Current %</th>
+                    <th style={{ width: "40%" }}>Applied primary Current (A)</th>
+                    <th style={{ width: "40%" }}>Measured secondary current (A)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentPercentRows.map((p) => (
+                    <tr key={`${phaseKey}-ct-${p}`}>
+                      <td style={{ fontWeight: 700, textAlign: "center" }}>{p}%</td>
+                      <td>
+                        <input
+                          type="text"
+                          value={formData?.[phaseKey]?.ctRatioCoreS1S2?.[p]?.appliedPrimaryCurrentA || ""}
+                          disabled
+                          className="form-input disabled preview"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          value={formData?.[phaseKey]?.ctRatioCoreS1S2?.[p]?.measuredSecondaryCurrentA || ""}
+                          disabled
+                          className="form-input disabled preview"
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style={{ fontWeight: 900, fontSize: "18px", marginTop: "10px", marginBottom: "6px" }}>Knee point Voltage</div>
+
+      <table className="form-table">
+        <thead>
+          <tr>
+            <th style={{ width: "30%" }}>Voltage %</th>
+            <th style={{ width: "35%" }}>Applied voltage</th>
+            <th style={{ width: "35%" }}>Measured current (A)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {kneePercentRows.map((p) => (
+            <tr key={`${phaseKey}-knee-${p}`}>
+              <td style={{ fontWeight: 700, textAlign: "center" }}>{p}%</td>
               <td>
                 <input
-                  type="date"
-                  value={record.date || ""}
-                  disabled
-                  className="form-input disabled preview"
-                />
-              </td>
-              <td>
-                <input
-                  type="time"
-                  value={record.time || ""}
+                  type="text"
+                  value={formData?.[phaseKey]?.kneePointVoltage?.[p]?.appliedVoltage || ""}
                   disabled
                   className="form-input disabled preview"
                 />
@@ -4367,31 +822,1443 @@ const Stage2Form1 = ({ formData }) => (
               <td>
                 <input
                   type="text"
-                  value={record.vacuumLevel || ""}
-                  disabled
-                  className="form-input disabled preview"
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={record.inletTemp || ""}
-                  disabled
-                  className="form-input disabled preview"
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={record.outletTemp || ""}
+                  value={formData?.[phaseKey]?.kneePointVoltage?.[p]?.measuredCurrentA || ""}
                   disabled
                   className="form-input disabled preview"
                 />
               </td>
             </tr>
           ))}
+        </tbody>
+      </table>
+    </div>
+  );
+
+  return (
+    <div className="form-container">
+      <div className="company-header">
+        <h2 style={{ fontWeight: 900 }}>Pre erection Ratio test of turret CTs</h2>
+      </div>
+
+      {renderPhaseBlock("Phase 1.1", "phase11")}
+      {renderPhaseBlock("Phase 1.2", "phase12")}
+
+      <div className="photo-upload-section">
+        <h4>Note: - Photographs to be added: -</h4>
+        <p style={{ textAlign: "center", marginBottom: "20px", fontWeight: "600" }}>CT Ratio kit calibration</p>
+
+        {formData.photos && (
+          <div
+            className="photo-display-grid"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+              gap: "15px",
+              marginTop: "10px",
+            }}
+          >
+            {Object.entries(formData.photos).map(([photoKey, url]) => {
+              let fullUrl;
+              if (typeof url === "string") {
+                if (url.startsWith("data:image/")) {
+                  fullUrl = url;
+                } else if (url.startsWith("http")) {
+                  fullUrl = url;
+                } else if (url.includes("cloudinary.com") || url.startsWith("v1")) {
+                  fullUrl = `${BACKEND_IMG_API_BASE_URL}${url}`;
+                } else if (url.startsWith("/")) {
+                  fullUrl = `${BACKEND_API_BASE_URL}${url}`;
+                } else {
+                  fullUrl = `${BACKEND_API_BASE_URL}/${url}`;
+                }
+              } else {
+                fullUrl = "/placeholder.svg";
+              }
+
+              return (
+                <div
+                  key={photoKey}
+                  className="photo-item"
+                  style={{
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "8px",
+                    padding: "10px",
+                    backgroundColor: "#f9fafb",
+                  }}
+                >
+                  <span
+                    className="photo-label"
+                    style={{
+                      display: "block",
+                      fontSize: "0.85rem",
+                      fontWeight: "600",
+                      color: "#374151",
+                      marginBottom: "8px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {photoKey}
+                  </span>
+                  <img
+                    src={fullUrl}
+                    alt={photoKey}
+                    className="photo-preview-img"
+                    style={{
+                      width: "100%",
+                      height: "150px",
+                      objectFit: "cover",
+                      borderRadius: "6px",
+                      border: "1px solid #d1d5db",
+                      cursor: "pointer",
+                    }}
+                    onError={(e) => {
+                      console.error(`Failed to load image: ${fullUrl}`);
+                      e.target.src = "/placeholder.svg";
+                    }}
+                    onClick={() => {
+                      window.open(fullUrl, "_blank");
+                    }}
+                  />
+                  <div style={{ marginTop: "8px", textAlign: "center" }}>
+                    <a
+                      href={fullUrl}
+                      download={`${photoKey}.jpg`}
+                      style={{
+                        display: "inline-block",
+                        padding: "4px 8px",
+                        backgroundColor: "#3b82f6",
+                        color: "white",
+                        textDecoration: "none",
+                        borderRadius: "4px",
+                        fontSize: "0.75rem",
+                      }}
+                    >
+                      📥 Download
+                    </a>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+/**
+ * Stage 1 Form 5: Pre erection Ratio test of turret CTs (Review)
+ * UI should match input table UI from VConnected63MVATransformerForms.js Stage1Form5.
+ */
+const Stage1Form5 = ({ formData }) => {
+  const currentPercentRows = [20, 40, 60, 80, 100];
+  const kneePercentRows = [20, 40, 60, 80, 100, 110];
+
+  const renderPhaseBlock = (title, phaseKey) => (
+    <div style={{ marginTop: "26px" }}>
+      <table className="form-table">
+        <thead>
+          <tr>
+            <th style={{ width: "40%", textAlign: "left" }}>CT Ratio CORE – S1-S2</th>
+            <th style={{ width: "60%", textAlign: "center", fontSize: "18px", fontWeight: 900 }}>{title}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colSpan="2" style={{ padding: 0 }}>
+              <table className="form-table" style={{ marginTop: 0, border: "none" }}>
+                <thead>
+                  <tr>
+                    <th style={{ width: "20%" }}>Current %</th>
+                    <th style={{ width: "40%" }}>Applied primary Current (A)</th>
+                    <th style={{ width: "40%" }}>Measured secondary current (A)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentPercentRows.map((p) => (
+                    <tr key={`${phaseKey}-ct-${p}`}>
+                      <td style={{ fontWeight: 700, textAlign: "center" }}>{p}%</td>
+                      <td>
+                        <input
+                          type="text"
+                          value={formData?.[phaseKey]?.ctRatioCoreS1S2?.[p]?.appliedPrimaryCurrentA || ""}
+                          disabled
+                          className="form-input disabled preview"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          value={formData?.[phaseKey]?.ctRatioCoreS1S2?.[p]?.measuredSecondaryCurrentA || ""}
+                          disabled
+                          className="form-input disabled preview"
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style={{ fontWeight: 900, fontSize: "18px", marginTop: "10px", marginBottom: "6px" }}>Knee point Voltage</div>
+
+      <table className="form-table">
+        <thead>
+          <tr>
+            <th style={{ width: "30%" }}>Voltage %</th>
+            <th style={{ width: "35%" }}>Applied voltage</th>
+            <th style={{ width: "35%" }}>Measured current (A)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {kneePercentRows.map((p) => (
+            <tr key={`${phaseKey}-knee-${p}`}>
+              <td style={{ fontWeight: 700, textAlign: "center" }}>{p}%</td>
+              <td>
+                <input
+                  type="text"
+                  value={formData?.[phaseKey]?.kneePointVoltage?.[p]?.appliedVoltage || ""}
+                  disabled
+                  className="form-input disabled preview"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={formData?.[phaseKey]?.kneePointVoltage?.[p]?.measuredCurrentA || ""}
+                  disabled
+                  className="form-input disabled preview"
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+
+  return (
+    <div className="form-container">
+      <div className="company-header">
+        <h2 style={{ fontWeight: 900 }}>Pre erection Ratio test of turret CTs</h2>
+      </div>
+
+      {renderPhaseBlock("Phase 2.1", "phase21")}
+      {renderPhaseBlock("Phase 2.2", "phase22")}
+
+      <div className="photo-upload-section">
+        <h4>Note: - Photographs to be added: -</h4>
+        <p style={{ textAlign: "center", marginBottom: "20px", fontWeight: "600" }}>CT Ratio kit calibration</p>
+
+        {formData.photos && (
+          <div
+            className="photo-display-grid"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+              gap: "15px",
+              marginTop: "10px",
+            }}
+          >
+            {Object.entries(formData.photos).map(([photoKey, url]) => {
+              let fullUrl;
+              if (typeof url === "string") {
+                if (url.startsWith("data:image/")) {
+                  fullUrl = url;
+                } else if (url.startsWith("http")) {
+                  fullUrl = url;
+                } else if (url.includes("cloudinary.com") || url.startsWith("v1")) {
+                  fullUrl = `${BACKEND_IMG_API_BASE_URL}${url}`;
+                } else if (url.startsWith("/")) {
+                  fullUrl = `${BACKEND_API_BASE_URL}${url}`;
+                } else {
+                  fullUrl = `${BACKEND_API_BASE_URL}/${url}`;
+                }
+              } else {
+                fullUrl = "/placeholder.svg";
+              }
+
+              return (
+                <div
+                  key={photoKey}
+                  className="photo-item"
+                  style={{
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "8px",
+                    padding: "10px",
+                    backgroundColor: "#f9fafb",
+                  }}
+                >
+                  <span
+                    className="photo-label"
+                    style={{
+                      display: "block",
+                      fontSize: "0.85rem",
+                      fontWeight: "600",
+                      color: "#374151",
+                      marginBottom: "8px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {photoKey}
+                  </span>
+                  <img
+                    src={fullUrl}
+                    alt={photoKey}
+                    className="photo-preview-img"
+                    style={{
+                      width: "100%",
+                      height: "150px",
+                      objectFit: "cover",
+                      borderRadius: "6px",
+                      border: "1px solid #d1d5db",
+                      cursor: "pointer",
+                    }}
+                    onError={(e) => {
+                      console.error(`Failed to load image: ${fullUrl}`);
+                      e.target.src = "/placeholder.svg";
+                    }}
+                    onClick={() => {
+                      window.open(fullUrl, "_blank");
+                    }}
+                  />
+                  <div style={{ marginTop: "8px", textAlign: "center" }}>
+                    <a
+                      href={fullUrl}
+                      download={`${photoKey}.jpg`}
+                      style={{
+                        display: "inline-block",
+                        padding: "4px 8px",
+                        backgroundColor: "#3b82f6",
+                        color: "white",
+                        textDecoration: "none",
+                        borderRadius: "4px",
+                        fontSize: "0.75rem",
+                      }}
+                    >
+                      📥 Download
+                    </a>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+/**
+ * Stage 1 Form 6: Pre erection Ratio test of turret CTs (Review)
+ * UI should match input table UI from VConnected63MVATransformerForms.js Stage1Form6.
+ */
+const Stage1Form6 = ({ formData }) => {
+  const currentPercentRows = [20, 40, 60, 80, 100];
+  const kneePercentRows = [20, 40, 60, 80, 100, 110];
+
+  const renderPhaseBlock = (title, phaseKey) => (
+    <div style={{ marginTop: "18px" }}>
+      <h3 style={{ textAlign: "center", marginBottom: "8px", fontWeight: 800 }}>{title}</h3>
+
+      <div style={{ fontWeight: 800, marginTop: "10px", marginBottom: "6px" }}>Ratio test</div>
+
+      <table className="form-table" style={{ marginTop: "8px" }}>
+        <thead>
+          <tr>
+            <th colSpan="3" style={{ textAlign: "left" }}>
+              <span style={{ fontWeight: 800 }}>CT Ratio CORE – S1-S2</span>
+            </th>
+          </tr>
+          <tr>
+            <th style={{ width: "20%" }}>Current %</th>
+            <th style={{ width: "40%" }}>Applied primary Current (A)</th>
+            <th style={{ width: "40%" }}>Measured secondary current (A)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {currentPercentRows.map((p) => (
+            <tr key={`${phaseKey}-ct-${p}`}>
+              <td style={{ fontWeight: 700, textAlign: "center" }}>{p}%</td>
+              <td>
+                <input
+                  type="text"
+                  value={formData?.[phaseKey]?.ctRatioCoreS1S2?.[p]?.appliedPrimaryCurrentA || ""}
+                  disabled
+                  className="form-input disabled preview"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={formData?.[phaseKey]?.ctRatioCoreS1S2?.[p]?.measuredSecondaryCurrentA || ""}
+                  disabled
+                  className="form-input disabled preview"
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <div style={{ fontWeight: 900, fontSize: "18px", marginTop: "10px", marginBottom: "6px" }}>Knee point Voltage</div>
+
+      <table className="form-table">
+        <thead>
+          <tr>
+            <th style={{ width: "30%" }}>Voltage %</th>
+            <th style={{ width: "35%" }}>Applied voltage</th>
+            <th style={{ width: "35%" }}>Measured current (A)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {kneePercentRows.map((p) => (
+            <tr key={`${phaseKey}-knee-${p}`}>
+              <td style={{ fontWeight: 700, textAlign: "center" }}>{p}%</td>
+              <td>
+                <input
+                  type="text"
+                  value={formData?.[phaseKey]?.kneePointVoltage?.[p]?.appliedVoltage || ""}
+                  disabled
+                  className="form-input disabled preview"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={formData?.[phaseKey]?.kneePointVoltage?.[p]?.measuredCurrentA || ""}
+                  disabled
+                  className="form-input disabled preview"
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+
+  const renderWTIBlock = () => (
+    <div style={{ marginTop: "18px" }}>
+      <h3 style={{ textAlign: "center", marginBottom: "8px", fontWeight: 900 }}>WTI</h3>
+
+      <table className="form-table" style={{ marginTop: "8px" }}>
+        <thead>
+          <tr>
+            <th colSpan="5" style={{ textAlign: "left" }}>
+              <span style={{ fontWeight: 800 }}>CT Ratio CORE - S1-S2, S1-S3, S1-S4</span>
+            </th>
+          </tr>
+          <tr>
+            <th style={{ width: "15%" }}>Current %</th>
+            <th style={{ width: "30%" }}>Applied primary Current (A)</th>
+            <th colSpan="3" style={{ width: "55%" }}>
+              Measured secondary current (A)
+            </th>
+          </tr>
+          <tr>
+            <th></th>
+            <th></th>
+            <th style={{ width: "18%" }}>S1-S2</th>
+            <th style={{ width: "18%" }}>S1-S3</th>
+            <th style={{ width: "19%" }}>S1-S4</th>
+          </tr>
+        </thead>
+        <tbody>
+          {currentPercentRows.map((p) => (
+            <tr key={`wti-${p}`}>
+              <td style={{ fontWeight: 700, textAlign: "center" }}>{p}%</td>
+              <td>
+                <input
+                  type="text"
+                  value={formData?.wti?.[p]?.appliedPrimaryCurrentA || ""}
+                  disabled
+                  className="form-input disabled preview"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={formData?.wti?.[p]?.measuredSecondaryCurrentS1S2A || ""}
+                  disabled
+                  className="form-input disabled preview"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={formData?.wti?.[p]?.measuredSecondaryCurrentS1S3A || ""}
+                  disabled
+                  className="form-input disabled preview"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={formData?.wti?.[p]?.measuredSecondaryCurrentS1S4A || ""}
+                  disabled
+                  className="form-input disabled preview"
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+
+  return (
+    <div className="form-container">
+      <div className="company-header">
+        <h2 style={{ fontWeight: 900 }}>Pre erection Ratio test of turret CTs</h2>
+      </div>
+
+      {renderPhaseBlock("Phase 3.1", "phase31")}
+      {renderPhaseBlock("Phase 3.2", "phase32")}
+      {renderWTIBlock()}
+
+      {/* Photo section (same generic behavior as other review forms) */}
+      <div className="photo-upload-section">
+        <h4>Note: - Photographs to be added: -</h4>
+
+        {formData.photos && (
+          <div
+            className="photo-display-grid"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+              gap: "15px",
+              marginTop: "10px",
+            }}
+          >
+            {Object.entries(formData.photos).map(([photoKey, url]) => {
+              let fullUrl;
+              if (typeof url === "string") {
+                if (url.startsWith("data:image/")) {
+                  fullUrl = url;
+                } else if (url.startsWith("http")) {
+                  fullUrl = url;
+                } else if (url.includes("cloudinary.com") || url.startsWith("v1")) {
+                  fullUrl = `${BACKEND_IMG_API_BASE_URL}${url}`;
+                } else if (url.startsWith("/")) {
+                  fullUrl = `${BACKEND_API_BASE_URL}${url}`;
+                } else {
+                  fullUrl = `${BACKEND_API_BASE_URL}/${url}`;
+                }
+              } else {
+                fullUrl = "/placeholder.svg";
+              }
+
+              return (
+                <div
+                  key={photoKey}
+                  className="photo-item"
+                  style={{
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "8px",
+                    padding: "10px",
+                    backgroundColor: "#f9fafb",
+                  }}
+                >
+                  <span
+                    className="photo-label"
+                    style={{
+                      display: "block",
+                      fontSize: "0.85rem",
+                      fontWeight: "600",
+                      color: "#374151",
+                      marginBottom: "8px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {photoKey}
+                  </span>
+                  <img
+                    src={fullUrl}
+                    alt={photoKey}
+                    className="photo-preview-img"
+                    style={{
+                      width: "100%",
+                      height: "150px",
+                      objectFit: "cover",
+                      borderRadius: "6px",
+                      border: "1px solid #d1d5db",
+                      cursor: "pointer",
+                    }}
+                    onError={(e) => {
+                      console.error(`Failed to load image: ${fullUrl}`);
+                      e.target.src = "/placeholder.svg";
+                    }}
+                    onClick={() => {
+                      window.open(fullUrl, "_blank");
+                    }}
+                  />
+                  <div style={{ marginTop: "8px", textAlign: "center" }}>
+                    <a
+                      href={fullUrl}
+                      download={`${photoKey}.jpg`}
+                      style={{
+                        display: "inline-block",
+                        padding: "4px 8px",
+                        backgroundColor: "#3b82f6",
+                        color: "white",
+                        textDecoration: "none",
+                        borderRadius: "4px",
+                        fontSize: "0.75rem",
+                      }}
+                    >
+                      📥 Download
+                    </a>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+
+const Stage1Form7 = ({ formData }) => (
+  <div className="form-container">
+    <div className="company-header">
+      <h2>TEST REPORT</h2>
+      <h3 style={{ marginTop: "6px", fontWeight: 900 }}>TAN DELTA AND CAPACITANCE TEST ON BUSHING</h3>
+    </div>
+
+    <table className="form-table">
+      <tbody>
+        <tr>
+          <td style={{ width: "25%", fontWeight: 800 }}>METER USED</td>
+          <td style={{ width: "25%" }}>
+            <input type="text" value={formData.meterUsed || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ width: "25%", fontWeight: 800 }}>DATE:</td>
+          <td style={{ width: "25%" }}>
+            <input type="date" value={formData.date || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td style={{ fontWeight: 800 }}>MODEL & S. NO.</td>
+          <td>
+            <input type="text" value={formData.modelAndSerialNo || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ fontWeight: 800 }}>TIME :</td>
+          <td>
+            <input type="time" value={formData.time || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td style={{ fontWeight: 800 }}></td>
+          <td></td>
+          <td style={{ fontWeight: 800 }}>WTI:</td>
+          <td>
+            <input type="text" value={formData.wti || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td style={{ fontWeight: 800 }}></td>
+          <td></td>
+          <td style={{ fontWeight: 800 }}>OTI:</td>
+          <td>
+            <input type="text" value={formData.oti || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+
+        <tr>
+          <td style={{ width: "25%", fontWeight: 800 }}>BUSHING SR. NO. (HV)</td>
+          <td style={{ width: "25%" }}>
+            <input type="text" value={formData.hvBushingSrNo || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ width: "25%", fontWeight: 800 }}>MAKE</td>
+          <td style={{ width: "25%" }}>
+            <input type="text" value={formData.hvBushingMake || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td style={{ fontWeight: 800 }}>BUSHING SR. NO. (LV)</td>
+          <td>
+            <input type="text" value={formData.lvBushingSrNo || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td></td>
+          <td>
+            <input type="text" value={formData.lvBushingMake || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
       </tbody>
     </table>
+
+    <table className="form-table" style={{ marginTop: "14px" }}>
+      <thead>
+        <tr>
+          <th style={{ width: "34%", textAlign: "left" }}>BUSHING SR. NO.HV</th>
+          <th style={{ width: "33%" }}>1.1</th>
+          <th style={{ width: "33%" }}>1.2</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <input type="text" value={formData.bushingSrNoHv || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style={{ marginTop: "12px", fontWeight: 900 }}>STATUS:</div>
+
+    <table className="form-table" style={{ marginTop: "10px" }}>
+      <thead>
+        <tr>
+          <th style={{ width: "16%" }}>AT 05 KV PHASE</th>
+          <th style={{ width: "21%" }}>TAN DELTA in %</th>
+          <th style={{ width: "21%" }}>CAPACITANCE (PF)</th>
+          <th style={{ width: "21%" }}>EXCITATION CURRENT</th>
+          <th style={{ width: "21%" }}>DIELECTRIC LOSS</th>
+        </tr>
+      </thead>
+      <tbody>
+        {(formData.hvAt5kv || []).map((row, idx) => (
+          <tr key={`hvAt5kv-${row.phase}-${idx}`}>
+            <td style={{ textAlign: "center", fontWeight: 800 }}>{row.phase}</td>
+            <td>
+              <input type="text" value={row.tanDeltaPercent || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <input type="text" value={row.capacitancePf || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <input type="text" value={row.excitationCurrent || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <input type="text" value={row.dielectricLoss || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <table className="form-table" style={{ marginTop: "10px" }}>
+      <thead>
+        <tr>
+          <th style={{ width: "16%" }}>AT 10 KV PHASE</th>
+          <th style={{ width: "21%" }}>TAN DELTA in %</th>
+          <th style={{ width: "21%" }}>CAPACITANCE (PF)</th>
+          <th style={{ width: "21%" }}>EXCITATION CURRENT</th>
+          <th style={{ width: "21%" }}>DIELECTRIC LOSS</th>
+        </tr>
+      </thead>
+      <tbody>
+        {(formData.hvAt10kv || []).map((row, idx) => (
+          <tr key={`hvAt10kv-${row.phase}-${idx}`}>
+            <td style={{ textAlign: "center", fontWeight: 800 }}>{row.phase}</td>
+            <td>
+              <input type="text" value={row.tanDeltaPercent || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <input type="text" value={row.capacitancePf || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <input type="text" value={row.excitationCurrent || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <input type="text" value={row.dielectricLoss || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <div style={{ marginTop: "26px", textAlign: "center", fontWeight: 900, fontSize: "16px" }}>
+      TYPE OF TEST – TAN DELTA AND CAPACITANCE TEST ON LV BUSHING
+    </div>
+
+    <table className="form-table" style={{ marginTop: "14px" }}>
+      <thead>
+        <tr>
+          <th style={{ width: "34%", textAlign: "left" }}>BUSHING SR. NO.LV</th>
+          <th style={{ width: "16.5%" }}>2.1</th>
+          <th style={{ width: "16.5%" }}>2.2</th>
+          <th style={{ width: "16.5%" }}>3.1</th>
+          <th style={{ width: "16.5%" }}>3.2</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <input type="text" value={formData.bushingSrNoLv || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style={{ marginTop: "12px", fontWeight: 900 }}>STATUS:</div>
+
+    <table className="form-table" style={{ marginTop: "10px" }}>
+      <thead>
+        <tr>
+          <th style={{ width: "16%" }}>AT 05 KV PHASE</th>
+          <th style={{ width: "21%" }}>TAN DELTA in %</th>
+          <th style={{ width: "21%" }}>CAPACITANCE (PF)</th>
+          <th style={{ width: "21%" }}>EXCITATION CURRENT</th>
+          <th style={{ width: "21%" }}>DIELECTRIC LOSS</th>
+        </tr>
+      </thead>
+      <tbody>
+        {(formData.lvAt5kv || []).map((row, idx) => (
+          <tr key={`lvAt5kv-${row.phase}-${idx}`}>
+            <td style={{ textAlign: "center", fontWeight: 800 }}>{row.phase}</td>
+            <td>
+              <input type="text" value={row.tanDeltaPercent || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <input type="text" value={row.capacitancePf || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <input type="text" value={row.excitationCurrent || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <input type="text" value={row.dielectricLoss || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <table className="form-table" style={{ marginTop: "10px" }}>
+      <thead>
+        <tr>
+          <th style={{ width: "16%" }}>AT 10 KV PHASE</th>
+          <th style={{ width: "21%" }}>TAN DELTA in %</th>
+          <th style={{ width: "21%" }}>CAPACITANCE (PF)</th>
+          <th style={{ width: "21%" }}>EXCITATION CURRENT</th>
+          <th style={{ width: "21%" }}>DIELECTRIC LOSS</th>
+        </tr>
+      </thead>
+      <tbody>
+        {(formData.lvAt10kv || []).map((row, idx) => (
+          <tr key={`lvAt10kv-${row.phase}-${idx}`}>
+            <td style={{ textAlign: "center", fontWeight: 800 }}>{row.phase}</td>
+            <td>
+              <input type="text" value={row.tanDeltaPercent || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <input type="text" value={row.capacitancePf || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <input type="text" value={row.excitationCurrent || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <input type="text" value={row.dielectricLoss || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <div className="photo-upload-section">
+      <h4>Note: - Photographs to be added: -</h4>
+      <p style={{ textAlign: "center", marginBottom: "20px", fontWeight: "600" }}>
+        Ten delta kit, calibration report, during tendelta of bushing photo
+      </p>
+
+      {formData.photos && (
+        <div
+          className="photo-display-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: "15px",
+            marginTop: "10px",
+          }}
+        >
+          {Object.entries(formData.photos).map(([photoKey, url]) => {
+            let fullUrl;
+            if (typeof url === "string") {
+              if (url.startsWith("data:image/")) {
+                fullUrl = url;
+              } else if (url.startsWith("http")) {
+                fullUrl = url;
+              } else if (url.includes("cloudinary.com") || url.startsWith("v1")) {
+                fullUrl = `${BACKEND_IMG_API_BASE_URL}${url}`;
+              } else if (url.startsWith("/")) {
+                fullUrl = `${BACKEND_API_BASE_URL}${url}`;
+              } else {
+                fullUrl = `${BACKEND_API_BASE_URL}/${url}`;
+              }
+            } else {
+              fullUrl = "/placeholder.svg";
+            }
+
+            return (
+              <div
+                key={photoKey}
+                className="photo-item"
+                style={{
+                  border: "1px solid #e5e7eb",
+                  borderRadius: "8px",
+                  padding: "10px",
+                  backgroundColor: "#f9fafb",
+                }}
+              >
+                <span
+                  className="photo-label"
+                  style={{
+                    display: "block",
+                    fontSize: "0.85rem",
+                    fontWeight: "600",
+                    color: "#374151",
+                    marginBottom: "8px",
+                    textAlign: "center",
+                  }}
+                >
+                  {photoKey}
+                </span>
+                <img
+                  src={fullUrl}
+                  alt={photoKey}
+                  className="photo-preview-img"
+                  style={{
+                    width: "100%",
+                    height: "150px",
+                    objectFit: "cover",
+                    borderRadius: "6px",
+                    border: "1px solid #d1d5db",
+                    cursor: "pointer",
+                  }}
+                  onError={(e) => {
+                    console.error(`Failed to load image: ${fullUrl}`);
+                    e.target.src = "/placeholder.svg";
+                  }}
+                  onClick={() => {
+                    window.open(fullUrl, "_blank");
+                  }}
+                />
+                <div style={{ marginTop: "8px", textAlign: "center" }}>
+                  <a
+                    href={fullUrl}
+                    download={`${photoKey}.jpg`}
+                    style={{
+                      display: "inline-block",
+                      padding: "4px 8px",
+                      backgroundColor: "#3b82f6",
+                      color: "white",
+                      textDecoration: "none",
+                      borderRadius: "4px",
+                      fontSize: "0.75rem",
+                    }}
+                  >
+                    📥 Download
+                  </a>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  </div>
+);
+
+/**
+ * Stage 1 Form 8: RECORD OF MEASUREMENT OF IR VALUES (Before Erection) (Review)
+ * UI should match input table UI from VConnected63MVATransformerForms.js Stage1Form8.
+ */
+const Stage1Form8 = ({ formData }) => (
+  <div className="form-container">
+    <div className="company-header">
+      <h2>RECORD OF MEASUREMENT OF IR VALUES</h2>
+      <h3 style={{ marginTop: "6px", fontWeight: 900 }}>Before Erection</h3>
+    </div>
+
+    <table className="form-table">
+      <tbody>
+        <tr>
+          <td style={{ width: "12%", fontWeight: 800 }}>Date :</td>
+          <td style={{ width: "20%" }}>
+            <input type="date" value={formData.date || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ width: "12%", fontWeight: 800 }}>Time :</td>
+          <td style={{ width: "20%" }}>
+            <input type="time" value={formData.time || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ width: "36%", fontWeight: 800, textAlign: "center" }}>Details of Insulation tester</td>
+        </tr>
+
+        <tr>
+          <td style={{ fontWeight: 800 }}>Amb. Temp :</td>
+          <td>
+            <input type="text" value={formData.ambTemp || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ fontWeight: 800 }}>Make :</td>
+          <td>
+            <input type="text" value={formData.make || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td rowSpan="4">
+            <input
+              type="text"
+              value={formData.insulationTesterDetails || ""}
+              disabled
+              className="form-input disabled preview"
+              placeholder="Enter insulation tester details"
+              style={{ width: "100%", height: "100%" }}
+            />
+          </td>
+        </tr>
+
+        <tr>
+          <td style={{ fontWeight: 800 }}>Oil Temp. :</td>
+          <td>
+            <input type="text" value={formData.oilTemp || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ fontWeight: 800 }}>Sr. No. :</td>
+          <td>
+            <input type="text" value={formData.srNo || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+
+        <tr>
+          <td style={{ fontWeight: 800 }}>Wdg. Temp. :</td>
+          <td>
+            <input type="text" value={formData.wdgTemp || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ fontWeight: 800 }}>Range :</td>
+          <td>
+            <input type="text" value={formData.range || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+
+        <tr>
+          <td style={{ fontWeight: 800 }}>Relative Humidity :</td>
+          <td>
+            <input
+              type="text"
+              value={formData.relativeHumidity || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+          <td style={{ fontWeight: 800 }}>Voltage Level :</td>
+          <td>
+            <input type="text" value={formData.voltageLevel || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table className="form-table" style={{ marginTop: "26px" }}>
+      <thead>
+        <tr>
+          <th style={{ width: "26%" }}></th>
+          <th style={{ width: "18%" }}>
+            10 Sec <br />
+            (MΩ)
+          </th>
+          <th style={{ width: "18%" }}>
+            60 Sec <br />
+            (MΩ)
+          </th>
+          <th style={{ width: "38%" }}>Ratio of IR 60/IR 10</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style={{ fontWeight: 800 }}>HV-Earth</td>
+          <td>
+            <input type="text" value={formData.hvEarth_10sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.hvEarth_60sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.hvEarth_ratio || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+
+        <tr>
+          <td style={{ fontWeight: 800 }}>LV1-Earth</td>
+          <td>
+            <input type="text" value={formData.lv1Earth_10sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.lv1Earth_60sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.lv1Earth_ratio || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+
+        <tr>
+          <td style={{ fontWeight: 800 }}>LV2-Earth</td>
+          <td>
+            <input type="text" value={formData.lv2Earth_10sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.lv2Earth_60sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.lv2Earth_ratio || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+
+        <tr>
+          <td style={{ fontWeight: 800 }}>HV-LV1</td>
+          <td>
+            <input type="text" value={formData.hvLv1_10sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.hvLv1_60sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.hvLv1_ratio || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+
+        <tr>
+          <td style={{ fontWeight: 800 }}>HV-LV2</td>
+          <td>
+            <input type="text" value={formData.hvLv2_10sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.hvLv2_60sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.hvLv2_ratio || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+
+        <tr>
+          <td style={{ fontWeight: 800 }}>LV1-LV2</td>
+          <td>
+            <input type="text" value={formData.lv1Lv2_10sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.lv1Lv2_60sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.lv1Lv2_ratio || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div className="photo-upload-section">
+      <h4>Note: - Photographs to be added: -</h4>
+      <p style={{ textAlign: "center", marginBottom: "20px", fontWeight: "600" }}>IR tester, calibration report, 60 sec IR value.</p>
+
+      {formData.photos && (
+        <div
+          className="photo-display-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: "15px",
+            marginTop: "10px",
+          }}
+        >
+          {Object.entries(formData.photos).map(([photoKey, url]) => {
+            let fullUrl;
+            if (typeof url === "string") {
+              if (url.startsWith("data:image/")) {
+                fullUrl = url;
+              } else if (url.startsWith("http")) {
+                fullUrl = url;
+              } else if (url.includes("cloudinary.com") || url.startsWith("v1")) {
+                fullUrl = `${BACKEND_IMG_API_BASE_URL}${url}`;
+              } else if (url.startsWith("/")) {
+                fullUrl = `${BACKEND_API_BASE_URL}${url}`;
+              } else {
+                fullUrl = `${BACKEND_API_BASE_URL}/${url}`;
+              }
+            } else {
+              fullUrl = "/placeholder.svg";
+            }
+
+            return (
+              <div
+                key={photoKey}
+                className="photo-item"
+                style={{
+                  border: "1px solid #e5e7eb",
+                  borderRadius: "8px",
+                  padding: "10px",
+                  backgroundColor: "#f9fafb",
+                }}
+              >
+                <span
+                  className="photo-label"
+                  style={{
+                    display: "block",
+                    fontSize: "0.85rem",
+                    fontWeight: "600",
+                    color: "#374151",
+                    marginBottom: "8px",
+                    textAlign: "center",
+                  }}
+                >
+                  {photoKey}
+                </span>
+                <img
+                  src={fullUrl}
+                  alt={photoKey}
+                  className="photo-preview-img"
+                  style={{
+                    width: "100%",
+                    height: "150px",
+                    objectFit: "cover",
+                    borderRadius: "6px",
+                    border: "1px solid #d1d5db",
+                    cursor: "pointer",
+                  }}
+                  onError={(e) => {
+                    console.error(`Failed to load image: ${fullUrl}`);
+                    e.target.src = "/placeholder.svg";
+                  }}
+                  onClick={() => {
+                    window.open(fullUrl, "_blank");
+                  }}
+                />
+                <div style={{ marginTop: "8px", textAlign: "center" }}>
+                  <a
+                    href={fullUrl}
+                    download={`${photoKey}.jpg`}
+                    style={{
+                      display: "inline-block",
+                      padding: "4px 8px",
+                      backgroundColor: "#3b82f6",
+                      color: "white",
+                      textDecoration: "none",
+                      borderRadius: "4px",
+                      fontSize: "0.75rem",
+                    }}
+                  >
+                    📥 Download
+                  </a>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  </div>
+);
+
+/**
+ * Stage 2 Form 1 (Review)
+ * UI must match input table UI from VConnected63MVATransformerForms.js Stage2Form1.
+ */
+const Stage2Form1 = ({ formData }) => (
+  <div className="form-container">
+    <div className="company-header">
+      <h2>TEST VALUES PRIOR TO FILTERATION</h2>
+      <h3 style={{ marginTop: "6px", fontWeight: 900 }}>Record of Oil Filling in the Reservoirs Tank</h3>
+    </div>
+
+    {/* Record of Oil Filling in the Reservoirs Tank */}
+    <table className="form-table">
+      <thead>
+        <tr>
+          <th style={{ width: "16%" }}></th>
+          <th style={{ width: "17%" }}>No of barrels</th>
+          <th style={{ width: "22%" }}>Started on Date & time</th>
+          <th style={{ width: "22%" }}>Completed on Date & time</th>
+          <th style={{ width: "11%" }}>BDV</th>
+          <th style={{ width: "12%" }}>PPM</th>
+        </tr>
+      </thead>
+      <tbody>
+        {["tank1", "tank2", "tank3"].map((tankKey, idx) => {
+          const label = idx === 0 ? "Tank1" : idx === 1 ? "Tank2" : "Tank3";
+          const tank = formData?.reservoirTanks?.[tankKey] || {};
+          return (
+            <tr key={tankKey}>
+              <td style={{ fontWeight: 800 }}>{label}</td>
+              <td>
+                <input type="text" value={tank.noOfBarrels || ""} disabled className="form-input disabled preview" />
+              </td>
+              <td>
+                <input type="datetime-local" value={tank.startedOn || ""} disabled className="form-input disabled preview" />
+              </td>
+              <td>
+                <input type="datetime-local" value={tank.completedOn || ""} disabled className="form-input disabled preview" />
+              </td>
+              <td>
+                <input type="text" value={tank.bdv || ""} disabled className="form-input disabled preview" />
+              </td>
+              <td>
+                <input type="text" value={tank.ppm || ""} disabled className="form-input disabled preview" />
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+
+    <div
+      style={{
+        marginTop: "30px",
+        textAlign: "center",
+        fontWeight: 900,
+        fontSize: "18px",
+      }}
+    >
+      Reservoir Tank Filtration
+    </div>
+
+    {/* Reservoir Tank Filtration table */}
+    <table className="form-table" style={{ marginTop: "10px" }}>
+      <thead>
+        <tr>
+          <th style={{ width: "18%" }}>Date</th>
+          <th style={{ width: "18%" }}>Time</th>
+          <th style={{ width: "24%" }}>Vacuum Level (MM/HG or torr)</th>
+          <th style={{ width: "20%" }}>Inlet Temp.</th>
+          <th style={{ width: "20%" }}>Outlet Temp.</th>
+        </tr>
+      </thead>
+      <tbody>
+        {(formData?.filtrationRecords || []).map((row, index) => (
+          <tr key={index}>
+            <td>
+              <input type="date" value={row.date || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <input type="time" value={row.time || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <input type="text" value={row.vacuumLevel || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <input type="text" value={row.inletTemp || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <input type="text" value={row.outletTemp || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <div style={{ marginTop: "20px", fontWeight: 600 }}>
+      Note: - Photographs to be added: - Internal condition of reservoir tank, Calibration report of BDV & PPM kit,
+      Oil barrels checking by water pest, PPM Photo, Reading of BDV value.
+    </div>
+
+    {/* Photo section */}
+    <div className="photo-upload-section">
+      <h4>Note: - Photographs to be added: -</h4>
+      <p style={{ textAlign: "center", marginBottom: "20px", fontWeight: "600" }}>
+        Internal condition of reservoir tank, calibration report of BDV & PPM kit, oil barrels checking by water pest,
+        PPM Photo, Reading of BDV value.
+      </p>
+
+      {formData.photos && (
+        <div
+          className="photo-display-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: "15px",
+            marginTop: "10px",
+          }}
+        >
+          {Object.entries(formData.photos).map(([photoKey, url]) => {
+            let fullUrl;
+            if (typeof url === "string") {
+              if (url.startsWith("data:image/")) {
+                fullUrl = url;
+              } else if (url.startsWith("http")) {
+                fullUrl = url;
+              } else if (url.includes("cloudinary.com") || url.startsWith("v1")) {
+                fullUrl = `${BACKEND_IMG_API_BASE_URL}${url}`;
+              } else if (url.startsWith("/")) {
+                fullUrl = `${BACKEND_API_BASE_URL}${url}`;
+              } else {
+                fullUrl = `${BACKEND_API_BASE_URL}/${url}`;
+              }
+            } else {
+              fullUrl = "/placeholder.svg";
+            }
+
+            return (
+              <div
+                key={photoKey}
+                className="photo-item"
+                style={{
+                  border: "1px solid #e5e7eb",
+                  borderRadius: "8px",
+                  padding: "10px",
+                  backgroundColor: "#f9fafb",
+                }}
+              >
+                <span
+                  className="photo-label"
+                  style={{
+                    display: "block",
+                    fontSize: "0.85rem",
+                    fontWeight: "600",
+                    color: "#374151",
+                    marginBottom: "8px",
+                    textAlign: "center",
+                  }}
+                >
+                  {photoKey}
+                </span>
+                <img
+                  src={fullUrl}
+                  alt={photoKey}
+                  className="photo-preview-img"
+                  style={{
+                    width: "100%",
+                    height: "150px",
+                    objectFit: "cover",
+                    borderRadius: "6px",
+                    border: "1px solid #d1d5db",
+                    cursor: "pointer",
+                  }}
+                  onError={(e) => {
+                    console.error(`Failed to load image: ${fullUrl}`);
+                    e.target.src = "/placeholder.svg";
+                  }}
+                  onClick={() => {
+                    window.open(fullUrl, "_blank");
+                  }}
+                />
+                <div style={{ marginTop: "8px", textAlign: "center" }}>
+                  <a
+                    href={fullUrl}
+                    download={`${photoKey}.jpg`}
+                    style={{
+                      display: "inline-block",
+                      padding: "4px 8px",
+                      backgroundColor: "#3b82f6",
+                      color: "white",
+                      textDecoration: "none",
+                      borderRadius: "4px",
+                      fontSize: "0.75rem",
+                    }}
+                  >
+                    📥 Download
+                  </a>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
   </div>
 );
 
@@ -4401,12 +2268,12 @@ const Stage2Form2 = ({ formData }) => (
       <h2>Line Lead Clearance in mm :-</h2>
     </div>
 
+    {/* Line Lead Clearance table - match input UI */}
     <table className="form-table">
       <thead>
         <tr>
           <th></th>
           <th>1.1</th>
-          <th></th>
           <th>1.2</th>
         </tr>
       </thead>
@@ -4416,21 +2283,10 @@ const Stage2Form2 = ({ formData }) => (
             <strong>HV with respect to earth</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.hv_earth_11 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.hv_earth_11 || ""} disabled className="form-input disabled preview" />
           </td>
-          <td></td>
           <td>
-            <input
-              type="text"
-              value={formData.hv_earth_12 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.hv_earth_12 || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
         <tr>
@@ -4438,21 +2294,21 @@ const Stage2Form2 = ({ formData }) => (
             <strong>LV 1 with respect to earth</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.lv1_earth_21 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.lv1_earth_21 || ""} disabled className="form-input disabled preview" />
           </td>
-          <td></td>
           <td>
-            <input
-              type="text"
-              value={formData.lv1_earth_22 || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.lv1_earth_22 || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong>LV 2 with respect to earth</strong>
+          </td>
+          <td>
+            <input type="text" value={formData.lv2_earth_31 || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.lv2_earth_32 || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
       </tbody>
@@ -4462,57 +2318,106 @@ const Stage2Form2 = ({ formData }) => (
       IR Values After erection Temp OTI .......°C WTI.............°C, AMB .............°C RANGE ONLY 1 KV
     </h3>
 
+    {/* Header table - match input UI (Date/Time + insulation tester details) */}
     <table className="form-table">
       <tbody>
         <tr>
           <td>
-            <strong>Temp OTI °C</strong>
+            <strong>Date :</strong>
           </td>
           <td>
+            <input type="date" value={formData.date || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <strong>Time:</strong>
+          </td>
+          <td>
+            <input type="time" value={formData.time || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <strong>Details of Insulation tester</strong>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <strong>Amb. Temp :</strong>
+          </td>
+          <td>
+            <input type="text" value={formData.ambTemp || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <strong>Make :</strong>
+          </td>
+          <td>
+            <input type="text" value={formData.make || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td rowSpan="4">
             <input
               type="text"
-              value={formData.tempOTI || ""}
+              value={formData.insulationTesterDetails || ""}
               disabled
               className="form-input disabled preview"
+              style={{ width: "100%", height: "100%" }}
             />
           </td>
         </tr>
+
         <tr>
           <td>
-            <strong>Temp WTI °C</strong>
+            <strong>Oil Temp. :</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.tempWTI || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.oilTemp || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <strong>Sr. No. :</strong>
+          </td>
+          <td>
+            <input type="text" value={formData.srNo || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
+
         <tr>
           <td>
-            <strong>Temp AMB °C</strong>
+            <strong>Wdg. Temp. :</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.tempAMB || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.wdgTemp || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <strong>Range :</strong>
+          </td>
+          <td>
+            <input type="text" value={formData.range || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <strong>Relative Humidity :</strong>
+          </td>
+          <td>
+            <input type="text" value={formData.relativeHumidity || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <strong>Voltage Level :</strong>
+          </td>
+          <td>
+            <input type="text" value={formData.voltageLevel || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
       </tbody>
     </table>
 
+    {/* IR measurement table - match input UI (15/60/ratio) */}
     <table className="form-table" style={{ marginTop: "30px" }}>
       <thead>
         <tr>
           <th></th>
-          <th>10 Sec (MΩ)</th>
+          <th>15 Sec (MΩ)</th>
           <th>60 Sec (MΩ)</th>
-          <th>Ratio of IR 60/IR 10</th>
+          <th>Ratio of IR 60/IR 15</th>
         </tr>
       </thead>
       <tbody>
@@ -4521,122 +2426,219 @@ const Stage2Form2 = ({ formData }) => (
             <strong>HV-Earth</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.hvEarth_10sec || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.hvEarth_15sec || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.hvEarth_60sec || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.hvEarth_60sec || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.hvEarth_ratio || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.hvEarth_ratio || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
+
         <tr>
           <td>
-            <strong>LV-Earth</strong>
+            <strong>LV1-Earth</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.lvEarth_10sec || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.lv1Earth_15sec || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.lvEarth_60sec || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.lv1Earth_60sec || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.lvEarth_ratio || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.lv1Earth_ratio || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
+
         <tr>
           <td>
-            <strong>HV-LV</strong>
+            <strong>LV2-Earth</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.hvLv_10sec || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.lv2Earth_15sec || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.hvLv_60sec || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.lv2Earth_60sec || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.hvLv_ratio || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.lv2Earth_ratio || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <strong>HV-LV1</strong>
+          </td>
+          <td>
+            <input type="text" value={formData.hvLv1_15sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.hvLv1_60sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.hvLv1_ratio || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <strong>HV-LV2</strong>
+          </td>
+          <td>
+            <input type="text" value={formData.hvLv2_15sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.hvLv2_60sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.hvLv2_ratio || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <strong>LV1-LV2</strong>
+          </td>
+          <td>
+            <input type="text" value={formData.lv1Lv2_15sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.lv1Lv2_60sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.lv1Lv2_ratio || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
       </tbody>
     </table>
 
+    {/* Before oil filling in main tank - match input UI */}
     <h4 style={{ marginTop: "40px" }}>Before oil filling in main tank</h4>
     <table className="form-table">
       <tbody>
         <tr>
           <td>
-            <strong>BDV (KV)</strong>
+            <strong>BDV: _______ KV</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.bdv || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.bdv || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
         <tr>
           <td>
-            <strong>Water Content (PPM)</strong>
+            <strong>Water Content: _______ PPM</strong>
           </td>
           <td>
-            <input
-              type="text"
-              value={formData.waterContent || ""}
-              disabled
-              className="form-input disabled preview"
-            />
+            <input type="text" value={formData.waterContent || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
       </tbody>
     </table>
+
+    {/* Photos - match input (Stage2Form2 has PhotoUploadSection) */}
+    <div className="photo-upload-section">
+      <h4>Note: - Photographs to be added: -</h4>
+      <p style={{ textAlign: "center", marginBottom: "20px", fontWeight: "600" }}>
+        Dew Point, dry air attached photo on transformer, Lead clearances, anabond on both bushing's thimble,
+        radiators, flashing, conservator internal inspection, full transformer photo.
+      </p>
+
+      {formData.photos && (
+        <div
+          className="photo-display-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: "15px",
+            marginTop: "10px",
+          }}
+        >
+          {Object.entries(formData.photos).map(([photoKey, url]) => {
+            let fullUrl;
+            if (typeof url === "string") {
+              if (url.startsWith("data:image/")) {
+                fullUrl = url;
+              } else if (url.startsWith("http")) {
+                fullUrl = url;
+              } else if (url.includes("cloudinary.com") || url.startsWith("v1")) {
+                fullUrl = `${BACKEND_IMG_API_BASE_URL}${url}`;
+              } else if (url.startsWith("/")) {
+                fullUrl = `${BACKEND_API_BASE_URL}${url}`;
+              } else {
+                fullUrl = `${BACKEND_API_BASE_URL}/${url}`;
+              }
+            } else {
+              fullUrl = "/placeholder.svg";
+            }
+
+            return (
+              <div
+                key={photoKey}
+                className="photo-item"
+                style={{
+                  border: "1px solid #e5e7eb",
+                  borderRadius: "8px",
+                  padding: "10px",
+                  backgroundColor: "#f9fafb",
+                }}
+              >
+                <span
+                  className="photo-label"
+                  style={{
+                    display: "block",
+                    fontSize: "0.85rem",
+                    fontWeight: "600",
+                    color: "#374151",
+                    marginBottom: "8px",
+                    textAlign: "center",
+                  }}
+                >
+                  {photoKey}
+                </span>
+                <img
+                  src={fullUrl}
+                  alt={photoKey}
+                  className="photo-preview-img"
+                  style={{
+                    width: "100%",
+                    height: "150px",
+                    objectFit: "cover",
+                    borderRadius: "6px",
+                    border: "1px solid #d1d5db",
+                    cursor: "pointer",
+                  }}
+                  onError={(e) => {
+                    console.error(`Failed to load image: ${fullUrl}`);
+                    e.target.src = "/placeholder.svg";
+                  }}
+                  onClick={() => {
+                    window.open(fullUrl, "_blank");
+                  }}
+                />
+                <div style={{ marginTop: "8px", textAlign: "center" }}>
+                  <a
+                    href={fullUrl}
+                    download={`${photoKey}.jpg`}
+                    style={{
+                      display: "inline-block",
+                      padding: "4px 8px",
+                      backgroundColor: "#3b82f6",
+                      color: "white",
+                      textDecoration: "none",
+                      borderRadius: "4px",
+                      fontSize: "0.75rem",
+                    }}
+                  >
+                    📥 Download
+                  </a>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
   </div>
 );
 
@@ -4650,7 +2652,9 @@ const Stage3Form1 = ({ formData }) => (
     <table className="form-table">
       <tbody>
         <tr>
-          <td><strong>Vacuum hose Checked By</strong></td>
+          <td>
+            <strong>Vacuum hose Checked By</strong>
+          </td>
           <td>
             <input
               type="text"
@@ -4662,7 +2666,9 @@ const Stage3Form1 = ({ formData }) => (
           </td>
         </tr>
         <tr>
-          <td><strong>Vacuum hose Connected To</strong></td>
+          <td>
+            <strong>Vacuum hose Connected To</strong>
+          </td>
           <td>
             <input
               type="text"
@@ -4675,7 +2681,9 @@ const Stage3Form1 = ({ formData }) => (
           </td>
         </tr>
         <tr>
-          <td><strong>Evacuation Started At</strong></td>
+          <td>
+            <strong>Evacuation Started At</strong>
+          </td>
           <td>
             <input
               type="time"
@@ -4740,43 +2748,126 @@ const Stage3Form1 = ({ formData }) => (
       IR After oil Topping up To Conservator Temp OTI .......°C WTI.............°C, AMB .............°C RANGE ONLY 1 KV
     </h3>
 
+    {/* Match input form (Stage3Form1 in VConnected63MVATransformerForms.js): header table with tester details */}
     <table className="form-table">
       <tbody>
         <tr>
-          <td><strong>Temp OTI °C</strong></td>
           <td>
-            <input type="text" value={formData.tempOTI || ""} disabled className="form-input disabled preview" />
+            <strong>Date :</strong>
+          </td>
+          <td>
+            <input type="date" value={formData.date || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <strong>Time:</strong>
+          </td>
+          <td>
+            <input type="time" value={formData.time || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <strong>Details of Insulation tester</strong>
           </td>
         </tr>
+
         <tr>
-          <td><strong>Temp WTI °C</strong></td>
           <td>
-            <input type="text" value={formData.tempWTI || ""} disabled className="form-input disabled preview" />
+            <strong>Amb. Temp :</strong>
+          </td>
+          <td>
+            <input type="text" value={formData.ambTemp || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <strong>Make :</strong>
+          </td>
+          <td>
+            <input type="text" value={formData.make || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td rowSpan="4">
+            <input
+              type="text"
+              value={formData.insulationTesterDetails || ""}
+              disabled
+              className="form-input disabled preview"
+              style={{ width: "100%", height: "100%" }}
+            />
           </td>
         </tr>
+
         <tr>
-          <td><strong>Temp AMB °C</strong></td>
           <td>
-            <input type="text" value={formData.tempAMB || ""} disabled className="form-input disabled preview" />
+            <strong>Oil Temp. :</strong>
+          </td>
+          <td>
+            <input type="text" value={formData.oilTemp || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <strong>Sr. No. :</strong>
+          </td>
+          <td>
+            <input type="text" value={formData.srNo || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <strong>Wdg. Temp. :</strong>
+          </td>
+          <td>
+            <input type="text" value={formData.wdgTemp || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <strong>Range :</strong>
+          </td>
+          <td>
+            <input type="text" value={formData.range || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <strong>Relative Humidity :</strong>
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.relativeHumidity || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+          <td>
+            <strong>Voltage Level :</strong>
+          </td>
+          <td>
+            <input type="text" value={formData.voltageLevel || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
       </tbody>
     </table>
 
+    {/* Match input form: IR measurements are 15/60/ratio (despite header saying 10 sec) */}
     <table className="form-table" style={{ marginTop: "30px" }}>
       <thead>
         <tr>
           <th></th>
-          <th>10 Sec (MΩ)</th>
-          <th>60 Sec (MΩ)</th>
+          <th>
+            10 Sec <br />
+            (MΩ)
+          </th>
+          <th>
+            60 Sec <br />
+            (MΩ)
+          </th>
           <th>Ratio of IR 60/IR 10</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong>HV-Earth</strong></td>
           <td>
-            <input type="text" value={formData.hvEarth_10sec || ""} disabled className="form-input disabled preview" />
+            <strong>HV-Earth</strong>
+          </td>
+          <td>
+            <input type="text" value={formData.hvEarth_15sec || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
             <input type="text" value={formData.hvEarth_60sec || ""} disabled className="form-input disabled preview" />
@@ -4785,28 +2876,79 @@ const Stage3Form1 = ({ formData }) => (
             <input type="text" value={formData.hvEarth_ratio || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
+
         <tr>
-          <td><strong>LV-Earth</strong></td>
           <td>
-            <input type="text" value={formData.lvEarth_10sec || ""} disabled className="form-input disabled preview" />
+            <strong>LV1-Earth</strong>
           </td>
           <td>
-            <input type="text" value={formData.lvEarth_60sec || ""} disabled className="form-input disabled preview" />
+            <input type="text" value={formData.lv1Earth_15sec || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
-            <input type="text" value={formData.lvEarth_ratio || ""} disabled className="form-input disabled preview" />
+            <input type="text" value={formData.lv1Earth_60sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.lv1Earth_ratio || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
+
         <tr>
-          <td><strong>HV-LV</strong></td>
           <td>
-            <input type="text" value={formData.hvLv_10sec || ""} disabled className="form-input disabled preview" />
+            <strong>LV2-Earth</strong>
           </td>
           <td>
-            <input type="text" value={formData.hvLv_60sec || ""} disabled className="form-input disabled preview" />
+            <input type="text" value={formData.lv2Earth_15sec || ""} disabled className="form-input disabled preview" />
           </td>
           <td>
-            <input type="text" value={formData.hvLv_ratio || ""} disabled className="form-input disabled preview" />
+            <input type="text" value={formData.lv2Earth_60sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.lv2Earth_ratio || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <strong>HV-LV1</strong>
+          </td>
+          <td>
+            <input type="text" value={formData.hvLv1_15sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.hvLv1_60sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.hvLv1_ratio || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <strong>HV-LV2</strong>
+          </td>
+          <td>
+            <input type="text" value={formData.hvLv2_15sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.hvLv2_60sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.hvLv2_ratio || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <strong>LV1-LV2</strong>
+          </td>
+          <td>
+            <input type="text" value={formData.lv1Lv2_15sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.lv1Lv2_60sec || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td>
+            <input type="text" value={formData.lv1Lv2_ratio || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
       </tbody>
@@ -4814,21 +2956,16 @@ const Stage3Form1 = ({ formData }) => (
 
     <h4 style={{ marginTop: "40px", textAlign: "center" }}>PRESSURE TEST REPORT</h4>
 
-    <table className="form-table">
-      <tbody>
-        <tr>
-          <td><strong>DATE</strong></td>
-          <td>
-            <input
-              type="date"
-              value={formData.pressureTestDate || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div style={{ textAlign: "right", marginBottom: "8px" }}>
+      <strong>DATE :- </strong>
+      <input
+        type="date"
+        value={formData.pressureTestDate || ""}
+        disabled
+        className="form-input disabled preview"
+        style={{ marginLeft: "8px" }}
+      />
+    </div>
 
     <table className="form-table">
       <thead>
@@ -4850,51 +2987,129 @@ const Stage3Form1 = ({ formData }) => (
       <tbody>
         {(formData.pressureTests || []).map((test, index) => (
           <tr key={index}>
-            <td><strong>{index + 1}</strong></td>
             <td>
-              <input
-                type="time"
-                value={test.timeStarted || ""}
-                disabled
-                className="form-input disabled preview"
-              />
+              <strong>{index + 1}</strong>
             </td>
             <td>
-              <input
-                type="text"
-                value={test.pressure || ""}
-                disabled
-                className="form-input disabled preview"
-              />
+              <input type="time" value={test.timeStarted || ""} disabled className="form-input disabled preview" />
             </td>
             <td>
-              <input
-                type="text"
-                value={test.tempAmb || ""}
-                disabled
-                className="form-input disabled preview"
-              />
+              <input type="text" value={test.pressure || ""} disabled className="form-input disabled preview" />
             </td>
             <td>
-              <input
-                type="text"
-                value={test.tempOti || ""}
-                disabled
-                className="form-input disabled preview"
-              />
+              <input type="text" value={test.tempAmb || ""} disabled className="form-input disabled preview" />
             </td>
             <td>
-              <input
-                type="text"
-                value={test.tempWti || ""}
-                disabled
-                className="form-input disabled preview"
-              />
+              <input type="text" value={test.tempOti || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <input type="text" value={test.tempWti || ""} disabled className="form-input disabled preview" />
             </td>
           </tr>
         ))}
       </tbody>
     </table>
+
+    {/* Photo section label matches input */}
+    <div className="photo-upload-section">
+      <h4>Note: - Photographs to be added: -</h4>
+      <p style={{ textAlign: "center", marginBottom: "20px", fontWeight: "600" }}>
+        Mec Lead Gauge photo, vacuum gauge photo, pressure gauge
+      </p>
+
+      {formData.photos ? (
+        <div
+          className="photo-display-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: "15px",
+            marginTop: "10px",
+          }}
+        >
+          {Object.entries(formData.photos).map(([photoKey, url]) => {
+            let fullUrl;
+            if (typeof url === "string") {
+              if (url.startsWith("data:image/")) {
+                fullUrl = url;
+              } else if (url.startsWith("http")) {
+                fullUrl = url;
+              } else if (url.includes("cloudinary.com") || url.startsWith("v1")) {
+                fullUrl = `${BACKEND_IMG_API_BASE_URL}${url}`;
+              } else if (url.startsWith("/")) {
+                fullUrl = `${BACKEND_API_BASE_URL}${url}`;
+              } else {
+                fullUrl = `${BACKEND_API_BASE_URL}/${url}`;
+              }
+            } else {
+              fullUrl = "/placeholder.svg";
+            }
+
+            return (
+              <div
+                key={photoKey}
+                className="photo-item"
+                style={{
+                  border: "1px solid #e5e7eb",
+                  borderRadius: "8px",
+                  padding: "10px",
+                  backgroundColor: "#f9fafb",
+                }}
+              >
+                <span
+                  className="photo-label"
+                  style={{
+                    display: "block",
+                    fontSize: "0.85rem",
+                    fontWeight: "600",
+                    color: "#374151",
+                    marginBottom: "8px",
+                    textAlign: "center",
+                  }}
+                >
+                  {photoKey}
+                </span>
+                <img
+                  src={fullUrl}
+                  alt={photoKey}
+                  className="photo-preview-img"
+                  style={{
+                    width: "100%",
+                    height: "150px",
+                    objectFit: "cover",
+                    borderRadius: "6px",
+                    border: "1px solid #d1d5db",
+                    cursor: "pointer",
+                  }}
+                  onError={(e) => {
+                    console.error(`Failed to load image: ${fullUrl}`);
+                    e.target.src = "/placeholder.svg";
+                  }}
+                  onClick={() => window.open(fullUrl, "_blank")}
+                />
+                <div style={{ marginTop: "8px", textAlign: "center" }}>
+                  <a
+                    href={fullUrl}
+                    download={`${photoKey}.jpg`}
+                    style={{
+                      display: "inline-block",
+                      padding: "4px 8px",
+                      backgroundColor: "#3b82f6",
+                      color: "white",
+                      textDecoration: "none",
+                      borderRadius: "4px",
+                      fontSize: "0.75rem",
+                    }}
+                  >
+                    📥 Download
+                  </a>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : null}
+    </div>
   </div>
 );
 
@@ -7981,17 +6196,26 @@ const Stage3ReviewRenderer = ({ formDataFromDB }) => {
   );
 };
 
-// Stage 2 Review Renderer Component
+/**
+ * Stage 2 Review Renderer Component
+ *
+ * Defensive against backend sending extra keys (or different ordering):
+ * - If backend returns { stage2form1: {...}, stage2form2: {...} } render those directly.
+ * - Else fallback to legacy { form1: {...}, form2: {...} }.
+ */
 const Stage2ReviewRenderer = ({ formDataFromDB }) => {
   const stage2Forms = [
-    { id: "stage2-form1", title: "Record of Oil Handling", component: Stage2Form1 },
-    { id: "stage2-form2", title: "IR After Erection", component: Stage2Form2 },
+    { id: "stage2-form1", title: "Record of Oil Handling", component: Stage2Form1, legacyKey: "form1", namedKey: "stage2form1" },
+    { id: "stage2-form2", title: "IR After Erection", component: Stage2Form2, legacyKey: "form2", namedKey: "stage2form2" },
   ];
 
   return (
     <div className="stage2-review-container">
-      {stage2Forms.map((form, formIndex) => {
-        const formData = formDataFromDB?.[`form${formIndex + 1}`] || {};
+      {stage2Forms.map((form) => {
+        const formData =
+          formDataFromDB?.[form.namedKey] ??
+          formDataFromDB?.[form.legacyKey] ??
+          {};
         const FormComponent = form.component;
 
         return (
@@ -8120,11 +6344,11 @@ const Stage1ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
       ]
     },
     {
-      id: "record-of-measurement-of-ir-values",
-      title: "RECORD OF MEASUREMENT OF IR VALUES",
+      id: "record-of-measurement-of-ir-values-before-erection",
+      title: "RECORD OF MEASUREMENT OF IR VALUES (Before Erection)",
       fields: [
-        { name: "date", label: "Date", type: "text" },
-        { name: "time", label: "Time", type: "text" },
+        { name: "date", label: "Date", type: "date" },
+        { name: "time", label: "Time", type: "time" },
         { name: "ambTemp", label: "Amb Temp", type: "text" },
         { name: "make", label: "Make", type: "text" },
         { name: "oilTemp", label: "Oil Temp", type: "text" },
@@ -8132,8 +6356,33 @@ const Stage1ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
         { name: "wdgTemp", label: "Wdg Temp", type: "text" },
         { name: "range", label: "Range", type: "text" },
         { name: "relativeHumidity", label: "Relative Humidity", type: "text" },
-        { name: "voltageLevel", label: "Voltage Level", type: "text" }
-      ]
+        { name: "voltageLevel", label: "Voltage Level", type: "text" },
+        { name: "insulationTesterDetails", label: "Details of Insulation tester", type: "textarea" },
+
+        { name: "hvEarth_10sec", label: "HV-Earth 10 Sec", type: "text" },
+        { name: "hvEarth_60sec", label: "HV-Earth 60 Sec", type: "text" },
+        { name: "hvEarth_ratio", label: "HV-Earth Ratio of IR 60/IR 10", type: "text" },
+
+        { name: "lv1Earth_10sec", label: "LV1-Earth 10 Sec", type: "text" },
+        { name: "lv1Earth_60sec", label: "LV1-Earth 60 Sec", type: "text" },
+        { name: "lv1Earth_ratio", label: "LV1-Earth Ratio of IR 60/IR 10", type: "text" },
+
+        { name: "lv2Earth_10sec", label: "LV2-Earth 10 Sec", type: "text" },
+        { name: "lv2Earth_60sec", label: "LV2-Earth 60 Sec", type: "text" },
+        { name: "lv2Earth_ratio", label: "LV2-Earth Ratio of IR 60/IR 10", type: "text" },
+
+        { name: "hvLv1_10sec", label: "HV-LV1 10 Sec", type: "text" },
+        { name: "hvLv1_60sec", label: "HV-LV1 60 Sec", type: "text" },
+        { name: "hvLv1_ratio", label: "HV-LV1 Ratio of IR 60/IR 10", type: "text" },
+
+        { name: "hvLv2_10sec", label: "HV-LV2 10 Sec", type: "text" },
+        { name: "hvLv2_60sec", label: "HV-LV2 60 Sec", type: "text" },
+        { name: "hvLv2_ratio", label: "HV-LV2 Ratio of IR 60/IR 10", type: "text" },
+
+        { name: "lv1Lv2_10sec", label: "LV1-LV2 10 Sec", type: "text" },
+        { name: "lv1Lv2_60sec", label: "LV1-LV2 60 Sec", type: "text" },
+        { name: "lv1Lv2_ratio", label: "LV1-LV2 Ratio of IR 60/IR 10", type: "text" },
+      ],
     }
   ];
 
@@ -8362,9 +6611,9 @@ const Stage1ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
             ) : form.id === "pre-erection-ratio-test-phase2" ? (
               <Stage1Form5 formData={formData} />
             ) : form.id === "tan-delta-capacitance-test-bushing" ? (
-              <Stage1Form6 formData={formData} />
-            ) : form.id === "record-of-measurement-of-ir-values" ? (
               <Stage1Form7 formData={formData} />
+            ) : form.id === "record-of-measurement-of-ir-values-before-erection" ? (
+              <Stage1Form8 formData={formData} />
             ) : (
               <div className="form-grid-preview" style={{
                 display: "grid",
@@ -8386,7 +6635,7 @@ const Stage1ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
   );
 };
 
-// Stage 6 Form Component (for review display)
+/* Stage 6 Form Component (for review display) */
 const Stage6Form1 = ({ formData }) => (
   <div
     className="form-container"
@@ -9034,15 +7283,24 @@ const VConnected63MVATransformerStageReviewPanel = ({
   const renderStageSpecificUI = () => {
     switch(currentStageReview) {
       case 1:
-        return <Stage1ReviewRenderer 
-          formDataFromDB={formDataFromDB} 
-          formatLabel={formatLabel}
-        />;
+        return (
+          <Stage1ReviewRenderer
+            formDataFromDB={formDataFromDB}
+            formatLabel={formatLabel}
+            // Stage 1 renderer previously used fixed indices (form1..formN).
+            // This makes it brittle if backend stores additional keys or different ordering.
+            // Passing currentStageReview allows renderer to detect and ignore non-stage1 forms.
+            currentStageReview={currentStageReview}
+          />
+        );
       case 2:
-        return <Stage2ReviewRenderer 
-          formDataFromDB={formDataFromDB} 
-          formatLabel={formatLabel}
-        />;
+        return (
+          <Stage2ReviewRenderer
+            formDataFromDB={formDataFromDB}
+            formatLabel={formatLabel}
+            currentStageReview={currentStageReview}
+          />
+        );
       case 3:
         return <Stage3ReviewRenderer 
           formDataFromDB={formDataFromDB} 
@@ -9523,6 +7781,7 @@ export {
   Stage1Form5,
   Stage1Form6,
   Stage1Form7,
+  Stage1Form8,
   Stage2Form1,
   Stage2Form2,
   Stage3Form1,
