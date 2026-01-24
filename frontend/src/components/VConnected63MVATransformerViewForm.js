@@ -10,8 +10,6 @@ import {
   Stage2Form1,
   Stage2Form2,
   Stage3Form1,
-  Stage3Form2,
-  Stage3Form3,
   Stage4Form1,
   Stage4Form2,
   Stage4Form3,
@@ -19,7 +17,7 @@ import {
   Stage5Form1,
   Stage5Form2,
   Stage6Form1
-} from './AutoTransformerStageReviewPanel';
+} from './VConnected63MVATransformerStageReviewPanel';
 
 // Utility function to render photos
 const renderPhotos = (photos, formKey) => {
@@ -267,16 +265,6 @@ const Stage3ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
       id: "before-oil-filling-pressure-test",
       title: "Before Oil Filling and Pressure Test Report",
       component: Stage3Form1
-    },
-    {
-      id: "record-oil-filtration-main-tank",
-      title: "Record for Oil Filtration - Main Tank",
-      component: Stage3Form2
-    },
-    {
-      id: "oil-filtration-radiator-combine",
-      title: "Oil Filtration of Radiator and Combine",
-      component: Stage3Form3
     }
   ];
 
@@ -700,9 +688,7 @@ const GenericStageRenderer = ({ formDataFromDB, formatLabel, stageTitle }) => {
             borderRadius: "8px",
             border: "1px solid #e2e8f0"
           }}>
-            <h2 style={{ margin: 0, color: "#1e293b", fontSize: "1.25rem" }}>
-              V Connected 63 MVA Transformer - {formKey.replace("form", "Form ")} - {stageTitle}
-            </h2>
+           
           </div>
 
           <div className="form-grid-preview" style={{
