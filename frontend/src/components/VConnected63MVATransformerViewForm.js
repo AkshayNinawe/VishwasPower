@@ -447,6 +447,21 @@ const Stage5ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
       id: "polarity-test",
       title: "Polarity Test",
       component: Stage5Form4
+    },
+    {
+      id: "short-circuit-test",
+      title: "Short Circuit Test",
+      component: Stage5Form5
+    },
+    {
+      id: "winding-resistance-test",
+      title: "Winding Resistance Test",
+      component: Stage5Form6
+    },
+    {
+      id: "tan-delta-bushing",
+      title: "Tan Delta & Capacitance Test on Bushing",
+      component: Stage5Form7
     }
   ];
 
