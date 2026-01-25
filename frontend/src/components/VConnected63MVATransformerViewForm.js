@@ -19,6 +19,11 @@ import {
   Stage4Form4,
   Stage5Form1,
   Stage5Form2,
+  Stage5Form3,
+  Stage5Form4,
+  Stage5Form5,
+  Stage5Form6,
+  Stage5Form7,
   Stage6Form1
 } from './VConnected63MVATransformerStageReviewPanel';
 
@@ -424,14 +429,24 @@ const Stage4ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
 const Stage5ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
   const stage5Forms = [
     {
-      id: "pre-charging-checklist",
-      title: "Pre-Charging Check List",
+      id: "sfra-test-record",
+      title: "SFRA Test Record",
       component: Stage5Form1
     },
     {
-      id: "pre-charging-checklist-part2",
-      title: "Pre-Charging Check List - Part 2",
+      id: "ratio-test",
+      title: "Ratio Test",
       component: Stage5Form2
+    },
+    {
+      id: "magnetising-current-test",
+      title: "Magnetising Current Test",
+      component: Stage5Form3
+    },
+    {
+      id: "polarity-test",
+      title: "Polarity Test",
+      component: Stage5Form4
     }
   ];
 

@@ -430,66 +430,6 @@ const Stage3Form1SubSchema = new mongoose.Schema(
   { _id: false }
 )
 
-// Sub-schema for individual filtration records for Stage 3 Form 2
-const Stage3FiltrationRecordSubSchema = new mongoose.Schema(
-  {
-    date: { type: String, trim: true, default: "" },
-    time: { type: String, trim: true, default: "" },
-    vacuumLevel: { type: String, trim: true, default: "" },
-    mcOutletTemp: { type: String, trim: true, default: "" },
-    otiTemp: { type: String, trim: true, default: "" },
-    wtiTemp: { type: String, trim: true, default: "" },
-    remark: { type: String, trim: true, default: "" },
-  },
-  { _id: false }
-);
-
-// Sub-schema for Stage 3 Form 2
-const Stage3Form2SubSchema = new mongoose.Schema(
-  {
-    filtrationRecords: { type: [Stage3FiltrationRecordSubSchema], default: [] },
-    tempOTI: { type: String, trim: true, default: "" },
-    tempWTI: { type: String, trim: true, default: "" },
-    tempAMB: { type: String, trim: true, default: "" },
-    hvEarth15Sec: { type: String, trim: true, default: "" },
-    hvEarth60Sec: { type: String, trim: true, default: "" },
-    ratioIR60IR15: { type: String, trim: true, default: "" },
-  },
-  { _id: false }
-);
-
-// Sub-schema for records that have the same structure in Stage 3 Form 3
-const Stage3RecordSubSchema = new mongoose.Schema(
-  {
-    date: { type: String, trim: true, default: "" },
-    time: { type: String, trim: true, default: "" },
-    vacuumLevel: { type: String, trim: true, default: "" },
-    mcOutletTemp: { type: String, trim: true, default: "" },
-    otiTemp: { type: String, trim: true, default: "" },
-    wtiTemp: { type: String, trim: true, default: "" },
-    remark: { type: String, trim: true, default: "" },
-  },
-  { _id: false }
-);
-
-// Sub-schema for Stage 3 Form 3
-const Stage3Form3SubSchema = new mongoose.Schema(
-  {
-    radiatorRecords: { type: [Stage3RecordSubSchema], default: [] },
-    combineRecords: { type: [Stage3RecordSubSchema], default: [] },
-    bdvKV: { type: String, trim: true, default: "" },
-    waterContentPPM: { type: String, trim: true, default: "" },
-    tempOTI: { type: String, trim: true, default: "" },
-    tempWTI: { type: String, trim: true, default: "" },
-    tempAMB: { type: String, trim: true, default: "" },
-    hvEarth15Sec: { type: String, trim: true, default: "" },
-    hvEarth60Sec: { type: String, trim: true, default: "" },
-    hvEarth600Sec: { type: String, trim: true, default: "" },
-    hvEarth60600Sec: { type: String, trim: true, default: "" },
-    photos: { type: Map, of: String, default: {} },
-  },
-  { _id: false }
-);
 
 // --- SUB-SCHEMAS FOR STAGE 4 ---
 
@@ -523,100 +463,95 @@ const SignatureSubSchema = new mongoose.Schema(
   { _id: false }
 );
 
-// Sub-schema for Stage 4 Form 1
+// Sub-schema for Stage 4 Form 1 (Record for Oil Filtration - Main Tank)
+// Matches frontend Stage4Form1 in VConnected63MVATransformerForms.js
+const Stage4Form1FiltrationRecordSubSchema = new mongoose.Schema(
+  {
+    date: { type: String, trim: true, default: "" },
+    time: { type: String, trim: true, default: "" },
+    vacuumLevel: { type: String, trim: true, default: "" },
+    mcOutletTemp: { type: String, trim: true, default: "" },
+    otiTemp: { type: String, trim: true, default: "" },
+    wtiTemp: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
 const Stage4Form1SubSchema = new mongoose.Schema(
   {
-    makeOfMeter: { type: String, trim: true, default: "" },
-    date: { type: String, trim: true, default: "" },
-    modelSrNo: { type: String, trim: true, default: "" },
-    ambient: { type: String, trim: true, default: "" },
-    oti: { type: String, trim: true, default: "" },
-    wti: { type: String, trim: true, default: "" },
-    testReportReviewed: { type: String, trim: true, default: "" },
-    acceptanceOfTest: { type: String, trim: true, default: "" },
-    meterUsedBushing: { type: String, trim: true, default: "" },
-    dateBushing: { type: String, trim: true, default: "" },
-    timeBushing: { type: String, trim: true, default: "" },
-    modelSrNoBushing: { type: String, trim: true, default: "" },
-    wtiBushing: { type: String, trim: true, default: "" },
-    otiBushing: { type: String, trim: true, default: "" },
-    bushing11_05kv_tanDelta: { type: String, trim: true, default: "" },
-    bushing11_05kv_capacitance: { type: String, trim: true, default: "" },
-    bushing11_05kv_excitationCurrent: { type: String, trim: true, default: "" },
-    bushing11_05kv_dielectricLoss: { type: String, trim: true, default: "" },
-    bushing12_05kv_tanDelta: { type: String, trim: true, default: "" },
-    bushing12_05kv_capacitance: { type: String, trim: true, default: "" },
-    bushing12_05kv_excitationCurrent: { type: String, trim: true, default: "" },
-    bushing12_05kv_dielectricLoss: { type: String, trim: true, default: "" },
-    bushing11_10kv_tanDelta: { type: String, trim: true, default: "" },
-    bushing11_10kv_capacitance: { type: String, trim: true, default: "" },
-    bushing11_10kv_excitationCurrent: { type: String, trim: true, default: "" },
-    bushing11_10kv_dielectricLoss: { type: String, trim: true, default: "" },
-    bushing12_10kv_tanDelta: { type: String, trim: true, default: "" },
-    bushing12_10kv_capacitance: { type: String, trim: true, default: "" },
-    bushing12_10kv_excitationCurrent: { type: String, trim: true, default: "" },
-    bushing12_10kv_dielectricLoss: { type: String, trim: true, default: "" },
-    meterUsedWinding: { type: String, trim: true, default: "" },
-    dateWinding: { type: String, trim: true, default: "" },
-    timeWinding: { type: String, trim: true, default: "" },
-    makeSrNoWinding: { type: String, trim: true, default: "" },
-    ambientTempWinding: { type: String, trim: true, default: "" },
-    oilTempWinding: { type: String, trim: true, default: "" },
-    hvg_05kv_tanDelta: { type: String, trim: true, default: "" },
-    hvg_05kv_capacitance: { type: String, trim: true, default: "" },
-    hvg_05kv_excitationCurrent: { type: String, trim: true, default: "" },
-    hvg_05kv_dielectricLoss: { type: String, trim: true, default: "" },
-    hvg_10kv_tanDelta: { type: String, trim: true, default: "" },
-    hvg_10kv_capacitance: { type: String, trim: true, default: "" },
-    hvg_10kv_excitationCurrent: { type: String, trim: true, default: "" },
-    hvg_10kv_dielectricLoss: { type: String, trim: true, default: "" },
+    filtrationRecords: { type: [Stage4Form1FiltrationRecordSubSchema], default: [] },
+    photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );
 
-// Sub-schema for Stage 4 Form 2
+// Sub-schema for Stage 4 Form 2 (IR Value before radiator/combine filtration + Cooler Bank Filtration)
+// Matches frontend Stage4Form2 in VConnected63MVATransformerForms.js
+const Stage4Form2CoolerBankRecordSubSchema = new mongoose.Schema(
+  {
+    date: { type: String, trim: true, default: "" },
+    time: { type: String, trim: true, default: "" },
+    vacuumLevel: { type: String, trim: true, default: "" },
+    mcOutletTemp: { type: String, trim: true, default: "" },
+    otiTemp: { type: String, trim: true, default: "" },
+    wtiTemp: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
 const Stage4Form2SubSchema = new mongoose.Schema(
   {
-    date: { type: String, trim: true, default: "" },
-    time: { type: String, trim: true, default: "" },
-    insulationTesterDetails: { type: String, trim: true, default: "" },
-    ambTemp: { type: String, trim: true, default: "" },
-    make: { type: String, trim: true, default: "" },
-    oilTemp: { type: String, trim: true, default: "" },
-    srNo: { type: String, trim: true, default: "" },
-    wdgTemp: { type: String, trim: true, default: "" },
-    range: { type: String, trim: true, default: "" },
-    relativeHumidity: { type: String, trim: true, default: "" },
-    voltageLevel: { type: String, trim: true, default: "" },
-    hvEarth10Sec: { type: String, trim: true, default: "" },
-    hvEarth60Sec: { type: String, trim: true, default: "" },
-    ratioIR60IR10: { type: String, trim: true, default: "" },
-    voltageRatioTests: { type: [VoltageRatioTestSubSchema], default: [] },
-    appliedVoltageMag: { type: String, trim: true, default: "" },
-    dateMag: { type: String, trim: true, default: "" },
-    timeMag: { type: String, trim: true, default: "" },
-    meterMakeSrNoMag: { type: String, trim: true, default: "" },
-    magnetisingTests: { type: [MagnetisingTestSubSchema], default: [] },
+    // IR values (these are the ones used by the current frontend Stage4Form2 table)
+    hvEarth_10sec: { type: String, trim: true, default: "" },
+    hvEarth_60sec: { type: String, trim: true, default: "" },
+    hvEarth_ratio: { type: String, trim: true, default: "" },
+
+    lv1Earth_10sec: { type: String, trim: true, default: "" },
+    lv1Earth_60sec: { type: String, trim: true, default: "" },
+    lv1Earth_ratio: { type: String, trim: true, default: "" },
+
+    lv2Earth_10sec: { type: String, trim: true, default: "" },
+    lv2Earth_60sec: { type: String, trim: true, default: "" },
+    lv2Earth_ratio: { type: String, trim: true, default: "" },
+
+    hvLv1_10sec: { type: String, trim: true, default: "" },
+    hvLv1_60sec: { type: String, trim: true, default: "" },
+    hvLv1_ratio: { type: String, trim: true, default: "" },
+
+    hvLv2_10sec: { type: String, trim: true, default: "" },
+    hvLv2_60sec: { type: String, trim: true, default: "" },
+    hvLv2_ratio: { type: String, trim: true, default: "" },
+
+    lv1Lv2_10sec: { type: String, trim: true, default: "" },
+    lv1Lv2_60sec: { type: String, trim: true, default: "" },
+    lv1Lv2_ratio: { type: String, trim: true, default: "" },
+
+    // Cooler bank filtration records
+    coolerBankRecords: { type: [Stage4Form2CoolerBankRecordSubSchema], default: [] },
+
+    photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );
 
-// Sub-schema for Stage 4 Form 3
-const Stage4Form3SubSchema = new mongoose.Schema(
+// Sub-schema for Stage 4 Form 3 (Oil filtration of Combine - Main Tank + Cooler bank)
+// Matches frontend Stage4Form3 in VConnected63MVATransformerForms.js
+const Stage4Form3CombineRecordSubSchema = new mongoose.Schema(
   {
-    appliedVoltage: { type: String, trim: true, default: "" },
     date: { type: String, trim: true, default: "" },
     time: { type: String, trim: true, default: "" },
-    meterMakeSrNo: { type: String, trim: true, default: "" },
-    test11_12_measuredCurrent11: { type: String, trim: true, default: "" },
-    test11_12_measuredCurrent12_21: { type: String, trim: true, default: "" },
-    test12_21_measuredCurrent12: { type: String, trim: true, default: "" },
-    test12_21_measuredCurrent11_21: { type: String, trim: true, default: "" },
-    appliedVoltageHV: { type: String, trim: true, default: "" },
-    ratedCurrentLV: { type: String, trim: true, default: "" },
-    percentZ: { type: String, trim: true, default: "" },
-    ratedVoltageHV: { type: String, trim: true, default: "" },
-    measuredCurrentLV: { type: String, trim: true, default: "" },
+    vacuumLevel: { type: String, trim: true, default: "" },
+    mcOutletTemp: { type: String, trim: true, default: "" },
+    otiTemp: { type: String, trim: true, default: "" },
+    wtiTemp: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+const Stage4Form3SubSchema = new mongoose.Schema(
+  {
+    combineRecords: { type: [Stage4Form3CombineRecordSubSchema], default: [] },
+    photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );
@@ -627,7 +562,9 @@ const Stage4Form3SubSchema = new mongoose.Schema(
  */
 const Stage4Form4SubSchema = new mongoose.Schema(
   {
-    // Header fields
+    // IR & PI Value after filtration (as per frontend Stage4Form4)
+    // NOTE: Frontend does not currently render the header fields (date/time/temps etc.)
+    // but we keep them for completeness + backward compatibility.
     date: { type: String, trim: true, default: "" },
     time: { type: String, trim: true, default: "" },
     insulationTesterDetails: { type: String, trim: true, default: "" },
@@ -888,8 +825,6 @@ const VConnectSchema = new mongoose.Schema(
       },
       stage3: {
         form1: { type: Stage3Form1SubSchema, default: () => ({}) },
-        form2: { type: Stage3Form2SubSchema, default: () => ({}) },
-        form3: { type: Stage3Form3SubSchema, default: () => ({}) },
       },
       stage4: {
         form1: { type: Stage4Form1SubSchema, default: () => ({}) },
