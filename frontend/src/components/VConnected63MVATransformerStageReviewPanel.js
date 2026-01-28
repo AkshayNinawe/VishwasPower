@@ -804,7 +804,7 @@ const Stage1Form4 = ({ formData }) => {
           <tr>
             <th style={{ width: "30%" }}>Voltage %</th>
             <th style={{ width: "35%" }}>Applied voltage</th>
-            <th style={{ width: "35%" }}>Measured current (A)</th>
+            <th style={{ width: "35%" }}>Measured current (mA)</th>
           </tr>
         </thead>
         <tbody>
@@ -1010,7 +1010,7 @@ const Stage1Form5 = ({ formData }) => {
           <tr>
             <th style={{ width: "30%" }}>Voltage %</th>
             <th style={{ width: "35%" }}>Applied voltage</th>
-            <th style={{ width: "35%" }}>Measured current (A)</th>
+            <th style={{ width: "35%" }}>Measured current (mA)</th>
           </tr>
         </thead>
         <tbody>
@@ -1211,7 +1211,7 @@ const Stage1Form6 = ({ formData }) => {
           <tr>
             <th style={{ width: "30%" }}>Voltage %</th>
             <th style={{ width: "35%" }}>Applied voltage</th>
-            <th style={{ width: "35%" }}>Measured current (A)</th>
+            <th style={{ width: "35%" }}>Measured current (mA)</th>
           </tr>
         </thead>
         <tbody>
@@ -1519,8 +1519,8 @@ const Stage1Form7 = ({ formData }) => (
         <tr>
           <th style={{ width: "16%" }}>AT 05 KV PHASE</th>
           <th style={{ width: "21%" }}>TAN DELTA in %</th>
-          <th style={{ width: "21%" }}>CAPACITANCE (PF)</th>
-          <th style={{ width: "21%" }}>EXCITATION CURRENT</th>
+          <th style={{ width: "21%" }}>CAPACITANCE (pF)</th>
+          <th style={{ width: "21%" }}>EXCITATION CURRENT (mA)</th>
           <th style={{ width: "21%" }}>DIELECTRIC LOSS</th>
         </tr>
       </thead>
@@ -1550,8 +1550,8 @@ const Stage1Form7 = ({ formData }) => (
         <tr>
           <th style={{ width: "16%" }}>AT 10 KV PHASE</th>
           <th style={{ width: "21%" }}>TAN DELTA in %</th>
-          <th style={{ width: "21%" }}>CAPACITANCE (PF)</th>
-          <th style={{ width: "21%" }}>EXCITATION CURRENT</th>
+          <th style={{ width: "21%" }}>CAPACITANCE (pF)</th>
+          <th style={{ width: "21%" }}>EXCITATION CURRENT (mA)</th>
           <th style={{ width: "21%" }}>DIELECTRIC LOSS</th>
         </tr>
       </thead>
@@ -1610,8 +1610,8 @@ const Stage1Form7 = ({ formData }) => (
         <tr>
           <th style={{ width: "16%" }}>AT 05 KV PHASE</th>
           <th style={{ width: "21%" }}>TAN DELTA in %</th>
-          <th style={{ width: "21%" }}>CAPACITANCE (PF)</th>
-          <th style={{ width: "21%" }}>EXCITATION CURRENT</th>
+          <th style={{ width: "21%" }}>CAPACITANCE (pF)</th>
+          <th style={{ width: "21%" }}>EXCITATION CURRENT (mA)</th>
           <th style={{ width: "21%" }}>DIELECTRIC LOSS</th>
         </tr>
       </thead>
@@ -1641,8 +1641,8 @@ const Stage1Form7 = ({ formData }) => (
         <tr>
           <th style={{ width: "16%" }}>AT 10 KV PHASE</th>
           <th style={{ width: "21%" }}>TAN DELTA in %</th>
-          <th style={{ width: "21%" }}>CAPACITANCE (PF)</th>
-          <th style={{ width: "21%" }}>EXCITATION CURRENT</th>
+          <th style={{ width: "21%" }}>CAPACITANCE (pF)</th>
+          <th style={{ width: "21%" }}>EXCITATION CURRENT (mA)</th>
           <th style={{ width: "21%" }}>DIELECTRIC LOSS</th>
         </tr>
       </thead>
@@ -2123,9 +2123,9 @@ const Stage2Form1 = ({ formData }) => (
         <tr>
           <th style={{ width: "18%" }}>Date</th>
           <th style={{ width: "18%" }}>Time</th>
-          <th style={{ width: "24%" }}>Vacuum Level (MM/HG or torr)</th>
-          <th style={{ width: "20%" }}>Inlet Temp.</th>
-          <th style={{ width: "20%" }}>Outlet Temp.</th>
+          <th style={{ width: "24%" }}>Vacuum Level (mmHg or torr)</th>
+          <th style={{ width: "20%" }}>Inlet Temp °C</th>
+          <th style={{ width: "20%" }}>Outlet Temp °C</th>
         </tr>
       </thead>
       <tbody>
@@ -2710,7 +2710,7 @@ const Stage3Form1 = ({ formData }) => (
         <tr>
           <th>DATE</th>
           <th>TIME</th>
-          <th>Vacuum Level in M/C</th>
+          <th>Vacuum Level (mmHg or torr)</th>
           <th>Vac. Level in Transformer Tank (torr)</th>
         </tr>
       </thead>
@@ -3033,10 +3033,10 @@ const Stage4Form1 = ({ formData }) => (
         <tr>
           <th>Date</th>
           <th>Time</th>
-          <th>Vacuum Level</th>
-          <th>M/C Outlet Temp.</th>
-          <th>OTI Temp.</th>
-          <th>WTI Temp.</th>
+          <th>Vacuum Level (mmHg or torr)</th>
+          <th>M/C Outlet Temp °C</th>
+          <th>OTI Temp °C</th>
+          <th>WTI Temp °C</th>
         </tr>
       </thead>
       <tbody>
@@ -3318,10 +3318,10 @@ const Stage4Form2 = ({ formData }) => (
         <tr>
           <th>Date</th>
           <th>Time</th>
-          <th>Vacuum Level</th>
-          <th>M/C Outlet Temp.</th>
-          <th>OTI Temp.</th>
-          <th>WTI Temp.</th>
+          <th>Vacuum Level (mmHg or torr)</th>
+          <th>M/C Outlet Temp °C</th>
+          <th>OTI Temp °C</th>
+          <th>WTI Temp °C</th>
         </tr>
       </thead>
       <tbody>
@@ -3464,10 +3464,10 @@ const Stage4Form3 = ({ formData }) => (
         <tr>
           <th>Date</th>
           <th>Time</th>
-          <th>Vacuum Level</th>
-          <th>M/C Outlet Temp.</th>
-          <th>OTI Temp.</th>
-          <th>WTI Temp.</th>
+          <th>Vacuum Level (mmHg or torr)</th>
+          <th>M/C Outlet Temp °C</th>
+          <th>OTI Temp °C</th>
+          <th>WTI Temp °C</th>
         </tr>
       </thead>
       <tbody>
@@ -5232,7 +5232,7 @@ const Stage5Form8 = ({ formData }) => (
           <th style={{ width: "20%" }}>
             EXCITATION CURRENT
             <br />
-            (A)
+            (mA)
           </th>
           <th style={{ width: "22%" }}>DIELECTRIC LOSS</th>
         </tr>

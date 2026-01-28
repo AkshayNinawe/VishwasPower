@@ -1199,8 +1199,8 @@ const Stage1Form4 = ({ formData }) => (
           <th>Voltage %</th>
           <th>Applied voltage S1-S2</th>
           <th>Applied voltage S1-S3</th>
-          <th>Measured current (A) S1-S2</th>
-          <th>Measured current (A) S1-S3</th>
+          <th>Measured current (mA) S1-S2</th>
+          <th>Measured current (mA) S1-S3</th>
         </tr>
       </thead>
       <tbody>
@@ -1639,8 +1639,8 @@ const Stage1Form4 = ({ formData }) => (
           <th>Voltage %</th>
           <th>Applied voltage S1-S2</th>
           <th>Applied voltage S1-S3</th>
-          <th>Measured current (A) S1-S2</th>
-          <th>Measured current (A) S1-S3</th>
+          <th>Measured current (mA) S1-S2</th>
+          <th>Measured current (mA) S1-S3</th>
         </tr>
       </thead>
       <tbody>
@@ -2171,8 +2171,8 @@ const Stage1Form5 = ({ formData }) => (
           <th>Voltage %</th>
           <th>Applied Voltage S1-S2</th>
           <th>Applied Voltage S1-S3</th>
-          <th>Measured current (A) S1-S2</th>
-          <th>Measured current (A) S1-S3</th>
+          <th>Measured current (mA) S1-S2</th>
+          <th>Measured current (mA) S1-S3</th>
         </tr>
       </thead>
       <tbody>
@@ -2589,8 +2589,8 @@ const Stage1Form5 = ({ formData }) => (
           <th>Voltage %</th>
           <th>Applied voltage S1-S2</th>
           <th>Applied voltage S1-S3</th>
-          <th>Measured current (A) S1-S2</th>
-          <th>Measured current (A) S1-S3</th>
+          <th>Measured current (mA) S1-S2</th>
+          <th>Measured current (mA) S1-S3</th>
         </tr>
       </thead>
       <tbody>
@@ -4339,9 +4339,9 @@ const Stage2Form1 = ({ formData }) => (
         <tr>
           <th>Date</th>
           <th>Time</th>
-          <th>Vacuum Level (MM/HG or torr)</th>
-          <th>Inlet Temp.</th>
-          <th>Outlet Temp.</th>
+          <th>Vacuum Level (mmHg or torr)</th>
+          <th>Inlet Temp °C</th>
+          <th>Outlet Temp °C</th>
         </tr>
       </thead>
       <tbody>
@@ -4702,7 +4702,7 @@ const Stage3Form1 = ({ formData }) => (
         <tr>
           <th>DATE</th>
           <th>TIME</th>
-          <th>Vacuum Level in M/C</th>
+          <th>Vacuum Level (mmHg or torr)</th>
           <th>Vac. Level in Transformer Tank (torr)</th>
         </tr>
       </thead>
@@ -4912,10 +4912,10 @@ const Stage4Form1 = ({ formData }) => (
         <tr>
           <th>Date</th>
           <th>Time</th>
-          <th>Vacuum Level</th>
-          <th>M/C Outlet Temp.</th>
-          <th>OTI Temp.</th>
-          <th>WTI Temp.</th>
+          <th>Vacuum Level (mmHg or torr)</th>
+          <th>M/C Outlet Temp °C</th>
+          <th>OTI Temp °C</th>
+          <th>WTI Temp °C</th>
         </tr>
       </thead>
       <tbody>
@@ -5238,10 +5238,10 @@ const Stage4Form2 = ({ formData }) => (
         <tr>
           <th>Date</th>
           <th>Time</th>
-          <th>Vacuum Level</th>
-          <th>M/C Outlet Temp.</th>
-          <th>OTI Temp.</th>
-          <th>WTI Temp.</th>
+          <th>Vacuum Level (mmHg or torr)</th>
+          <th>M/C Outlet Temp °C</th>
+          <th>OTI Temp °C</th>
+          <th>WTI Temp °C</th>
         </tr>
       </thead>
       <tbody>
@@ -5417,10 +5417,10 @@ const Stage4Form3 = ({ formData }) => (
         <tr>
           <th>Date</th>
           <th>Time</th>
-          <th>Vacuum Level</th>
-          <th>M/C Outlet Temp.</th>
-          <th>OTI Temp.</th>
-          <th>WTI Temp.</th>
+          <th>Vacuum Level (mmHg or torr)</th>
+          <th>M/C Outlet Temp °C</th>
+          <th>OTI Temp °C</th>
+          <th>WTI Temp °C</th>
         </tr>
       </thead>
       <tbody>
@@ -7451,7 +7451,7 @@ const Stage5Form8 = ({ formData }) => (
             (Pf)
           </th>
           <th style={{ width: "20%" }}>
-            EXCITATION CURRENT
+            EXCITATION CURRENT (mA)
             <br />
             (A)
           </th>
@@ -7492,7 +7492,7 @@ const Stage5Form8 = ({ formData }) => (
             (Pf)
           </th>
           <th style={{ width: "20%" }}>
-            EXCITATION CURRENT
+            EXCITATION CURRENT (mA)
             <br />
             (mA)
           </th>

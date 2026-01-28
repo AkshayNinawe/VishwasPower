@@ -3137,7 +3137,7 @@ function RecordOilHandlingForm({
           <tr>
             <th>Date</th>
             <th>Time</th>
-            <th>Vacuum Level (mm/hg or torr)</th>
+            <th>Vacuum Level (mmHg or torr)</th>
             <th>Inlet Temp°C</th>
             <th>Outlet Temp°C</th>
             <th>Remark</th>
@@ -4010,7 +4010,7 @@ function RecordOilFiltrationMainTankForm({
           <tr>
             <th>Date</th>
             <th>Time</th>
-            <th>Vacuum Level (mm/hg or torr)</th>
+            <th>Vacuum Level (mmHg or torr)</th>
             <th>M/C Outlet Temp°C</th>
             <th>OTI Temp°C</th>
             <th>WTI Temp°C</th>
@@ -4432,7 +4432,7 @@ function OilFiltrationRadiatorCombineForm({
           <tr>
             <th>Date</th>
             <th>Time</th>
-            <th>Vacuum Level (mm/hg or torr)</th>
+            <th>Vacuum Level (mmHg or torr)</th>
             <th>M/C Outlet Temp°C</th>
             <th>OTI Temp°C</th>
             <th>WTI Temp°C</th>
@@ -4527,7 +4527,7 @@ function OilFiltrationRadiatorCombineForm({
           <tr>
             <th>Date</th>
             <th>Time</th>
-            <th>Vacuum Level (mm/hg or torr)</th>
+            <th>Vacuum Level (mmHg or torr)</th>
             <th>M/C Outlet Temp°C</th>
             <th>OTI Temp°C</th>
             <th>WTI Temp°C</th>
@@ -6331,7 +6331,7 @@ function ShortCircuitTestForm({
         <thead>
           <tr>
             <th>APPLIED VOLTAGE</th>
-            <th colSpan="2">Measured Current (A)</th>
+            <th colSpan="2">Measured Current (mA)</th>
           </tr>
         </thead>
         <tbody>

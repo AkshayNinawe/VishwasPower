@@ -2805,7 +2805,7 @@ function generateStage5Form8(formData) {
             <th style="width: 12%;">MODE</th>
             <th style="width: 16%;">TAN DELTA %</th>
             <th style="width: 16%;">CAPACITANCE<br>(Pf)</th>
-            <th style="width: 20%;">EXCITATION CURRENT<br>(${currentUnit})</th>
+            <th style="width: 20%;">EXCITATION CURRENT <br>(${currentUnit})</th>
             <th style="width: 22%;">DIELECTRIC LOSS</th>
           </tr>
         </thead>

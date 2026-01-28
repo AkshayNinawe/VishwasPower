@@ -3,6 +3,8 @@ import multer from "multer"
 import path from "path"
 import fs from "fs"
 import PDFDocument from "pdfkit"
+import puppeteer from "puppeteer"
+import { generateHTMLTemplate } from "../utils/pdfVConnectTemplateGenerator.js"
 
 // Setup multer storage
 const storage = multer.diskStorage({

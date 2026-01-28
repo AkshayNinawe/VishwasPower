@@ -1743,8 +1743,8 @@ function Stage1Form4({ onSubmit, onPrevious, initialData, isLastFormOfStage, com
             <th>Voltage %</th>
             <th>Applied voltage S1-S2</th>
             <th>Applied voltage S1-S3</th>
-            <th>Measured current (A) S1-S2</th>
-            <th>Measured current (A) S1-S3</th>
+            <th>Measured current (mA) S1-S2</th>
+            <th>Measured current (mA) S1-S3</th>
           </tr>
         </thead>
         <tbody>
@@ -2139,8 +2139,8 @@ function Stage1Form4({ onSubmit, onPrevious, initialData, isLastFormOfStage, com
             <th>Voltage %</th>
             <th>Applied voltage S1-S2</th>
             <th>Applied voltage S1-S3</th>
-            <th>Measured current (A) S1-S2</th>
-            <th>Measured current (A) S1-S3</th>
+            <th>Measured current (mA) S1-S2</th>
+            <th>Measured current (mA) S1-S3</th>
           </tr>
         </thead>
         <tbody>
@@ -2753,8 +2753,8 @@ function Stage1Form5({ onSubmit, onPrevious, initialData, isLastFormOfStage, com
             <th>Voltage %</th>
             <th>Applied Voltage S1-S2</th>
             <th>Applied Voltage S1-S3</th>
-            <th>Measured current (A) S1-S2</th>
-            <th>Measured current (A) S1-S3</th>
+            <th>Measured current (mA) S1-S2</th>
+            <th>Measured current (mA) S1-S3</th>
           </tr>
         </thead>
         <tbody>
@@ -3127,8 +3127,8 @@ function Stage1Form5({ onSubmit, onPrevious, initialData, isLastFormOfStage, com
             <th>Voltage %</th>
             <th>Applied voltage S1-S2</th>
             <th>Applied voltage S1-S3</th>
-            <th>Measured current (A) S1-S2</th>
-            <th>Measured current (A) S1-S3</th>
+            <th>Measured current (mA) S1-S2</th>
+            <th>Measured current (mA) S1-S3</th>
           </tr>
         </thead>
         <tbody>
@@ -4982,9 +4982,9 @@ export function Stage2Form1({
           <tr>
             <th>Date</th>
             <th>Time</th>
-            <th>Vacuum Level (MM/HG or torr)</th>
-            <th>Inlet Temp.</th>
-            <th>Outlet Temp.</th>
+            <th>Vacuum Level (mmHg or torr)</th>
+            <th>Inlet Temp °C</th>
+            <th>Outlet Temp °C</th>
           </tr>
         </thead>
         <tbody>
@@ -5548,7 +5548,7 @@ export function Stage3Form1({
           <tr>
             <th>DATE</th>
             <th>TIME</th>
-            <th>Vacuum Level in M/C</th>
+            <th>Vacuum Level (mmHg or torr)</th>
             <th>Vac. Level in Transformer Tank (torr)</th>
           </tr>
         </thead>
@@ -5885,10 +5885,10 @@ export function Stage4Form1({
           <tr>
             <th>Date</th>
             <th>Time</th>
-            <th>Vacuum Level</th>
-            <th>M/C Outlet Temp.</th>
-            <th>OTI Temp.</th>
-            <th>WTI Temp.</th>
+            <th>Vacuum Level (mmHg or torr)</th>
+            <th>M/C Outlet Temp °C</th>
+            <th>OTI Temp °C</th>
+            <th>WTI Temp °C</th>
           </tr>
         </thead>
         <tbody>
@@ -6212,10 +6212,10 @@ export function Stage4Form2({
           <tr>
             <th>Date</th>
             <th>Time</th>
-            <th>Vacuum Level</th>
-            <th>M/C Outlet Temp.</th>
-            <th>OTI Temp.</th>
-            <th>WTI Temp.</th>
+            <th>Vacuum Level (mmHg or torr)</th>
+            <th>M/C Outlet Temp °C</th>
+            <th>OTI Temp °C</th>
+            <th>WTI Temp °C</th>
           </tr>
         </thead>
         <tbody>
@@ -6368,10 +6368,10 @@ export function Stage4Form3({
           <tr>
             <th>Date</th>
             <th>Time</th>
-            <th>Vacuum Level</th>
-            <th>M/C Outlet Temp.</th>
-            <th>OTI Temp.</th>
-            <th>WTI Temp.</th>
+            <th>Vacuum Level (mmHg or torr)</th>
+            <th>M/C Outlet Temp °C</th>
+            <th>OTI Temp °C</th>
+            <th>WTI Temp °C</th>
           </tr>
         </thead>
         <tbody>
@@ -8987,7 +8987,7 @@ export function Stage5Form8({ onSubmit, onPrevious, initialData, isLastFormOfSta
             (Pf)
           </th>
           <th style={{ width: "20%" }}>
-            EXCITATION CURRENT
+            EXCITATION CURRENT (mA)
             <br />({currentUnit})
           </th>
           <th style={{ width: "22%" }}>DIELECTRIC LOSS</th>

@@ -1350,7 +1350,7 @@ export function Stage1Form4({ onSubmit, onPrevious, initialData, isLastFormOfSta
           <tr>
             <th style={{ width: "30%" }}>Voltage %</th>
             <th style={{ width: "35%" }}>Applied voltage</th>
-            <th style={{ width: "35%" }}>Measured current (A)</th>
+            <th style={{ width: "35%" }}>Measured current (mA)</th>
           </tr>
         </thead>
         <tbody>
@@ -1538,7 +1538,7 @@ export function Stage1Form5({ onSubmit, onPrevious, initialData, isLastFormOfSta
           <tr>
             <th style={{ width: "30%" }}>Voltage %</th>
             <th style={{ width: "35%" }}>Applied voltage</th>
-            <th style={{ width: "35%" }}>Measured current (A)</th>
+            <th style={{ width: "35%" }}>Measured current (mA)</th>
           </tr>
         </thead>
         <tbody>
@@ -1739,7 +1739,7 @@ export function Stage1Form6({ onSubmit, onPrevious, initialData, isLastFormOfSta
           <tr>
             <th style={{ width: "30%" }}>Voltage %</th>
             <th style={{ width: "35%" }}>Applied voltage</th>
-            <th style={{ width: "35%" }}>Measured current (A)</th>
+            <th style={{ width: "35%" }}>Measured current (mA)</th>
           </tr>
         </thead>
         <tbody>
@@ -1964,8 +1964,8 @@ export function Stage1Form7({ onSubmit, onPrevious, initialData, isLastFormOfSta
         <tr>
           <th style={{ width: "16%" }}>{title}</th>
           <th style={{ width: "21%" }}>TAN DELTA in %</th>
-          <th style={{ width: "21%" }}>CAPACITANCE (PF)</th>
-          <th style={{ width: "21%" }}>EXCITATION CURRENT</th>
+          <th style={{ width: "21%" }}>CAPACITANCE (pF)</th>
+          <th style={{ width: "21%" }}>EXCITATION CURRENT (mA)</th>
           <th style={{ width: "21%" }}>DIELECTRIC LOSS</th>
         </tr>
       </thead>
@@ -2653,9 +2653,9 @@ export function Stage2Form1({
           <tr>
             <th style={{ width: "18%" }}>Date</th>
             <th style={{ width: "18%" }}>Time</th>
-            <th style={{ width: "24%" }}>Vacuum Level (MM/HG or torr)</th>
-            <th style={{ width: "20%" }}>Inlet Temp.</th>
-            <th style={{ width: "20%" }}>Outlet Temp.</th>
+            <th style={{ width: "24%" }}>Vacuum Level (mmHg or torr)</th>
+            <th style={{ width: "20%" }}>Inlet Temp °C</th>
+            <th style={{ width: "20%" }}>Outlet Temp °C</th>
           </tr>
         </thead>
         <tbody>
@@ -3447,7 +3447,7 @@ export function Stage3Form1({
           <tr>
             <th>DATE</th>
             <th>TIME</th>
-            <th>Vacuum Level in M/C</th>
+            <th>Vacuum Level (mmHg or torr)</th>
             <th>Vac. Level in Transformer Tank (torr)</th>
           </tr>
         </thead>
@@ -3845,10 +3845,10 @@ export function Stage4Form1({
           <tr>
             <th>Date</th>
             <th>Time</th>
-            <th>Vacuum Level</th>
-            <th>M/C Outlet Temp.</th>
-            <th>OTI Temp.</th>
-            <th>WTI Temp.</th>
+            <th>Vacuum Level (mmHg or torr)</th>
+            <th>M/C Outlet Temp °C</th>
+            <th>OTI Temp °C</th>
+            <th>WTI Temp °C</th>
           </tr>
         </thead>
         <tbody>
@@ -4204,10 +4204,10 @@ export function Stage4Form2({
           <tr>
             <th>Date</th>
             <th>Time</th>
-            <th>Vacuum Level</th>
-            <th>M/C Outlet Temp.</th>
-            <th>OTI Temp.</th>
-            <th>WTI Temp.</th>
+            <th>Vacuum Level (mmHg or torr)</th>
+            <th>M/C Outlet Temp °C</th>
+            <th>OTI Temp °C</th>
+            <th>WTI Temp °C</th>
           </tr>
         </thead>
         <tbody>
@@ -4360,10 +4360,10 @@ export function Stage4Form3({
           <tr>
             <th>Date</th>
             <th>Time</th>
-            <th>Vacuum Level</th>
-            <th>M/C Outlet Temp.</th>
-            <th>OTI Temp.</th>
-            <th>WTI Temp.</th>
+            <th>Vacuum Level (mmHg or torr)</th>
+            <th>M/C Outlet Temp °C</th>
+            <th>OTI Temp °C</th>
+            <th>WTI Temp °C</th>
           </tr>
         </thead>
         <tbody>
@@ -7419,9 +7419,9 @@ export function Stage5Form8({ onSubmit, onPrevious, initialData, isLastFormOfSta
           <tr>
             <th style={{ width: "18%" }}>AT 05 KV IN BETWEEN</th>
             <th style={{ width: "12%" }}>MODE</th>
-            <th style={{ width: "17%" }}>TAN DELTA</th>
-            <th style={{ width: "16%" }}>CAPACITANCE</th>
-            <th style={{ width: "19%" }}>EXCITATION CURRENT</th>
+            <th style={{ width: "17%" }}>TAN DELTA %</th>
+            <th style={{ width: "16%" }}>CAPACITANCE (pF)</th>
+            <th style={{ width: "19%" }}>EXCITATION CURRENT (mA)</th>
             <th style={{ width: "18%" }}>DIELECTRIC LOSS</th>
           </tr>
         </thead>
@@ -7468,9 +7468,9 @@ export function Stage5Form8({ onSubmit, onPrevious, initialData, isLastFormOfSta
           <tr>
             <th style={{ width: "18%" }}>AT 10 KV IN BETWEEN</th>
             <th style={{ width: "12%" }}>MODE</th>
-            <th style={{ width: "17%" }}>TAN DELTA</th>
-            <th style={{ width: "16%" }}>CAPACITANCE</th>
-            <th style={{ width: "19%" }}>EXCITATION CURRENT</th>
+            <th style={{ width: "17%" }}>TAN DELTA %</th>
+            <th style={{ width: "16%" }}>CAPACITANCE (pF)</th>
+            <th style={{ width: "19%" }}>EXCITATION CURRENT (mA)</th>
             <th style={{ width: "18%" }}>DIELECTRIC LOSS</th>
           </tr>
         </thead>

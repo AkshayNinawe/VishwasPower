@@ -704,9 +704,9 @@ function generateStage2Form1(formData) {
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
             <th>Date</th>
             <th>Time</th>
-            <th>Vacuum Level (mm/hg or torr)</th>
-            <th>Inlet Temp°C</th>
-            <th>Outlet Temp°C</th>
+            <th>Vacuum Level (mmHg or torr)</th>
+            <th>Inlet Temp °C</th>
+            <th>Outlet Temp °C</th>
             <th>Remark</th>
           </tr>
         </thead>
@@ -898,10 +898,10 @@ function generateStage3Form2(formData) {
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
             <th>Date</th>
             <th>Time</th>
-            <th>Vacuum Level (mm/hg or torr)</th>
-            <th>M/C Outlet Temp°C</th>
-            <th>OTI Temp°C</th>
-            <th>WTI Temp°C</th>
+            <th>Vacuum Level (mmHg or torr)</th>
+            <th>M/C Outlet Temp °C</th>
+            <th>OTI Temp °C</th>
+            <th>WTI Temp °C</th>
             <th>Remark</th>
           </tr>
         </thead>
@@ -977,10 +977,10 @@ function generateStage3Form3(formData) {
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
             <th>Date</th>
             <th>Time</th>
-            <th>Vacuum Level (mm/hg or torr)</th>
-            <th>M/C Outlet Temp°C</th>
-            <th>OTI Temp°C</th>
-            <th>WTI Temp°C</th>
+            <th>Vacuum Level (mmHg or torr)</th>
+            <th>M/C Outlet Temp °C</th>
+            <th>OTI Temp °C</th>
+            <th>WTI Temp °C</th>
             <th>Remark</th>
           </tr>
         </thead>
@@ -996,10 +996,10 @@ function generateStage3Form3(formData) {
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
             <th>Date</th>
             <th>Time</th>
-            <th>Vacuum Level (mm/hg or torr)</th>
-            <th>M/C Outlet Temp°C</th>
-            <th>OTI Temp°C</th>
-            <th>WTI Temp°C</th>
+            <th>Vacuum Level (mmHg or torr)</th>
+            <th>M/C Outlet Temp °C</th>
+            <th>OTI Temp °C</th>
+            <th>WTI Temp °C</th>
             <th>Remark</th>
           </tr>
         </thead>
@@ -1455,7 +1455,7 @@ function generateStage4Form3(formData) {
         <thead>
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
             <th>APPLIED VOLTAGE</th>
-            <th colspan="2">Measured Current (A)</th>
+            <th colspan="2">Measured Current (mA)</th>
           </tr>
         </thead>
         <tbody>
