@@ -319,6 +319,8 @@ const Stage2Form1FiltrationRecordSubSchema = new mongoose.Schema(
  * - Record of Oil Filling in the Reservoirs Tank
  * - Reservoir Tank Filtration
  * Matches frontend Stage2Form1 in VConnected63MVATransformerForms.js
+ *
+ * NOTE: Keep this schema limited to only the fields present in the Stage2Form1 UI.
  */
 const Stage2Form1SubSchema = new mongoose.Schema(
   {
@@ -346,28 +348,68 @@ const Stage2Form1SubSchema = new mongoose.Schema(
       },
     },
 
-    filtrationRecords: {
-      type: [Stage2Form1FiltrationRecordSubSchema],
-      default: [],
-    },
+    filtrationRecords: { type: [Stage2Form1FiltrationRecordSubSchema], default: [] },
 
+    // photoKey -> stored URL/path (uploaded file handled separately)
     photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );
 
-// Sub-schema for Stage 2 Form 2 (Insulation Resistance)
+// Sub-schema for Stage 2 Form 2 (Line Lead Clearance + IR Values After Erection + Oil values)
+// Matches frontend Stage2Form2 in VConnected63MVATransformerForms.js
 const Stage2Form2SubSchema = new mongoose.Schema(
   {
-    tempOTI: { type: String, trim: true, default: "" },
-    tempWTI: { type: String, trim: true, default: "" },
-    tempAMB: { type: String, trim: true, default: "" },
-    hvEarth15Sec: { type: String, trim: true, default: "" },
-    hvEarth60Sec: { type: String, trim: true, default: "" },
-    ratioIR60IR15: { type: String, trim: true, default: "" },
-    hvWithRespectToEarth: { type: String, trim: true, default: "" },
-    lvWithRespectToEarth: { type: String, trim: true, default: "" },
-    neutralWithRespectToEarth: { type: String, trim: true, default: "" },
+    // Line Lead Clearance in mm
+    hv_earth_11: { type: String, trim: true, default: "" },
+    hv_earth_12: { type: String, trim: true, default: "" },
+    lv1_earth_21: { type: String, trim: true, default: "" },
+    lv1_earth_22: { type: String, trim: true, default: "" },
+    lv2_earth_31: { type: String, trim: true, default: "" },
+    lv2_earth_32: { type: String, trim: true, default: "" },
+
+    // IR Values After erection - header fields
+    date: { type: String, trim: true, default: "" },
+    time: { type: String, trim: true, default: "" },
+    insulationTesterDetails: { type: String, trim: true, default: "" },
+    ambTemp: { type: String, trim: true, default: "" },
+    make: { type: String, trim: true, default: "" },
+    oilTemp: { type: String, trim: true, default: "" },
+    srNo: { type: String, trim: true, default: "" },
+    wdgTemp: { type: String, trim: true, default: "" },
+    range: { type: String, trim: true, default: "" },
+    relativeHumidity: { type: String, trim: true, default: "" },
+    voltageLevel: { type: String, trim: true, default: "" },
+
+    // IR measurements (15s / 60s / ratio)
+    hvEarth_15sec: { type: String, trim: true, default: "" },
+    hvEarth_60sec: { type: String, trim: true, default: "" },
+    hvEarth_ratio: { type: String, trim: true, default: "" },
+
+    lv1Earth_15sec: { type: String, trim: true, default: "" },
+    lv1Earth_60sec: { type: String, trim: true, default: "" },
+    lv1Earth_ratio: { type: String, trim: true, default: "" },
+
+    lv2Earth_15sec: { type: String, trim: true, default: "" },
+    lv2Earth_60sec: { type: String, trim: true, default: "" },
+    lv2Earth_ratio: { type: String, trim: true, default: "" },
+
+    hvLv1_15sec: { type: String, trim: true, default: "" },
+    hvLv1_60sec: { type: String, trim: true, default: "" },
+    hvLv1_ratio: { type: String, trim: true, default: "" },
+
+    hvLv2_15sec: { type: String, trim: true, default: "" },
+    hvLv2_60sec: { type: String, trim: true, default: "" },
+    hvLv2_ratio: { type: String, trim: true, default: "" },
+
+    lv1Lv2_15sec: { type: String, trim: true, default: "" },
+    lv1Lv2_60sec: { type: String, trim: true, default: "" },
+    lv1Lv2_ratio: { type: String, trim: true, default: "" },
+
+    // Before oil filling in main tank
+    bdv: { type: String, trim: true, default: "" },
+    waterContent: { type: String, trim: true, default: "" },
+
     photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
@@ -412,7 +454,20 @@ const Stage3Form1SubSchema = new mongoose.Schema(
       },
     ],
 
-    // IR After oil Topping up To Conservator (10s / 60s / ratio)
+    // IR After oil Topping up To Conservator - header fields (matches frontend Stage3Form1)
+    date: { type: String, trim: true, default: "" },
+    time: { type: String, trim: true, default: "" },
+    insulationTesterDetails: { type: String, trim: true, default: "" },
+    ambTemp: { type: String, trim: true, default: "" },
+    make: { type: String, trim: true, default: "" },
+    oilTemp: { type: String, trim: true, default: "" },
+    srNo: { type: String, trim: true, default: "" },
+    wdgTemp: { type: String, trim: true, default: "" },
+    range: { type: String, trim: true, default: "" },
+    relativeHumidity: { type: String, trim: true, default: "" },
+    voltageLevel: { type: String, trim: true, default: "" },
+
+    // IR After oil Topping up To Conservator (15s / 60s / ratio)
     hvEarth_15sec: { type: String, trim: true, default: "" },
     hvEarth_60sec: { type: String, trim: true, default: "" },
     hvEarth_ratio: { type: String, trim: true, default: "" },
