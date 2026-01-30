@@ -220,7 +220,7 @@ function generateStage1Form1(formData) {
       </div>
 
       <table class="form-table">
-        <tbody>
+       <tbody>
           <tr>
             <td><strong>MAKE</strong></td>
             <td>${formData.make || ""}</td>
@@ -1215,81 +1215,80 @@ function generateStage1Form8(formData) {
   `;
 }
 
-// Generate Stage 2 Form 1 - Record of Oil Handling
+/**
+ * Stage2Form1 (VConnect) - TEST VALUES PRIOR TO FILTERATION / Record of Oil Filling in the Reservoirs Tank
+ * Kept in sync with UI component `Stage2Form1` in:
+ * `frontend/src/components/VConnected63MVATransformerStageReviewPanel.js`
+ */
 function generateStage2Form1(formData) {
   if (!formData) return "";
 
   const photoBaseUrl = process.env.BACKEND_API_BASE_URL || "";
 
-  // Generate filtration records rows (15 rows to match frontend)
-  const filtrationRows = (formData.filtrationRecords || Array(15).fill({})).map((record, index) => `
-    <tr>
-      <td>${record.date || ""}</td>
-      <td>${record.time || ""}</td>
-      <td>${record.vacuumLevel || ""}</td>
-      <td>${record.inletTemp || ""}</td>
-      <td>${record.outletTemp || ""}</td>
-    </tr>
-  `).join("");
+  const filtrationRecords = Array.isArray(formData?.filtrationRecords) ? formData.filtrationRecords : [];
+
+  const tanks = ["tank1", "tank2", "tank3"].map((tankKey, idx) => {
+    const label = idx === 0 ? "Tank1" : idx === 1 ? "Tank2" : "Tank3";
+    const tank = formData?.reservoirTanks?.[tankKey] || {};
+    return `
+      <tr>
+        <td style="font-weight: 800;">${label}</td>
+        <td>${tank.noOfBarrels || ""}</td>
+        <td>${tank.startedOn || ""}</td>
+        <td>${tank.completedOn || ""}</td>
+        <td>${tank.bdv || ""}</td>
+        <td>${tank.ppm || ""}</td>
+      </tr>
+    `;
+  }).join("");
+
+  const filtrationRows = filtrationRecords
+    .map((row) => `
+      <tr>
+        <td>${row.date || ""}</td>
+        <td>${row.time || ""}</td>
+        <td>${row.vacuumLevel || ""}</td>
+        <td>${row.inletTemp || ""}</td>
+        <td>${row.outletTemp || ""}</td>
+      </tr>
+    `)
+    .join("");
 
   return `
     <div class="form-container">
       <div class="company-header">
-        <h2>RECORD OF OIL HANDLING</h2>
-        <h3>TEST VALUES PRIOR TO FILTERATION</h3>
+        <h2>TEST VALUES PRIOR TO FILTERATION</h2>
+        <h3 style="margin-top: 6px; font-weight: 900;">Record of Oil Filling in the Reservoirs Tank</h3>
       </div>
-
-      <h4>Record of Oil Filling in the Reservoirs Tank:</h4>
 
       <table class="form-table">
         <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th></th>
-            <th>No of barrels</th>
-            <th>Started on Date & time</th>
-            <th>Completed on Date & time</th>
-            <th>BDV</th>
-            <th>PPM</th>
+          <tr>
+            <th style="width: 16%;"></th>
+            <th style="width: 17%;">No of barrels</th>
+            <th style="width: 22%;">Started on Date & time</th>
+            <th style="width: 22%;">Completed on Date & time</th>
+            <th style="width: 11%;">BDV</th>
+            <th style="width: 12%;">PPM</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td><strong>Tank1</strong></td>
-            <td>${formData.tank1_noOfBarrels || ""}</td>
-            <td>${formData.tank1_startedDate || ""} ${formData.tank1_startedTime || ""}</td>
-            <td>${formData.tank1_completedDate || ""} ${formData.tank1_completedTime || ""}</td>
-            <td>${formData.tank1_bdv || ""}</td>
-            <td>${formData.tank1_ppm || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>Tank2</strong></td>
-            <td>${formData.tank2_noOfBarrels || ""}</td>
-            <td>${formData.tank2_startedDate || ""} ${formData.tank2_startedTime || ""}</td>
-            <td>${formData.tank2_completedDate || ""} ${formData.tank2_completedTime || ""}</td>
-            <td>${formData.tank2_bdv || ""}</td>
-            <td>${formData.tank2_ppm || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>Tank3</strong></td>
-            <td>${formData.tank3_noOfBarrels || ""}</td>
-            <td>${formData.tank3_startedDate || ""} ${formData.tank3_startedTime || ""}</td>
-            <td>${formData.tank3_completedDate || ""} ${formData.tank3_completedTime || ""}</td>
-            <td>${formData.tank3_bdv || ""}</td>
-            <td>${formData.tank3_ppm || ""}</td>
-          </tr>
+          ${tanks}
         </tbody>
       </table>
 
-      <h4 style="margin-top: 40px;">Reservoir Tank Filtration</h4>
+      <div style="margin-top: 30px; text-align: center; font-weight: 900; font-size: 18px;">
+        Reservoir Tank Filtration
+      </div>
 
-      <table class="form-table">
+      <table class="form-table" style="margin-top: 10px;">
         <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Date</th>
-            <th>Time</th>
-            <th>Vacuum Level (mmHg or torr)</th>
-            <th>Inlet Temp °C</th>
-            <th>Outlet Temp °C</th>
+          <tr>
+            <th style="width: 18%;">Date</th>
+            <th style="width: 18%;">Time</th>
+            <th style="width: 24%;">Vacuum Level (mmHg or torr)</th>
+            <th style="width: 20%;">Inlet Temp °C</th>
+            <th style="width: 20%;">Outlet Temp °C</th>
           </tr>
         </thead>
         <tbody>
@@ -1297,14 +1296,28 @@ function generateStage2Form1(formData) {
         </tbody>
       </table>
 
+      <div class="photo-upload-section" style="page-break-inside: avoid;">
+        <h4>Note: - Photographs to be added: -</h4>
+        <p style="text-align: center; margin-bottom: 20px; font-weight: 600;">
+          Internal condition of reservoir tank, calibration report of BDV & PPM kit, oil barrels checking by water pest,
+          PPM Photo, Reading of BDV value.
+        </p>
+      </div>
+
       ${generatePhotoThumbnails(formData.photos, photoBaseUrl)}
     </div>
   `;
 }
 
-// Generate Stage 2 Form 2 - Line Lead Clearance and IR After Erection
+/**
+ * Stage2Form2 (VConnect) - Line Lead Clearance + IR Values After erection
+ * Kept in sync with UI component `Stage2Form2` in:
+ * `frontend/src/components/VConnected63MVATransformerStageReviewPanel.js`
+ */
 function generateStage2Form2(formData) {
   if (!formData) return "";
+
+  const photoBaseUrl = process.env.BACKEND_API_BASE_URL || "";
 
   return `
     <div class="form-container">
@@ -1314,10 +1327,9 @@ function generateStage2Form2(formData) {
 
       <table class="form-table">
         <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+          <tr>
             <th></th>
             <th>1.1</th>
-            <th></th>
             <th>1.2</th>
           </tr>
         </thead>
@@ -1325,14 +1337,17 @@ function generateStage2Form2(formData) {
           <tr>
             <td><strong>HV with respect to earth</strong></td>
             <td>${formData.hv_earth_11 || ""}</td>
-            <td></td>
             <td>${formData.hv_earth_12 || ""}</td>
           </tr>
           <tr>
             <td><strong>LV 1 with respect to earth</strong></td>
             <td>${formData.lv1_earth_21 || ""}</td>
-            <td></td>
             <td>${formData.lv1_earth_22 || ""}</td>
+          </tr>
+          <tr>
+            <td><strong>LV 2 with respect to earth</strong></td>
+            <td>${formData.lv2_earth_31 || ""}</td>
+            <td>${formData.lv2_earth_32 || ""}</td>
           </tr>
         </tbody>
       </table>
@@ -1344,47 +1359,94 @@ function generateStage2Form2(formData) {
       <table class="form-table">
         <tbody>
           <tr>
-            <td><strong>Temp OTI °C</strong></td>
-            <td>${formData.tempOTI || ""}</td>
+            <td><strong>Date :</strong></td>
+            <td>${formData.date || ""}</td>
+            <td><strong>Time:</strong></td>
+            <td>${formData.time || ""}</td>
+            <td><strong>Details of Insulation tester</strong></td>
           </tr>
+
           <tr>
-            <td><strong>Temp WTI °C</strong></td>
-            <td>${formData.tempWTI || ""}</td>
+            <td><strong>Amb. Temp :</strong></td>
+            <td>${formData.ambTemp || ""}</td>
+            <td><strong>Make :</strong></td>
+            <td>${formData.make || ""}</td>
+            <td rowspan="4">${formData.insulationTesterDetails || ""}</td>
           </tr>
+
           <tr>
-            <td><strong>Temp AMB °C</strong></td>
-            <td>${formData.tempAMB || ""}</td>
+            <td><strong>Oil Temp. :</strong></td>
+            <td>${formData.oilTemp || ""}</td>
+            <td><strong>Sr. No. :</strong></td>
+            <td>${formData.srNo || ""}</td>
+          </tr>
+
+          <tr>
+            <td><strong>Wdg. Temp. :</strong></td>
+            <td>${formData.wdgTemp || ""}</td>
+            <td><strong>Range :</strong></td>
+            <td>${formData.range || ""}</td>
+          </tr>
+
+          <tr>
+            <td><strong>Relative Humidity :</strong></td>
+            <td>${formData.relativeHumidity || ""}</td>
+            <td><strong>Voltage Level :</strong></td>
+            <td>${formData.voltageLevel || ""}</td>
           </tr>
         </tbody>
       </table>
 
       <table class="form-table" style="margin-top: 30px;">
         <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+          <tr>
             <th></th>
-            <th>10 Sec (MΩ)</th>
+            <th>15 Sec (MΩ)</th>
             <th>60 Sec (MΩ)</th>
-            <th>Ratio of IR 60/IR 10</th>
+            <th>Ratio of IR 60/IR 15</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>HV-Earth</strong></td>
-            <td>${formData.hvEarth_10sec || ""}</td>
+            <td>${formData.hvEarth_15sec || ""}</td>
             <td>${formData.hvEarth_60sec || ""}</td>
             <td>${formData.hvEarth_ratio || ""}</td>
           </tr>
+
           <tr>
-            <td><strong>LV-Earth</strong></td>
-            <td>${formData.lvEarth_10sec || ""}</td>
-            <td>${formData.lvEarth_60sec || ""}</td>
-            <td>${formData.lvEarth_ratio || ""}</td>
+            <td><strong>LV1-Earth</strong></td>
+            <td>${formData.lv1Earth_15sec || ""}</td>
+            <td>${formData.lv1Earth_60sec || ""}</td>
+            <td>${formData.lv1Earth_ratio || ""}</td>
           </tr>
+
           <tr>
-            <td><strong>HV-LV</strong></td>
-            <td>${formData.hvLv_10sec || ""}</td>
-            <td>${formData.hvLv_60sec || ""}</td>
-            <td>${formData.hvLv_ratio || ""}</td>
+            <td><strong>LV2-Earth</strong></td>
+            <td>${formData.lv2Earth_15sec || ""}</td>
+            <td>${formData.lv2Earth_60sec || ""}</td>
+            <td>${formData.lv2Earth_ratio || ""}</td>
+          </tr>
+
+          <tr>
+            <td><strong>HV-LV1</strong></td>
+            <td>${formData.hvLv1_15sec || ""}</td>
+            <td>${formData.hvLv1_60sec || ""}</td>
+            <td>${formData.hvLv1_ratio || ""}</td>
+          </tr>
+
+          <tr>
+            <td><strong>HV-LV2</strong></td>
+            <td>${formData.hvLv2_15sec || ""}</td>
+            <td>${formData.hvLv2_60sec || ""}</td>
+            <td>${formData.hvLv2_ratio || ""}</td>
+          </tr>
+
+          <tr>
+            <td><strong>LV1-LV2</strong></td>
+            <td>${formData.lv1Lv2_15sec || ""}</td>
+            <td>${formData.lv1Lv2_60sec || ""}</td>
+            <td>${formData.lv1Lv2_ratio || ""}</td>
           </tr>
         </tbody>
       </table>
@@ -1393,46 +1455,69 @@ function generateStage2Form2(formData) {
       <table class="form-table">
         <tbody>
           <tr>
-            <td><strong>BDV (KV)</strong></td>
+            <td><strong>BDV: _______ KV</strong></td>
             <td>${formData.bdv || ""}</td>
           </tr>
           <tr>
-            <td><strong>Water Content (PPM)</strong></td>
+            <td><strong>Water Content: _______ PPM</strong></td>
             <td>${formData.waterContent || ""}</td>
           </tr>
         </tbody>
       </table>
 
-      ${generatePhotoThumbnails(formData.photos)}
+      <div class="photo-upload-section" style="page-break-inside: avoid;">
+        <h4>Note: - Photographs to be added: -</h4>
+        <p style="text-align: center; margin-bottom: 20px; font-weight: 600;">
+          Dew Point, dry air attached photo on transformer, Lead clearances, anabond on both bushing's thimble,
+          radiators, flashing, conservator internal inspection, full transformer photo.
+        </p>
+      </div>
+
+      ${generatePhotoThumbnails(formData.photos, photoBaseUrl)}
     </div>
   `;
 }
 
-// Generate Stage 3 Form 1 - Vacuum Cycle Recording
+/**
+ * Stage3Form1 (VConnect) - DETAILS FOR RECORDING OF VACUUM CYCLE
+ * Kept in sync with UI component `Stage3Form1` in:
+ * `frontend/src/components/VConnected63MVATransformerStageReviewPanel.js`
+ */
 function generateStage3Form1(formData) {
   if (!formData) return "";
 
-  // Generate vacuum records rows (15 rows to match frontend)
-  const vacuumRows = (formData.vacuumRecords || Array(15).fill({})).map((record, index) => `
-    <tr>
-      <td>${record.date || ""}</td>
-      <td>${record.time || ""}</td>
-      <td>${record.vacuumLevelMic || ""}</td>
-      <td>${record.vacuumLevelTransformer || ""}</td>
-    </tr>
-  `).join("");
+  const photoBaseUrl = process.env.BACKEND_API_BASE_URL || "";
 
-  // Generate pressure test rows (5 rows to match frontend)
-  const pressureTestRows = (formData.pressureTests || Array(5).fill({})).map((test, index) => `
-    <tr>
-      <td><strong>${index + 1}</strong></td>
-      <td>${test.timeStarted || ""}</td>
-      <td>${test.pressure || ""}</td>
-      <td>${test.tempAmb || ""}</td>
-      <td>${test.tempOti || ""}</td>
-      <td>${test.tempWti || ""}</td>
-    </tr>
-  `).join("");
+  const vacuumRecords = Array.isArray(formData?.vacuumRecords) ? formData.vacuumRecords : [];
+  const pressureTests = Array.isArray(formData?.pressureTests) ? formData.pressureTests : [];
+
+  const vacuumRows = vacuumRecords
+    .map(
+      (r) => `
+        <tr>
+          <td>${r.date || ""}</td>
+          <td>${r.time || ""}</td>
+          <td>${r.vacuumLevelMic || ""}</td>
+          <td>${r.vacuumLevelTransformer || ""}</td>
+        </tr>
+      `
+    )
+    .join("");
+
+  const pressureRows = pressureTests
+    .map(
+      (t, idx) => `
+        <tr>
+          <td><strong>${idx + 1}</strong></td>
+          <td>${t.timeStarted || ""}</td>
+          <td>${t.pressure || ""}</td>
+          <td>${t.tempAmb || ""}</td>
+          <td>${t.tempOti || ""}</td>
+          <td>${t.tempWti || ""}</td>
+        </tr>
+      `
+    )
+    .join("");
 
   return `
     <div class="form-container">
@@ -1444,22 +1529,25 @@ function generateStage3Form1(formData) {
         <tbody>
           <tr>
             <td><strong>Vacuum hose Checked By</strong></td>
-            <td colspan="3">${formData.vacuumHoseCheckedBy || ""}</td>
+            <td>${formData.vacuumHoseCheckedBy || ""}</td>
           </tr>
           <tr>
             <td><strong>Vacuum hose Connected To</strong></td>
-            <td colspan="3">${formData.vacuumHoseConnectedTo || ""} Valve.</td>
+            <td>${formData.vacuumHoseConnectedTo || ""} <span style="margin-left: 10px;">Valve.</span></td>
           </tr>
           <tr>
             <td><strong>Evacuation Started At</strong></td>
-            <td>${formData.evacuationStartedAt || ""} Hrs. On ${formData.evacuationStartedOn || ""}</td>
+            <td>
+              ${formData.evacuationStartedAt || ""} <span style="margin-left: 10px;">Hrs. On</span>
+              <span style="margin-left: 10px;">${formData.evacuationStartedOn || ""}</span>
+            </td>
           </tr>
         </tbody>
       </table>
 
       <table class="form-table" style="margin-top: 30px;">
         <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+          <tr>
             <th>DATE</th>
             <th>TIME</th>
             <th>Vacuum Level (mmHg or torr)</th>
@@ -1472,70 +1560,84 @@ function generateStage3Form1(formData) {
       </table>
 
       <h3 style="margin-top: 40px; text-align: center;">
-        IR After oil Topping up To Conservator Temp OTI ${formData.tempOTI || "......."}°C WTI ${formData.tempWTI || "............."}°C, AMB ${formData.tempAMB || "............."}°C RANGE ONLY 1 KV
+        IR After oil Topping up To Conservator Temp OTI .......°C WTI.............°C, AMB .............°C RANGE ONLY 1 KV
       </h3>
-
-      <table class="form-table">
-        <tbody>
-          <tr>
-            <td><strong>Temp OTI °C</strong></td>
-            <td>${formData.tempOTI || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>Temp WTI °C</strong></td>
-            <td>${formData.tempWTI || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>Temp AMB °C</strong></td>
-            <td>${formData.tempAMB || ""}</td>
-          </tr>
-        </tbody>
-      </table>
 
       <table class="form-table" style="margin-top: 30px;">
         <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+          <tr>
             <th></th>
-            <th>10 Sec (MΩ)</th>
-            <th>60 Sec (MΩ)</th>
+            <th>
+              10 Sec <br />
+              (MΩ)
+            </th>
+            <th>
+              60 Sec <br />
+              (MΩ)
+            </th>
             <th>Ratio of IR 60/IR 10</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>HV-Earth</strong></td>
-            <td>${formData.hvEarth_10sec || ""}</td>
+            <td>${formData.hvEarth_15sec || ""}</td>
             <td>${formData.hvEarth_60sec || ""}</td>
             <td>${formData.hvEarth_ratio || ""}</td>
           </tr>
+
           <tr>
-            <td><strong>LV-Earth</strong></td>
-            <td>${formData.lvEarth_10sec || ""}</td>
-            <td>${formData.lvEarth_60sec || ""}</td>
-            <td>${formData.lvEarth_ratio || ""}</td>
+            <td><strong>LV1-Earth</strong></td>
+            <td>${formData.lv1Earth_15sec || ""}</td>
+            <td>${formData.lv1Earth_60sec || ""}</td>
+            <td>${formData.lv1Earth_ratio || ""}</td>
           </tr>
+
           <tr>
-            <td><strong>HV-LV</strong></td>
-            <td>${formData.hvLv_10sec || ""}</td>
-            <td>${formData.hvLv_60sec || ""}</td>
-            <td>${formData.hvLv_ratio || ""}</td>
+            <td><strong>LV2-Earth</strong></td>
+            <td>${formData.lv2Earth_15sec || ""}</td>
+            <td>${formData.lv2Earth_60sec || ""}</td>
+            <td>${formData.lv2Earth_ratio || ""}</td>
+          </tr>
+
+          <tr>
+            <td><strong>HV-LV1</strong></td>
+            <td>${formData.hvLv1_15sec || ""}</td>
+            <td>${formData.hvLv1_60sec || ""}</td>
+            <td>${formData.hvLv1_ratio || ""}</td>
+          </tr>
+
+          <tr>
+            <td><strong>HV-LV2</strong></td>
+            <td>${formData.hvLv2_15sec || ""}</td>
+            <td>${formData.hvLv2_60sec || ""}</td>
+            <td>${formData.hvLv2_ratio || ""}</td>
+          </tr>
+
+          <tr>
+            <td><strong>LV1-LV2</strong></td>
+            <td>${formData.lv1Lv2_15sec || ""}</td>
+            <td>${formData.lv1Lv2_60sec || ""}</td>
+            <td>${formData.lv1Lv2_ratio || ""}</td>
           </tr>
         </tbody>
       </table>
 
       <h4 style="margin-top: 40px; text-align: center;">PRESSURE TEST REPORT</h4>
-      <div style="margin-bottom: 10px;">
-        <strong>DATE: </strong>${formData.pressureTestDate || ""}
+
+      <div style="text-align: right; margin-bottom: 8px;">
+        <strong>DATE :- </strong> ${formData.pressureTestDate || ""}
       </div>
+
       <table class="form-table">
         <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+          <tr>
             <th>Sr. No.</th>
             <th>TIME STARTED</th>
             <th>PRESSURE Kg/cm²</th>
             <th colspan="3">TEMP°C</th>
           </tr>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+          <tr>
             <th></th>
             <th></th>
             <th></th>
@@ -1545,32 +1647,47 @@ function generateStage3Form1(formData) {
           </tr>
         </thead>
         <tbody>
-          ${pressureTestRows}
+          ${pressureRows}
         </tbody>
       </table>
 
-      ${generatePhotoThumbnails(formData.photos)}
+      <div class="photo-upload-section" style="page-break-inside: avoid;">
+        <h4>Note: - Photographs to be added: -</h4>
+        <p style="text-align: center; margin-bottom: 20px; font-weight: 600;">
+          Mec Lead Gauge photo, vacuum gauge photo, pressure gauge
+        </p>
+      </div>
+
+      ${generatePhotoThumbnails(formData.photos, photoBaseUrl)}
     </div>
   `;
 }
 
-// Generate Stage 4 Form 1 - Record for Oil Filtration (matching frontend UI exactly)
+/**
+ * Stage4Form1 (VConnect) - RECORD FOR OIL FILTRATION / Oil filtration of Main Tank
+ * Kept in sync with UI component `Stage4Form1` in:
+ * `frontend/src/components/VConnected63MVATransformerStageReviewPanel.js`
+ */
 function generateStage4Form1(formData) {
   if (!formData) return "";
 
   const photoBaseUrl = process.env.BACKEND_API_BASE_URL || "";
+  const filtrationRecords = Array.isArray(formData?.filtrationRecords) ? formData.filtrationRecords : [];
 
-  // Generate filtration records rows (30 rows to match frontend)
-  const filtrationRows = (formData.filtrationRecords || Array(30).fill({})).map((record, index) => `
-    <tr>
-      <td>${record.date || ""}</td>
-      <td>${record.time || ""}</td>
-      <td>${record.vacuumLevel || ""}</td>
-      <td>${record.mcOutletTemp || ""}</td>
-      <td>${record.otiTemp || ""}</td>
-      <td>${record.wtiTemp || ""}</td>
-    </tr>
-  `).join("");
+  const filtrationRows = filtrationRecords
+    .map(
+      (record) => `
+        <tr>
+          <td>${record.date || ""}</td>
+          <td>${record.time || ""}</td>
+          <td>${record.vacuumLevel || ""}</td>
+          <td>${record.mcOutletTemp || ""}</td>
+          <td>${record.otiTemp || ""}</td>
+          <td>${record.wtiTemp || ""}</td>
+        </tr>
+      `
+    )
+    .join("");
 
   return `
     <div class="form-container">
@@ -1581,7 +1698,7 @@ function generateStage4Form1(formData) {
 
       <table class="form-table">
         <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+          <tr>
             <th>Date</th>
             <th>Time</th>
             <th>Vacuum Level (mmHg or torr)</th>
@@ -1595,54 +1712,54 @@ function generateStage4Form1(formData) {
         </tbody>
       </table>
 
+      <div class="photo-upload-section" style="page-break-inside: avoid;">
+        <h4>Note: - Photographs to be added: -</h4>
+        <p style="text-align: center; margin-bottom: 20px; font-weight: 600;">Oil Filtration Process</p>
+      </div>
+
       ${generatePhotoThumbnails(formData.photos, photoBaseUrl)}
     </div>
   `;
 }
 
-// Generate Stage 4 Form 2 - IR Value before radiator/combine filtration & Oil filtration of Cooler Bank (matching frontend UI exactly)
+/**
+ * Stage4Form2 (VConnect) - IR Value before radiator/combine filtration + Oil filtration of Cooler Bank
+ * Kept in sync with UI component `Stage4Form2` in:
+ * `frontend/src/components/VConnected63MVATransformerStageReviewPanel.js`
+ */
 function generateStage4Form2(formData) {
   if (!formData) return "";
 
-  // Generate cooler bank filtration records (15 rows to match frontend)
-  const coolerBankRows = (formData.coolerBankRecords || Array(15).fill({}))
-    .map((record, index) => `
-      <tr>
-        <td>${record.date || ""}</td>
-        <td>${record.time || ""}</td>
-        <td>${record.vacuumLevel || ""}</td>
-        <td>${record.mcOutletTemp || ""}</td>
-        <td>${record.otiTemp || ""}</td>
-        <td>${record.wtiTemp || ""}</td>
-      </tr>
-    `).join("");
+  const photoBaseUrl = process.env.BACKEND_API_BASE_URL || "";
+  const coolerBankRecords = Array.isArray(formData?.coolerBankRecords) ? formData.coolerBankRecords : [];
+
+  const coolerBankRows = coolerBankRecords
+    .map(
+      (record) => `
+        <tr>
+          <td>${record.date || ""}</td>
+          <td>${record.time || ""}</td>
+          <td>${record.vacuumLevel || ""}</td>
+          <td>${record.mcOutletTemp || ""}</td>
+          <td>${record.otiTemp || ""}</td>
+          <td>${record.wtiTemp || ""}</td>
+        </tr>
+      `
+    )
+    .join("");
 
   return `
     <div class="form-container">
       <div class="company-header">
-        <h2>IR Value before radiator/combine filtration Temp OTI .......°C WTI.............°C, AMB .............°C RANGE ONLY 1 KV</h2>
+        <h2>
+          IR Value before radiator/combine filtration Temp OTI .......°C WTI.............°C, AMB .............°C RANGE
+          ONLY 1 KV
+        </h2>
       </div>
-
-      <table class="form-table">
-        <tbody>
-          <tr>
-            <td><strong>Temp OTI °C</strong></td>
-            <td>${formData.tempOTI || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>Temp WTI °C</strong></td>
-            <td>${formData.tempWTI || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>Temp AMB °C</strong></td>
-            <td>${formData.tempAMB || ""}</td>
-          </tr>
-        </tbody>
-      </table>
 
       <table class="form-table" style="margin-top: 30px;">
         <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+          <tr>
             <th></th>
             <th>10 Sec (MΩ)</th>
             <th>60 Sec (MΩ)</th>
@@ -1652,29 +1769,53 @@ function generateStage4Form2(formData) {
         <tbody>
           <tr>
             <td><strong>HV-Earth</strong></td>
-            <td>${formData.hvEarth_15sec || ""}</td>
+            <td>${formData.hvEarth_10sec || ""}</td>
             <td>${formData.hvEarth_60sec || ""}</td>
             <td>${formData.hvEarth_ratio || ""}</td>
           </tr>
+
           <tr>
-            <td><strong>LV-Earth</strong></td>
-            <td>${formData.lv1Earth_15sec || ""}</td>
+            <td><strong>LV1-Earth</strong></td>
+            <td>${formData.lv1Earth_10sec || ""}</td>
             <td>${formData.lv1Earth_60sec || ""}</td>
             <td>${formData.lv1Earth_ratio || ""}</td>
           </tr>
+
           <tr>
-            <td><strong>HV-LV</strong></td>
-            <td>${formData.hvLv1_15sec || ""}</td>
+            <td><strong>LV2-Earth</strong></td>
+            <td>${formData.lv2Earth_10sec || ""}</td>
+            <td>${formData.lv2Earth_60sec || ""}</td>
+            <td>${formData.lv2Earth_ratio || ""}</td>
+          </tr>
+
+          <tr>
+            <td><strong>HV-LV1</strong></td>
+            <td>${formData.hvLv1_10sec || ""}</td>
             <td>${formData.hvLv1_60sec || ""}</td>
             <td>${formData.hvLv1_ratio || ""}</td>
+          </tr>
+
+          <tr>
+            <td><strong>HV-LV2</strong></td>
+            <td>${formData.hvLv2_10sec || ""}</td>
+            <td>${formData.hvLv2_60sec || ""}</td>
+            <td>${formData.hvLv2_ratio || ""}</td>
+          </tr>
+
+          <tr>
+            <td><strong>LV1-LV2</strong></td>
+            <td>${formData.lv1Lv2_10sec || ""}</td>
+            <td>${formData.lv1Lv2_60sec || ""}</td>
+            <td>${formData.lv1Lv2_ratio || ""}</td>
           </tr>
         </tbody>
       </table>
 
       <h4 style="margin-top: 40px; text-align: center;">Oil filtration of Cooler Bank</h4>
+
       <table class="form-table">
         <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
+          <tr>
             <th>Date</th>
             <th>Time</th>
             <th>Vacuum Level (mmHg or torr)</th>
@@ -1688,23 +1829,28 @@ function generateStage4Form2(formData) {
         </tbody>
       </table>
 
-      ${generatePhotoThumbnails(formData.photos)}
+      <div class="photo-upload-section" style="page-break-inside: avoid;">
+        <h4>Note: - Photographs to be added: -</h4>
+        <p style="text-align: center; margin-bottom: 20px; font-weight: 600;">Cooler Bank Filtration Process</p>
+      </div>
+
+      ${generatePhotoThumbnails(formData.photos, photoBaseUrl)}
     </div>
   `;
 }
 
 /**
- * Stage4Form3 (Traction) - Oil filtration of Combine (Main Tank + Cooler bank)
- * This is kept in sync with UI component `Stage4Form3` in:
- * `frontend/src/components/TractionTransformerForms.js`
+ * Stage4Form3 (VConnect) - RECORD FOR OIL FILTRATION / Oil filtration of Combine (Main Tank + Cooler bank)
+ * Kept in sync with UI component `Stage4Form3` in:
+ * `frontend/src/components/VConnected63MVATransformerStageReviewPanel.js`
  */
 function generateStage4Form3(formData) {
   if (!formData) return "";
 
   const photoBaseUrl = process.env.BACKEND_API_BASE_URL || "";
+  const combineRecords = Array.isArray(formData?.combineRecords) ? formData.combineRecords : [];
 
-  // Match frontend: 15 combineRecords rows with same fields
-  const combineRows = (formData.combineRecords || Array(15).fill({}))
+  const combineRows = combineRecords
     .map(
       (record) => `
         <tr>
@@ -1741,6 +1887,11 @@ function generateStage4Form3(formData) {
           ${combineRows}
         </tbody>
       </table>
+
+      <div class="photo-upload-section" style="page-break-inside: avoid;">
+        <h4>Note: - Photographs to be added: -</h4>
+        <p style="text-align: center; margin-bottom: 20px; font-weight: 600;">Combine Filtration Process</p>
+      </div>
 
       ${generatePhotoThumbnails(formData.photos, photoBaseUrl)}
     </div>
@@ -3125,11 +3276,12 @@ export function generateHTMLTemplate(data, projectName, companyName) {
 
   // Generate content for all stages
   let stagesContent = "";
-  if (data.TractionData) {
+  // VConnect data is stored under `vConnectData` (NOT TractionData)
+  if (data.vConnectData) {
     for (let i = 1; i <= 7; i++) {
       const stageKey = `stage${i}`;
-      if (data.TractionData[stageKey]) {
-        stagesContent += generateStageContent(data.TractionData[stageKey], i, headerImage);
+      if (data.vConnectData[stageKey]) {
+        stagesContent += generateStageContent(data.vConnectData[stageKey], i, headerImage);
       }
     }
   }
@@ -3298,9 +3450,9 @@ export function generateHTMLTemplate(data, projectName, companyName) {
         ${lastPageImage ? `
         <div class="last-page" style="position: relative;">
           <img src="${lastPageImage}" alt="Last Page" style="width: 100%; height: 100%; object-fit: cover;" />
-          ${data.TractionData && data.TractionData.stage6 && data.TractionData.stage6.form1 ?
+          ${data.vConnectData && data.vConnectData.stage6 && data.vConnectData.stage6.form1 ?
             (() => {
-              const stage6Data = data.TractionData.stage6.form1;
+              const stage6Data = data.vConnectData.stage6.form1;
               return `
                 <!-- Overlay Stage 6 Form 1 data on LastPage.jpg -->
                 <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; font-family: Helvetica, Arial, sans-serif; font-size: 10px; color: #000000;">
