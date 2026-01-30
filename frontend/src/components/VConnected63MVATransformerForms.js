@@ -2832,7 +2832,7 @@ export function Stage2Form2({
   useEffect(() => {
     const fetchFormData = async () => {
       try {
-        const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage2Form2`, {
+        const response = await axios.get(`${BACKEND_API_BASE_URL}/api/vconnectData/getTable/Stage2Form2`, {
           params: {
             companyName: companyName,
             projectName: projectName,
@@ -3001,27 +3001,35 @@ export function Stage2Form2({
                 onChange={(e) => setFormData({ ...formData, make: e.target.value })}
               />
             </td>
-            <td rowSpan="4"></td>
+            <td rowSpan="4">
+              <input
+                type="text"
+                value={formData.insulationTesterDetails}
+                onChange={(e) => setFormData({ ...formData, insulationTesterDetails: e.target.value })}
+                placeholder="Enter insulation tester details"
+                style={{ width: "100%", height: "100%" }}
+              />
+            </td>
           </tr>
           <tr>
             <td>
-              <strong>NO. OF TAPS</strong>
+              <strong>Oil Temp. :</strong>
             </td>
             <td>
               <input
                 type="text"
-                value={formData.noOfTaps}
-                onChange={(e) => setFormData({ ...formData, noOfTaps: e.target.value })}
+                value={formData.oilTemp}
+                onChange={(e) => setFormData({ ...formData, oilTemp: e.target.value })}
               />
             </td>
             <td>
-              <strong>TYPE OF OCTC</strong>
+              <strong>Sr. No. :</strong>
             </td>
             <td>
               <input
                 type="text"
-                value={formData.typeOfOctc}
-                onChange={(e) => setFormData({ ...formData, typeOfOctc: e.target.value })}
+                value={formData.srNo}
+                onChange={(e) => setFormData({ ...formData, srNo: e.target.value })}
               />
             </td>
           </tr>
