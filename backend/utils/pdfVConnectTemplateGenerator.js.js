@@ -204,9 +204,9 @@ function generateDataTable(data, title = "") {
 }
 
 /**
- * Stage1Form1 (Traction) - Name Plate Details Transformer / Reactor
- * This is kept in sync with UI component `Stage1Form1` in:
- * `frontend/src/components/TractionTransformerForms.js`
+ * Stage1Form1 (VConnect) - Name Plate Details Transformer / Reactor
+ * Kept in sync with UI component `Stage1Form1` in:
+ * `frontend/src/components/VConnected63MVATransformerStageReviewPanel.js`
  */
 function generateStage1Form1(formData) {
   if (!formData) return "";
@@ -224,63 +224,73 @@ function generateStage1Form1(formData) {
           <tr>
             <td><strong>MAKE</strong></td>
             <td>${formData.make || ""}</td>
-            <td><strong>CURRENT HV (A)</strong></td>
+            <td><strong>CURRENT HV</strong></td>
             <td>${formData.currentHV || ""}</td>
           </tr>
+
           <tr>
             <td><strong>SR. NO.</strong></td>
             <td>${formData.srNo || ""}</td>
-            <td><strong>LV (A)</strong></td>
+            <td><strong>LV</strong></td>
             <td>${formData.currentLV || ""}</td>
           </tr>
+
           <tr>
             <td><strong>MVA Rating</strong></td>
             <td>${formData.mvaRating || ""}</td>
-            <td><strong>Temp. Rise over amb. Oil in °C</strong></td>
+            <td><strong>Temp. Rise over amb. Oil (°C)</strong></td>
             <td>${formData.tempRiseOilC || ""}</td>
           </tr>
+
           <tr>
             <td><strong>HV (KV)</strong></td>
             <td>${formData.hvKv || ""}</td>
-            <td><strong>Winding in °C</strong></td>
+            <td><strong>Winding (°C)</strong></td>
             <td>${formData.windingC || ""}</td>
           </tr>
+
           <tr>
             <td><strong>LV (KV)</strong></td>
             <td>${formData.lvKv || ""}</td>
             <td><strong>Oil Quantity</strong></td>
             <td>${formData.oilQuantity || ""}</td>
           </tr>
+
           <tr>
             <td><strong>% Impedance</strong></td>
             <td>${formData.impedancePercent || ""}</td>
             <td><strong>Weight of Core & Wdg.</strong></td>
             <td>${formData.weightCoreWdg || ""}</td>
           </tr>
+
           <tr>
             <td><strong>Year of Mfg.</strong></td>
             <td>${formData.yearOfMfg || ""}</td>
             <td><strong>TRANSPORTING WEIGHT</strong></td>
             <td>${formData.transportingWeight || ""}</td>
           </tr>
+
           <tr>
             <td><strong>NO. OF COOLING FAN</strong></td>
             <td>${formData.noOfCoolingFan || ""}</td>
             <td><strong>Total Weight</strong></td>
             <td>${formData.totalWeight || ""}</td>
           </tr>
+
           <tr>
-            <td></td>
-            <td></td>
+            <td><strong>NO OF OIL PUMP</strong></td>
+            <td>${formData.noOfOilPump || ""}</td>
             <td><strong>NO. OF RADIATORS</strong></td>
             <td>${formData.noOfRadiators || ""}</td>
           </tr>
+
           <tr>
             <td><strong>NO. OF TAPS</strong></td>
             <td>${formData.noOfTaps || ""}</td>
             <td><strong>MFG. OF OCTC</strong></td>
             <td>${formData.mfgOfOctc || ""}</td>
           </tr>
+
           <tr>
             <td><strong>TYPE OF OCTC</strong></td>
             <td>${formData.typeOfOctc || ""}</td>
@@ -290,48 +300,58 @@ function generateStage1Form1(formData) {
         </tbody>
       </table>
 
+      <div class="photo-upload-section" style="page-break-inside: avoid;">
+        <h4>Note: - Photographs to be added: -</h4>
+        <p style="text-align: center; margin-bottom: 20px; font-weight: 600;">
+          Transformer, Oil Level gauge, Wheel Locking, Transformer Foundation Level condition.
+        </p>
+      </div>
+
       ${generatePhotoThumbnails(formData.photos, photoBaseUrl)}
     </div>
   `;
 }
 
 /**
- * Stage1Form2 (Traction) - Protocol for Accessories Checking
- * This is kept in sync with UI component `Stage1Form2` in:
- * `frontend/src/components/TractionTransformerForms.js`
+ * Stage1Form2 (VConnect) - Accessories Checking
+ * Kept in sync with UI component `Stage1Form2` in:
+ * `frontend/src/components/VConnected63MVATransformerStageReviewPanel.js`
  */
 function generateStage1Form2(formData) {
   if (!formData) return "";
 
   const photoBaseUrl = process.env.BACKEND_API_BASE_URL || "";
 
-  // Must match the exact rows in TractionTransformerForms.js Stage1Form2
-  const accessoryItems = [
-    { id: 1, description: "HV bushing" },
-    { id: 2, description: "LV Bushing" },
-    { id: 3, description: "Radiators" },
-    { id: 4, description: "Buchholz" },
-    { id: 5, description: "PRV" },
-    { id: 6, description: "CPR" },
-    { id: 7, description: "Breather" },
-    { id: 8, description: "Bushing Connector" },
-    { id: 9, description: "FAN" },
-    { id: 10, description: "Turrents" },
-    { id: 11, description: "Valves" },
+  const defaultRows = [
+    { materialDescription: "HV bushing" },
+    { materialDescription: "LV Bushing" },
+    { materialDescription: "Radiators" },
+    { materialDescription: "Buchholz" },
+    { materialDescription: "PRV" },
+    { materialDescription: "CPR" },
+    { materialDescription: "Breather" },
+    { materialDescription: "Bushing Connector" },
+    { materialDescription: "Oil pump" },
+    { materialDescription: "RFBD" },
+    { materialDescription: "FAN" },
+    { materialDescription: "turrets" },
+    { materialDescription: "Valves" },
   ];
 
-  const accessoryRows = accessoryItems
-    .map((item) => {
-      const accessoryData = formData.accessories?.[item.id] || {};
+  const rows = Array.isArray(formData?.accessoriesRows) ? formData.accessoriesRows : [];
+
+  const bodyRows = defaultRows
+    .map((r, idx) => {
+      const row = rows[idx] || {};
       return `
         <tr>
-          <td>${item.id}</td>
-          <td>${accessoryData.packingCase || ""}</td>
-          <td><strong>${item.description}</strong></td>
-          <td>${accessoryData.qtyPerPL || ""}</td>
-          <td>${accessoryData.qtyReceived || ""}</td>
-          <td>${accessoryData.shortQty || ""}</td>
-          <td>${accessoryData.damagedQty || ""}</td>
+          <td style="text-align: center; font-weight: 700;">${idx + 1}</td>
+          <td>${row.packingCaseNumber || ""}</td>
+          <td style="font-weight: 700; padding: 10px 12px;">${r.materialDescription}</td>
+          <td>${row.qtyAsPerPL || ""}</td>
+          <td>${row.qtyReceived || ""}</td>
+          <td>${row.shortQty || ""}</td>
+          <td>${row.damagedQty || ""}</td>
         </tr>
       `;
     })
@@ -340,1018 +360,857 @@ function generateStage1Form2(formData) {
   return `
     <div class="form-container">
       <div class="company-header">
-        <h2>PROTOCOL FOR ACCESSORIES CHECKING.</h2>
+        <h2>ACCESSORIES CHECKING</h2>
       </div>
 
-      <table class="form-table">
+      <table class="form-table" style="table-layout: fixed;">
         <thead>
           <tr>
-            <th>No</th>
-            <th>Packing case Number</th>
-            <th>Material Description</th>
-            <th>Qty as per P. L.</th>
-            <th>Qty. Received</th>
-            <th>Short Qty</th>
-            <th>Damaged Qty.</th>
+            <th style="width: 6%;">No</th>
+            <th style="width: 19%;">Packing case Number</th>
+            <th style="width: 20%;">Material Description</th>
+            <th style="width: 13%;">Qty as per P. L</th>
+            <th style="width: 13%;">Qty. Received</th>
+            <th style="width: 13%;">Short Qty</th>
+            <th style="width: 16%;">Damaged Qty.</th>
           </tr>
         </thead>
         <tbody>
-          ${accessoryRows}
+          ${bodyRows}
         </tbody>
       </table>
+
+      <div class="photo-upload-section" style="page-break-inside: avoid;">
+        <h4>Note: - Photographs to be added: -</h4>
+        <p style="text-align: center; margin-bottom: 20px; font-weight: 600;">Accessories</p>
+      </div>
 
       ${generatePhotoThumbnails(formData.photos, photoBaseUrl)}
     </div>
   `;
 }
 
-// Generate Stage 1 Form 3 - Core Insulation Check
+/**
+ * Stage1Form3 (VConnect) - Core Insulation + Equipment + Safety
+ * Kept in sync with UI component `Stage1Form3` in:
+ * `frontend/src/components/VConnected63MVATransformerStageReviewPanel.js`
+ */
 function generateStage1Form3(formData) {
   if (!formData) return "";
 
+  const photoBaseUrl = process.env.BACKEND_API_BASE_URL || "";
+
+  const defaultEquipmentItems = [
+    { srNo: 2, description: "Whether the Filter Machine is Available", ratingHint: "(Yes/No)" },
+    { srNo: 3, description: "Capacity of Filter Machine", ratingHint: "" },
+    { srNo: 4, description: "Capacity of the Vacuum Pump to be used.", ratingHint: "" },
+    { srNo: 5, description: "Whether the Reservoir is Available with valves and a breather.", ratingHint: "" },
+    { srNo: 6, description: "Capacity of Reservoirs.", ratingHint: "" },
+    { srNo: 8, description: "Hose Pipes for the Filtration Process.", ratingHint: "(Yes/No)" },
+    { srNo: 9, description: "Whether Crane is Available in good condition", ratingHint: "" },
+    { srNo: 10, description: "Dry air", ratingHint: "(Yes/No)" },
+    { srNo: 11, description: "Dew point meter", ratingHint: "(Yes/No)" },
+    { srNo: 12, description: "Mec Leod gauge", ratingHint: "(Yes/No)" },
+  ];
+
+  const defaultSafetyItems = [
+    { description: "Fire extinguisher/ Fire sand bucket" },
+    { description: "First aid kit" },
+    { description: "PPE for the working team of ETC agency, like- Safety shoes, Helmet, etc..." },
+  ];
+
+  const equipmentRows = Array.isArray(formData?.equipment) ? formData.equipment : [];
+  const safetyRows = Array.isArray(formData?.safety) ? formData.safety : [];
+
+  const equipmentTableRows = defaultEquipmentItems
+    .map((it, idx) => {
+      const row = equipmentRows[idx] || {};
+      return `
+        <tr>
+          <td style="text-align: center; font-weight: 800;">${it.srNo}.</td>
+          <td style="font-weight: 800; padding: 10px 12px;">${it.description}</td>
+          <td>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              ${it.ratingHint ? `<div style="font-weight: 700; color: #111;">${it.ratingHint}</div>` : ""}
+              <div>${row.ratingCapacity || ""}</div>
+            </div>
+          </td>
+          <td>${row.checkedBy || ""}</td>
+        </tr>
+      `;
+    })
+    .join("");
+
+  const safetyTableRows = defaultSafetyItems
+    .map((it, idx) => {
+      const row = safetyRows[idx] || {};
+      return `
+        <tr>
+          <td style="font-weight: 800; padding: 10px 12px;">${it.description}</td>
+          <td>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <div style="font-weight: 700;">(Yes/No)</div>
+              <div>${row.confirmation || ""}</div>
+            </div>
+          </td>
+        </tr>
+      `;
+    })
+    .join("");
+
   return `
     <div class="form-container">
-      <div class="company-header">
-        <h2>CORE INSULATION CHECK: At 1KV &gt; 500 MΩ</h2>
+      <div style="margin-top: 10px; text-align: center; font-weight: 900; font-size: 18px;">
+        CORE INSULATION CHECK:&nbsp;&nbsp; At 1 KV > 500 MΩ
       </div>
 
-      <table class="form-table">
+      <table class="form-table" style="margin-top: 12px; table-layout: fixed;">
         <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th></th>
-            <th>Obtained Value</th>
-            <th>Remarks</th>
+          <tr>
+            <th style="width: 38%;"></th>
+            <th style="width: 31%;">Obtained Value</th>
+            <th style="width: 31%;">Remarks</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Between Core - Frame</strong></td>
-            <td>${formData.coreFrame_obtainedValue || ""}</td>
-            <td>${formData.coreFrame_remarks || ""}</td>
+            <td style="font-weight: 800;">Between Core – frame</td>
+            <td>${formData?.coreInsulation?.coreToFrame?.obtainedValue || ""}</td>
+            <td>${formData?.coreInsulation?.coreToFrame?.remarks || ""}</td>
           </tr>
+
           <tr>
-            <td><strong>Between Frame - Tank</strong></td>
-            <td>${formData.frameTank_obtainedValue || ""}</td>
-            <td>${formData.frameTank_remarks || ""}</td>
+            <td style="font-weight: 800;">Between Frame – tank</td>
+            <td>${formData?.coreInsulation?.frameToTank?.obtainedValue || ""}</td>
+            <td>${formData?.coreInsulation?.frameToTank?.remarks || ""}</td>
           </tr>
+
           <tr>
-            <td><strong>Between Core - Tank</strong></td>
-            <td>${formData.coreTank_obtainedValue || ""}</td>
-            <td>${formData.coreTank_remarks || ""}</td>
+            <td style="font-weight: 800;">Between core – tank</td>
+            <td>${formData?.coreInsulation?.coreToTank?.obtainedValue || ""}</td>
+            <td>${formData?.coreInsulation?.coreToTank?.remarks || ""}</td>
           </tr>
         </tbody>
       </table>
 
-      <h4 style="margin-top: 30px;"><strong>CHECKLIST FOR CONFORMING AVAILABILITY OF EQUIPMENT AT SITE</strong></h4>
-      <table class="form-table" style="margin-top: 20px;">
+      <div style="margin-top: 28px; text-align: center; font-weight: 900; font-size: 16px;">
+        CHECKLIST FOR CONFORMING AVAILABILITY OF EQUIPMENT AT SITE
+      </div>
+
+      <table class="form-table" style="margin-top: 12px; table-layout: fixed;">
         <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th style="width: 10%;"></th>
-            <th style="width: 60%;">Description</th>
-            <th style="width: 30%;">Rating/Capacity</th>
+          <tr>
+            <th style="width: 7%;"></th>
+            <th style="width: 48%;">Description</th>
+            <th style="width: 25%;">Rating/capacity</th>
+            <th style="width: 20%;">Checked by</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td><strong>1</strong></td>
-            <td><strong>Whether the Filter Machine is Available</strong></td>
-            <td>${formData.filterMachine || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>2</strong></td>
-            <td><strong>Capacity of Filter Machine</strong></td>
-            <td>${formData.filterMachineCapacity || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>3</strong></td>
-            <td><strong>Capacity of the Vacuum Pump to be used.</strong></td>
-            <td>${formData.vacuumPumpCapacity || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>4</strong></td>
-            <td><strong>Whether the Reservoir is Available with valves and a breather.</strong></td>
-            <td>${formData.reservoirAvailable || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>5</strong></td>
-            <td><strong>Capacity of Reservoirs</strong></td>
-            <td>${formData.reservoirCapacity || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>6</strong></td>
-            <td><strong>Hose Pipes for the Filtration Process.</strong></td>
-            <td>${formData.hosePipes || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>7</strong></td>
-            <td><strong>Whether Crane is Available in good condition</strong></td>
-            <td>${formData.craneAvailable || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>8</strong></td>
-            <td><strong>Dry air</strong></td>
-            <td>${formData.dryAir || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>9</strong></td>
-            <td><strong>Dew point meter</strong></td>
-            <td>${formData.dewPointMeter || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>10</strong></td>
-            <td><strong>Mec Leod gauge</strong></td>
-            <td>${formData.mecLeodGauge || ""}</td>
-          </tr>
+          ${equipmentTableRows}
         </tbody>
       </table>
 
-      <h4 style="margin-top: 30px;"><strong>SAFETY EQUIPMENT</strong></h4>
-      <table class="form-table" style="margin-top: 20px;">
+      <div style="margin-top: 18px; text-align: center; font-weight: 900;">SAFETY EQUIPMENT</div>
+
+      <table class="form-table" style="margin-top: 10px; table-layout: fixed;">
         <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th style="width: 70%;">Description</th>
+          <tr>
+            <th style="width: 70%;">Descriptions</th>
             <th style="width: 30%;">Confirmation</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td><strong>Fire extinguisher/Fire sand bucket</strong></td>
-            <td>${formData.fireExtinguisher || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>First aid kit</strong></td>
-            <td>${formData.firstAidKit || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>PPE for the working team of ETC agency, like - Safety shoes, Helmet, etc</strong></td>
-            <td>${formData.ppeEquipment || ""}</td>
-          </tr>
+          ${safetyTableRows}
         </tbody>
       </table>
 
-      ${generatePhotoThumbnails(formData.photos)}
+      <div class="photo-upload-section" style="page-break-inside: avoid;">
+        <h4>Note: - Photographs to be added: -</h4>
+        <p style="text-align: center; margin-bottom: 20px; font-weight: 600;">
+          Note: - Photographs to be added of Above-mentioned point. Dry Air Arrangement, dew point meter, Mec Leod gauge
+        </p>
+      </div>
+
+      ${generatePhotoThumbnails(formData.photos, photoBaseUrl)}
     </div>
   `;
 }
 
-// Generate Stage 1 Form 4 - Pre erection Ratio test of turret CTs
+/**
+ * Stage1Form4 (VConnect) - Pre erection Ratio test of turret CTs
+ * Kept in sync with UI component `Stage1Form4` in:
+ * `frontend/src/components/VConnected63MVATransformerStageReviewPanel.js`
+ */
 function generateStage1Form4(formData) {
   if (!formData) return "";
 
+  const photoBaseUrl = process.env.BACKEND_API_BASE_URL || "";
+  const currentPercentRows = [20, 40, 60, 80, 100];
+  const kneePercentRows = [20, 40, 60, 80, 100, 110];
+
+  const renderPhaseBlock = (title, phaseKey) => {
+    const ctRows = currentPercentRows
+      .map(
+        (p) => `
+          <tr>
+            <td style="font-weight: 700; text-align: center;">${p}%</td>
+            <td>${formData?.[phaseKey]?.ctRatioCoreS1S2?.[p]?.appliedPrimaryCurrentA || ""}</td>
+            <td>${formData?.[phaseKey]?.ctRatioCoreS1S2?.[p]?.measuredSecondaryCurrentA || ""}</td>
+          </tr>
+        `
+      )
+      .join("");
+
+    const kneeRows = kneePercentRows
+      .map(
+        (p) => `
+          <tr>
+            <td style="font-weight: 700; text-align: center;">${p}%</td>
+            <td>${formData?.[phaseKey]?.kneePointVoltage?.[p]?.appliedVoltage || ""}</td>
+            <td>${formData?.[phaseKey]?.kneePointVoltage?.[p]?.measuredCurrentA || ""}</td>
+          </tr>
+        `
+      )
+      .join("");
+
+    return `
+      <div style="margin-top: 26px;">
+        <table class="form-table">
+          <thead>
+            <tr>
+              <th style="width: 40%; text-align: left;">CT Ratio CORE – S1-S2</th>
+              <th style="width: 60%; text-align: center; font-size: 18px; font-weight: 900;">${title}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="2" style="padding: 0;">
+                <table class="form-table" style="margin-top: 0; border: none;">
+                  <thead>
+                    <tr>
+                      <th style="width: 20%;">Current %</th>
+                      <th style="width: 40%;">Applied primary Current (A)</th>
+                      <th style="width: 40%;">Measured secondary current (A)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${ctRows}
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="font-weight: 900; font-size: 18px; margin-top: 10px; margin-bottom: 6px;">Knee point Voltage</div>
+
+        <table class="form-table">
+          <thead>
+            <tr>
+              <th style="width: 30%;">Voltage %</th>
+              <th style="width: 35%;">Applied voltage</th>
+              <th style="width: 35%;">Measured current (mA)</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${kneeRows}
+          </tbody>
+        </table>
+      </div>
+    `;
+  };
+
   return `
     <div class="form-container">
       <div class="company-header">
-        <h2>Pre erection Ratio test of turret CTs</h2>
+        <h2 style="font-weight: 900;">Pre erection Ratio test of turret CTs</h2>
       </div>
 
-      <h3 style="text-align: center; margin-top: 30px;">CT Ratio CORE - S1-S2,S1-S3 Phase 1.1</h3>
+      ${renderPhaseBlock("Phase 1.1", "phase11")}
+      ${renderPhaseBlock("Phase 1.2", "phase12")}
 
-      <h4>CT Ratio Test</h4>
-      <table class="form-table">
-        <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Current %</th>
-            <th>Applied primary Current (A) S1-S2</th>
-            <th>Applied primary Current (A) S1-S3</th>
-            <th>Measured secondary current (A) S1-S2</th>
-            <th>Measured secondary current (A) S1-S3</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>20%</strong></td>
-            <td>${formData.phase31_20percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_20percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.phase31_20percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_20percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>40%</strong></td>
-            <td>${formData.phase31_40percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_40percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.phase31_40percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_40percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>60%</strong></td>
-            <td>${formData.phase31_60percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_60percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.phase31_60percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_60percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>80%</strong></td>
-            <td>${formData.phase31_80percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_80percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.phase31_80percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_80percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>100%</strong></td>
-            <td>${formData.phase31_100percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_100percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.phase31_100percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_100percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="photo-upload-section" style="page-break-inside: avoid;">
+        <h4>Note: - Photographs to be added: -</h4>
+        <p style="text-align: center; margin-bottom: 20px; font-weight: 600;">CT Ratio kit calibration</p>
+      </div>
 
-      <h4>Knee point Voltage</h4>
-      <table class="form-table">
-        <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Voltage %</th>
-            <th>Applied voltage S1-S2</th>
-            <th>Applied voltage S1-S3</th>
-            <th>Measured current (mA) S1-S2</th>
-            <th>Measured current (mA) S1-S3</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>20%</strong></td>
-            <td>${formData.phase31_knee_20percent_appliedVoltage_s1s2 || ""}</td>
-            <td>${formData.phase31_knee_20percent_appliedVoltage_s1s3 || ""}</td>
-            <td>${formData.phase31_knee_20percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_knee_20percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>40%</strong></td>
-            <td>${formData.phase31_knee_40percent_appliedVoltage_s1s2 || ""}</td>
-            <td>${formData.phase31_knee_40percent_appliedVoltage_s1s3 || ""}</td>
-            <td>${formData.phase31_knee_40percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_knee_40percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>60%</strong></td>
-            <td>${formData.phase31_knee_60percent_appliedVoltage_s1s2 || ""}</td>
-            <td>${formData.phase31_knee_60percent_appliedVoltage_s1s3 || ""}</td>
-            <td>${formData.phase31_knee_60percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_knee_60percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>80%</strong></td>
-            <td>${formData.phase31_knee_80percent_appliedVoltage_s1s2 || ""}</td>
-            <td>${formData.phase31_knee_80percent_appliedVoltage_s1s3 || ""}</td>
-            <td>${formData.phase31_knee_80percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_knee_80percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>100%</strong></td>
-            <td>${formData.phase31_knee_100percent_appliedVoltage_s1s2 || ""}</td>
-            <td>${formData.phase31_knee_100percent_appliedVoltage_s1s3 || ""}</td>
-            <td>${formData.phase31_knee_100percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_knee_100percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>110%</strong></td>
-            <td>${formData.phase31_knee_110percent_appliedVoltage_s1s2 || ""}</td>
-            <td>${formData.phase31_knee_110percent_appliedVoltage_s1s3 || ""}</td>
-            <td>${formData.phase31_knee_110percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_knee_110percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h3 style="text-align: center; margin-top: 40px;">Phase 1.2</h3>
-
-      <h4>CT Ratio CORE – S1-S2, S1-S3</h4>
-      <table class="form-table">
-        <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Current %</th>
-            <th>Applied primary Current (A) S1-S2</th>
-            <th>Applied primary Current (A) S1-S3</th>
-            <th>Measured secondary current (A) S1-S2</th>
-            <th>Measured secondary current (A) S1-S3</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>20%</strong></td>
-            <td>${formData.phase32_20percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_20percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.phase32_20percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_20percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>40%</strong></td>
-            <td>${formData.phase32_40percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_40percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.phase32_40percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_40percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>60%</strong></td>
-            <td>${formData.phase32_60percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_60percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.phase32_60percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_60percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>80%</strong></td>
-            <td>${formData.phase32_80percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_80percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.phase32_80percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_80percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>100%</strong></td>
-            <td>${formData.phase32_100percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_100percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.phase32_100percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_100percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h4>Knee point Voltage</h4>
-      <table class="form-table">
-        <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Voltage %</th>
-            <th>Applied voltage S1-S2</th>
-            <th>Applied voltage S1-S3</th>
-            <th>Measured current (mA) S1-S2</th>
-            <th>Measured current (mA) S1-S3</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>20%</strong></td>
-            <td>${formData.phase32_knee_20percent_appliedVoltage_s1s2 || ""}</td>
-            <td>${formData.phase32_knee_20percent_appliedVoltage_s1s3 || ""}</td>
-            <td>${formData.phase32_knee_20percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_knee_20percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>40%</strong></td>
-            <td>${formData.phase32_knee_40percent_appliedVoltage_s1s2 || ""}</td>
-            <td>${formData.phase32_knee_40percent_appliedVoltage_s1s3 || ""}</td>
-            <td>${formData.phase32_knee_40percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_knee_40percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>60%</strong></td>
-            <td>${formData.phase32_knee_60percent_appliedVoltage_s1s2 || ""}</td>
-            <td>${formData.phase32_knee_60percent_appliedVoltage_s1s3 || ""}</td>
-            <td>${formData.phase32_knee_60percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_knee_60percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>80%</strong></td>
-            <td>${formData.phase32_knee_80percent_appliedVoltage_s1s2 || ""}</td>
-            <td>${formData.phase32_knee_80percent_appliedVoltage_s1s3 || ""}</td>
-            <td>${formData.phase32_knee_80percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_knee_80percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>100%</strong></td>
-            <td>${formData.phase32_knee_100percent_appliedVoltage_s1s2 || ""}</td>
-            <td>${formData.phase32_knee_100percent_appliedVoltage_s1s3 || ""}</td>
-            <td>${formData.phase32_knee_100percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_knee_100percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>110%</strong></td>
-            <td>${formData.phase32_knee_110percent_appliedVoltage_s1s2 || ""}</td>
-            <td>${formData.phase32_knee_110percent_appliedVoltage_s1s3 || ""}</td>
-            <td>${formData.phase32_knee_110percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_knee_110percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      ${generatePhotoThumbnails(formData.photos)}
+      ${generatePhotoThumbnails(formData.photos, photoBaseUrl)}
     </div>
   `;
 }
 
-// Generate Stage 1 Form 5 - Pre erection Ratio test of turret CTs (Phase 2.1, 2.2, and WTI)
+/**
+ * Stage1Form5 (VConnect) - Pre erection Ratio test of turret CTs (Phase 2.1 & 2.2)
+ * Kept in sync with UI component `Stage1Form5` in:
+ * `frontend/src/components/VConnected63MVATransformerStageReviewPanel.js`
+ */
 function generateStage1Form5(formData) {
   if (!formData) return "";
 
+  const photoBaseUrl = process.env.BACKEND_API_BASE_URL || "";
+  const currentPercentRows = [20, 40, 60, 80, 100];
+  const kneePercentRows = [20, 40, 60, 80, 100, 110];
+
+  const renderPhaseBlock = (title, phaseKey) => {
+    const ctRows = currentPercentRows
+      .map(
+        (p) => `
+          <tr>
+            <td style="font-weight: 700; text-align: center;">${p}%</td>
+            <td>${formData?.[phaseKey]?.ctRatioCoreS1S2?.[p]?.appliedPrimaryCurrentA || ""}</td>
+            <td>${formData?.[phaseKey]?.ctRatioCoreS1S2?.[p]?.measuredSecondaryCurrentA || ""}</td>
+          </tr>
+        `
+      )
+      .join("");
+
+    const kneeRows = kneePercentRows
+      .map(
+        (p) => `
+          <tr>
+            <td style="font-weight: 700; text-align: center;">${p}%</td>
+            <td>${formData?.[phaseKey]?.kneePointVoltage?.[p]?.appliedVoltage || ""}</td>
+            <td>${formData?.[phaseKey]?.kneePointVoltage?.[p]?.measuredCurrentA || ""}</td>
+          </tr>
+        `
+      )
+      .join("");
+
+    return `
+      <div style="margin-top: 26px;">
+        <table class="form-table">
+          <thead>
+            <tr>
+              <th style="width: 40%; text-align: left;">CT Ratio CORE – S1-S2</th>
+              <th style="width: 60%; text-align: center; font-size: 18px; font-weight: 900;">${title}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="2" style="padding: 0;">
+                <table class="form-table" style="margin-top: 0; border: none;">
+                  <thead>
+                    <tr>
+                      <th style="width: 20%;">Current %</th>
+                      <th style="width: 40%;">Applied primary Current (A)</th>
+                      <th style="width: 40%;">Measured secondary current (A)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${ctRows}
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="font-weight: 900; font-size: 18px; margin-top: 10px; margin-bottom: 6px;">Knee point Voltage</div>
+
+        <table class="form-table">
+          <thead>
+            <tr>
+              <th style="width: 30%;">Voltage %</th>
+              <th style="width: 35%;">Applied voltage</th>
+              <th style="width: 35%;">Measured current (mA)</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${kneeRows}
+          </tbody>
+        </table>
+      </div>
+    `;
+  };
+
   return `
     <div class="form-container">
       <div class="company-header">
-        <h2>Pre erection Ratio test of turret CTs</h2>
+        <h2 style="font-weight: 900;">Pre erection Ratio test of turret CTs</h2>
       </div>
 
-      {/* Phase 2.1 Section */}
-      <h3 style="text-align: center; margin-top: 30px;">Phase 2.1</h3>
+      ${renderPhaseBlock("Phase 2.1", "phase21")}
+      ${renderPhaseBlock("Phase 2.2", "phase22")}
 
-      <h4>CT Ratio CORE – S1-S2, S1-S3</h4>
-      <table class="form-table">
-        <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Current %</th>
-            <th>Applied primary Current (A) S1-S2</th>
-            <th>Applied primary Current (A) S1-S3</th>
-            <th>Measured secondary current (A) S1-S2</th>
-            <th>Measured secondary current (A) S1-S3</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>20%</strong></td>
-            <td>${formData.phase31_20percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_20percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.phase31_20percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_20percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>40%</strong></td>
-            <td>${formData.phase31_40percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_40percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.phase31_40percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_40percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>60%</strong></td>
-            <td>${formData.phase31_60percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_60percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.phase31_60percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_60percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>80%</strong></td>
-            <td>${formData.phase31_80percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_80percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.phase31_80percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_80percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>100%</strong></td>
-            <td>${formData.phase31_100percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_100percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.phase31_100percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_100percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="photo-upload-section" style="page-break-inside: avoid;">
+        <h4>Note: - Photographs to be added: -</h4>
+        <p style="text-align: center; margin-bottom: 20px; font-weight: 600;">CT Ratio kit calibration</p>
+      </div>
 
-      <h4>Knee point Voltage</h4>
-      <table class="form-table">
-        <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Voltage %</th>
-            <th>Applied Voltage S1-S2</th>
-            <th>Applied Voltage S1-S3</th>
-            <th>Measured current (mA) S1-S2</th>
-            <th>Measured current (mA) S1-S3</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>20%</strong></td>
-            <td>${formData.phase31_knee_20percent_appliedVoltage_s1s2 || ""}</td>
-            <td>${formData.phase31_knee_20percent_appliedVoltage_s1s3 || ""}</td>
-            <td>${formData.phase31_knee_20percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_knee_20percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>40%</strong></td>
-            <td>${formData.phase31_knee_40percent_appliedVoltage_s1s2 || ""}</td>
-            <td>${formData.phase31_knee_40percent_appliedVoltage_s1s3 || ""}</td>
-            <td>${formData.phase31_knee_40percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_knee_40percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>60%</strong></td>
-            <td>${formData.phase31_knee_60percent_appliedVoltage_s1s2 || ""}</td>
-            <td>${formData.phase31_knee_60percent_appliedVoltage_s1s3 || ""}</td>
-            <td>${formData.phase31_knee_60percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_knee_60percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>80%</strong></td>
-            <td>${formData.phase31_knee_80percent_appliedVoltage_s1s2 || ""}</td>
-            <td>${formData.phase31_knee_80percent_appliedVoltage_s1s3 || ""}</td>
-            <td>${formData.phase31_knee_80percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_knee_80percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>100%</strong></td>
-            <td>${formData.phase31_knee_100percent_appliedVoltage_s1s2 || ""}</td>
-            <td>${formData.phase31_knee_100percent_appliedVoltage_s1s3 || ""}</td>
-            <td>${formData.phase31_knee_100percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_knee_100percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>110%</strong></td>
-            <td>${formData.phase31_knee_110percent_appliedVoltage_s1s2 || ""}</td>
-            <td>${formData.phase31_knee_110percent_appliedVoltage_s1s3 || ""}</td>
-            <td>${formData.phase31_knee_110percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase31_knee_110percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      {/* Phase 2.2 Section */}
-      <h3 style="text-align: center; margin-top: 40px;">Phase 2.2</h3>
-
-      <h4>CT Ratio CORE – S1-S2, S1-S3</h4>
-      <table class="form-table">
-        <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Current %</th>
-            <th>Applied primary Current (A) S1-S2</th>
-            <th>Applied primary Current (A) S1-S3</th>
-            <th>Measured secondary current (A) S1-S2</th>
-            <th>Measured secondary current (A) S1-S3</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>20%</strong></td>
-            <td>${formData.phase32_20percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_20percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.phase32_20percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_20percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>40%</strong></td>
-            <td>${formData.phase32_40percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_40percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.phase32_40percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_40percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>60%</strong></td>
-            <td>${formData.phase32_60percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_60percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.phase32_60percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_60percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>80%</strong></td>
-            <td>${formData.phase32_80percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_80percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.phase32_80percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_80percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>100%</strong></td>
-            <td>${formData.phase32_100percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_100percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.phase32_100percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_100percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h4>Knee point Voltage</h4>
-      <table class="form-table">
-        <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Voltage %</th>
-            <th>Applied voltage S1-S2</th>
-            <th>Applied voltage S1-S3</th>
-            <th>Measured current (mA) S1-S2</th>
-            <th>Measured current (mA) S1-S3</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>20%</strong></td>
-            <td>${formData.phase32_knee_20percent_appliedVoltage_s1s2 || ""}</td>
-            <td>${formData.phase32_knee_20percent_appliedVoltage_s1s3 || ""}</td>
-            <td>${formData.phase32_knee_20percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_knee_20percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>40%</strong></td>
-            <td>${formData.phase32_knee_40percent_appliedVoltage_s1s2 || ""}</td>
-            <td>${formData.phase32_knee_40percent_appliedVoltage_s1s3 || ""}</td>
-            <td>${formData.phase32_knee_40percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_knee_40percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>60%</strong></td>
-            <td>${formData.phase32_knee_60percent_appliedVoltage_s1s2 || ""}</td>
-            <td>${formData.phase32_knee_60percent_appliedVoltage_s1s3 || ""}</td>
-            <td>${formData.phase32_knee_60percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_knee_60percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>80%</strong></td>
-            <td>${formData.phase32_knee_80percent_appliedVoltage_s1s2 || ""}</td>
-            <td>${formData.phase32_knee_80percent_appliedVoltage_s1s3 || ""}</td>
-            <td>${formData.phase32_knee_80percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_knee_80percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>100%</strong></td>
-            <td>${formData.phase32_knee_100percent_appliedVoltage_s1s2 || ""}</td>
-            <td>${formData.phase32_knee_100percent_appliedVoltage_s1s3 || ""}</td>
-            <td>${formData.phase32_knee_100percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_knee_100percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>110%</strong></td>
-            <td>${formData.phase32_knee_110percent_appliedVoltage_s1s2 || ""}</td>
-            <td>${formData.phase32_knee_110percent_appliedVoltage_s1s3 || ""}</td>
-            <td>${formData.phase32_knee_110percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.phase32_knee_110percent_measuredCurrent_s1s3 || ""}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      {/* WTI Section */}
-      <h3 style="text-align: center; margin-top: 40px;">WTI</h3>
-
-      <h4>CT Ratio CORE - S1-S2, S1-S3, S1-S4, S1-S5, S1-S6, S1-S7</h4>
-      <table class="form-table">
-        <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Current %</th>
-            <th>Applied primary Current (A) S1-S2</th>
-            <th>Applied primary Current (A) S1-S3</th>
-            <th>Applied primary Current (A) S1-S4</th>
-            <th>Measured secondary current (A) S1-S2</th>
-            <th>Measured secondary current (A) S1-S3</th>
-            <th>Measured secondary current (A) S1-S4</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>20%</strong></td>
-            <td>${formData.wti_20percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.wti_20percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.wti_20percent_appliedCurrent_s1s4 || ""}</td>
-            <td>${formData.wti_20percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.wti_20percent_measuredCurrent_s1s3 || ""}</td>
-            <td>${formData.wti_20percent_measuredCurrent_s1s4 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>40%</strong></td>
-            <td>${formData.wti_40percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.wti_40percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.wti_40percent_appliedCurrent_s1s4 || ""}</td>
-            <td>${formData.wti_40percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.wti_40percent_measuredCurrent_s1s3 || ""}</td>
-            <td>${formData.wti_40percent_measuredCurrent_s1s4 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>60%</strong></td>
-            <td>${formData.wti_60percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.wti_60percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.wti_60percent_appliedCurrent_s1s4 || ""}</td>
-            <td>${formData.wti_60percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.wti_60percent_measuredCurrent_s1s3 || ""}</td>
-            <td>${formData.wti_60percent_measuredCurrent_s1s4 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>80%</strong></td>
-            <td>${formData.wti_80percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.wti_80percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.wti_80percent_appliedCurrent_s1s4 || ""}</td>
-            <td>${formData.wti_80percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.wti_80percent_measuredCurrent_s1s3 || ""}</td>
-            <td>${formData.wti_80percent_measuredCurrent_s1s4 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>100%</strong></td>
-            <td>${formData.wti_100percent_appliedCurrent_s1s2 || ""}</td>
-            <td>${formData.wti_100percent_appliedCurrent_s1s3 || ""}</td>
-            <td>${formData.wti_100percent_appliedCurrent_s1s4 || ""}</td>
-            <td>${formData.wti_100percent_measuredCurrent_s1s2 || ""}</td>
-            <td>${formData.wti_100percent_measuredCurrent_s1s3 || ""}</td>
-            <td>${formData.wti_100percent_measuredCurrent_s1s4 || ""}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h4>CT Ratio CORE - S1-S2, S1-S3, S1-S4, S1-S5, S1-S6, S1-S7</h4>
-      <table class="form-table">
-        <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th>Current %</th>
-            <th>Applied primary Current (A) S1-S5</th>
-            <th>Applied primary Current (A) S1-S6</th>
-            <th>Applied primary Current (A) S1-S7</th>
-            <th>Measured secondary current (A) S1-S5</th>
-            <th>Measured secondary current (A) S1-S6</th>
-            <th>Measured secondary current (A) S1-S7</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>20%</strong></td>
-            <td>${formData.wti_20percent_appliedCurrent_s1s5 || ""}</td>
-            <td>${formData.wti_20percent_appliedCurrent_s1s6 || ""}</td>
-            <td>${formData.wti_20percent_appliedCurrent_s1s7 || ""}</td>
-            <td>${formData.wti_20percent_measuredCurrent_s1s5 || ""}</td>
-            <td>${formData.wti_20percent_measuredCurrent_s1s6 || ""}</td>
-            <td>${formData.wti_20percent_measuredCurrent_s1s7 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>40%</strong></td>
-            <td>${formData.wti_40percent_appliedCurrent_s1s5 || ""}</td>
-            <td>${formData.wti_40percent_appliedCurrent_s1s6 || ""}</td>
-            <td>${formData.wti_40percent_appliedCurrent_s1s7 || ""}</td>
-            <td>${formData.wti_40percent_measuredCurrent_s1s5 || ""}</td>
-            <td>${formData.wti_40percent_measuredCurrent_s1s6 || ""}</td>
-            <td>${formData.wti_40percent_measuredCurrent_s1s7 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>60%</strong></td>
-            <td>${formData.wti_60percent_appliedCurrent_s1s5 || ""}</td>
-            <td>${formData.wti_60percent_appliedCurrent_s1s6 || ""}</td>
-            <td>${formData.wti_60percent_appliedCurrent_s1s7 || ""}</td>
-            <td>${formData.wti_60percent_measuredCurrent_s1s5 || ""}</td>
-            <td>${formData.wti_60percent_measuredCurrent_s1s6 || ""}</td>
-            <td>${formData.wti_60percent_measuredCurrent_s1s7 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>80%</strong></td>
-            <td>${formData.wti_80percent_appliedCurrent_s1s5 || ""}</td>
-            <td>${formData.wti_80percent_appliedCurrent_s1s6 || ""}</td>
-            <td>${formData.wti_80percent_appliedCurrent_s1s7 || ""}</td>
-            <td>${formData.wti_80percent_measuredCurrent_s1s5 || ""}</td>
-            <td>${formData.wti_80percent_measuredCurrent_s1s6 || ""}</td>
-            <td>${formData.wti_80percent_measuredCurrent_s1s7 || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>100%</strong></td>
-            <td>${formData.wti_100percent_appliedCurrent_s1s5 || ""}</td>
-            <td>${formData.wti_100percent_appliedCurrent_s1s6 || ""}</td>
-            <td>${formData.wti_100percent_appliedCurrent_s1s7 || ""}</td>
-            <td>${formData.wti_100percent_measuredCurrent_s1s5 || ""}</td>
-            <td>${formData.wti_100percent_measuredCurrent_s1s6 || ""}</td>
-            <td>${formData.wti_100percent_measuredCurrent_s1s7 || ""}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      ${generatePhotoThumbnails(formData.photos)}
+      ${generatePhotoThumbnails(formData.photos, photoBaseUrl)}
     </div>
   `;
 }
 
-// Generate Stage 1 Form 6 - Tan Delta and Capacitance Test on Bushing
+/**
+ * Stage1Form6 (VConnect) - Pre erection Ratio test of turret CTs (Phase 3.1, 3.2, WTI)
+ * Kept in sync with UI component `Stage1Form6` in:
+ * `frontend/src/components/VConnected63MVATransformerStageReviewPanel.js`
+ */
 function generateStage1Form6(formData) {
   if (!formData) return "";
 
+  const photoBaseUrl = process.env.BACKEND_API_BASE_URL || "";
+  const currentPercentRows = [20, 40, 60, 80, 100];
+  const kneePercentRows = [20, 40, 60, 80, 100, 110];
+
+  const renderPhaseBlock = (title, phaseKey) => {
+    const ctRows = currentPercentRows
+      .map(
+        (p) => `
+          <tr>
+            <td style="font-weight: 700; text-align: center;">${p}%</td>
+            <td>${formData?.[phaseKey]?.ctRatioCoreS1S2?.[p]?.appliedPrimaryCurrentA || ""}</td>
+            <td>${formData?.[phaseKey]?.ctRatioCoreS1S2?.[p]?.measuredSecondaryCurrentA || ""}</td>
+          </tr>
+        `
+      )
+      .join("");
+
+    const kneeRows = kneePercentRows
+      .map(
+        (p) => `
+          <tr>
+            <td style="font-weight: 700; text-align: center;">${p}%</td>
+            <td>${formData?.[phaseKey]?.kneePointVoltage?.[p]?.appliedVoltage || ""}</td>
+            <td>${formData?.[phaseKey]?.kneePointVoltage?.[p]?.measuredCurrentA || ""}</td>
+          </tr>
+        `
+      )
+      .join("");
+
+    return `
+      <div style="margin-top: 18px;">
+        <h3 style="text-align: center; margin-bottom: 8px; font-weight: 800;">${title}</h3>
+
+        <div style="font-weight: 800; margin-top: 10px; margin-bottom: 6px;">Ratio test</div>
+
+        <table class="form-table" style="margin-top: 8px;">
+          <thead>
+            <tr>
+              <th colspan="3" style="text-align: left;">
+                <span style="font-weight: 800;">CT Ratio CORE – S1-S2</span>
+              </th>
+            </tr>
+            <tr>
+              <th style="width: 20%;">Current %</th>
+              <th style="width: 40%;">Applied primary Current (A)</th>
+              <th style="width: 40%;">Measured secondary current (A)</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${ctRows}
+          </tbody>
+        </table>
+
+        <div style="font-weight: 900; font-size: 18px; margin-top: 10px; margin-bottom: 6px;">Knee point Voltage</div>
+
+        <table class="form-table">
+          <thead>
+            <tr>
+              <th style="width: 30%;">Voltage %</th>
+              <th style="width: 35%;">Applied voltage</th>
+              <th style="width: 35%;">Measured current (mA)</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${kneeRows}
+          </tbody>
+        </table>
+      </div>
+    `;
+  };
+
+  const renderWTIBlock = () => {
+    const rows = currentPercentRows
+      .map(
+        (p) => `
+          <tr>
+            <td style="font-weight: 700; text-align: center;">${p}%</td>
+            <td>${formData?.wti?.[p]?.appliedPrimaryCurrentA || ""}</td>
+            <td>${formData?.wti?.[p]?.measuredSecondaryCurrentS1S2A || ""}</td>
+            <td>${formData?.wti?.[p]?.measuredSecondaryCurrentS1S3A || ""}</td>
+            <td>${formData?.wti?.[p]?.measuredSecondaryCurrentS1S4A || ""}</td>
+          </tr>
+        `
+      )
+      .join("");
+
+    return `
+      <div style="margin-top: 18px;">
+        <h3 style="text-align: center; margin-bottom: 8px; font-weight: 900;">WTI</h3>
+
+        <table class="form-table" style="margin-top: 8px;">
+          <thead>
+            <tr>
+              <th colspan="5" style="text-align: left;">
+                <span style="font-weight: 800;">CT Ratio CORE - S1-S2, S1-S3, S1-S4</span>
+              </th>
+            </tr>
+            <tr>
+              <th style="width: 15%;">Current %</th>
+              <th style="width: 30%;">Applied primary Current (A)</th>
+              <th colspan="3" style="width: 55%;">Measured secondary current (A)</th>
+            </tr>
+            <tr>
+              <th></th>
+              <th></th>
+              <th style="width: 18%;">S1-S2</th>
+              <th style="width: 18%;">S1-S3</th>
+              <th style="width: 19%;">S1-S4</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows}
+          </tbody>
+        </table>
+      </div>
+    `;
+  };
+
   return `
     <div class="form-container">
       <div class="company-header">
-        <h2>TAN DELTA AND CAPACITANCE TEST ON BUSHING</h2>
+        <h2 style="font-weight: 900;">Pre erection Ratio test of turret CTs</h2>
+      </div>
+
+      ${renderPhaseBlock("Phase 3.1", "phase31")}
+      ${renderPhaseBlock("Phase 3.2", "phase32")}
+      ${renderWTIBlock()}
+
+      <div class="photo-upload-section" style="page-break-inside: avoid;">
+        <h4>Note: - Photographs to be added: -</h4>
+      </div>
+
+      ${generatePhotoThumbnails(formData.photos, photoBaseUrl)}
+    </div>
+  `;
+}
+
+/**
+ * Stage1Form7 (VConnect) - TEST REPORT (Tan Delta & Capacitance Test on Bushing)
+ * Kept in sync with UI component `Stage1Form7` in:
+ * `frontend/src/components/VConnected63MVATransformerStageReviewPanel.js`
+ */
+function generateStage1Form7(formData) {
+  if (!formData) return "";
+
+  const photoBaseUrl = process.env.BACKEND_API_BASE_URL || "";
+
+  const hvAt5kvRows = Array.isArray(formData.hvAt5kv) ? formData.hvAt5kv : [];
+  const hvAt10kvRows = Array.isArray(formData.hvAt10kv) ? formData.hvAt10kv : [];
+  const lvAt5kvRows = Array.isArray(formData.lvAt5kv) ? formData.lvAt5kv : [];
+  const lvAt10kvRows = Array.isArray(formData.lvAt10kv) ? formData.lvAt10kv : [];
+
+  const renderStatusRows = (rows) =>
+    rows
+      .map(
+        (row) => `
+          <tr>
+            <td style="text-align: center; font-weight: 800;">${row.phase || ""}</td>
+            <td>${row.tanDeltaPercent || ""}</td>
+            <td>${row.capacitancePf || ""}</td>
+            <td>${row.excitationCurrent || ""}</td>
+            <td>${row.dielectricLoss || ""}</td>
+          </tr>
+        `
+      )
+      .join("");
+
+  return `
+    <div class="form-container">
+      <div class="company-header">
+        <h2>TEST REPORT</h2>
+        <h3 style="margin-top: 6px; font-weight: 900;">TAN DELTA AND CAPACITANCE TEST ON BUSHING</h3>
       </div>
 
       <table class="form-table">
         <tbody>
           <tr>
-            <td><strong>METER USED</strong></td>
-            <td>${formData.meterUsed || ""}</td>
-            <td><strong>DATE</strong></td>
-            <td>${formData.date || ""}</td>
-            <td><strong>TIME</strong></td>
+            <td style="width: 25%; font-weight: 800;">METER USED</td>
+            <td style="width: 25%;">${formData.meterUsed || ""}</td>
+            <td style="width: 25%; font-weight: 800;">DATE:</td>
+            <td style="width: 25%;">${formData.date || ""}</td>
+          </tr>
+          <tr>
+            <td style="font-weight: 800;">MODEL & S. NO.</td>
+            <td>${formData.modelAndSerialNo || ""}</td>
+            <td style="font-weight: 800;">TIME :</td>
             <td>${formData.time || ""}</td>
           </tr>
           <tr>
-            <td><strong>MODEL & S. NO.</strong></td>
-            <td>${formData.modelSrNo || ""}</td>
-            <td><strong>WTI</strong></td>
+            <td style="font-weight: 800;"></td>
+            <td></td>
+            <td style="font-weight: 800;">WTI:</td>
             <td>${formData.wti || ""}</td>
-            <td><strong>OTI</strong></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 800;"></td>
+            <td></td>
+            <td style="font-weight: 800;">OTI:</td>
             <td>${formData.oti || ""}</td>
           </tr>
+
+          <tr>
+            <td style="width: 25%; font-weight: 800;">BUSHING SR. NO. (HV)</td>
+            <td style="width: 25%;">${formData.hvBushingSrNo || ""}</td>
+            <td style="width: 25%; font-weight: 800;">MAKE</td>
+            <td style="width: 25%;">${formData.hvBushingMake || ""}</td>
+          </tr>
+          <tr>
+            <td style="font-weight: 800;">BUSHING SR. NO. (LV)</td>
+            <td>${formData.lvBushingSrNo || ""}</td>
+            <td></td>
+            <td>${formData.lvBushingMake || ""}</td>
+          </tr>
         </tbody>
       </table>
 
-      <table class="form-table">
+      <table class="form-table" style="margin-top: 14px;">
         <thead>
           <tr>
-            <th></th>
-            <th>1.1</th>
-            <th>1.2</th>
+            <th style="width: 34%; text-align: left;">BUSHING SR. NO.HV</th>
+            <th style="width: 33%;">1.1</th>
+            <th style="width: 33%;">1.2</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>BUSHING SR. NO.HV</strong></td>
-            <td>${formData.hvBushing11_srNo || ""}</td>
-            <td>${formData.hvBushing12_srNo || ""}</td>
+            <td>${formData.bushingSrNoHv || ""}</td>
+            <td></td>
+            <td></td>
           </tr>
         </tbody>
       </table>
 
-      <h4>Status</h4>
-      <table class="form-table">
+      <div style="margin-top: 12px; font-weight: 900;">STATUS:</div>
+
+      <table class="form-table" style="margin-top: 10px;">
         <thead>
           <tr>
-            <th>AT 05 KV PHASE</th>
-            <th>TAN DELTA in %</th>
-            <th>CAPACITANCE (pF)</th>
-            <th>EXCITATION CURRENT (mA)</th>
-            <th>DIELECTRIC LOSS</th>
+            <th style="width: 16%;">AT 05 KV PHASE</th>
+            <th style="width: 21%;">TAN DELTA in %</th>
+            <th style="width: 21%;">CAPACITANCE (pF)</th>
+            <th style="width: 21%;">EXCITATION CURRENT (mA)</th>
+            <th style="width: 21%;">DIELECTRIC LOSS</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${renderStatusRows(hvAt5kvRows)}
+        </tbody>
+      </table>
+
+      <table class="form-table" style="margin-top: 10px;">
+        <thead>
+          <tr>
+            <th style="width: 16%;">AT 10 KV PHASE</th>
+            <th style="width: 21%;">TAN DELTA in %</th>
+            <th style="width: 21%;">CAPACITANCE (pF)</th>
+            <th style="width: 21%;">EXCITATION CURRENT (mA)</th>
+            <th style="width: 21%;">DIELECTRIC LOSS</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${renderStatusRows(hvAt10kvRows)}
+        </tbody>
+      </table>
+
+      <div style="margin-top: 26px; text-align: center; font-weight: 900; font-size: 16px;">
+        TYPE OF TEST – TAN DELTA AND CAPACITANCE TEST ON LV BUSHING
+      </div>
+
+      <table class="form-table" style="margin-top: 14px;">
+        <thead>
+          <tr>
+            <th style="width: 34%; text-align: left;">BUSHING SR. NO.LV</th>
+            <th style="width: 16.5%;">2.1</th>
+            <th style="width: 16.5%;">2.2</th>
+            <th style="width: 16.5%;">3.1</th>
+            <th style="width: 16.5%;">3.2</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>1.1</strong></td>
-            <td>${formData.hvBushing11_05kv_tanDelta || ""}</td>
-            <td>${formData.hvBushing11_05kv_capacitance || ""}</td>
-            <td>${formData.hvBushing11_05kv_excitationCurrent || ""}</td>
-            <td>${formData.hvBushing11_05kv_dielectricLoss || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>1.2</strong></td>
-            <td>${formData.hvBushing12_05kv_tanDelta || ""}</td>
-            <td>${formData.hvBushing12_05kv_capacitance || ""}</td>
-            <td>${formData.hvBushing12_05kv_excitationCurrent || ""}</td>
-            <td>${formData.hvBushing12_05kv_dielectricLoss || ""}</td>
+            <td>${formData.bushingSrNoLv || ""}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
           </tr>
         </tbody>
       </table>
 
-      <table class="form-table">
+      <div style="margin-top: 12px; font-weight: 900;">STATUS:</div>
+
+      <table class="form-table" style="margin-top: 10px;">
         <thead>
           <tr>
-            <th>AT 10 KV PHASE</th>
-            <th>TAN DELTA in %</th>
-            <th>CAPACITANCE (pF)</th>
-            <th>EXCITATION CURRENT (mA)</th>
-            <th>DIELECTRIC LOSS</th>
+            <th style="width: 16%;">AT 05 KV PHASE</th>
+            <th style="width: 21%;">TAN DELTA in %</th>
+            <th style="width: 21%;">CAPACITANCE (pF)</th>
+            <th style="width: 21%;">EXCITATION CURRENT (mA)</th>
+            <th style="width: 21%;">DIELECTRIC LOSS</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td><strong>1.1</strong></td>
-            <td>${formData.hvBushing11_10kv_tanDelta || ""}</td>
-            <td>${formData.hvBushing11_10kv_capacitance || ""}</td>
-            <td>${formData.hvBushing11_10kv_excitationCurrent || ""}</td>
-            <td>${formData.hvBushing11_10kv_dielectricLoss || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>1.2</strong></td>
-            <td>${formData.hvBushing12_10kv_tanDelta || ""}</td>
-            <td>${formData.hvBushing12_10kv_capacitance || ""}</td>
-            <td>${formData.hvBushing12_10kv_excitationCurrent || ""}</td>
-            <td>${formData.hvBushing12_10kv_dielectricLoss || ""}</td>
-          </tr>
+          ${renderStatusRows(lvAt5kvRows)}
         </tbody>
       </table>
 
-      <h3 style="text-align: center; margin-top: 40px;">TYPE OF TEST – TAN DELTA AND CAPACITANCE TEST ON LV BUSHING</h3>
-      <table class="form-table">
+      <table class="form-table" style="margin-top: 10px;">
         <thead>
           <tr>
-            <th></th>
-            <th>2.1</th>
-            <th>2.2</th>
+            <th style="width: 16%;">AT 10 KV PHASE</th>
+            <th style="width: 21%;">TAN DELTA in %</th>
+            <th style="width: 21%;">CAPACITANCE (pF)</th>
+            <th style="width: 21%;">EXCITATION CURRENT (mA)</th>
+            <th style="width: 21%;">DIELECTRIC LOSS</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td><strong>BUSHING SR. NO.LV</strong></td>
-            <td>${formData.lvBushing21_srNo || ""}</td>
-            <td>${formData.lvBushing22_srNo || ""}</td>
-          </tr>
+          ${renderStatusRows(lvAt10kvRows)}
         </tbody>
       </table>
 
-      <h4>Status</h4>
-      <table class="form-table">
-        <thead>
-          <tr>
-            <th>AT 05 KV PHASE</th>
-            <th>TAN DELTA in %</th>
-            <th>CAPACITANCE (pF)</th>
-            <th>EXCITATION CURRENT (mA)</th>
-            <th>DIELECTRIC LOSS</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>2.1</strong></td>
-            <td>${formData.lvBushing21_05kv_tanDelta || ""}</td>
-            <td>${formData.lvBushing21_05kv_capacitance || ""}</td>
-            <td>${formData.lvBushing21_05kv_excitationCurrent || ""}</td>
-            <td>${formData.lvBushing21_05kv_dielectricLoss || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>2.2</strong></td>
-            <td>${formData.lvBushing22_05kv_tanDelta || ""}</td>
-            <td>${formData.lvBushing22_05kv_capacitance || ""}</td>
-            <td>${formData.lvBushing22_05kv_excitationCurrent || ""}</td>
-            <td>${formData.lvBushing22_05kv_dielectricLoss || ""}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="photo-upload-section" style="page-break-inside: avoid;">
+        <h4>Note: - Photographs to be added: -</h4>
+        <p style="text-align: center; margin-bottom: 20px; font-weight: 600;">
+          Ten delta kit, calibration report, during tendelta of bushing photo
+        </p>
+      </div>
 
-      <table class="form-table">
-        <thead>
-          <tr>
-            <th>AT 10 KV PHASE</th>
-            <th>TAN DELTA in %</th>
-            <th>CAPACITANCE (pF)</th>
-            <th>EXCITATION CURRENT (mA)</th>
-            <th>DIELECTRIC LOSS</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>2.1</strong></td>
-            <td>${formData.lvBushing21_10kv_tanDelta || ""}</td>
-            <td>${formData.lvBushing21_10kv_capacitance || ""}</td>
-            <td>${formData.lvBushing21_10kv_excitationCurrent || ""}</td>
-            <td>${formData.lvBushing21_10kv_dielectricLoss || ""}</td>
-          </tr>
-          <tr>
-            <td><strong>2.2</strong></td>
-            <td>${formData.lvBushing22_10kv_tanDelta || ""}</td>
-            <td>${formData.lvBushing22_10kv_capacitance || ""}</td>
-            <td>${formData.lvBushing22_10kv_excitationCurrent || ""}</td>
-            <td>${formData.lvBushing22_10kv_dielectricLoss || ""}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      ${generatePhotoThumbnails(formData.photos)}
+      ${generatePhotoThumbnails(formData.photos, photoBaseUrl)}
     </div>
   `;
 }
 
-// Generate Stage 1 Form 7 - Record of Measurement of IR Values
-function generateStage1Form7(formData) {
+/**
+ * Stage1Form8 (VConnect) - RECORD OF MEASUREMENT OF IR VALUES (Before Erection)
+ * Kept in sync with UI component `Stage1Form8` in:
+ * `frontend/src/components/VConnected63MVATransformerStageReviewPanel.js`
+ */
+function generateStage1Form8(formData) {
   if (!formData) return "";
+
+  const photoBaseUrl = process.env.BACKEND_API_BASE_URL || "";
 
   return `
     <div class="form-container">
       <div class="company-header">
         <h2>RECORD OF MEASUREMENT OF IR VALUES</h2>
-        <h3>Before Erection</h3>
+        <h3 style="margin-top: 6px; font-weight: 900;">Before Erection</h3>
       </div>
 
       <table class="form-table">
         <tbody>
           <tr>
-            <td><strong>Date</strong></td>
-            <td>${formData.date || ""}</td>
-            <td><strong>Time</strong></td>
-            <td>${formData.time || ""}</td>
+            <td style="width: 12%; font-weight: 800;">Date :</td>
+            <td style="width: 20%;">${formData.date || ""}</td>
+            <td style="width: 12%; font-weight: 800;">Time :</td>
+            <td style="width: 20%;">${formData.time || ""}</td>
+            <td style="width: 36%; font-weight: 800; text-align: center;">Details of Insulation tester</td>
           </tr>
+
           <tr>
-            <td><strong>Amb Temp:</strong></td>
+            <td style="font-weight: 800;">Amb. Temp :</td>
             <td>${formData.ambTemp || ""}</td>
-            <td><strong>Make:</strong></td>
+            <td style="font-weight: 800;">Make :</td>
             <td>${formData.make || ""}</td>
+            <td rowspan="4">${formData.insulationTesterDetails || ""}</td>
           </tr>
+
           <tr>
-            <td><strong>Oil Temp:</strong></td>
+            <td style="font-weight: 800;">Oil Temp. :</td>
             <td>${formData.oilTemp || ""}</td>
-            <td><strong>Sr No:</strong></td>
+            <td style="font-weight: 800;">Sr. No. :</td>
             <td>${formData.srNo || ""}</td>
           </tr>
+
           <tr>
-            <td><strong>Wdg. Temp:</strong></td>
+            <td style="font-weight: 800;">Wdg. Temp. :</td>
             <td>${formData.wdgTemp || ""}</td>
-            <td><strong>Range:</strong></td>
+            <td style="font-weight: 800;">Range :</td>
             <td>${formData.range || ""}</td>
           </tr>
+
           <tr>
-            <td><strong>Relative Humidity</strong></td>
+            <td style="font-weight: 800;">Relative Humidity :</td>
             <td>${formData.relativeHumidity || ""}</td>
-            <td><strong>Voltage Level:</strong></td>
+            <td style="font-weight: 800;">Voltage Level :</td>
             <td>${formData.voltageLevel || ""}</td>
           </tr>
         </tbody>
       </table>
 
-      <table class="form-table" style="margin-top: 20px;">
+      <table class="form-table" style="margin-top: 26px;">
         <thead>
-          <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
-            <th></th>
-            <th>10 Sec (MΩ)</th>
-            <th>60 Sec (MΩ)</th>
-            <th>Ratio of IR 60/IR 10</th>
+          <tr>
+            <th style="width: 26%;"></th>
+            <th style="width: 18%;">
+              10 Sec <br />
+              (MΩ)
+            </th>
+            <th style="width: 18%;">
+              60 Sec <br />
+              (MΩ)
+            </th>
+            <th style="width: 38%;">Ratio of IR 60/IR 10</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>HV-Earth</strong></td>
+            <td style="font-weight: 800;">HV-Earth</td>
             <td>${formData.hvEarth_10sec || ""}</td>
             <td>${formData.hvEarth_60sec || ""}</td>
             <td>${formData.hvEarth_ratio || ""}</td>
           </tr>
+
           <tr>
-            <td><strong>LV-Earth</strong></td>
-            <td>${formData.lvEarth_10sec || ""}</td>
-            <td>${formData.lvEarth_60sec || ""}</td>
-            <td>${formData.lvEarth_ratio || ""}</td>
+            <td style="font-weight: 800;">LV1-Earth</td>
+            <td>${formData.lv1Earth_10sec || ""}</td>
+            <td>${formData.lv1Earth_60sec || ""}</td>
+            <td>${formData.lv1Earth_ratio || ""}</td>
           </tr>
+
           <tr>
-            <td><strong>HV-LV</strong></td>
-            <td>${formData.hvLv_10sec || ""}</td>
-            <td>${formData.hvLv_60sec || ""}</td>
-            <td>${formData.hvLv_ratio || ""}</td>
+            <td style="font-weight: 800;">LV2-Earth</td>
+            <td>${formData.lv2Earth_10sec || ""}</td>
+            <td>${formData.lv2Earth_60sec || ""}</td>
+            <td>${formData.lv2Earth_ratio || ""}</td>
+          </tr>
+
+          <tr>
+            <td style="font-weight: 800;">HV-LV1</td>
+            <td>${formData.hvLv1_10sec || ""}</td>
+            <td>${formData.hvLv1_60sec || ""}</td>
+            <td>${formData.hvLv1_ratio || ""}</td>
+          </tr>
+
+          <tr>
+            <td style="font-weight: 800;">HV-LV2</td>
+            <td>${formData.hvLv2_10sec || ""}</td>
+            <td>${formData.hvLv2_60sec || ""}</td>
+            <td>${formData.hvLv2_ratio || ""}</td>
+          </tr>
+
+          <tr>
+            <td style="font-weight: 800;">LV1-LV2</td>
+            <td>${formData.lv1Lv2_10sec || ""}</td>
+            <td>${formData.lv1Lv2_60sec || ""}</td>
+            <td>${formData.lv1Lv2_ratio || ""}</td>
           </tr>
         </tbody>
       </table>
 
-      ${generatePhotoThumbnails(formData.photos)}
+      <div class="photo-upload-section" style="page-break-inside: avoid;">
+        <h4>Note: - Photographs to be added: -</h4>
+        <p style="text-align: center; margin-bottom: 20px; font-weight: 600;">
+          IR tester, calibration report, 60 sec IR value.
+        </p>
+      </div>
+
+      ${generatePhotoThumbnails(formData.photos, photoBaseUrl)}
     </div>
   `;
 }
@@ -3153,6 +3012,9 @@ function generateStageContent(stageData, stageNumber, headerImage) {
       }
       else if (stageNumber === 1 && formKey === "form7") {
         content += generateStage1Form7(formData);
+      }
+      else if (stageNumber === 1 && formKey === "form8") {
+        content += generateStage1Form8(formData);
       }
       // Stage 2 Forms
       else if (stageNumber === 2 && formKey === "form1") {
