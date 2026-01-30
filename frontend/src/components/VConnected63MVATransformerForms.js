@@ -2120,11 +2120,22 @@ export function Stage1Form7({ onSubmit, onPrevious, initialData, isLastFormOfSta
                 type="text"
                 value={formData.bushingSrNoHv || ""}
                 onChange={(e) => setFormData({ ...formData, bushingSrNoHv: e.target.value })}
-                placeholder="Enter HV bushing serial no."
               />
             </td>
-            <td></td>
-            <td></td>
+            <td>
+              <input
+                type="text"
+                value={formData.bushingSrNoHv_11 || ""}
+                onChange={(e) => setFormData({ ...formData, bushingSrNoHv_11: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.bushingSrNoHv_12 || ""}
+                onChange={(e) => setFormData({ ...formData, bushingSrNoHv_12: e.target.value })}
+              />
+            </td>
           </tr>
         </tbody>
       </table>
@@ -2154,13 +2165,36 @@ export function Stage1Form7({ onSubmit, onPrevious, initialData, isLastFormOfSta
                 type="text"
                 value={formData.bushingSrNoLv || ""}
                 onChange={(e) => setFormData({ ...formData, bushingSrNoLv: e.target.value })}
-                placeholder="Enter LV bushing serial no."
               />
             </td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>
+              <input
+                type="text"
+                value={formData.bushingSrNoLv_21 || ""}
+                onChange={(e) => setFormData({ ...formData, bushingSrNoLv_21: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.bushingSrNoLv_22 || ""}
+                onChange={(e) => setFormData({ ...formData, bushingSrNoLv_22: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.bushingSrNoLv_31 || ""}
+                onChange={(e) => setFormData({ ...formData, bushingSrNoLv_31: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.bushingSrNoLv_32 || ""}
+                onChange={(e) => setFormData({ ...formData, bushingSrNoLv_32: e.target.value })}
+              />
+            </td>
           </tr>
         </tbody>
       </table>

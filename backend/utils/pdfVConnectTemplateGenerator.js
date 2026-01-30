@@ -978,8 +978,8 @@ function generateStage1Form7(formData) {
         <tbody>
           <tr>
             <td>${formData.bushingSrNoHv || ""}</td>
-            <td></td>
-            <td></td>
+            <td>${formData.bushingSrNoHv_11 || ""}</td>
+            <td>${formData.bushingSrNoHv_12 || ""}</td>
           </tr>
         </tbody>
       </table>

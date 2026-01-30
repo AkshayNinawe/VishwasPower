@@ -1428,7 +1428,9 @@ const Stage1Form7 = ({ formData }) => (
   <div className="form-container">
     <div className="company-header">
       <h2>TEST REPORT</h2>
-      <h3 style={{ marginTop: "6px", fontWeight: 900 }}>TAN DELTA AND CAPACITANCE TEST ON BUSHING</h3>
+      <h3 style={{ marginTop: "6px", fontWeight: 900 }}>
+        TAN DELTA AND CAPACITANCE TEST ON BUSHING
+      </h3>
     </div>
 
     <table className="form-table">
@@ -1436,21 +1438,41 @@ const Stage1Form7 = ({ formData }) => (
         <tr>
           <td style={{ width: "25%", fontWeight: 800 }}>METER USED</td>
           <td style={{ width: "25%" }}>
-            <input type="text" value={formData.meterUsed || ""} disabled className="form-input disabled preview" />
+            <input
+              type="text"
+              value={formData.meterUsed || ""}
+              disabled
+              className="form-input disabled preview"
+            />
           </td>
           <td style={{ width: "25%", fontWeight: 800 }}>DATE:</td>
           <td style={{ width: "25%" }}>
-            <input type="date" value={formData.date || ""} disabled className="form-input disabled preview" />
+            <input
+              type="date"
+              value={formData.date || ""}
+              disabled
+              className="form-input disabled preview"
+            />
           </td>
         </tr>
         <tr>
           <td style={{ fontWeight: 800 }}>MODEL & S. NO.</td>
           <td>
-            <input type="text" value={formData.modelAndSerialNo || ""} disabled className="form-input disabled preview" />
+            <input
+              type="text"
+              value={formData.modelAndSerialNo || ""}
+              disabled
+              className="form-input disabled preview"
+            />
           </td>
           <td style={{ fontWeight: 800 }}>TIME :</td>
           <td>
-            <input type="time" value={formData.time || ""} disabled className="form-input disabled preview" />
+            <input
+              type="time"
+              value={formData.time || ""}
+              disabled
+              className="form-input disabled preview"
+            />
           </td>
         </tr>
         <tr>
@@ -1458,7 +1480,12 @@ const Stage1Form7 = ({ formData }) => (
           <td></td>
           <td style={{ fontWeight: 800 }}>WTI:</td>
           <td>
-            <input type="text" value={formData.wti || ""} disabled className="form-input disabled preview" />
+            <input
+              type="text"
+              value={formData.wti || ""}
+              disabled
+              className="form-input disabled preview"
+            />
           </td>
         </tr>
         <tr>
@@ -1466,28 +1493,56 @@ const Stage1Form7 = ({ formData }) => (
           <td></td>
           <td style={{ fontWeight: 800 }}>OTI:</td>
           <td>
-            <input type="text" value={formData.oti || ""} disabled className="form-input disabled preview" />
+            <input
+              type="text"
+              value={formData.oti || ""}
+              disabled
+              className="form-input disabled preview"
+            />
           </td>
         </tr>
 
+        {/* Bushing details (HV/LV) merged into the header table */}
         <tr>
-          <td style={{ width: "25%", fontWeight: 800 }}>BUSHING SR. NO. (HV)</td>
+          <td style={{ width: "25%", fontWeight: 800 }}>
+            BUSHING SR. NO. (HV)
+          </td>
           <td style={{ width: "25%" }}>
-            <input type="text" value={formData.hvBushingSrNo || ""} disabled className="form-input disabled preview" />
+            <input
+              type="text"
+              value={formData.hvBushingSrNo || ""}
+              disabled
+              className="form-input disabled preview"
+            />
           </td>
           <td style={{ width: "25%", fontWeight: 800 }}>MAKE</td>
           <td style={{ width: "25%" }}>
-            <input type="text" value={formData.hvBushingMake || ""} disabled className="form-input disabled preview" />
+            <input
+              type="text"
+              value={formData.hvBushingMake || ""}
+              disabled
+              className="form-input disabled preview"
+            />
           </td>
         </tr>
         <tr>
           <td style={{ fontWeight: 800 }}>BUSHING SR. NO. (LV)</td>
           <td>
-            <input type="text" value={formData.lvBushingSrNo || ""} disabled className="form-input disabled preview" />
+            <input
+              type="text"
+              value={formData.lvBushingSrNo || ""}
+              disabled
+              className="form-input disabled preview"
+            />
           </td>
-          <td></td>
+          <td>{/* MAKE label intentionally omitted to avoid duplicate */}</td>
           <td>
-            <input type="text" value={formData.lvBushingMake || ""} disabled className="form-input disabled preview" />
+            <input
+              type="text"
+              value={formData.lvBushingMake || ""}
+              disabled
+              className="form-input disabled preview"
+            />
           </td>
         </tr>
       </tbody>
@@ -1504,10 +1559,29 @@ const Stage1Form7 = ({ formData }) => (
       <tbody>
         <tr>
           <td>
-            <input type="text" value={formData.bushingSrNoHv || ""} disabled className="form-input disabled preview" />
+            <input
+              type="text"
+              value={formData.bushingSrNoHv || ""}
+              disabled
+              className="form-input disabled preview"
+            />
           </td>
-          <td></td>
-          <td></td>
+          <td>
+            <input
+              type="text"
+              value={formData.bushingSrNoHv_11 || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.bushingSrNoHv_12 || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
         </tr>
       </tbody>
     </table>
@@ -1529,16 +1603,36 @@ const Stage1Form7 = ({ formData }) => (
           <tr key={`hvAt5kv-${row.phase}-${idx}`}>
             <td style={{ textAlign: "center", fontWeight: 800 }}>{row.phase}</td>
             <td>
-              <input type="text" value={row.tanDeltaPercent || ""} disabled className="form-input disabled preview" />
+              <input
+                type="text"
+                value={row.tanDeltaPercent || ""}
+                disabled
+                className="form-input disabled preview"
+              />
             </td>
             <td>
-              <input type="text" value={row.capacitancePf || ""} disabled className="form-input disabled preview" />
+              <input
+                type="text"
+                value={row.capacitancePf || ""}
+                disabled
+                className="form-input disabled preview"
+              />
             </td>
             <td>
-              <input type="text" value={row.excitationCurrent || ""} disabled className="form-input disabled preview" />
+              <input
+                type="text"
+                value={row.excitationCurrent || ""}
+                disabled
+                className="form-input disabled preview"
+              />
             </td>
             <td>
-              <input type="text" value={row.dielectricLoss || ""} disabled className="form-input disabled preview" />
+              <input
+                type="text"
+                value={row.dielectricLoss || ""}
+                disabled
+                className="form-input disabled preview"
+              />
             </td>
           </tr>
         ))}
@@ -1560,23 +1654,50 @@ const Stage1Form7 = ({ formData }) => (
           <tr key={`hvAt10kv-${row.phase}-${idx}`}>
             <td style={{ textAlign: "center", fontWeight: 800 }}>{row.phase}</td>
             <td>
-              <input type="text" value={row.tanDeltaPercent || ""} disabled className="form-input disabled preview" />
+              <input
+                type="text"
+                value={row.tanDeltaPercent || ""}
+                disabled
+                className="form-input disabled preview"
+              />
             </td>
             <td>
-              <input type="text" value={row.capacitancePf || ""} disabled className="form-input disabled preview" />
+              <input
+                type="text"
+                value={row.capacitancePf || ""}
+                disabled
+                className="form-input disabled preview"
+              />
             </td>
             <td>
-              <input type="text" value={row.excitationCurrent || ""} disabled className="form-input disabled preview" />
+              <input
+                type="text"
+                value={row.excitationCurrent || ""}
+                disabled
+                className="form-input disabled preview"
+              />
             </td>
             <td>
-              <input type="text" value={row.dielectricLoss || ""} disabled className="form-input disabled preview" />
+              <input
+                type="text"
+                value={row.dielectricLoss || ""}
+                disabled
+                className="form-input disabled preview"
+              />
             </td>
           </tr>
         ))}
       </tbody>
     </table>
 
-    <div style={{ marginTop: "26px", textAlign: "center", fontWeight: 900, fontSize: "16px" }}>
+    <div
+      style={{
+        marginTop: "26px",
+        textAlign: "center",
+        fontWeight: 900,
+        fontSize: "16px",
+      }}
+    >
       TYPE OF TEST – TAN DELTA AND CAPACITANCE TEST ON LV BUSHING
     </div>
 
@@ -1593,12 +1714,45 @@ const Stage1Form7 = ({ formData }) => (
       <tbody>
         <tr>
           <td>
-            <input type="text" value={formData.bushingSrNoLv || ""} disabled className="form-input disabled preview" />
+            <input
+              type="text"
+              value={formData.bushingSrNoLv || ""}
+              disabled
+              className="form-input disabled preview"
+            />
           </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>
+            <input
+              type="text"
+              value={formData.bushingSrNoLv_21 || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.bushingSrNoLv_22 || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.bushingSrNoLv_31 || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              value={formData.bushingSrNoLv_32 || ""}
+              disabled
+              className="form-input disabled preview"
+            />
+          </td>
         </tr>
       </tbody>
     </table>
@@ -1620,16 +1774,36 @@ const Stage1Form7 = ({ formData }) => (
           <tr key={`lvAt5kv-${row.phase}-${idx}`}>
             <td style={{ textAlign: "center", fontWeight: 800 }}>{row.phase}</td>
             <td>
-              <input type="text" value={row.tanDeltaPercent || ""} disabled className="form-input disabled preview" />
+              <input
+                type="text"
+                value={row.tanDeltaPercent || ""}
+                disabled
+                className="form-input disabled preview"
+              />
             </td>
             <td>
-              <input type="text" value={row.capacitancePf || ""} disabled className="form-input disabled preview" />
+              <input
+                type="text"
+                value={row.capacitancePf || ""}
+                disabled
+                className="form-input disabled preview"
+              />
             </td>
             <td>
-              <input type="text" value={row.excitationCurrent || ""} disabled className="form-input disabled preview" />
+              <input
+                type="text"
+                value={row.excitationCurrent || ""}
+                disabled
+                className="form-input disabled preview"
+              />
             </td>
             <td>
-              <input type="text" value={row.dielectricLoss || ""} disabled className="form-input disabled preview" />
+              <input
+                type="text"
+                value={row.dielectricLoss || ""}
+                disabled
+                className="form-input disabled preview"
+              />
             </td>
           </tr>
         ))}
@@ -1651,16 +1825,36 @@ const Stage1Form7 = ({ formData }) => (
           <tr key={`lvAt10kv-${row.phase}-${idx}`}>
             <td style={{ textAlign: "center", fontWeight: 800 }}>{row.phase}</td>
             <td>
-              <input type="text" value={row.tanDeltaPercent || ""} disabled className="form-input disabled preview" />
+              <input
+                type="text"
+                value={row.tanDeltaPercent || ""}
+                disabled
+                className="form-input disabled preview"
+              />
             </td>
             <td>
-              <input type="text" value={row.capacitancePf || ""} disabled className="form-input disabled preview" />
+              <input
+                type="text"
+                value={row.capacitancePf || ""}
+                disabled
+                className="form-input disabled preview"
+              />
             </td>
             <td>
-              <input type="text" value={row.excitationCurrent || ""} disabled className="form-input disabled preview" />
+              <input
+                type="text"
+                value={row.excitationCurrent || ""}
+                disabled
+                className="form-input disabled preview"
+              />
             </td>
             <td>
-              <input type="text" value={row.dielectricLoss || ""} disabled className="form-input disabled preview" />
+              <input
+                type="text"
+                value={row.dielectricLoss || ""}
+                disabled
+                className="form-input disabled preview"
+              />
             </td>
           </tr>
         ))}
@@ -5823,130 +6017,42 @@ const Stage1ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
     {
       id: "name-plate-details",
       title: "Name Plate Details Transformer",
-      fields: [
-        { name: "make", label: "MAKE", type: "text" },
-        { name: "currentHV", label: "CURRENT HV (A)", type: "text" },
-        { name: "srNo", label: "SR. NO.", type: "text" },
-        { name: "currentLV", label: "LV (A)", type: "text" },
-        { name: "mvaRating", label: "MVA Rating", type: "text" },
-        { name: "tempRiseOil", label: "Temp. Rise over amb. In Oil °C", type: "text" },
-        { name: "hvKv", label: "HV (KV)", type: "text" },
-        { name: "winding", label: "Winding", type: "text" },
-        { name: "lvKv", label: "LV (KV)", type: "text" },
-        { name: "transportingWeight", label: "Transporting weight", type: "text" },
-        { name: "impedancePercent", label: "% Impedance", type: "text" },
-        { name: "noOfRadiators", label: "No. Of radiators", type: "text" },
-        { name: "yearOfMfg", label: "Year of Mfg.", type: "text" },
-        { name: "weightCoreWinding", label: "Weight of Core & Winding.", type: "text" },
-        { name: "oilQuantityLiter", label: "Oil Quantity in liter", type: "text" },
-        { name: "totalWeight", label: "Total Weight", type: "text" }
-      ]
+      component: Stage1Form1
     },
     {
       id: "protocol-accessories-checking",
       title: "Protocol for Accessories Checking",
-      fields: [
-        { name: "accessories", label: "Accessories", type: "nested-object" }
-      ]
+      component: Stage1Form2
     },
     {
       id: "core-insulation-check",
       title: "Core Insulation Check",
-      fields: [
-        { name: "betweenCoreFrame", label: "Between Core – frame", type: "text" },
-        { name: "betweenCoreFrameRemarks", label: "Remarks", type: "text" },
-        { name: "betweenFrameTank", label: "Between Frame – tank", type: "text" },
-        { name: "betweenFrameTankRemarks", label: "Remarks", type: "text" },
-        { name: "betweenCoreTank", label: "Between core – tank", type: "text" },
-        { name: "betweenCoreTankRemarks", label: "Remarks", type: "text" },
-        { name: "filterMachine", label: "Whether the Filter Machine is Available", type: "select" },
-        { name: "filterCapacity", label: "Capacity of Filter Machine", type: "text" },
-        { name: "vacuumPumpCapacity", label: "Capacity of the Vacuum Pump to be used.", type: "text" },
-        { name: "reservoirAvailable", label: "Whether the Reservoir is Available with valves and a breather.", type: "select" },
-        { name: "reservoirCapacity", label: "Capacity of Reservoirs.", type: "text" },
-        { name: "hosePipes", label: "Hose Pipes for the Filtration Process.", type: "select" },
-        { name: "craneAvailable", label: "Whether Crane is Available in good condition", type: "select" },
-        { name: "fireExtinguisher", label: "Fire extinguisher/ Fire sand bucket", type: "select" },
-        { name: "firstAidKit", label: "First aid kit", type: "select" },
-        { name: "ppeEquipment", label: "PPE for the working team of ETC agency, like- Safety shoes, Helmet, etc...", type: "select" }
-      ]
+      component: Stage1Form3
     },
     {
       id: "pre-erection-ratio-test-turret-cts",
-      title: "Pre erection Ratio test of turret CTs",
-      fields: [
-        { name: "phase31_20percent_appliedCurrent_s1s2", label: "Phase 1.1 - 20% Applied Current S1-S2", type: "text" },
-        { name: "phase31_20percent_appliedCurrent_s1s3", label: "Phase 1.1 - 20% Applied Current S1-S3", type: "text" },
-        { name: "phase31_20percent_measuredCurrent_s1s2", label: "Phase 1.1 - 20% Measured Current S1-S2", type: "text" },
-        { name: "phase31_20percent_measuredCurrent_s1s3", label: "Phase 1.1 - 20% Measured Current S1-S3", type: "text" }
-      ]
+      title: "Pre erection Ratio test of turret CTs - Phase 1",
+      component: Stage1Form4
     },
     {
       id: "pre-erection-ratio-test-phase2",
       title: "Pre erection Ratio test of turret CTs - Phase 2",
-      fields: [
-        { name: "phase31_20percent_appliedCurrent_s1s2", label: "Phase 2.1 - 20% Applied Current S1-S2", type: "text" },
-        { name: "phase31_20percent_appliedCurrent_s1s3", label: "Phase 2.1 - 20% Applied Current S1-S3", type: "text" },
-        { name: "phase31_20percent_measuredCurrent_s1s2", label: "Phase 2.1 - 20% Measured Current S1-S2", type: "text" },
-        { name: "phase31_20percent_measuredCurrent_s1s3", label: "Phase 2.1 - 20% Measured Current S1-S3", type: "text" }
-      ]
+      component: Stage1Form5
+    },
+    {
+      id: "pre-erection-ratio-test-phase3",
+      title: "Pre erection Ratio test of turret CTs - Phase 3",
+      component: Stage1Form6
     },
     {
       id: "tan-delta-capacitance-test-bushing",
       title: "TAN DELTA AND CAPACITANCE TEST ON BUSHING",
-      fields: [
-        { name: "meterUsed", label: "METER USED", type: "text" },
-        { name: "date", label: "DATE", type: "date" },
-        { name: "time", label: "TIME", type: "time" },
-        { name: "modelSrNo", label: "MODEL & S. NO.", type: "text" },
-        { name: "wti", label: "WTI", type: "text" },
-        { name: "oti", label: "OTI", type: "text" },
-        { name: "hvBushing11_srNo", label: "HV Bushing 1.1 Sr. No.", type: "text" },
-        { name: "hvBushing12_srNo", label: "HV Bushing 1.2 Sr. No.", type: "text" },
-        { name: "lvBushing21_srNo", label: "LV Bushing 2.1 Sr. No.", type: "text" },
-        { name: "lvBushing22_srNo", label: "LV Bushing 2.2 Sr. No.", type: "text" }
-      ]
+      component: Stage1Form7
     },
     {
       id: "record-of-measurement-of-ir-values-before-erection",
       title: "RECORD OF MEASUREMENT OF IR VALUES (Before Erection)",
-      fields: [
-        { name: "date", label: "Date", type: "date" },
-        { name: "time", label: "Time", type: "time" },
-        { name: "ambTemp", label: "Amb Temp", type: "text" },
-        { name: "make", label: "Make", type: "text" },
-        { name: "oilTemp", label: "Oil Temp", type: "text" },
-        { name: "srNo", label: "Sr No", type: "text" },
-        { name: "wdgTemp", label: "Wdg Temp", type: "text" },
-        { name: "range", label: "Range", type: "text" },
-        { name: "relativeHumidity", label: "Relative Humidity", type: "text" },
-        { name: "voltageLevel", label: "Voltage Level", type: "text" },
-        { name: "insulationTesterDetails", label: "Details of Insulation tester", type: "textarea" },
-
-        { name: "hvEarth_10sec", label: "HV-Earth 10 Sec", type: "text" },
-        { name: "hvEarth_60sec", label: "HV-Earth 60 Sec", type: "text" },
-        { name: "hvEarth_ratio", label: "HV-Earth Ratio of IR 60/IR 10", type: "text" },
-
-        { name: "lv1Earth_10sec", label: "LV1-Earth 10 Sec", type: "text" },
-        { name: "lv1Earth_60sec", label: "LV1-Earth 60 Sec", type: "text" },
-        { name: "lv1Earth_ratio", label: "LV1-Earth Ratio of IR 60/IR 10", type: "text" },
-
-        { name: "lv2Earth_10sec", label: "LV2-Earth 10 Sec", type: "text" },
-        { name: "lv2Earth_60sec", label: "LV2-Earth 60 Sec", type: "text" },
-        { name: "lv2Earth_ratio", label: "LV2-Earth Ratio of IR 60/IR 10", type: "text" },
-
-        { name: "hvLv1_10sec", label: "HV-LV1 10 Sec", type: "text" },
-        { name: "hvLv1_60sec", label: "HV-LV1 60 Sec", type: "text" },
-        { name: "hvLv1_ratio", label: "HV-LV1 Ratio of IR 60/IR 10", type: "text" },
-
-        { name: "hvLv2_10sec", label: "HV-LV2 10 Sec", type: "text" },
-        { name: "hvLv2_60sec", label: "HV-LV2 60 Sec", type: "text" },
-        { name: "hvLv2_ratio", label: "HV-LV2 Ratio of IR 60/IR 10", type: "text" },
-
-        { name: "lv1Lv2_10sec", label: "LV1-LV2 10 Sec", type: "text" },
-        { name: "lv1Lv2_60sec", label: "LV1-LV2 60 Sec", type: "text" },
-        { name: "lv1Lv2_ratio", label: "LV1-LV2 Ratio of IR 60/IR 10", type: "text" },
-      ],
+      component: Stage1Form8
     }
   ];
 
@@ -6164,31 +6270,9 @@ const Stage1ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
             </div>
 
             {/* Use the organized form components */}
-            {form.id === "name-plate-details" ? (
-              <Stage1Form1 formData={formData} />
-            ) : form.id === "protocol-accessories-checking" ? (
-              <Stage1Form2 formData={formData} />
-            ) : form.id === "core-insulation-check" ? (
-              <Stage1Form3 formData={formData} />
-            ) : form.id === "pre-erection-ratio-test-turret-cts" ? (
-              <Stage1Form4 formData={formData} />
-            ) : form.id === "pre-erection-ratio-test-phase2" ? (
-              <Stage1Form5 formData={formData} />
-            ) : form.id === "tan-delta-capacitance-test-bushing" ? (
-              <Stage1Form7 formData={formData} />
-            ) : form.id === "record-of-measurement-of-ir-values-before-erection" ? (
-              <Stage1Form8 formData={formData} />
-            ) : (
-              <div className="form-grid-preview" style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-                gap: "20px",
-              }}>
-                {form.fields.map((field) => 
-                  renderFormField(field, formData[field.name], form.id)
-                )}
-              </div>
-            )}
+            {form.component ? (
+              <form.component formData={formData} />
+            ) : null}
 
             {/* Render photos if they exist */}
             {formData.photos && renderPhotos(formData.photos, form.id)}

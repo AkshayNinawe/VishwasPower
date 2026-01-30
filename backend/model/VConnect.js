@@ -221,11 +221,27 @@ const Stage1Form7SubSchema = new mongoose.Schema(
     wti: { type: String, trim: true, default: "" },
     oti: { type: String, trim: true, default: "" },
 
+    // added as per updated Stage1Form7 UI
+    hvBushingSrNo: { type: String, trim: true, default: "" },
+    hvBushingMake: { type: String, trim: true, default: "" },
+    lvBushingSrNo: { type: String, trim: true, default: "" },
+    lvBushingMake: { type: String, trim: true, default: "" },
+
+    // HV bushing serials table (1.1 / 1.2 columns)
     bushingSrNoHv: { type: String, trim: true, default: "" },
+    bushingSrNoHv_11: { type: String, trim: true, default: "" },
+    bushingSrNoHv_12: { type: String, trim: true, default: "" },
+
     hvAt5kv: { type: [Stage1Form7StatusRowSubSchema], default: [] },
     hvAt10kv: { type: [Stage1Form7StatusRowSubSchema], default: [] },
 
+    // LV bushing serials table (2.1 / 2.2 / 3.1 / 3.2 columns)
     bushingSrNoLv: { type: String, trim: true, default: "" },
+    bushingSrNoLv_21: { type: String, trim: true, default: "" },
+    bushingSrNoLv_22: { type: String, trim: true, default: "" },
+    bushingSrNoLv_31: { type: String, trim: true, default: "" },
+    bushingSrNoLv_32: { type: String, trim: true, default: "" },
+
     lvAt5kv: { type: [Stage1Form7StatusRowSubSchema], default: [] },
     lvAt10kv: { type: [Stage1Form7StatusRowSubSchema], default: [] },
 
