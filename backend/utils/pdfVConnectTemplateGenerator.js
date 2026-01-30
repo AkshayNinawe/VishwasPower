@@ -2765,17 +2765,30 @@ function generateStage5Form7(formData) {
           </tr>
         </thead>
         <tbody>
-          ${formData.rows ? formData.rows.map(row => `
-            <tr>
-              <td>${row.voltageKv || ""}</td>
-              <td style="font-weight: 700; text-align: center;">${row.label || ""}</td>
-              <td>${row.testMode || ""}</td>
-              <td>${row.capFactory || ""}</td>
-              <td>${row.capSite || ""}</td>
-              <td>${row.tdFactory || ""}</td>
-              <td>${row.tdSite || ""}</td>
-            </tr>
-          `).join('') : ''}
+          ${formData.rows && typeof formData.rows === 'object' ? 
+            ['hv11', 'hv12', 'lv21', 'lv22', 'lv31', 'lv32'].map(key => {
+              const row = formData.rows[key] || {};
+              const labels = {
+                'hv11': 'HV (1.1)',
+                'hv12': 'HV (1.2)',
+                'lv21': 'LV (2.1)',
+                'lv22': 'LV (2.2)',
+                'lv31': 'LV (3.1)',
+                'lv32': 'LV (3.2)'
+              };
+              return `
+                <tr>
+                  <td>${row.voltageKv || ""}</td>
+                  <td style="font-weight: 700; text-align: center;">${labels[key] || ""}</td>
+                  <td>${row.testMode || ""}</td>
+                  <td>${row.capacitanceFactory || ""}</td>
+                  <td>${row.capacitanceSite || ""}</td>
+                  <td>${row.tanDeltaFactory || ""}</td>
+                  <td>${row.tanDeltaSite || ""}</td>
+                </tr>
+              `;
+            }).join('') 
+          : ''}
         </tbody>
       </table>
 
