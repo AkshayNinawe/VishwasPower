@@ -219,83 +219,83 @@ function generateStage1Form1(formData) {
         <h2>NAME PLATE DETAILS TRANSFORMER /REACTOR</h2>
       </div>
 
-      <table class="form-table">
+      <table class="form-table" style="table-layout: fixed; width: 100%;">
        <tbody>
           <tr>
-            <td><strong>MAKE</strong></td>
-            <td>${formData.make || ""}</td>
-            <td><strong>CURRENT HV</strong></td>
-            <td>${formData.currentHV || ""}</td>
+            <td style="width: 20%; font-weight: 800;"><strong>MAKE</strong></td>
+            <td style="width: 30%;">${formData.make || ""}</td>
+            <td style="width: 20%; font-weight: 800;"><strong>CURRENT HV</strong></td>
+            <td style="width: 30%;">${formData.currentHV || ""}</td>
           </tr>
 
           <tr>
-            <td><strong>SR. NO.</strong></td>
-            <td>${formData.srNo || ""}</td>
-            <td><strong>LV</strong></td>
-            <td>${formData.currentLV || ""}</td>
+            <td style="width: 20%; font-weight: 800;"><strong>SR. NO.</strong></td>
+            <td style="width: 30%;">${formData.srNo || ""}</td>
+            <td style="width: 20%; font-weight: 800;"><strong>LV</strong></td>
+            <td style="width: 30%;">${formData.currentLV || ""}</td>
           </tr>
 
           <tr>
-            <td><strong>MVA Rating</strong></td>
-            <td>${formData.mvaRating || ""}</td>
-            <td><strong>Temp. Rise over amb. Oil (°C)</strong></td>
-            <td>${formData.tempRiseOilC || ""}</td>
+            <td style="width: 20%; font-weight: 800;"><strong>MVA Rating</strong></td>
+            <td style="width: 30%;">${formData.mvaRating || ""}</td>
+            <td style="width: 20%; font-weight: 800;"><strong>Temp. Rise over amb. Oil (°C)</strong></td>
+            <td style="width: 30%;">${formData.tempRiseOilC || ""}</td>
           </tr>
 
           <tr>
-            <td><strong>HV (KV)</strong></td>
-            <td>${formData.hvKv || ""}</td>
-            <td><strong>Winding (°C)</strong></td>
-            <td>${formData.windingC || ""}</td>
+            <td style="width: 20%; font-weight: 800;"><strong>HV (KV)</strong></td>
+            <td style="width: 30%;">${formData.hvKv || ""}</td>
+            <td style="width: 20%; font-weight: 800;"><strong>Winding (°C)</strong></td>
+            <td style="width: 30%;">${formData.windingC || ""}</td>
           </tr>
 
           <tr>
-            <td><strong>LV (KV)</strong></td>
-            <td>${formData.lvKv || ""}</td>
-            <td><strong>Oil Quantity</strong></td>
-            <td>${formData.oilQuantity || ""}</td>
+            <td style="width: 20%; font-weight: 800;"><strong>LV (KV)</strong></td>
+            <td style="width: 30%;">${formData.lvKv || ""}</td>
+            <td style="width: 20%; font-weight: 800;"><strong>Oil Quantity</strong></td>
+            <td style="width: 30%;">${formData.oilQuantity || ""}</td>
           </tr>
 
           <tr>
-            <td><strong>% Impedance</strong></td>
-            <td>${formData.impedancePercent || ""}</td>
-            <td><strong>Weight of Core & Wdg.</strong></td>
-            <td>${formData.weightCoreWdg || ""}</td>
+            <td style="width: 20%; font-weight: 800;"><strong>% Impedance</strong></td>
+            <td style="width: 30%;">${formData.impedancePercent || ""}</td>
+            <td style="width: 20%; font-weight: 800;"><strong>Weight of Core & Wdg.</strong></td>
+            <td style="width: 30%;">${formData.weightCoreWdg || ""}</td>
           </tr>
 
           <tr>
-            <td><strong>Year of Mfg.</strong></td>
-            <td>${formData.yearOfMfg || ""}</td>
-            <td><strong>TRANSPORTING WEIGHT</strong></td>
-            <td>${formData.transportingWeight || ""}</td>
+            <td style="width: 20%; font-weight: 800;"><strong>Year of Mfg.</strong></td>
+            <td style="width: 30%;">${formData.yearOfMfg || ""}</td>
+            <td style="width: 20%; font-weight: 800;"><strong>TRANSPORTING WEIGHT</strong></td>
+            <td style="width: 30%;">${formData.transportingWeight || ""}</td>
           </tr>
 
           <tr>
-            <td><strong>NO. OF COOLING FAN</strong></td>
-            <td>${formData.noOfCoolingFan || ""}</td>
-            <td><strong>Total Weight</strong></td>
-            <td>${formData.totalWeight || ""}</td>
+            <td style="width: 20%; font-weight: 800;"><strong>NO. OF COOLING FAN</strong></td>
+            <td style="width: 30%;">${formData.noOfCoolingFan || ""}</td>
+            <td style="width: 20%; font-weight: 800;"><strong>Total Weight</strong></td>
+            <td style="width: 30%;">${formData.totalWeight || ""}</td>
           </tr>
 
           <tr>
-            <td><strong>NO OF OIL PUMP</strong></td>
-            <td>${formData.noOfOilPump || ""}</td>
-            <td><strong>NO. OF RADIATORS</strong></td>
-            <td>${formData.noOfRadiators || ""}</td>
+            <td style="width: 20%; font-weight: 800;"><strong>NO OF OIL PUMP</strong></td>
+            <td style="width: 30%;">${formData.noOfOilPump || ""}</td>
+            <td style="width: 20%; font-weight: 800;"><strong>NO. OF RADIATORS</strong></td>
+            <td style="width: 30%;">${formData.noOfRadiators || ""}</td>
           </tr>
 
           <tr>
-            <td><strong>NO. OF TAPS</strong></td>
-            <td>${formData.noOfTaps || ""}</td>
-            <td><strong>MFG. OF OCTC</strong></td>
-            <td>${formData.mfgOfOctc || ""}</td>
+            <td style="width: 20%; font-weight: 800;"><strong>NO. OF TAPS</strong></td>
+            <td style="width: 30%;">${formData.noOfTaps || ""}</td>
+            <td style="width: 20%; font-weight: 800;"><strong>MFG. OF OCTC</strong></td>
+            <td style="width: 30%;">${formData.mfgOfOctc || ""}</td>
           </tr>
 
           <tr>
-            <td><strong>TYPE OF OCTC</strong></td>
-            <td>${formData.typeOfOctc || ""}</td>
-            <td><strong>SR. NO. OCTC</strong></td>
-            <td>${formData.srNoOctc || ""}</td>
+            <td style="width: 20%; font-weight: 800;"><strong>TYPE OF OCTC</strong></td>
+            <td style="width: 30%;">${formData.typeOfOctc || ""}</td>
+            <td style="width: 20%; font-weight: 800;"><strong>SR. NO. OCTC</strong></td>
+            <td style="width: 30%;">${formData.srNoOctc || ""}</td>
           </tr>
         </tbody>
       </table>
