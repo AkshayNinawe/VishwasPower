@@ -7034,23 +7034,45 @@ export function Stage5Form7({
       <table className="form-table">
         <tbody>
           <tr>
-            <td style={{ width: "20%", fontWeight: 800 }}>Bushing Sr No. (HV) Make</td>
+            <td style={{ width: "20%", fontWeight: 800 }}>Bushing Sr No. (HV)</td>
             <td style={{ width: "30%" }}>
               <input
                 type="text"
-                value={formData.meterUsed || ""}
+                value={formData.hvBushingSrNo || ""}
                 onChange={(e) =>
-                  setFormData({ ...formData, meterUsed: e.target.value })
+                  setFormData({ ...formData, hvBushingSrNo: e.target.value })
                 }
               />
             </td>
-            <td style={{ width: "20%", fontWeight: 800 }}>Bushing Sr No, (LV) Make</td>
+            <td style={{ width: "20%", fontWeight: 800 }}>Bushing Make (HV)</td>
             <td style={{ width: "30%" }}>
               <input
                 type="text"
-                value={formData.date || ""}
+                value={formData.hvBushingMake || ""}
                 onChange={(e) =>
-                  setFormData({ ...formData, date: e.target.value })
+                  setFormData({ ...formData, hvBushingMake: e.target.value })
+                }
+              />
+            </td>
+          </tr>
+          <tr>
+            <td style={{ width: "20%", fontWeight: 800 }}>Bushing Sr No. (LV)</td>
+            <td style={{ width: "30%" }}>
+              <input
+                type="text"
+                value={formData.lvBushingSrNo || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, lvBushingSrNo: e.target.value })
+                }
+              />
+            </td>
+            <td style={{ width: "20%", fontWeight: 800 }}>Bushing Make (LV)</td>
+            <td style={{ width: "30%" }}>
+              <input
+                type="text"
+                value={formData.lvBushingMake || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, lvBushingMake: e.target.value })
                 }
               />
             </td>
@@ -7135,16 +7157,8 @@ export function Stage5Form7({
                 }
               />
             </td>
-            <td style={{ fontWeight: 800 }}>Make</td>
-            <td>
-              <input
-                type="text"
-                value={formData.oti || ""}
-                onChange={(e) =>
-                  setFormData({ ...formData, oti: e.target.value })
-                }
-              />
-            </td>
+            <td style={{ fontWeight: 800 }}></td>
+            <td></td>
           </tr>
         </tbody>
       </table>
@@ -11809,10 +11823,13 @@ const VConnected63MVATransformerForms = ({
     try {
       // 🔹 Always build FormData
       const formDataToSend = new FormData();
-      formDataToSend.append("projectName", projectName);
-      formDataToSend.append("companyName", companyName);
-      formDataToSend.append("stage", stage);
-      formDataToSend.append("formNumber", currentFormIndex + 1);
+      // Normalize in case some upstream component passes these as arrays (which breaks backend string casting)
+      const normalizeScalar = (v) => (Array.isArray(v) ? v[v.length - 1] : v);
+
+      formDataToSend.append("projectName", normalizeScalar(projectName) ?? "");
+      formDataToSend.append("companyName", normalizeScalar(companyName) ?? "");
+      formDataToSend.append("stage", normalizeScalar(stage) ?? "");
+      formDataToSend.append("formNumber", String(currentFormIndex + 1));
 
       // loop through keys of `data`
       Object.entries(data).forEach(([key, value]) => {
