@@ -495,7 +495,7 @@ const Stage1Form3 = ({ formData }) => {
         <thead>
           <tr>
             <th style={{ width: "38%" }}></th>
-            <th style={{ width: "31%" }}>Obtained Value</th>
+            <th style={{ width: "31%" }}>Obtained Value MΩ</th>
             <th style={{ width: "31%" }}>Remarks</th>
           </tr>
         </thead>
@@ -1999,16 +1999,7 @@ const Stage1Form8 = ({ formData }) => (
           <td>
             <input type="text" value={formData.make || ""} disabled className="form-input disabled preview" />
           </td>
-          <td rowSpan="4">
-            <input
-              type="text"
-              value={formData.insulationTesterDetails || ""}
-              disabled
-              className="form-input disabled preview"
-              placeholder="Enter insulation tester details"
-              style={{ width: "100%", height: "100%" }}
-            />
-          </td>
+          <td rowSpan="4"></td>
         </tr>
 
         <tr>
@@ -4615,7 +4606,7 @@ const Stage5Form3 = ({ formData }) => (
         <tr>
           <th style={{ width: "15%" }}>TAP NO.</th>
           <th style={{ width: "45%" }}>VOLTAGE APPLIED ON HV SIDE</th>
-          <th style={{ width: "40%" }}>CURRENT MEASURED ON HV SIDE</th>
+          <th style={{ width: "40%" }}>CURRENT MEASURED ON HV SIDE (mA)</th>
         </tr>
       </thead>
       <tbody>
@@ -4638,7 +4629,7 @@ const Stage5Form3 = ({ formData }) => (
       <thead>
         <tr>
           <th style={{ width: "50%" }}>VOLTAGE APPLIED ON LV1 SIDE</th>
-          <th style={{ width: "50%" }}>CURRENT MEASURED ON LV1 SIDE</th>
+          <th style={{ width: "50%" }}>CURRENT MEASURED ON LV1 SIDE (mA)</th>
         </tr>
       </thead>
       <tbody>
@@ -4658,7 +4649,7 @@ const Stage5Form3 = ({ formData }) => (
       <thead>
         <tr>
           <th style={{ width: "50%" }}>VOLTAGE APPLIED ON LV2 SIDE</th>
-          <th style={{ width: "50%" }}>CURRENT MEASURED ON LV2 SIDE</th>
+          <th style={{ width: "50%" }}>CURRENT MEASURED ON LV2 SIDE (mA)</th>
         </tr>
       </thead>
       <tbody>

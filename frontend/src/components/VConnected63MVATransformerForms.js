@@ -1065,7 +1065,7 @@ export function Stage1Form3({ onSubmit, onPrevious, initialData, isLastFormOfSta
         <thead>
           <tr>
             <th style={{ width: "38%" }}></th>
-            <th style={{ width: "31%" }}>Obtained Value</th>
+            <th style={{ width: "31%" }}>Obtained Value MΩ</th>
             <th style={{ width: "31%" }}>Remarks</th>
           </tr>
         </thead>
@@ -2232,7 +2232,6 @@ export function Stage1Form8({ onSubmit, onPrevious, initialData, isLastFormOfSta
     oilTemp: "",
     wdgTemp: "",
     relativeHumidity: "",
-    insulationTesterDetails: "",
 
     make: "",
     srNo: "",
@@ -2323,7 +2322,7 @@ export function Stage1Form8({ onSubmit, onPrevious, initialData, isLastFormOfSta
             <td style={{ width: "20%" }}>
               <input type="time" value={formData.time || ""} onChange={(e) => setFormData({ ...formData, time: e.target.value })} />
             </td>
-            <td style={{ width: "36%", fontWeight: 800, textAlign: "center" }}>Details of Insulation tester</td>
+            <td style={{ width: "36%", fontWeight: 800, textAlign: "center" }}></td>
           </tr>
 
           <tr>
@@ -2335,15 +2334,7 @@ export function Stage1Form8({ onSubmit, onPrevious, initialData, isLastFormOfSta
             <td>
               <input type="text" value={formData.make || ""} onChange={(e) => setFormData({ ...formData, make: e.target.value })} />
             </td>
-            <td rowSpan="4">
-              <input
-                type="text"
-                value={formData.insulationTesterDetails || ""}
-                onChange={(e) => setFormData({ ...formData, insulationTesterDetails: e.target.value })}
-                placeholder="Enter insulation tester details"
-                style={{ width: "100%", height: "100%" }}
-              />
-            </td>
+            <td rowSpan="4"></td>
           </tr>
 
           <tr>
@@ -3001,15 +2992,7 @@ export function Stage2Form2({
                 onChange={(e) => setFormData({ ...formData, make: e.target.value })}
               />
             </td>
-            <td rowSpan="4">
-              <input
-                type="text"
-                value={formData.insulationTesterDetails}
-                onChange={(e) => setFormData({ ...formData, insulationTesterDetails: e.target.value })}
-                placeholder="Enter insulation tester details"
-                style={{ width: "100%", height: "100%" }}
-              />
-            </td>
+            <td rowSpan="4"></td>
           </tr>
           <tr>
             <td>
@@ -5800,7 +5783,7 @@ export function Stage5Form3({
           <tr>
             <th style={{ width: "15%" }}>TAP NO.</th>
             <th style={{ width: "45%" }}>VOLTAGE APPLIED ON HV SIDE</th>
-            <th style={{ width: "40%" }}>CURRENT MEASURED ON HV SIDE</th>
+            <th style={{ width: "40%" }}>CURRENT MEASURED ON HV SIDE (mA)</th>
           </tr>
         </thead>
         <tbody>
@@ -5839,7 +5822,7 @@ export function Stage5Form3({
         <thead>
           <tr>
             <th style={{ width: "50%" }}>VOLTAGE APPLIED ON LV1 SIDE</th>
-            <th style={{ width: "50%" }}>CURRENT MEASURED ON LV1 SIDE</th>
+            <th style={{ width: "50%" }}>CURRENT MEASURED ON LV1 SIDE (mA)</th>
           </tr>
         </thead>
         <tbody>
@@ -5871,7 +5854,7 @@ export function Stage5Form3({
         <thead>
           <tr>
             <th style={{ width: "50%" }}>VOLTAGE APPLIED ON LV2 SIDE</th>
-            <th style={{ width: "50%" }}>CURRENT MEASURED ON LV2 SIDE</th>
+            <th style={{ width: "50%" }}>CURRENT MEASURED ON LV2 SIDE (mA)</th>
           </tr>
         </thead>
         <tbody>
@@ -8144,15 +8127,7 @@ export function Stage5Form9({ onSubmit, onPrevious, initialData, isLastFormOfSta
             <td>
               <input type="text" value={formData.make || ""} onChange={(e) => setFormData({ ...formData, make: e.target.value })} />
             </td>
-            <td rowSpan="4">
-              <input
-                type="text"
-                value={formData.insulationTesterDetails || ""}
-                onChange={(e) => setFormData({ ...formData, insulationTesterDetails: e.target.value })}
-                placeholder="Enter insulation tester details"
-                style={{ width: "100%", height: "100%" }}
-              />
-            </td>
+            <td rowSpan="4"></td>
           </tr>
           <tr>
             <td>
