@@ -24,6 +24,10 @@ import {
   Stage5Form5,
   Stage5Form6,
   Stage5Form7,
+  Stage5Form8,
+  Stage5Form9,
+  Stage5Form10,
+  Stage5Form11,
   Stage6Form1
 } from './VConnected63MVATransformerStageReviewPanel';
 
@@ -462,6 +466,26 @@ const Stage5ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
       id: "tan-delta-bushing",
       title: "Tan Delta & Capacitance Test on Bushing",
       component: Stage5Form7
+    },
+    {
+      id: "stage5form8",
+      title: "Stage 5 - Form 8",
+      component: Stage5Form8
+    },
+    {
+      id: "stage5form9",
+      title: "Stage 5 - Form 9",
+      component: Stage5Form9
+    },
+    {
+      id: "stage5form10",
+      title: "Stage 5 - Form 10",
+      component: Stage5Form10
+    },
+    {
+      id: "stage5form11",
+      title: "Stage 5 - Form 11",
+      component: Stage5Form11
     }
   ];
 

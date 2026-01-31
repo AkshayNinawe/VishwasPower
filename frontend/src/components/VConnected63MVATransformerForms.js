@@ -5434,8 +5434,8 @@ export function Stage5Form2({
               <th style={{ width: "30%" }}>Measured ratio</th>
               <th style={{ width: "30%" }}>Deviation %</th>
             </tr>
-            <tr>
-              <th></th>
+          <tr>
+             <th></th>
               <th style={{ fontWeight: 700 }}>
                 {set.namePlateText || defaultNameText}
               </th>
@@ -6354,7 +6354,9 @@ export function Stage5Form5({ onSubmit, onPrevious, initialData, isLastFormOfSta
   return (
     <form onSubmit={handleSubmit} className="form-container">
       <div className="company-header">
-        <h2>TYPE OF TEST – SHORT CIRCUIT TEST</h2>
+        <h2>
+          TYPE OF TEST – SHORT CIRCUIT TEST&nbsp;<span>I</span>
+        </h2>
       </div>
 
       <table className="form-table">
@@ -6401,6 +6403,19 @@ export function Stage5Form5({ onSubmit, onPrevious, initialData, isLastFormOfSta
                 type="text"
                 value={formData.meterMakeSrNo}
                 onChange={(e) => setFormData({ ...formData, meterMakeSrNo: e.target.value })}
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <strong>LV 1 OPEN, LV2 SHORT</strong>
+            </td>
+            <td colSpan="5">
+              <input
+                type="text"
+                value={formData.lv1OpenLv2Short || ""}
+                onChange={(e) => setFormData({ ...formData, lv1OpenLv2Short: e.target.value })}
               />
             </td>
           </tr>
@@ -6533,7 +6548,542 @@ export function Stage5Form5({ onSubmit, onPrevious, initialData, isLastFormOfSta
   )
 }
 
-export function Stage5Form6({
+export function Stage5Form6({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
+  const [formData, setFormData] = useState({
+    appliedVoltage: "",
+    date: "",
+    time: "",
+    meterMakeSrNo: "",
+
+    // Short circuit test measurements by tap (1–6)
+    taps: [
+      { tapNo: 1, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 2, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 3, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 4, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 5, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 6, voltage: "", hvCurrent: "", lvCurrent: "" },
+    ],
+
+    // Impedance calculation
+    appliedVoltageHV: "",
+    ratedCurrentLV: "",
+    percentZ: "",
+    ratedVoltageHV: "",
+    measuredCurrentLV: "",
+
+    photos: {},
+    ...initialData,
+  })
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage5Form9`, {
+          params: {
+            companyName: companyName,
+            projectName: projectName,
+          },
+        })
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage5Form9")
+          setFormData(response.data.data)
+        } else {
+          console.log("There is no data in DB.")
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error)
+      }
+    }
+    fetchFormData()
+  }, [projectName, companyName])
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    onSubmit(formData)
+  }
+
+  const setTapRow = (index, field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      taps: (prev.taps || []).map((row, i) => (i === index ? { ...row, [field]: value } : row)),
+    }))
+  }
+
+  const handlePhotoChange = (key, file) => {
+    setFormData((prev) => ({
+      ...prev,
+      photos: { ...prev.photos, [key]: file },
+    }))
+  }
+
+  const photoRequirements = [{ key: "shortCircuitTest", label: "Short Circuit Test" }]
+
+  return (
+    <form onSubmit={handleSubmit} className="form-container">
+      <div className="company-header">
+        <h2>
+          TYPE OF TEST – SHORT CIRCUIT TEST&nbsp;<span>II</span>
+        </h2>
+      </div>
+
+      <table className="form-table">
+        <tbody>
+          <tr>
+            <td>
+              <strong>APPLIED VOLTAGE:</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, appliedVoltage: e.target.value })}
+                placeholder="VOLTS"
+              />
+            </td>
+            <td>
+              <strong>DATE:</strong>
+            </td>
+            <td>
+              <input
+                type="date"
+                value={formData.date}
+                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+              />
+            </td>
+            <td>
+              <strong>TIME :</strong>
+            </td>
+            <td>
+              <input
+                type="time"
+                value={formData.time}
+                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>METER MAKE SR. NO.</strong>
+            </td>
+            <td colSpan="5">
+              <input
+                type="text"
+                value={formData.meterMakeSrNo}
+                onChange={(e) => setFormData({ ...formData, meterMakeSrNo: e.target.value })}
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <strong>LV 1 OPEN, LV2 SHORT</strong>
+            </td>
+            <td colSpan="5">
+              <input
+                type="text"
+                value={formData.lv1OpenLv2Short || ""}
+                onChange={(e) => setFormData({ ...formData, lv1OpenLv2Short: e.target.value })}
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table className="form-table" style={{ marginTop: "20px" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "15%" }}>TAP NO.</th>
+            <th style={{ width: "25%" }}>VOLTAGE</th>
+            <th style={{ width: "30%" }}>HV CURRENT (Amp)</th>
+            <th style={{ width: "30%" }}>LV CURRENT (Amp)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {(formData.taps || []).map((row, idx) => (
+            <tr key={row.tapNo || idx + 1}>
+              <td style={{ textAlign: "center", fontWeight: 700 }}>{row.tapNo || idx + 1}</td>
+              <td>
+                <input
+                  type="text"
+                  value={row.voltage || ""}
+                  onChange={(e) => setTapRow(idx, "voltage", e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={row.hvCurrent || ""}
+                  onChange={(e) => setTapRow(idx, "hvCurrent", e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={row.lvCurrent || ""}
+                  onChange={(e) => setTapRow(idx, "lvCurrent", e.target.value)}
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <table className="form-table" style={{ marginTop: "20px" }}>
+        <tbody>
+          <tr>
+            <td rowSpan="4">
+              <strong>Impedance calculation</strong>
+            </td>
+            <td>
+              <strong>Applied Voltage HV</strong>
+            </td>
+            <td>
+              <strong>Rated Current LV</strong>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input
+                type="text"
+                value={formData.appliedVoltageHV}
+                onChange={(e) => setFormData({ ...formData, appliedVoltageHV: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.ratedCurrentLV}
+                onChange={(e) => setFormData({ ...formData, ratedCurrentLV: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>%Z = _____________ X _____________ X 100</strong>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <input
+                  type="text"
+                  value={formData.percentZ}
+                  onChange={(e) => setFormData({ ...formData, percentZ: e.target.value })}
+                  placeholder="%Z ="
+                  style={{ width: "80px" }}
+                />
+                <span>
+                  <strong>Rated voltage HV</strong>
+                </span>
+                <input
+                  type="text"
+                  value={formData.ratedVoltageHV}
+                  onChange={(e) => setFormData({ ...formData, ratedVoltageHV: e.target.value })}
+                  style={{ width: "120px" }}
+                />
+                <span>
+                  <strong>Measured current LV</strong>
+                </span>
+                <input
+                  type="text"
+                  value={formData.measuredCurrentLV}
+                  onChange={(e) => setFormData({ ...formData, measuredCurrentLV: e.target.value })}
+                  style={{ width: "120px" }}
+                />
+              </div>
+            </td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <PhotoUploadSection title="Short Circuit Test" photos={photoRequirements} onPhotoChange={handlePhotoChange} />
+
+      <div className="form-actions">
+        {onPrevious && (
+          <button type="button" onClick={onPrevious} className="prev-btn">
+            Previous Form
+          </button>
+        )}
+        <button type="submit" className="submit-btn">
+          Next Form
+        </button>
+      </div>
+    </form>
+    
+  )
+}
+
+export function Stage5Form7({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
+  const [formData, setFormData] = useState({
+    appliedVoltage: "",
+    date: "",
+    time: "",
+    meterMakeSrNo: "",
+
+    // Short circuit test measurements by tap (1–6)
+    taps: [
+      { tapNo: 1, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 2, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 3, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 4, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 5, voltage: "", hvCurrent: "", lvCurrent: "" },
+      { tapNo: 6, voltage: "", hvCurrent: "", lvCurrent: "" },
+    ],
+
+    // Impedance calculation
+    appliedVoltageHV: "",
+    ratedCurrentLV: "",
+    percentZ: "",
+    ratedVoltageHV: "",
+    measuredCurrentLV: "",
+
+    photos: {},
+    ...initialData,
+  })
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_API_BASE_URL}/api/table/getTable/Stage5Form9`, {
+          params: {
+            companyName: companyName,
+            projectName: projectName,
+          },
+        })
+        if (response.data && response.data.data) {
+          console.log("Data fetched from DB for stage5Form9")
+          setFormData(response.data.data)
+        } else {
+          console.log("There is no data in DB.")
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error)
+      }
+    }
+    fetchFormData()
+  }, [projectName, companyName])
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    onSubmit(formData)
+  }
+
+  const setTapRow = (index, field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      taps: (prev.taps || []).map((row, i) => (i === index ? { ...row, [field]: value } : row)),
+    }))
+  }
+
+  const handlePhotoChange = (key, file) => {
+    setFormData((prev) => ({
+      ...prev,
+      photos: { ...prev.photos, [key]: file },
+    }))
+  }
+
+  const photoRequirements = [{ key: "shortCircuitTest", label: "Short Circuit Test" }]
+
+  return (
+    <form onSubmit={handleSubmit} className="form-container">
+      <div className="company-header">
+        <h2>
+          TYPE OF TEST – SHORT CIRCUIT TEST&nbsp;<span>III</span>
+        </h2>
+      </div>
+
+      <table className="form-table">
+        <tbody>
+          <tr>
+            <td>
+              <strong>APPLIED VOLTAGE:</strong>
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.appliedVoltage}
+                onChange={(e) => setFormData({ ...formData, appliedVoltage: e.target.value })}
+                placeholder="VOLTS"
+              />
+            </td>
+            <td>
+              <strong>DATE:</strong>
+            </td>
+            <td>
+              <input
+                type="date"
+                value={formData.date}
+                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+              />
+            </td>
+            <td>
+              <strong>TIME :</strong>
+            </td>
+            <td>
+              <input
+                type="time"
+                value={formData.time}
+                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>METER MAKE SR. NO.</strong>
+            </td>
+            <td colSpan="5">
+              <input
+                type="text"
+                value={formData.meterMakeSrNo}
+                onChange={(e) => setFormData({ ...formData, meterMakeSrNo: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>LV1 AND LV2 SHORT</strong>
+            </td>
+            <td colSpan="5">
+              <input
+                type="text"
+                value={formData.lv1AndLv2Short || ""}
+                onChange={(e) => setFormData({ ...formData, lv1AndLv2Short: e.target.value })}
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table className="form-table" style={{ marginTop: "20px" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "15%" }}>TAP NO.</th>
+            <th style={{ width: "25%" }}>VOLTAGE</th>
+            <th style={{ width: "30%" }}>HV CURRENT (Amp)</th>
+            <th style={{ width: "30%" }}>LV CURRENT (Amp)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {(formData.taps || []).map((row, idx) => (
+            <tr key={row.tapNo || idx + 1}>
+              <td style={{ textAlign: "center", fontWeight: 700 }}>{row.tapNo || idx + 1}</td>
+              <td>
+                <input
+                  type="text"
+                  value={row.voltage || ""}
+                  onChange={(e) => setTapRow(idx, "voltage", e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={row.hvCurrent || ""}
+                  onChange={(e) => setTapRow(idx, "hvCurrent", e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={row.lvCurrent || ""}
+                  onChange={(e) => setTapRow(idx, "lvCurrent", e.target.value)}
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <table className="form-table" style={{ marginTop: "20px" }}>
+        <tbody>
+          <tr>
+            <td rowSpan="4">
+              <strong>Impedance calculation</strong>
+            </td>
+            <td>
+              <strong>Applied Voltage HV</strong>
+            </td>
+            <td>
+              <strong>Rated Current LV</strong>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input
+                type="text"
+                value={formData.appliedVoltageHV}
+                onChange={(e) => setFormData({ ...formData, appliedVoltageHV: e.target.value })}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                value={formData.ratedCurrentLV}
+                onChange={(e) => setFormData({ ...formData, ratedCurrentLV: e.target.value })}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>%Z = _____________ X _____________ X 100</strong>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <input
+                  type="text"
+                  value={formData.percentZ}
+                  onChange={(e) => setFormData({ ...formData, percentZ: e.target.value })}
+                  placeholder="%Z ="
+                  style={{ width: "80px" }}
+                />
+                <span>
+                  <strong>Rated voltage HV</strong>
+                </span>
+                <input
+                  type="text"
+                  value={formData.ratedVoltageHV}
+                  onChange={(e) => setFormData({ ...formData, ratedVoltageHV: e.target.value })}
+                  style={{ width: "120px" }}
+                />
+                <span>
+                  <strong>Measured current LV</strong>
+                </span>
+                <input
+                  type="text"
+                  value={formData.measuredCurrentLV}
+                  onChange={(e) => setFormData({ ...formData, measuredCurrentLV: e.target.value })}
+                  style={{ width: "120px" }}
+                />
+              </div>
+            </td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <PhotoUploadSection title="Short Circuit Test" photos={photoRequirements} onPhotoChange={handlePhotoChange} />
+
+      <div className="form-actions">
+        {onPrevious && (
+          <button type="button" onClick={onPrevious} className="prev-btn">
+            Previous Form
+          </button>
+        )}
+        <button type="submit" className="submit-btn">
+          Next Form
+        </button>
+      </div>
+    </form>
+    
+  )
+}
+
+export function Stage5Form8({
   onSubmit,
   onPrevious,
   initialData,
@@ -6876,7 +7426,7 @@ export function Stage5Form6({
   )
 }
 
-export function Stage5Form7({
+export function Stage5Form9({
   onSubmit,
   onPrevious,
   initialData,
@@ -7270,7 +7820,7 @@ export function Stage5Form7({
   )
 }
 
-export function Stage5Form8({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
+export function Stage5Form10({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
   const defaultAt05kvRows = [
     { between: "HV – G", mode: "GST-GND", tanDelta: "", capacitance: "", excitationCurrent: "", dielectricLoss: "" },
     { between: "HV – G", mode: "GSTg", tanDelta: "", capacitance: "", excitationCurrent: "", dielectricLoss: "" },
@@ -7571,7 +8121,7 @@ export function Stage5Form8({ onSubmit, onPrevious, initialData, isLastFormOfSta
   )
 }
 
-export function Stage5Form9({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
+export function Stage5Form11({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
   const defaultIrRows = [
     { label: "HV-Earth", key: "hvEarth" },
     { label: "LV1-Earth", key: "lv1Earth" },
@@ -11776,6 +12326,8 @@ const VConnected63MVATransformerForms = ({
       { component: Stage5Form7, name: "Short Circuit and Winding Resistance Test" },
       { component: Stage5Form8, name: "Short Circuit and Winding Resistance Test" },
       { component: Stage5Form9, name: "Short Circuit and Winding Resistance Test" },
+      { component: Stage5Form10, name: "Short Circuit and Winding Resistance Test" },
+      { component: Stage5Form11, name: "Short Circuit and Winding Resistance Test" },
     ],
     6: [
       { component: Stage6Form1, name: "Pre-Commissioning Checklist" },
