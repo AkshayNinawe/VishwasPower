@@ -3812,9 +3812,9 @@ function generateStageContent(stageData, stageNumber, headerImage) {
       else if (stageNumber === 5 && formKey === "form11") {
         content += generateStage5Form11(formData);
       }
-      // Stage 6 Forms - Skip form1 as it's handled in the last page overlay
+      // Stage 6 Forms (render Work Completion Report in the normal Stage flow)
       else if (stageNumber === 6 && formKey === "form1") {
-        // Skip - Stage 6 Form 1 is handled as overlay on the last page
+        content += generateStage6Form1(formData);
       }
       else {
         // Generic form rendering
