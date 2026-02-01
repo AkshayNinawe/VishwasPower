@@ -8336,10 +8336,10 @@ export function Stage5Form11({ onSubmit, onPrevious, initialData, isLastFormOfSt
               <input type="text" value={formData.nameTSS || ""} onChange={(e) => setFormData({ ...formData, nameTSS: e.target.value })} />
             </td>
             <td>
-              <strong>Sr. no.</strong>
+              <strong>TSS Sr. no.</strong>
             </td>
             <td>
-              <input type="text" value={formData.srNo || ""} onChange={(e) => setFormData({ ...formData, srNo: e.target.value })} />
+              <input type="text" value={formData.tssSrNo || ""} onChange={(e) => setFormData({ ...formData, tssSrNo: e.target.value })} />
             </td>
           </tr>
 
