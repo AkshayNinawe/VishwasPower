@@ -6409,13 +6409,13 @@ export function Stage5Form5({ onSubmit, onPrevious, initialData, isLastFormOfSta
 
           <tr>
             <td>
-              <strong>LV 1 OPEN, LV2 SHORT</strong>
+              <strong>LV 1 SHORT, LV2 OPEN</strong>
             </td>
             <td colSpan="5">
               <input
                 type="text"
-                value={formData.lv1OpenLv2Short || ""}
-                onChange={(e) => setFormData({ ...formData, lv1OpenLv2Short: e.target.value })}
+                value={formData.lv1ShortLv2Open || ""}
+                onChange={(e) => setFormData({ ...formData, lv1ShortLv2Open: e.target.value })}
               />
             </td>
           </tr>

@@ -896,10 +896,7 @@ const Stage5Form4SubSchema = new mongoose.Schema(
   { _id: false }
 );
 
-/**
- * Sub-schema for Stage 5 Form 5 (Short Circuit Test)
- * Matches frontend Stage5Form5 in VConnected63MVATransformerForms.js
- */
+
 const Stage5Form5TapRowSubSchema = new mongoose.Schema(
   {
     tapNo: { type: Number, default: 0 },
@@ -917,6 +914,9 @@ const Stage5Form5SubSchema = new mongoose.Schema(
     time: { type: String, trim: true, default: "" },
     meterMakeSrNo: { type: String, trim: true, default: "" },
 
+    // Stage5Form5 UI includes this extra field (LV 1 SHORT, LV2 OPEN)
+    lv1ShortLv2Open: { type: String, trim: true, default: "" },
+
     taps: { type: [Stage5Form5TapRowSubSchema], default: [] },
 
     // Impedance calculation
@@ -931,11 +931,75 @@ const Stage5Form5SubSchema = new mongoose.Schema(
   { _id: false }
 );
 
-/**
- * Sub-schema for Stage 5 Form 6 (Winding Resistance Test)
- * Matches frontend Stage5Form6 in VConnected63MVATransformerForms.js
- */
-const Stage5Form6HVRowSubSchema = new mongoose.Schema(
+const Stage5Form6TapRowSubSchema = new mongoose.Schema(
+  {
+    tapNo: { type: Number, default: 0 },
+    voltage: { type: String, trim: true, default: "" },
+    hvCurrent: { type: String, trim: true, default: "" },
+    lvCurrent: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+const Stage5Form6SubSchema = new mongoose.Schema(
+  {
+    appliedVoltage: { type: String, trim: true, default: "" },
+    date: { type: String, trim: true, default: "" },
+    time: { type: String, trim: true, default: "" },
+    meterMakeSrNo: { type: String, trim: true, default: "" },
+
+    // Stage5Form6 UI includes this extra field (LV 1 OPEN, LV2 SHORT)
+    lv1OpenLv2Short: { type: String, trim: true, default: "" },
+
+    taps: { type: [Stage5Form6TapRowSubSchema], default: [] },
+
+    // Impedance calculation
+    appliedVoltageHV: { type: String, trim: true, default: "" },
+    ratedCurrentLV: { type: String, trim: true, default: "" },
+    percentZ: { type: String, trim: true, default: "" },
+    ratedVoltageHV: { type: String, trim: true, default: "" },
+    measuredCurrentLV: { type: String, trim: true, default: "" },
+
+    photos: { type: Map, of: String, default: {} },
+  },
+  { _id: false }
+);
+
+const Stage5Form7TapRowSubSchema = new mongoose.Schema(
+  {
+    tapNo: { type: Number, default: 0 },
+    voltage: { type: String, trim: true, default: "" },
+    hvCurrent: { type: String, trim: true, default: "" },
+    lvCurrent: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+const Stage5Form7SubSchema = new mongoose.Schema(
+  {
+    appliedVoltage: { type: String, trim: true, default: "" },
+    date: { type: String, trim: true, default: "" },
+    time: { type: String, trim: true, default: "" },
+    meterMakeSrNo: { type: String, trim: true, default: "" },
+
+    // Stage5Form7 UI includes this extra field (LV1 AND LV2 SHORT)
+    lv1AndLv2Short: { type: String, trim: true, default: "" },
+
+    taps: { type: [Stage5Form7TapRowSubSchema], default: [] },
+
+    // Impedance calculation
+    appliedVoltageHV: { type: String, trim: true, default: "" },
+    ratedCurrentLV: { type: String, trim: true, default: "" },
+    percentZ: { type: String, trim: true, default: "" },
+    ratedVoltageHV: { type: String, trim: true, default: "" },
+    measuredCurrentLV: { type: String, trim: true, default: "" },
+
+    photos: { type: Map, of: String, default: {} },
+  },
+  { _id: false }
+);
+
+const Stage5Form8HVRowSubSchema = new mongoose.Schema(
   {
     tapNo: { type: Number, default: 0 },
     resistance_11_12: { type: String, trim: true, default: "" },
@@ -943,7 +1007,7 @@ const Stage5Form6HVRowSubSchema = new mongoose.Schema(
   { _id: false }
 );
 
-const Stage5Form6LV21RowSubSchema = new mongoose.Schema(
+const Stage5Form8LV21RowSubSchema = new mongoose.Schema(
   {
     rowNo: { type: Number, default: 0 },
     resistance_21_22: { type: String, trim: true, default: "" },
@@ -951,7 +1015,7 @@ const Stage5Form6LV21RowSubSchema = new mongoose.Schema(
   { _id: false }
 );
 
-const Stage5Form6LV31RowSubSchema = new mongoose.Schema(
+const Stage5Form8LV31RowSubSchema = new mongoose.Schema(
   {
     rowNo: { type: Number, default: 0 },
     resistance_31_32: { type: String, trim: true, default: "" },
@@ -959,7 +1023,7 @@ const Stage5Form6LV31RowSubSchema = new mongoose.Schema(
   { _id: false }
 );
 
-const Stage5Form6SubSchema = new mongoose.Schema(
+const Stage5Form8SubSchema = new mongoose.Schema(
   {
     meterUsed: { type: String, trim: true, default: "" },
     date: { type: String, trim: true, default: "" },
@@ -970,20 +1034,16 @@ const Stage5Form6SubSchema = new mongoose.Schema(
     range: { type: String, trim: true, default: "" },
     ambient: { type: String, trim: true, default: "" },
 
-    hvSide: { type: [Stage5Form6HVRowSubSchema], default: [] },
-    lvSide21_22: { type: [Stage5Form6LV21RowSubSchema], default: [] },
-    lvSide31_32: { type: [Stage5Form6LV31RowSubSchema], default: [] },
+    hvSide: { type: [Stage5Form8HVRowSubSchema], default: [] },
+    lvSide21_22: { type: [Stage5Form8LV21RowSubSchema], default: [] },
+    lvSide31_32: { type: [Stage5Form8LV31RowSubSchema], default: [] },
 
     photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );
 
-/**
- * Sub-schema for Stage 5 Form 7 (Tan Delta and Capacitance Test on Bushing)
- * Matches frontend Stage5Form7 in VConnected63MVATransformerForms.js
- */
-const Stage5Form7RowSubSchema = new mongoose.Schema(
+const Stage5Form9RowSubSchema = new mongoose.Schema(
   {
     voltageKv: { type: String, trim: true, default: "" },
     bushingSerialNo: { type: String, trim: true, default: "" },
@@ -997,7 +1057,7 @@ const Stage5Form7RowSubSchema = new mongoose.Schema(
   { _id: false }
 );
 
-const Stage5Form7SubSchema = new mongoose.Schema(
+const Stage5Form9SubSchema = new mongoose.Schema(
   {
     meterUsed: { type: String, trim: true, default: "" },
     date: { type: String, trim: true, default: "" },
@@ -1013,18 +1073,15 @@ const Stage5Form7SubSchema = new mongoose.Schema(
     lvBushingMake: { type: String, trim: true, default: "" },
 
     // keyed by: hv11, hv12, lv21, lv22, lv31, lv32
-    rows: { type: Map, of: Stage5Form7RowSubSchema, default: {} },
+    rows: { type: Map, of: Stage5Form9RowSubSchema, default: {} },
 
     photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );
 
-/**
- * Sub-schema for Stage 5 Form 8 (Tan Delta and Capacitance Measurement of Winding)
- * Matches frontend Stage5Form8 in VConnected63MVATransformerForms.js
- */
-const Stage5Form8RowSubSchema = new mongoose.Schema(
+
+const Stage5Form10RowSubSchema = new mongoose.Schema(
   {
     between: { type: String, trim: true, default: "" },
     mode: { type: String, trim: true, default: "" },
@@ -1036,7 +1093,7 @@ const Stage5Form8RowSubSchema = new mongoose.Schema(
   { _id: false }
 );
 
-const Stage5Form8SubSchema = new mongoose.Schema(
+const Stage5Form10SubSchema = new mongoose.Schema(
   {
     meterUsed: { type: String, trim: true, default: "" },
     modelAndSerialNo: { type: String, trim: true, default: "" },
@@ -1046,19 +1103,15 @@ const Stage5Form8SubSchema = new mongoose.Schema(
     oti: { type: String, trim: true, default: "" },
     wti: { type: String, trim: true, default: "" },
 
-    at05kvRows: { type: [Stage5Form8RowSubSchema], default: [] },
-    at10kvRows: { type: [Stage5Form8RowSubSchema], default: [] },
+    at05kvRows: { type: [Stage5Form10RowSubSchema], default: [] },
+    at10kvRows: { type: [Stage5Form10RowSubSchema], default: [] },
 
     photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );
 
-/**
- * Sub-schema for Stage 5 Form 9 (Pre-Commissioning Checklist + Final IR Values + Signatures)
- * Matches frontend Stage5Form9 in VConnected63MVATransformerForms.js
- */
-const Stage5Form9SignatureSubSchema = new mongoose.Schema(
+const Stage5Form11SignatureSubSchema = new mongoose.Schema(
   {
     vpesName: { type: String, trim: true, default: "" },
     vpesSignature: { type: String, trim: true, default: "" },
@@ -1070,7 +1123,7 @@ const Stage5Form9SignatureSubSchema = new mongoose.Schema(
   { _id: false }
 );
 
-const Stage5Form9SubSchema = new mongoose.Schema(
+const Stage5Form11SubSchema = new mongoose.Schema(
   {
     // Header (customer/project details)
     customerName: { type: String, trim: true, default: "" },
@@ -1135,7 +1188,7 @@ const Stage5Form9SubSchema = new mongoose.Schema(
     lv1Lv2_ratio_ir60: { type: String, trim: true, default: "" },
     lv1Lv2_ratio_ir600: { type: String, trim: true, default: "" },
 
-    signatures: { type: Stage5Form9SignatureSubSchema, default: () => ({}) },
+    signatures: { type: Stage5Form11SignatureSubSchema, default: () => ({}) },
 
     photos: { type: Map, of: String, default: {} },
   },
@@ -1258,6 +1311,8 @@ const VConnectSchema = new mongoose.Schema(
         form7: { type: Stage5Form7SubSchema, default: () => ({}) },
         form8: { type: Stage5Form8SubSchema, default: () => ({}) },
         form9: { type: Stage5Form9SubSchema, default: () => ({}) },
+        form10: { type: Stage5Form10SubSchema, default: () => ({}) },
+        form11: { type: Stage5Form11SubSchema, default: () => ({}) },
       },
       stage6: {
         form1: { type: Stage6Form1SubSchema, default: () => ({}) },

@@ -5341,622 +5341,416 @@ const Stage5Form8 = ({ formData }) => (
       <h2>TYPE OF TEST – WINDING RESISTANCE TEST</h2>
     </div>
 
-    {formData.photos ? renderPhotos(formData.photos) : null}
-  </div>
-);
-
-const Stage5Form9 = ({ formData }) => (
-  <div className="form-container">
-    <div className="company-header">
-      <h2 style={{ textAlign: "center", fontWeight: 800 }}>TAN DELTA AND CAPACITANCE MEASUREMENT OF WINDING</h2>
-    </div>
-
-    {/* Header block (as per TractionTransformerForms.js Stage5Form8) */}
-    <table className="form-table" style={{ marginTop: 10 }}>
+    {/* Header block (match VConnected63MVATransformerForms.js Stage5Form8) */}
+    <table className="form-table">
       <tbody>
         <tr>
-          <td style={{ width: "45%" }}>
-            <strong>METER USED</strong>
+          <td style={{ width: "20%", fontWeight: 800 }}>METER USED</td>
+          <td style={{ width: "30%" }}>
+            <input type="text" value={formData.meterUsed || ""} disabled className="form-input disabled preview" />
           </td>
-          <td style={{ width: "27%" }}>
-            <strong>DATE:</strong>
-          </td>
-          <td style={{ width: "28%" }}>
-            <strong>TIME :</strong>
+          <td style={{ width: "20%", fontWeight: 800 }}>DATE:</td>
+          <td style={{ width: "30%" }}>
+            <input type="date" value={formData.date || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
         <tr>
+          <td style={{ fontWeight: 800 }}>METER MAKE SR. NO.</td>
           <td>
-            <input type="text" value={formData.meterUsed || ""} disabled className="form-input disabled preview" />
+            <input type="text" value={formData.meterMakeSrNo || ""} disabled className="form-input disabled preview" />
           </td>
-          <td>
-            <input type="date" value={formData.date || ""} disabled className="form-input disabled preview" />
-          </td>
+          <td style={{ fontWeight: 800 }}>TIME :</td>
           <td>
             <input type="time" value={formData.time || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
-
         <tr>
+          <td style={{ fontWeight: 800 }}>RANGE</td>
           <td>
-            <strong>MODEL & S. NO.</strong>
+            <input type="text" value={formData.range || ""} disabled className="form-input disabled preview" />
           </td>
+          <td style={{ fontWeight: 800 }}>WTI:</td>
           <td>
-            <strong>AMBIENT:</strong>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>
-            <input
-              type="text"
-              value={formData.modelAndSrNo || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input type="text" value={formData.ambient || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td></td>
-        </tr>
-
-        <tr>
-          <td>
-            <strong>OTI............................°C</strong>
-          </td>
-          <td colSpan={2}>
-            <strong>WTI............................°C</strong>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <input type="text" value={formData.oti || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td colSpan={2}>
             <input type="text" value={formData.wti || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
+        <tr>
+          <td style={{ fontWeight: 800 }}>AMBIENT:</td>
+          <td>
+            <input type="text" value={formData.ambient || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ fontWeight: 800 }}>OTI:</td>
+          <td>
+            <input type="text" value={formData.oti || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
       </tbody>
     </table>
 
-    <table className="form-table" style={{ marginTop: 18 }}>
-      <thead>
-        <tr>
-          <th style={{ width: "14%" }}>AT 05 KV IN BETWEEN</th>
-          <th style={{ width: "12%" }}>MODE</th>
-          <th style={{ width: "16%" }}>TAN DELTA %</th>
-          <th style={{ width: "16%" }}>
-            CAPACITANCE
-            <br />
-            (Pf)
-          </th>
-          <th style={{ width: "20%" }}>
-            EXCITATION CURRENT
-            <br />
-            (mA)
-          </th>
-          <th style={{ width: "22%" }}>DIELECTRIC LOSS</th>
-        </tr>
-      </thead>
-      <tbody>
-        {(formData.kv5_rows || []).map((r) => (
-          <tr key={r.id}>
-            <td style={{ fontWeight: 700, textAlign: "center" }}>{r.between}</td>
-            <td style={{ fontWeight: 700, textAlign: "center" }}>{r.mode}</td>
-            <td>
-              <input type="text" value={r.tanDelta || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td>
-              <input type="text" value={r.capacitance || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td>
-              <input type="text" value={r.excitationCurrent || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td>
-              <input type="text" value={r.dielectricLoss || ""} disabled className="form-input disabled preview" />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    {/* HV / LV layout (match VConnected63MVATransformerForms.js Stage5Form8) */}
+    <div
+      style={{
+        display: "flex",
+        gap: "40px",
+        marginTop: "30px",
+        alignItems: "flex-start",
+      }}
+    >
+      {/* HV SIDE */}
+      <div style={{ flex: 1 }}>
+        <div style={{ textAlign: "center", fontWeight: 900, marginBottom: "8px" }}>HV SIDE</div>
+        <table className="form-table">
+          <thead>
+            <tr>
+              <th style={{ width: "30%" }}>TAP NO.</th>
+              <th style={{ width: "70%" }}>1.1 – 1.2 (Ω)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {(formData.hvSide || []).map((row, idx) => (
+              <tr key={row.tapNo || idx + 1}>
+                <td style={{ textAlign: "center", fontWeight: 700 }}>{row.tapNo || idx + 1}</td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.resistance_11_12 || ""}
+                    disabled
+                    className="form-input disabled preview"
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-    <table className="form-table" style={{ marginTop: 18 }}>
-      <thead>
-        <tr>
-          <th style={{ width: "14%" }}>AT 10 KV IN BETWEEN</th>
-          <th style={{ width: "12%" }}>MODE</th>
-          <th style={{ width: "16%" }}>TAN DELTA %</th>
-          <th style={{ width: "16%" }}>
-            CAPACITANCE
-            <br />
-            (Pf)
-          </th>
-          <th style={{ width: "20%" }}>
-            EXCITATION CURRENT
-            <br />
-            (mA)
-          </th>
-          <th style={{ width: "22%" }}>DIELECTRIC LOSS</th>
-        </tr>
-      </thead>
-      <tbody>
-        {(formData.kv10_rows || []).map((r) => (
-          <tr key={r.id}>
-            <td style={{ fontWeight: 700, textAlign: "center" }}>{r.between}</td>
-            <td style={{ fontWeight: 700, textAlign: "center" }}>{r.mode}</td>
-            <td>
-              <input type="text" value={r.tanDelta || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td>
-              <input type="text" value={r.capacitance || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td>
-              <input type="text" value={r.excitationCurrent || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td>
-              <input type="text" value={r.dielectricLoss || ""} disabled className="form-input disabled preview" />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-    
-    <div className="company-header" style={{ marginTop: 26 }}>
-      <h3 style={{ textAlign: "center", fontWeight: 800, textDecoration: "underline", textUnderlineOffset: 6 }}>
-        IR VALUES OF TRANSFORMER
-      </h3>
+      {/* LV SIDE */}
+      <div style={{ flex: 1 }}>
+        <div style={{ textAlign: "center", fontWeight: 900, marginBottom: "8px" }}>LV SIDE</div>
+
+        {/* 2.1 – 2.2 */}
+        <table className="form-table">
+          <thead>
+            <tr>
+              <th style={{ width: "40%" }}>ROW</th>
+              <th style={{ width: "60%" }}>2.1 – 2.2 (Ω)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {(formData.lvSide21_22 || []).map((row, idx) => (
+              <tr key={`21-22-${idx}`}>
+                <td style={{ textAlign: "center", fontWeight: 700 }}>{row.rowNo || idx + 1}</td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.resistance_21_22 || ""}
+                    disabled
+                    className="form-input disabled preview"
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {/* 3.1 – 3.2 */}
+        <table className="form-table" style={{ marginTop: "16px" }}>
+          <thead>
+            <tr>
+              <th style={{ width: "40%" }}>ROW</th>
+              <th style={{ width: "60%" }}>3.1 – 3.2 (Ω)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {(formData.lvSide31_32 || []).map((row, idx) => (
+              <tr key={`31-32-${idx}`}>
+                <td style={{ textAlign: "center", fontWeight: 700 }}>{row.rowNo || idx + 1}</td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.resistance_31_32 || ""}
+                    disabled
+                    className="form-input disabled preview"
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
-
-    <table className="form-table" style={{ marginTop: 10 }}>
-      <tbody>
-        <tr>
-          <td style={{ width: "25%" }}>
-            <strong>Date :</strong>
-          </td>
-          <td style={{ width: "25%" }}>
-            <input type="date" value={formData.ir?.date || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td style={{ width: "25%" }}>
-            <strong>Time:</strong>
-          </td>
-          <td style={{ width: "25%" }}>
-            <input type="time" value={formData.ir?.time || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            <strong>Amb. Temp :</strong>
-          </td>
-          <td>
-            <input type="text" value={formData.ir?.ambTemp || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td>
-            <strong>Make :</strong>
-          </td>
-          <td>
-            <input type="text" value={formData.ir?.make || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            <strong>Oil Temp. :</strong>
-          </td>
-          <td>
-            <input type="text" value={formData.ir?.oilTemp || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td>
-            <strong>Sr. No. :</strong>
-          </td>
-          <td>
-            <input type="text" value={formData.ir?.srNo || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            <strong>Wdg. Temp. :</strong>
-          </td>
-          <td>
-            <input type="text" value={formData.ir?.wdgTemp || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td>
-            <strong>Range :</strong>
-          </td>
-          <td>
-            <input type="text" value={formData.ir?.range || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            <strong>Relative Humidity :</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.ir?.relativeHumidity || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <strong>Voltage Level :</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.ir?.voltageLevel || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <table className="form-table" style={{ marginTop: 14 }}>
-      <thead>
-        <tr>
-          <th style={{ width: "20%" }}></th>
-          <th style={{ width: "14%" }}>
-            15 Sec
-            <br />
-            (MΩ)
-          </th>
-          <th style={{ width: "14%" }}>
-            60 Sec
-            <br />
-            (MΩ)
-          </th>
-          <th style={{ width: "14%" }}>
-            600 Sec
-            <br />
-            (MΩ)
-          </th>
-          <th style={{ width: "19%" }}>
-            Ratio of IR 60
-            <br />
-            IR 15
-          </th>
-          <th style={{ width: "19%" }}>
-            Ratio of IR 600
-            <br />
-            IR 60
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {(formData.ir?.rows || []).map((r) => (
-          <tr key={r.id}>
-            <td style={{ fontWeight: 700 }}>{r.label}</td>
-            <td>
-              <input type="text" value={r.sec15 || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td>
-              <input type="text" value={r.sec60 || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td>
-              <input type="text" value={r.sec600 || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td>
-              <input type="text" value={r.ratio60_15 || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td>
-              <input type="text" value={r.ratio600_60 || ""} disabled className="form-input disabled preview" />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
 
     {formData.photos ? renderPhotos(formData.photos) : null}
   </div>
 );
+
+const Stage5Form9 = ({ formData }) => {
+  const bushingRows = [
+    { key: "hv11", labelVoltage: "HV (1.1)" },
+    { key: "hv12", labelVoltage: "HV (1.2)" },
+    { key: "lv21", labelVoltage: "LV (2.1)" },
+    { key: "lv22", labelVoltage: "LV (2.2)" },
+    { key: "lv31", labelVoltage: "LV (3.1)" },
+    { key: "lv32", labelVoltage: "LV (3.2)" },
+  ];
+
+  const getRow = (key) => formData?.rows?.[key] || {};
+
+  return (
+    <div className="form-container">
+      <div className="company-header">
+        <h2>TAN DELTA AND CAPACITANCE TEST ON BUSHING</h2>
+      </div>
+
+      {/* Header block (match VConnected63MVATransformerForms.js Stage5Form9) */}
+      <table className="form-table">
+        <tbody>
+          <tr>
+            <td style={{ width: "20%", fontWeight: 800 }}>Bushing Sr No. (HV)</td>
+            <td style={{ width: "30%" }}>
+              <input type="text" value={formData.hvBushingSrNo || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ width: "20%", fontWeight: 800 }}>Bushing Make (HV)</td>
+            <td style={{ width: "30%" }}>
+              <input type="text" value={formData.hvBushingMake || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+          <tr>
+            <td style={{ width: "20%", fontWeight: 800 }}>Bushing Sr No. (LV)</td>
+            <td style={{ width: "30%" }}>
+              <input type="text" value={formData.lvBushingSrNo || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ width: "20%", fontWeight: 800 }}>Bushing Make (LV)</td>
+            <td style={{ width: "30%" }}>
+              <input type="text" value={formData.lvBushingMake || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+          <tr>
+            <td style={{ width: "20%", fontWeight: 800 }}>METER USED</td>
+            <td style={{ width: "30%" }}>
+              <input type="text" value={formData.meterUsed || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ width: "20%", fontWeight: 800 }}>DATE:</td>
+            <td style={{ width: "30%" }}>
+              <input type="date" value={formData.date || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+          <tr>
+            <td style={{ fontWeight: 800 }}>MODEL & S. NO.</td>
+            <td>
+              <input type="text" value={formData.modelAndSerialNo || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ fontWeight: 800 }}>TIME :</td>
+            <td>
+              <input type="time" value={formData.time || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+          <tr>
+            <td style={{ fontWeight: 800 }}>AMBIENT:</td>
+            <td>
+              <input type="text" value={formData.ambient || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ fontWeight: 800 }}>OTI (°C)</td>
+            <td>
+              <input type="text" value={formData.oti || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+          <tr>
+            <td style={{ fontWeight: 800 }}>WTI (°C)</td>
+            <td>
+              <input type="text" value={formData.wti || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ fontWeight: 800 }}></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* Main table (match VConnected63MVATransformerForms.js Stage5Form9) */}
+      <table className="form-table" style={{ marginTop: "20px" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "10%" }}>VOLTAGE (KV)</th>
+            <th style={{ width: "18%" }}>BUSHING & SERIAL NO.</th>
+            <th style={{ width: "10%" }}>TEST MODE</th>
+            <th colSpan={2} style={{ width: "24%" }}>CAPACITANCE</th>
+            <th colSpan={2} style={{ width: "24%" }}>TAN DELTA</th>
+            <th style={{ width: "14%" }}>REMARK</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th style={{ fontWeight: 700 }}>FACTORY</th>
+            <th style={{ fontWeight: 700 }}>SITE</th>
+            <th style={{ fontWeight: 700 }}>FACTORY</th>
+            <th style={{ fontWeight: 700 }}>SITE</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {bushingRows.map(({ key, labelVoltage }) => {
+            const row = getRow(key);
+            return (
+              <tr key={key}>
+                <td>
+                  <input type="text" value={row.voltageKv || ""} disabled className="form-input disabled preview" />
+                </td>
+                <td style={{ fontWeight: 700 }}>{labelVoltage}</td>
+                <td>
+                  <input type="text" value={row.testMode || ""} disabled className="form-input disabled preview" />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.capacitanceFactory || ""}
+                    disabled
+                    className="form-input disabled preview"
+                  />
+                </td>
+                <td>
+                  <input type="text" value={row.capacitanceSite || ""} disabled className="form-input disabled preview" />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.tanDeltaFactory || ""}
+                    disabled
+                    className="form-input disabled preview"
+                  />
+                </td>
+                <td>
+                  <input type="text" value={row.tanDeltaSite || ""} disabled className="form-input disabled preview" />
+                </td>
+                <td>
+                  <input type="text" value={row.remark || ""} disabled className="form-input disabled preview" />
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+
+      {formData.photos ? renderPhotos(formData.photos) : null}
+    </div>
+  );
+};
 
 const Stage5Form10 = ({ formData }) => (
   <div className="form-container">
     <div className="company-header">
-      <h2 style={{ textAlign: "center", fontWeight: 800 }}>TAN DELTA AND CAPACITANCE MEASUREMENT OF WINDING</h2>
+      <h2>TAN DELTA AND CAPACITANCE MEASUREMENT OF WINDING</h2>
     </div>
 
-    {/* Header block (as per TractionTransformerForms.js Stage5Form8) */}
-    <table className="form-table" style={{ marginTop: 10 }}>
+    {/* Header block (match VConnected63MVATransformerForms.js Stage5Form10) */}
+    <table className="form-table">
       <tbody>
         <tr>
-          <td style={{ width: "45%" }}>
-            <strong>METER USED</strong>
-          </td>
-          <td style={{ width: "27%" }}>
-            <strong>DATE:</strong>
-          </td>
+          <td style={{ width: "22%", fontWeight: 800 }}>METER USED</td>
           <td style={{ width: "28%" }}>
-            <strong>TIME :</strong>
-          </td>
-        </tr>
-        <tr>
-          <td>
             <input type="text" value={formData.meterUsed || ""} disabled className="form-input disabled preview" />
           </td>
-          <td>
+          <td style={{ width: "22%", fontWeight: 800 }}>DATE:</td>
+          <td style={{ width: "28%" }}>
             <input type="date" value={formData.date || ""} disabled className="form-input disabled preview" />
           </td>
+        </tr>
+
+        <tr>
+          <td style={{ fontWeight: 800 }}>MODEL & S. NO.</td>
+          <td>
+            <input type="text" value={formData.modelAndSerialNo || ""} disabled className="form-input disabled preview" />
+          </td>
+          <td style={{ fontWeight: 800 }}>TIME :</td>
           <td>
             <input type="time" value={formData.time || ""} disabled className="form-input disabled preview" />
           </td>
         </tr>
 
         <tr>
-          <td>
-            <strong>MODEL & S. NO.</strong>
-          </td>
-          <td>
-            <strong>AMBIENT:</strong>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>
-            <input
-              type="text"
-              value={formData.modelAndSrNo || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input type="text" value={formData.ambient || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td></td>
-        </tr>
-
-        <tr>
-          <td>
-            <strong>OTI............................°C</strong>
-          </td>
-          <td colSpan={2}>
-            <strong>WTI............................°C</strong>
-          </td>
-        </tr>
-        <tr>
+          <td style={{ fontWeight: 800 }}>OTI..................°C</td>
           <td>
             <input type="text" value={formData.oti || ""} disabled className="form-input disabled preview" />
           </td>
-          <td colSpan={2}>
+          <td style={{ fontWeight: 800 }}>AMBIENT:</td>
+          <td>
+            <input type="text" value={formData.ambient || ""} disabled className="form-input disabled preview" />
+          </td>
+        </tr>
+
+        <tr>
+          <td style={{ fontWeight: 800 }}>WTI..................°C</td>
+          <td>
             <input type="text" value={formData.wti || ""} disabled className="form-input disabled preview" />
           </td>
+          <td></td>
+          <td></td>
         </tr>
       </tbody>
     </table>
 
-    <table className="form-table" style={{ marginTop: 18 }}>
+    {/* AT 05 KV table */}
+    <table className="form-table" style={{ marginTop: "16px" }}>
       <thead>
         <tr>
-          <th style={{ width: "14%" }}>AT 05 KV IN BETWEEN</th>
+          <th style={{ width: "18%" }}>AT 05 KV IN BETWEEN</th>
           <th style={{ width: "12%" }}>MODE</th>
-          <th style={{ width: "16%" }}>TAN DELTA %</th>
-          <th style={{ width: "16%" }}>
-            CAPACITANCE
-            <br />
-            (Pf)
-          </th>
-          <th style={{ width: "20%" }}>
-            EXCITATION CURRENT
-            <br />
-            (mA)
-          </th>
-          <th style={{ width: "22%" }}>DIELECTRIC LOSS</th>
+          <th style={{ width: "17%" }}>TAN DELTA %</th>
+          <th style={{ width: "16%" }}>CAPACITANCE (pF)</th>
+          <th style={{ width: "19%" }}>EXCITATION CURRENT (mA)</th>
+          <th style={{ width: "18%" }}>DIELECTRIC LOSS</th>
         </tr>
       </thead>
       <tbody>
-        {(formData.kv5_rows || []).map((r) => (
-          <tr key={r.id}>
-            <td style={{ fontWeight: 700, textAlign: "center" }}>{r.between}</td>
-            <td style={{ fontWeight: 700, textAlign: "center" }}>{r.mode}</td>
+        {(formData.at05kvRows || []).map((row, idx) => (
+          <tr key={`at05-${row.between}-${row.mode}-${idx}`}>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>{row.between}</td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>{row.mode}</td>
             <td>
-              <input type="text" value={r.tanDelta || ""} disabled className="form-input disabled preview" />
+              <input type="text" value={row.tanDelta || ""} disabled className="form-input disabled preview" />
             </td>
             <td>
-              <input type="text" value={r.capacitance || ""} disabled className="form-input disabled preview" />
+              <input type="text" value={row.capacitance || ""} disabled className="form-input disabled preview" />
             </td>
             <td>
-              <input type="text" value={r.excitationCurrent || ""} disabled className="form-input disabled preview" />
+              <input type="text" value={row.excitationCurrent || ""} disabled className="form-input disabled preview" />
             </td>
             <td>
-              <input type="text" value={r.dielectricLoss || ""} disabled className="form-input disabled preview" />
+              <input type="text" value={row.dielectricLoss || ""} disabled className="form-input disabled preview" />
             </td>
           </tr>
         ))}
       </tbody>
     </table>
 
-    <table className="form-table" style={{ marginTop: 18 }}>
+    {/* AT 10 KV table */}
+    <table className="form-table" style={{ marginTop: "18px" }}>
       <thead>
         <tr>
-          <th style={{ width: "14%" }}>AT 10 KV IN BETWEEN</th>
+          <th style={{ width: "18%" }}>AT 10 KV IN BETWEEN</th>
           <th style={{ width: "12%" }}>MODE</th>
-          <th style={{ width: "16%" }}>TAN DELTA %</th>
-          <th style={{ width: "16%" }}>
-            CAPACITANCE
-            <br />
-            (Pf)
-          </th>
-          <th style={{ width: "20%" }}>
-            EXCITATION CURRENT
-            <br />
-            (mA)
-          </th>
-          <th style={{ width: "22%" }}>DIELECTRIC LOSS</th>
+          <th style={{ width: "17%" }}>TAN DELTA %</th>
+          <th style={{ width: "16%" }}>CAPACITANCE (pF)</th>
+          <th style={{ width: "19%" }}>EXCITATION CURRENT (mA)</th>
+          <th style={{ width: "18%" }}>DIELECTRIC LOSS</th>
         </tr>
       </thead>
       <tbody>
-        {(formData.kv10_rows || []).map((r) => (
-          <tr key={r.id}>
-            <td style={{ fontWeight: 700, textAlign: "center" }}>{r.between}</td>
-            <td style={{ fontWeight: 700, textAlign: "center" }}>{r.mode}</td>
+        {(formData.at10kvRows || []).map((row, idx) => (
+          <tr key={`at10-${row.between}-${row.mode}-${idx}`}>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>{row.between}</td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>{row.mode}</td>
             <td>
-              <input type="text" value={r.tanDelta || ""} disabled className="form-input disabled preview" />
+              <input type="text" value={row.tanDelta || ""} disabled className="form-input disabled preview" />
             </td>
             <td>
-              <input type="text" value={r.capacitance || ""} disabled className="form-input disabled preview" />
+              <input type="text" value={row.capacitance || ""} disabled className="form-input disabled preview" />
             </td>
             <td>
-              <input type="text" value={r.excitationCurrent || ""} disabled className="form-input disabled preview" />
+              <input type="text" value={row.excitationCurrent || ""} disabled className="form-input disabled preview" />
             </td>
             <td>
-              <input type="text" value={r.dielectricLoss || ""} disabled className="form-input disabled preview" />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-    
-    <div className="company-header" style={{ marginTop: 26 }}>
-      <h3 style={{ textAlign: "center", fontWeight: 800, textDecoration: "underline", textUnderlineOffset: 6 }}>
-        IR VALUES OF TRANSFORMER
-      </h3>
-    </div>
-
-    <table className="form-table" style={{ marginTop: 10 }}>
-      <tbody>
-        <tr>
-          <td style={{ width: "25%" }}>
-            <strong>Date :</strong>
-          </td>
-          <td style={{ width: "25%" }}>
-            <input type="date" value={formData.ir?.date || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td style={{ width: "25%" }}>
-            <strong>Time:</strong>
-          </td>
-          <td style={{ width: "25%" }}>
-            <input type="time" value={formData.ir?.time || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            <strong>Amb. Temp :</strong>
-          </td>
-          <td>
-            <input type="text" value={formData.ir?.ambTemp || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td>
-            <strong>Make :</strong>
-          </td>
-          <td>
-            <input type="text" value={formData.ir?.make || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            <strong>Oil Temp. :</strong>
-          </td>
-          <td>
-            <input type="text" value={formData.ir?.oilTemp || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td>
-            <strong>Sr. No. :</strong>
-          </td>
-          <td>
-            <input type="text" value={formData.ir?.srNo || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            <strong>Wdg. Temp. :</strong>
-          </td>
-          <td>
-            <input type="text" value={formData.ir?.wdgTemp || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td>
-            <strong>Range :</strong>
-          </td>
-          <td>
-            <input type="text" value={formData.ir?.range || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            <strong>Relative Humidity :</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.ir?.relativeHumidity || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <strong>Voltage Level :</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.ir?.voltageLevel || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <table className="form-table" style={{ marginTop: 14 }}>
-      <thead>
-        <tr>
-          <th style={{ width: "20%" }}></th>
-          <th style={{ width: "14%" }}>
-            15 Sec
-            <br />
-            (MΩ)
-          </th>
-          <th style={{ width: "14%" }}>
-            60 Sec
-            <br />
-            (MΩ)
-          </th>
-          <th style={{ width: "14%" }}>
-            600 Sec
-            <br />
-            (MΩ)
-          </th>
-          <th style={{ width: "19%" }}>
-            Ratio of IR 60
-            <br />
-            IR 15
-          </th>
-          <th style={{ width: "19%" }}>
-            Ratio of IR 600
-            <br />
-            IR 60
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {(formData.ir?.rows || []).map((r) => (
-          <tr key={r.id}>
-            <td style={{ fontWeight: 700 }}>{r.label}</td>
-            <td>
-              <input type="text" value={r.sec15 || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td>
-              <input type="text" value={r.sec60 || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td>
-              <input type="text" value={r.sec600 || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td>
-              <input type="text" value={r.ratio60_15 || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td>
-              <input type="text" value={r.ratio600_60 || ""} disabled className="form-input disabled preview" />
+              <input type="text" value={row.dielectricLoss || ""} disabled className="form-input disabled preview" />
             </td>
           </tr>
         ))}
@@ -5967,316 +5761,554 @@ const Stage5Form10 = ({ formData }) => (
   </div>
 );
 
-const Stage5Form11 = ({ formData }) => (
-  <div className="form-container">
-    <div className="company-header">
-      <h2 style={{ textAlign: "center", fontWeight: 800 }}>TAN DELTA AND CAPACITANCE MEASUREMENT OF WINDING</h2>
+const Stage5Form11 = ({ formData }) => {
+  const defaultIrRows = [
+    { label: "HV-Earth", key: "hvEarth" },
+    { label: "LV1-Earth", key: "lv1Earth" },
+    { label: "LV2-Earth", key: "lv2Earth" },
+    { label: "HV-LV1", key: "hvLv1" },
+    { label: "HV-LV2", key: "hvLv2" },
+    { label: "LV1-LV2", key: "lv1Lv2" },
+  ];
+
+  return (
+    <div className="form-container">
+      <div className="company-header">
+        <h2>VISHVAS POWER ENGINEERING SERVICES PVT. LTD. NAGPUR</h2>
+        <h3>PRE-COMMISSIONING CHECKLIST</h3>
+      </div>
+
+      {/* Customer / project header table */}
+      <table className="form-table">
+        <tbody>
+          <tr>
+            <td>
+              <strong>Name of end customer</strong>
+            </td>
+            <td>
+              <input type="text" value={formData.customerName || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <strong>Rating MVA</strong>
+            </td>
+            <td>
+              <input type="text" value={formData.ratingMVA || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <strong>Name of project company</strong>
+            </td>
+            <td>
+              <input type="text" value={formData.projectName || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <strong>Rating Voltage</strong>
+            </td>
+            <td>
+              <input type="text" value={formData.ratingVoltage || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <strong>Name of TSS</strong>
+            </td>
+            <td>
+              <input type="text" value={formData.nameTSS || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <strong>Sr. no.</strong>
+            </td>
+            <td>
+              <input type="text" value={formData.srNo || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <strong>Manufacturer name</strong>
+            </td>
+            <td colSpan="3">
+              <input
+                type="text"
+                value={formData.manufacturerName || ""}
+                disabled
+                className="form-input disabled preview"
+                style={{ width: "100%" }}
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* Main checklist table */}
+      <table className="form-table" style={{ marginTop: "20px" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "10%" }}>Sr.No.</th>
+            <th style={{ width: "50%" }}>Particulars</th>
+            <th style={{ width: "10%" }}>Qty</th>
+            <th style={{ width: "10%" }}>Open</th>
+            <th style={{ width: "10%" }}>Shut</th>
+            <th style={{ width: "10%" }}>N/A</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style={{ fontWeight: 900 }}>I</td>
+            <td style={{ fontWeight: 900 }}>Valve Status</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          {[
+            ["A", "Bucholz to Conservator", "bucholzToConservator"],
+            ["B", "Main Tank to Bucholz", "mainTankToBucholz"],
+            ["C", "Radiator Top Valves", "radiatorTopValves"],
+            ["D", "Radiator Bottom Valves", "radiatorBottomValves"],
+            ["E", "Top 200mm Pipeline", "top200mmPipeline"],
+            ["F", "Top Header", "topHeader"],
+            ["G", "Bottom Header", "bottomHeader"],
+            ["H", "Main Tank to Radiator Bank", "mainTankToRadiatorBank"],
+            ["I", "Oil Pump to R.F.B.D.", "oilPumpToRFBD"],
+            ["J", "Oil Pump to Radiator Bank", "oilPumpToRadiatorBank"],
+            ["K", "Top Filter Valve", "topFilterValve"],
+            ["L", "Bottom Filter Valve", "bottomFilterValve"],
+            ["M", "Drain Valve", "drainValve"],
+          ].map(([sr, label, key]) => (
+            <tr key={key}>
+              <td style={{ fontWeight: 800 }}>{sr}</td>
+              <td style={{ fontWeight: 800 }}>{label}</td>
+              <td></td>
+              <td>
+                <input
+                  type="text"
+                  value={formData.valveStatus?.[key] || ""}
+                  disabled
+                  className="form-input disabled preview"
+                />
+              </td>
+              <td></td>
+              <td></td>
+            </tr>
+          ))}
+
+          <tr>
+            <td style={{ fontWeight: 900 }}>II</td>
+            <td style={{ fontWeight: 900 }}>Air Venting</td>
+            <td colSpan="4" style={{ fontWeight: 900 }}>
+              Done from the Following Locations:
+            </td>
+            <td></td>
+          </tr>
+
+          {[
+            ["A", "Main Tank", "mainTank"],
+            ["B", "Pipe Line Top", "pipeLineTop"],
+            ["C", "Pipe Line Bottom", "pipeLineBottom"],
+            ["D", "Radiator - Top", "radiatorTop"],
+            ["E", "RFBD", "rfbd"],
+            ["F", "Diverter Switch", "diverterSwitch"],
+          ].map(([sr, label, key]) => (
+            <tr key={key}>
+              <td style={{ fontWeight: 800 }}>{sr}</td>
+              <td style={{ fontWeight: 800 }}>{label}</td>
+              <td></td>
+              <td>
+                <input
+                  type="text"
+                  value={formData.airVenting?.[key] || ""}
+                  disabled
+                  className="form-input disabled preview"
+                />
+              </td>
+              <td></td>
+              <td></td>
+            </tr>
+          ))}
+
+          <tr>
+            <td style={{ fontWeight: 800 }}>G</td>
+            <td style={{ fontWeight: 800 }}>Bucholz Relay</td>
+            <td style={{ fontWeight: 800 }}>1</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.bucholzRelay?.location1 || ""}
+                disabled
+                className="form-input disabled preview"
+              />
+            </td>
+            <td style={{ fontWeight: 800 }}>2</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.bucholzRelay?.location2 || ""}
+                disabled
+                className="form-input disabled preview"
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800 }}>H</td>
+            <td style={{ fontWeight: 800 }}>HV Bushing</td>
+            <td style={{ fontWeight: 800 }}>1.1</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.hvBushing?.location11 || ""}
+                disabled
+                className="form-input disabled preview"
+              />
+            </td>
+            <td style={{ fontWeight: 800 }}>1.2</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.hvBushing?.location12 || ""}
+                disabled
+                className="form-input disabled preview"
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800 }}>I</td>
+            <td style={{ fontWeight: 800 }}>LV Bushing</td>
+            <td style={{ fontWeight: 800 }}>2.1</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.lvBushing?.location21 || ""}
+                disabled
+                className="form-input disabled preview"
+              />
+            </td>
+            <td style={{ fontWeight: 800 }}>2.2</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.lvBushing?.location22 || ""}
+                disabled
+                className="form-input disabled preview"
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td></td>
+            <td></td>
+            <td style={{ fontWeight: 800 }}>3.1</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.lvBushing?.location31 || ""}
+                disabled
+                className="form-input disabled preview"
+              />
+            </td>
+            <td style={{ fontWeight: 800 }}>3.2</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.lvBushing?.location32 || ""}
+                disabled
+                className="form-input disabled preview"
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800 }}>J</td>
+            <td style={{ fontWeight: 800 }}>Header – Top</td>
+            <td style={{ fontWeight: 800 }}>1</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.headerTop?.location1 || ""}
+                disabled
+                className="form-input disabled preview"
+              />
+            </td>
+            <td style={{ fontWeight: 800 }}>2</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.headerTop?.location2 || ""}
+                disabled
+                className="form-input disabled preview"
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800 }}>K</td>
+            <td style={{ fontWeight: 800 }}>Header – Bottom</td>
+            <td style={{ fontWeight: 800 }}>1</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.headerBottom?.location1 || ""}
+                disabled
+                className="form-input disabled preview"
+              />
+            </td>
+            <td style={{ fontWeight: 800 }}>2</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.headerBottom?.location2 || ""}
+                disabled
+                className="form-input disabled preview"
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800 }}>L</td>
+            <td style={{ fontWeight: 800 }}>Oil Pump</td>
+            <td style={{ fontWeight: 800 }}>1</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.oilPump?.location1 || ""}
+                disabled
+                className="form-input disabled preview"
+              />
+            </td>
+            <td style={{ fontWeight: 800 }}>2</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.oilPump?.location2 || ""}
+                disabled
+                className="form-input disabled preview"
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td></td>
+            <td></td>
+            <td style={{ fontWeight: 800 }}>3</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.oilPump?.location3 || ""}
+                disabled
+                className="form-input disabled preview"
+              />
+            </td>
+            <td style={{ fontWeight: 800 }}>4</td>
+            <td>
+              <input
+                type="text"
+                value={formData.airVenting?.oilPump?.location4 || ""}
+                disabled
+                className="form-input disabled preview"
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 900 }}>III</td>
+            <td style={{ fontWeight: 900 }}>Protection Trails</td>
+            <td colSpan="4" style={{ fontWeight: 900 }}>
+              Checked
+            </td>
+            <td></td>
+          </tr>
+
+          {[
+            ["A", "BUCHHOLZ", "buchholzAlarm", "ALARM"],
+            ["", "", "buchholzTrip", "TRIP"],
+            ["B", "MOG", "mogAlarm", "ALARM"],
+            ["C", "PRV", "prvTrip", "TRIP"],
+            ["D", "OTI", "otiAlarm", "ALARM"],
+            ["", "", "otiTrip", "TRIP"],
+            ["E", "WTI", "wtiAlarm", "ALARM"],
+            ["", "", "wtiTrip", "TRIP"],
+          ].map(([sr, device, key, label]) => (
+            <tr key={key}>
+              <td style={{ fontWeight: 800 }}>{sr}</td>
+              <td style={{ fontWeight: 800 }}>{device}</td>
+              <td style={{ fontWeight: 800 }}>{label}</td>
+              <td>
+                <input
+                  type="text"
+                  value={formData.protectionTrails?.[key] || ""}
+                  disabled
+                  className="form-input disabled preview"
+                />
+              </td>
+              <td style={{ fontWeight: 800 }}>{key === "otiAlarm" ? "Set Temperature" : ""}</td>
+              <td>
+                {key === "otiAlarm" ? (
+                  <input
+                    type="text"
+                    value={formData.protectionTrails?.otiSetTemperature || ""}
+                    disabled
+                    className="form-input disabled preview"
+                  />
+                ) : null}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* IR header (as per VConnected63MVATransformerForms.js Stage5Form11) */}
+      <table className="form-table" style={{ marginTop: "20px" }}>
+        <tbody>
+          <tr>
+            <td>
+              <strong>Date :</strong>
+            </td>
+            <td>
+              <input type="date" value={formData.date || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <strong>Time:</strong>
+            </td>
+            <td>
+              <input type="time" value={formData.time || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <strong>Details of Insulation tester</strong>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Amb. Temp :</strong>
+            </td>
+            <td>
+              <input type="text" value={formData.ambTemp || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <strong>Make :</strong>
+            </td>
+            <td>
+              <input type="text" value={formData.make || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td rowSpan="4"></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Oil Temp. :</strong>
+            </td>
+            <td>
+              <input type="text" value={formData.oilTemp || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <strong>Sr. No. :</strong>
+            </td>
+            <td>
+              <input type="text" value={formData.srNo || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Wdg. Temp. :</strong>
+            </td>
+            <td>
+              <input type="text" value={formData.wdgTemp || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <strong>Range :</strong>
+            </td>
+            <td>
+              <input type="text" value={formData.range || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Relative Humidity :</strong>
+            </td>
+            <td>
+              <input type="text" value={formData.relativeHumidity || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <strong>Voltage Level :</strong>
+            </td>
+            <td>
+              <input type="text" value={formData.voltageLevel || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* IR Values table (15/60/600 + ratios) */}
+      <table className="form-table" style={{ marginTop: "30px" }}>
+        <thead>
+          <tr>
+            <th></th>
+            <th>15 Sec (MΩ)</th>
+            <th>60 Sec (MΩ)</th>
+            <th>600 Sec (MΩ)</th>
+            <th>Ratio of IR 60/IR 15</th>
+            <th>Ratio of IR 600/IR 60</th>
+          </tr>
+        </thead>
+        <tbody>
+          {defaultIrRows.map(({ label, key }) => (
+            <tr key={key}>
+              <td>
+                <strong>{label}</strong>
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={formData[`${key}_15sec`] || ""}
+                  disabled
+                  className="form-input disabled preview"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={formData[`${key}_60sec`] || ""}
+                  disabled
+                  className="form-input disabled preview"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={formData[`${key}_600sec`] || ""}
+                  disabled
+                  className="form-input disabled preview"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={formData[`${key}_ratio_ir60`] || ""}
+                  disabled
+                  className="form-input disabled preview"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={formData[`${key}_ratio_ir600`] || ""}
+                  disabled
+                  className="form-input disabled preview"
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {formData.photos ? renderPhotos(formData.photos) : null}
     </div>
-
-    {/* Header block (as per TractionTransformerForms.js Stage5Form8) */}
-    <table className="form-table" style={{ marginTop: 10 }}>
-      <tbody>
-        <tr>
-          <td style={{ width: "45%" }}>
-            <strong>METER USED</strong>
-          </td>
-          <td style={{ width: "27%" }}>
-            <strong>DATE:</strong>
-          </td>
-          <td style={{ width: "28%" }}>
-            <strong>TIME :</strong>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <input type="text" value={formData.meterUsed || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td>
-            <input type="date" value={formData.date || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td>
-            <input type="time" value={formData.time || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            <strong>MODEL & S. NO.</strong>
-          </td>
-          <td>
-            <strong>AMBIENT:</strong>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>
-            <input
-              type="text"
-              value={formData.modelAndSrNo || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <input type="text" value={formData.ambient || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td></td>
-        </tr>
-
-        <tr>
-          <td>
-            <strong>OTI............................°C</strong>
-          </td>
-          <td colSpan={2}>
-            <strong>WTI............................°C</strong>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <input type="text" value={formData.oti || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td colSpan={2}>
-            <input type="text" value={formData.wti || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <table className="form-table" style={{ marginTop: 18 }}>
-      <thead>
-        <tr>
-          <th style={{ width: "14%" }}>AT 05 KV IN BETWEEN</th>
-          <th style={{ width: "12%" }}>MODE</th>
-          <th style={{ width: "16%" }}>TAN DELTA %</th>
-          <th style={{ width: "16%" }}>
-            CAPACITANCE
-            <br />
-            (Pf)
-          </th>
-          <th style={{ width: "20%" }}>
-            EXCITATION CURRENT
-            <br />
-            (mA)
-          </th>
-          <th style={{ width: "22%" }}>DIELECTRIC LOSS</th>
-        </tr>
-      </thead>
-      <tbody>
-        {(formData.kv5_rows || []).map((r) => (
-          <tr key={r.id}>
-            <td style={{ fontWeight: 700, textAlign: "center" }}>{r.between}</td>
-            <td style={{ fontWeight: 700, textAlign: "center" }}>{r.mode}</td>
-            <td>
-              <input type="text" value={r.tanDelta || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td>
-              <input type="text" value={r.capacitance || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td>
-              <input type="text" value={r.excitationCurrent || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td>
-              <input type="text" value={r.dielectricLoss || ""} disabled className="form-input disabled preview" />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-
-    <table className="form-table" style={{ marginTop: 18 }}>
-      <thead>
-        <tr>
-          <th style={{ width: "14%" }}>AT 10 KV IN BETWEEN</th>
-          <th style={{ width: "12%" }}>MODE</th>
-          <th style={{ width: "16%" }}>TAN DELTA %</th>
-          <th style={{ width: "16%" }}>
-            CAPACITANCE
-            <br />
-            (Pf)
-          </th>
-          <th style={{ width: "20%" }}>
-            EXCITATION CURRENT
-            <br />
-            (mA)
-          </th>
-          <th style={{ width: "22%" }}>DIELECTRIC LOSS</th>
-        </tr>
-      </thead>
-      <tbody>
-        {(formData.kv10_rows || []).map((r) => (
-          <tr key={r.id}>
-            <td style={{ fontWeight: 700, textAlign: "center" }}>{r.between}</td>
-            <td style={{ fontWeight: 700, textAlign: "center" }}>{r.mode}</td>
-            <td>
-              <input type="text" value={r.tanDelta || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td>
-              <input type="text" value={r.capacitance || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td>
-              <input type="text" value={r.excitationCurrent || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td>
-              <input type="text" value={r.dielectricLoss || ""} disabled className="form-input disabled preview" />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-    
-    <div className="company-header" style={{ marginTop: 26 }}>
-      <h3 style={{ textAlign: "center", fontWeight: 800, textDecoration: "underline", textUnderlineOffset: 6 }}>
-        IR VALUES OF TRANSFORMER
-      </h3>
-    </div>
-
-    <table className="form-table" style={{ marginTop: 10 }}>
-      <tbody>
-        <tr>
-          <td style={{ width: "25%" }}>
-            <strong>Date :</strong>
-          </td>
-          <td style={{ width: "25%" }}>
-            <input type="date" value={formData.ir?.date || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td style={{ width: "25%" }}>
-            <strong>Time:</strong>
-          </td>
-          <td style={{ width: "25%" }}>
-            <input type="time" value={formData.ir?.time || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            <strong>Amb. Temp :</strong>
-          </td>
-          <td>
-            <input type="text" value={formData.ir?.ambTemp || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td>
-            <strong>Make :</strong>
-          </td>
-          <td>
-            <input type="text" value={formData.ir?.make || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            <strong>Oil Temp. :</strong>
-          </td>
-          <td>
-            <input type="text" value={formData.ir?.oilTemp || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td>
-            <strong>Sr. No. :</strong>
-          </td>
-          <td>
-            <input type="text" value={formData.ir?.srNo || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            <strong>Wdg. Temp. :</strong>
-          </td>
-          <td>
-            <input type="text" value={formData.ir?.wdgTemp || ""} disabled className="form-input disabled preview" />
-          </td>
-          <td>
-            <strong>Range :</strong>
-          </td>
-          <td>
-            <input type="text" value={formData.ir?.range || ""} disabled className="form-input disabled preview" />
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            <strong>Relative Humidity :</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.ir?.relativeHumidity || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-          <td>
-            <strong>Voltage Level :</strong>
-          </td>
-          <td>
-            <input
-              type="text"
-              value={formData.ir?.voltageLevel || ""}
-              disabled
-              className="form-input disabled preview"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <table className="form-table" style={{ marginTop: 14 }}>
-      <thead>
-        <tr>
-          <th style={{ width: "20%" }}></th>
-          <th style={{ width: "14%" }}>
-            15 Sec
-            <br />
-            (MΩ)
-          </th>
-          <th style={{ width: "14%" }}>
-            60 Sec
-            <br />
-            (MΩ)
-          </th>
-          <th style={{ width: "14%" }}>
-            600 Sec
-            <br />
-            (MΩ)
-          </th>
-          <th style={{ width: "19%" }}>
-            Ratio of IR 60
-            <br />
-            IR 15
-          </th>
-          <th style={{ width: "19%" }}>
-            Ratio of IR 600
-            <br />
-            IR 60
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {(formData.ir?.rows || []).map((r) => (
-          <tr key={r.id}>
-            <td style={{ fontWeight: 700 }}>{r.label}</td>
-            <td>
-              <input type="text" value={r.sec15 || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td>
-              <input type="text" value={r.sec60 || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td>
-              <input type="text" value={r.sec600 || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td>
-              <input type="text" value={r.ratio60_15 || ""} disabled className="form-input disabled preview" />
-            </td>
-            <td>
-              <input type="text" value={r.ratio600_60 || ""} disabled className="form-input disabled preview" />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-
-    {formData.photos ? renderPhotos(formData.photos) : null}
-  </div>
-);
+  );
+};
 
 // Stage 5 Review Renderer Component
 const Stage5ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
