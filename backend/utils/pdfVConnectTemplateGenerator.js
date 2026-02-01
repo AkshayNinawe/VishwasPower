@@ -3708,7 +3708,15 @@ function generateStageContent(stageData, stageNumber, headerImage) {
 
   let content = "";
 
-  Object.entries(stageData).forEach(([formKey, formData]) => {
+  // Ensure deterministic order: form1, form2, ... formN (not lexicographic: form10 should not come before form2)
+  const sortedForms = Object.entries(stageData).sort(([a], [b]) => {
+    const aNum = parseInt(String(a).match(/\d+/)?.[0] || "0", 10);
+    const bNum = parseInt(String(b).match(/\d+/)?.[0] || "0", 10);
+    if (aNum !== bNum) return aNum - bNum;
+    return String(a).localeCompare(String(b));
+  });
+
+  sortedForms.forEach(([formKey, formData]) => {
     if (formData && typeof formData === "object") {
       // Add header image and page break for each form
       content += `
