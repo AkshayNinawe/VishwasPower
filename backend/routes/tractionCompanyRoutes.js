@@ -10,17 +10,17 @@ import {
   deleteCompanyByName,
   rejectCompanyStage
 } from "../controller/TractionController.js";
-
+import { protect, authorize } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 router.post("/", setNewCompanyData);
 router.post("/addCompany", setCompanyData);
-router.post("/approveCompanyStage", setapproveCompanyStage);
+router.post("/approveCompanyStage",  protect,  authorize("etcadmin", "admin"),  setapproveCompanyStage);
 router.get("/", getAllCompanyData);
 router.post("/rejectStage", rejectCompanyStage)
 router.post("/updateFormsCompleted", setFormsCompleted);
-router.delete("/deleteProject", deleteProjectByName);
-router.delete("/deleteCompany", deleteCompanyByName);
+router.delete("/deleteProject",  protect,  authorize("etcadmin", "admin"),  deleteProjectByName);
+router.delete("/deleteCompany",  protect,  authorize("etcadmin", "admin"),  deleteCompanyByName);
 
 export default router;
