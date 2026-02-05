@@ -2193,7 +2193,7 @@ const ETCAdminPanel = ({
       
       // Check if the error is due to unauthorized access (401 or 403)
       if (error.response?.status === 401 || error.response?.status === 403) {
-        showNotification("Please consult to ETC admin to approve the page", "error");
+        showNotification("Please contact to ETC admin to approve the page", "error");
         return;
       }
       
@@ -2664,7 +2664,7 @@ const ETCAdminPanel = ({
       // Check if the error is due to unauthorized access (401 or 403)
       if (error.response?.status === 401 || error.response?.status === 403) {
         showNotification(
-          "Please consult to ETC admin to delete the Project",
+          "Please contact to ETC admin to delete the Project",
           "error"
         );
         return;
@@ -2730,7 +2730,7 @@ const ETCAdminPanel = ({
       // Check if the error is due to unauthorized access (401 or 403)
       if (error.response?.status === 401 || error.response?.status === 403) {
         showNotification(
-          "Please consult to ETC admin to delete the Company",
+          "Please contact to ETC admin to delete the Company",
           "error"
         );
         return;
