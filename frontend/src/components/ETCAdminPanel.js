@@ -2660,6 +2660,16 @@ const ETCAdminPanel = ({
       );
     } catch (error) {
       console.error("Error deleting project on the backend:", error);
+
+      // Check if the error is due to unauthorized access (401 or 403)
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        showNotification(
+          "Please consult to ETC admin to delete the Project",
+          "error"
+        );
+        return;
+      }
+
       showNotification("Failed to delete project. Please try again.", "error");
     }
   };
@@ -2716,6 +2726,16 @@ const ETCAdminPanel = ({
       );
     } catch (error) {
       console.error("Error deleting company on the backend:", error);
+
+      // Check if the error is due to unauthorized access (401 or 403)
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        showNotification(
+          "Please consult to ETC admin to delete the Company",
+          "error"
+        );
+        return;
+      }
+
       showNotification("Failed to delete company. Please try again.", "error");
     }
   };

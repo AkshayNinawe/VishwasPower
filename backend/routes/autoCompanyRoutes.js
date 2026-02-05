@@ -20,7 +20,7 @@ router.post("/approveCompanyStage", protect, authorize("etcadmin", "admin"), set
 router.get("/", getAllCompanyData);
 router.post("/rejectStage", rejectCompanyStage)
 router.post("/updateFormsCompleted", setFormsCompleted);
-router.delete("/deleteProject", deleteProjectByName);
-router.delete("/deleteCompany", deleteCompanyByName);
+router.delete("/deleteProject", protect, authorize("etcadmin", "admin"), deleteProjectByName);
+router.delete("/deleteCompany", protect, authorize("etcadmin", "admin"), deleteCompanyByName);
 
 export default router;
