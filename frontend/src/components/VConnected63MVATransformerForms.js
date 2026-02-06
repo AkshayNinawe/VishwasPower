@@ -8122,31 +8122,19 @@ export function Stage5Form10({ onSubmit, onPrevious, initialData, isLastFormOfSt
 }
 
 export function Stage5Form11({ onSubmit, onPrevious, initialData, isLastFormOfStage, companyName, projectName }) {
-  const defaultIrRows = [
-    { label: "HV-Earth", key: "hvEarth" },
-    { label: "LV1-Earth", key: "lv1Earth" },
-    { label: "LV2-Earth", key: "lv2Earth" },
-    { label: "HV-LV1", key: "hvLv1" },
-    { label: "HV-LV2", key: "hvLv2" },
-    { label: "LV1-LV2", key: "lv1Lv2" },
-  ]
-
   const [formData, setFormData] = useState({
-    // Header fields
     date: "",
     time: "",
     ambTemp: "",
     oilTemp: "",
     wdgTemp: "",
     relativeHumidity: "",
-    insulationTesterDetails: "",
 
     make: "",
     srNo: "",
     range: "",
     voltageLevel: "",
 
-    // IR table fields (15 / 60 / 600 and ratios)
     hvEarth_15sec: "",
     hvEarth_60sec: "",
     hvEarth_600sec: "",
@@ -8183,50 +8171,33 @@ export function Stage5Form11({ onSubmit, onPrevious, initialData, isLastFormOfSt
     lv1Lv2_ratio_ir60: "",
     lv1Lv2_ratio_ir600: "",
 
-    // Signatures
-    signatures: {
-      vpesName: "",
-      vpesSignature: "",
-      vpesDate: "",
-      customerName: "",
-      customerSignature: "",
-      customerDate: "",
-    },
+    checkedByVPES_signature: "",
+    checkedByVPES_date: "",
+    witnessedByCustomer_signature: "",
+    witnessedByCustomer_date: "",
 
-    photos: {},
     ...initialData,
   })
 
-  const handleSignatureChange = (key, type, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      signatures: {
-        ...(prev.signatures || {}),
-        [`${key}${type.charAt(0).toUpperCase() + type.slice(1)}`]: value,
-      },
-    }))
-  }
+  const irRows = [
+    { label: "HV-Earth", key: "hvEarth" },
+    { label: "LV1-Earth", key: "lv1Earth" },
+    { label: "LV2-Earth", key: "lv2Earth" },
+    { label: "HV-LV1", key: "hvLv1" },
+    { label: "HV-LV2", key: "hvLv2" },
+    { label: "LV1-LV2", key: "lv1Lv2" },
+  ]
 
   useEffect(() => {
     const fetchFormData = async () => {
       try {
-        const response = await axios.get(`${BACKEND_API_BASE_URL}/api/vconnectData/getTable/Stage5Form9`, {
+        const response = await axios.get(`${BACKEND_API_BASE_URL}/api/vconnectData/getTable/Stage5Form11`, {
           params: { companyName, projectName },
         })
 
         if (response.data && response.data.data) {
-          console.log("Data fetched from DB for Stage5Form9")
-          const incoming = response.data.data || {}
-
-          // Normalize signatures in case it's missing
-          setFormData((prev) => ({
-            ...prev,
-            ...incoming,
-            signatures: {
-              ...prev.signatures,
-              ...(incoming.signatures || {}),
-            },
-          }))
+          console.log("Data fetched from DB for Stage5Form11")
+          setFormData((prev) => ({ ...prev, ...response.data.data }))
         } else {
           console.log("There is no data in DB.")
         }
@@ -8237,480 +8208,100 @@ export function Stage5Form11({ onSubmit, onPrevious, initialData, isLastFormOfSt
     fetchFormData()
   }, [projectName, companyName])
 
-
   const handleSubmit = (e) => {
     e.preventDefault()
     onSubmit(formData)
   }
 
-  const handlePhotoChange = (key, file) => {
-    setFormData((prev) => ({
-      ...prev,
-      photos: { ...prev.photos, [key]: file },
-    }))
-  }
-
-  const photoRequirements = [
-    {
-      key: "earthingMainTank",
-      label:
-        "Earthing's of main tank & bushing, sealing of Cable gland, bushing test tap & thimble, Buchholz terminal plate, etc...., Full Photo of transformer",
-    },
-  ]
-
-  const setValveStatus = (field, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      valveStatus: { ...(prev.valveStatus || {}), [field]: value },
-    }))
-  }
-
-  const setAirVenting = (field, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      airVenting: { ...(prev.airVenting || {}), [field]: value },
-    }))
-  }
-
-  const setAirVentingNested = (group, field, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      airVenting: {
-        ...(prev.airVenting || {}),
-        [group]: { ...((prev.airVenting || {})[group] || {}), [field]: value },
-      },
-    }))
-  }
-
-  const setProtectionTrails = (field, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      protectionTrails: { ...(prev.protectionTrails || {}), [field]: value },
-    }))
-  }
-
   return (
     <form onSubmit={handleSubmit} className="form-container">
       <div className="company-header">
-        <h2>VISHVAS POWER ENGINEERING SERVICES PVT. LTD. NAGPUR</h2>
-        <h3>PRE-COMMISSIONING CHECKLIST</h3>
+        <h2>IR VALUES OF TRANSFORMER</h2>
       </div>
 
+      {/* Header table (exactly as image) */}
       <table className="form-table">
         <tbody>
           <tr>
-            <td>
-              <strong>Name of end customer</strong>
+            <td style={{ width: "12%", fontWeight: 800 }}>Date :</td>
+            <td style={{ width: "20%" }}>
+              <input
+                type="date"
+                value={formData.date || ""}
+                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+              />
             </td>
-            <td>
-              <input type="text" value={formData.customerName || ""} onChange={(e) => setFormData({ ...formData, customerName: e.target.value })} />
+            <td style={{ width: "12%", fontWeight: 800 }}>Time:</td>
+            <td style={{ width: "20%" }}>
+              <input
+                type="time"
+                value={formData.time || ""}
+                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+              />
             </td>
-            <td>
-              <strong>Rating MVA</strong>
-            </td>
-            <td>
-              <input type="text" value={formData.ratingMVA || ""} onChange={(e) => setFormData({ ...formData, ratingMVA: e.target.value })} />
-            </td>
+            <td style={{ width: "36%", fontWeight: 900, textAlign: "center" }}>Details of Insulation tester</td>
           </tr>
 
           <tr>
-            <td>
-              <strong>Name of project company</strong>
-            </td>
-            <td>
-              <input type="text" value={formData.projectName || ""} onChange={(e) => setFormData({ ...formData, projectName: e.target.value })} />
-            </td>
-            <td>
-              <strong>Rating Voltage</strong>
-            </td>
-            <td>
-              <input type="text" value={formData.ratingVoltage || ""} onChange={(e) => setFormData({ ...formData, ratingVoltage: e.target.value })} />
-            </td>
-          </tr>
-
-          <tr>
-            <td>
-              <strong>Name of TSS</strong>
-            </td>
-            <td>
-              <input type="text" value={formData.nameTSS || ""} onChange={(e) => setFormData({ ...formData, nameTSS: e.target.value })} />
-            </td>
-            <td>
-              <strong>TSS Sr. no.</strong>
-            </td>
-            <td>
-              <input type="text" value={formData.tssSrNo || ""} onChange={(e) => setFormData({ ...formData, tssSrNo: e.target.value })} />
-            </td>
-          </tr>
-
-          <tr>
-            <td>
-              <strong>Manufacturer name</strong>
-            </td>
-            <td colSpan="3">
-              <input
-                type="text"
-                value={formData.manufacturerName || ""}
-                onChange={(e) => setFormData({ ...formData, manufacturerName: e.target.value })}
-                style={{ width: "100%" }}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <table className="form-table" style={{ marginTop: "20px" }}>
-        <thead>
-          <tr>
-            <th style={{ width: "10%" }}>Sr.No.</th>
-            <th style={{ width: "50%" }}>Particulars</th>
-            <th style={{ width: "10%" }}>Qty</th>
-            <th style={{ width: "10%" }}>Open</th>
-            <th style={{ width: "10%" }}>Shut</th>
-            <th style={{ width: "10%" }}>N/A</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style={{ fontWeight: 900 }}>I</td>
-            <td style={{ fontWeight: 900 }}>Valve Status</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-
-          {[
-            ["A", "Bucholz to Conservator", "bucholzToConservator"],
-            ["B", "Main Tank to Bucholz", "mainTankToBucholz"],
-            ["C", "Radiator Top Valves", "radiatorTopValves"],
-            ["D", "Radiator Bottom Valves", "radiatorBottomValves"],
-            ["E", "Top 200mm Pipeline", "top200mmPipeline"],
-            ["F", "Top Header", "topHeader"],
-            ["G", "Bottom Header", "bottomHeader"],
-            ["H", "Main Tank to Radiator Bank", "mainTankToRadiatorBank"],
-            ["I", "Oil Pump to R.F.B.D.", "oilPumpToRFBD"],
-            ["J", "Oil Pump to Radiator Bank", "oilPumpToRadiatorBank"],
-            ["K", "Top Filter Valve", "topFilterValve"],
-            ["L", "Bottom Filter Valve", "bottomFilterValve"],
-            ["M", "Drain Valve", "drainValve"],
-          ].map(([sr, label, key]) => (
-            <tr key={key}>
-              <td style={{ fontWeight: 800 }}>{sr}</td>
-              <td style={{ fontWeight: 800 }}>{label}</td>
-              <td></td>
-              <td>
-                <input type="text" value={formData.valveStatus?.[key] || ""} onChange={(e) => setValveStatus(key, e.target.value)} />
-              </td>
-              <td></td>
-              <td></td>
-            </tr>
-          ))}
-
-          <tr>
-            <td style={{ fontWeight: 900 }}>II</td>
-            <td style={{ fontWeight: 900 }}>Air Venting</td>
-            <td colSpan="4" style={{ fontWeight: 900 }}>
-              Done from the Following Locations:
-            </td>
-            <td></td>
-          </tr>
-
-          {[
-            ["A", "Main Tank", "mainTank"],
-            ["B", "Pipe Line Top", "pipeLineTop"],
-            ["C", "Pipe Line Bottom", "pipeLineBottom"],
-            ["D", "Radiator - Top", "radiatorTop"],
-            ["E", "RFBD", "rfbd"],
-            ["F", "Diverter Switch", "diverterSwitch"],
-          ].map(([sr, label, key]) => (
-            <tr key={key}>
-              <td style={{ fontWeight: 800 }}>{sr}</td>
-              <td style={{ fontWeight: 800 }}>{label}</td>
-              <td></td>
-              <td>
-                <input type="text" value={formData.airVenting?.[key] || ""} onChange={(e) => setAirVenting(key, e.target.value)} />
-              </td>
-              <td></td>
-              <td></td>
-            </tr>
-          ))}
-
-          <tr>
-            <td style={{ fontWeight: 800 }}>G</td>
-            <td style={{ fontWeight: 800 }}>Bucholz Relay</td>
-            <td style={{ fontWeight: 800 }}>1</td>
+            <td style={{ fontWeight: 800 }}>Amb. Temp :</td>
             <td>
               <input
                 type="text"
-                value={formData.airVenting?.bucholzRelay?.location1 || ""}
-                onChange={(e) => setAirVentingNested("bucholzRelay", "location1", e.target.value)}
+                value={formData.ambTemp || ""}
+                onChange={(e) => setFormData({ ...formData, ambTemp: e.target.value })}
               />
             </td>
-            <td style={{ fontWeight: 800 }}>2</td>
+            <td style={{ fontWeight: 800 }}>Make :</td>
             <td>
               <input
                 type="text"
-                value={formData.airVenting?.bucholzRelay?.location2 || ""}
-                onChange={(e) => setAirVentingNested("bucholzRelay", "location2", e.target.value)}
+                value={formData.make || ""}
+                onChange={(e) => setFormData({ ...formData, make: e.target.value })}
               />
-            </td>
-          </tr>
-
-          <tr>
-            <td style={{ fontWeight: 800 }}>H</td>
-            <td style={{ fontWeight: 800 }}>HV Bushing</td>
-            <td style={{ fontWeight: 800 }}>1.1</td>
-            <td>
-              <input
-                type="text"
-                value={formData.airVenting?.hvBushing?.location11 || ""}
-                onChange={(e) => setAirVentingNested("hvBushing", "location11", e.target.value)}
-              />
-            </td>
-            <td style={{ fontWeight: 800 }}>1.2</td>
-            <td>
-              <input
-                type="text"
-                value={formData.airVenting?.hvBushing?.location12 || ""}
-                onChange={(e) => setAirVentingNested("hvBushing", "location12", e.target.value)}
-              />
-            </td>
-          </tr>
-
-          <tr>
-            <td style={{ fontWeight: 800 }}>I</td>
-            <td style={{ fontWeight: 800 }}>LV Bushing</td>
-            <td style={{ fontWeight: 800 }}>2.1</td>
-            <td>
-              <input
-                type="text"
-                value={formData.airVenting?.lvBushing?.location21 || ""}
-                onChange={(e) => setAirVentingNested("lvBushing", "location21", e.target.value)}
-              />
-            </td>
-            <td style={{ fontWeight: 800 }}>2.2</td>
-            <td>
-              <input
-                type="text"
-                value={formData.airVenting?.lvBushing?.location22 || ""}
-                onChange={(e) => setAirVentingNested("lvBushing", "location22", e.target.value)}
-              />
-            </td>
-          </tr>
-
-          <tr>
-            <td></td>
-            <td></td>
-            <td style={{ fontWeight: 800 }}>3.1</td>
-            <td>
-              <input
-                type="text"
-                value={formData.airVenting?.lvBushing?.location31 || ""}
-                onChange={(e) => setAirVentingNested("lvBushing", "location31", e.target.value)}
-              />
-            </td>
-            <td style={{ fontWeight: 800 }}>3.2</td>
-            <td>
-              <input
-                type="text"
-                value={formData.airVenting?.lvBushing?.location32 || ""}
-                onChange={(e) => setAirVentingNested("lvBushing", "location32", e.target.value)}
-              />
-            </td>
-          </tr>
-
-          <tr>
-            <td style={{ fontWeight: 800 }}>J</td>
-            <td style={{ fontWeight: 800 }}>Header – Top</td>
-            <td style={{ fontWeight: 800 }}>1</td>
-            <td>
-              <input
-                type="text"
-                value={formData.airVenting?.headerTop?.location1 || ""}
-                onChange={(e) => setAirVentingNested("headerTop", "location1", e.target.value)}
-              />
-            </td>
-            <td style={{ fontWeight: 800 }}>2</td>
-            <td>
-              <input
-                type="text"
-                value={formData.airVenting?.headerTop?.location2 || ""}
-                onChange={(e) => setAirVentingNested("headerTop", "location2", e.target.value)}
-              />
-            </td>
-          </tr>
-
-          <tr>
-            <td style={{ fontWeight: 800 }}>K</td>
-            <td style={{ fontWeight: 800 }}>Header – Bottom</td>
-            <td style={{ fontWeight: 800 }}>1</td>
-            <td>
-              <input
-                type="text"
-                value={formData.airVenting?.headerBottom?.location1 || ""}
-                onChange={(e) => setAirVentingNested("headerBottom", "location1", e.target.value)}
-              />
-            </td>
-            <td style={{ fontWeight: 800 }}>2</td>
-            <td>
-              <input
-                type="text"
-                value={formData.airVenting?.headerBottom?.location2 || ""}
-                onChange={(e) => setAirVentingNested("headerBottom", "location2", e.target.value)}
-              />
-            </td>
-          </tr>
-
-          <tr>
-            <td style={{ fontWeight: 800 }}>L</td>
-            <td style={{ fontWeight: 800 }}>Oil Pump</td>
-            <td style={{ fontWeight: 800 }}>1</td>
-            <td>
-              <input
-                type="text"
-                value={formData.airVenting?.oilPump?.location1 || ""}
-                onChange={(e) => setAirVentingNested("oilPump", "location1", e.target.value)}
-              />
-            </td>
-            <td style={{ fontWeight: 800 }}>2</td>
-            <td>
-              <input
-                type="text"
-                value={formData.airVenting?.oilPump?.location2 || ""}
-                onChange={(e) => setAirVentingNested("oilPump", "location2", e.target.value)}
-              />
-            </td>
-          </tr>
-
-          <tr>
-            <td></td>
-            <td></td>
-            <td style={{ fontWeight: 800 }}>3</td>
-            <td>
-              <input
-                type="text"
-                value={formData.airVenting?.oilPump?.location3 || ""}
-                onChange={(e) => setAirVentingNested("oilPump", "location3", e.target.value)}
-              />
-            </td>
-            <td style={{ fontWeight: 800 }}>4</td>
-            <td>
-              <input
-                type="text"
-                value={formData.airVenting?.oilPump?.location4 || ""}
-                onChange={(e) => setAirVentingNested("oilPump", "location4", e.target.value)}
-              />
-            </td>
-          </tr>
-
-          <tr>
-            <td style={{ fontWeight: 900 }}>III</td>
-            <td style={{ fontWeight: 900 }}>Protection Trails</td>
-            <td colSpan="4" style={{ fontWeight: 900 }}>
-              Checked
-            </td>
-            <td></td>
-          </tr>
-
-          {[
-            ["A", "BUCHHOLZ", "buchholzAlarm", "ALARM"],
-            ["", "", "buchholzTrip", "TRIP"],
-            ["B", "MOG", "mogAlarm", "ALARM"],
-            ["C", "PRV", "prvTrip", "TRIP"],
-            ["D", "OTI", "otiAlarm", "ALARM"],
-            ["", "", "otiTrip", "TRIP"],
-            ["E", "WTI", "wtiAlarm", "ALARM"],
-            ["", "", "wtiTrip", "TRIP"],
-          ].map(([sr, device, key, label]) => (
-            <tr key={key}>
-              <td style={{ fontWeight: 800 }}>{sr}</td>
-              <td style={{ fontWeight: 800 }}>{device}</td>
-              <td style={{ fontWeight: 800 }}>{label}</td>
-              <td>
-                <input type="text" value={formData.protectionTrails?.[key] || ""} onChange={(e) => setProtectionTrails(key, e.target.value)} />
-              </td>
-              <td style={{ fontWeight: 800 }}>{key === "otiAlarm" ? "Set Temperature" : ""}</td>
-              <td>
-                {key === "otiAlarm" ? (
-                  <input
-                    type="text"
-                    value={formData.protectionTrails?.otiSetTemperature || ""}
-                    onChange={(e) => setProtectionTrails("otiSetTemperature", e.target.value)}
-                  />
-                ) : null}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <table className="form-table">
-        <tbody>
-          <tr>
-            <td>
-              <strong>Date :</strong>
-            </td>
-            <td>
-              <input type="date" value={formData.date || ""} onChange={(e) => setFormData({ ...formData, date: e.target.value })} />
-            </td>
-            <td>
-              <strong>Time:</strong>
-            </td>
-            <td>
-              <input type="time" value={formData.time || ""} onChange={(e) => setFormData({ ...formData, time: e.target.value })} />
-            </td>
-            <td>
-              <strong>Details of Insulation tester</strong>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Amb. Temp :</strong>
-            </td>
-            <td>
-              <input type="text" value={formData.ambTemp || ""} onChange={(e) => setFormData({ ...formData, ambTemp: e.target.value })} />
-            </td>
-            <td>
-              <strong>Make :</strong>
-            </td>
-            <td>
-              <input type="text" value={formData.make || ""} onChange={(e) => setFormData({ ...formData, make: e.target.value })} />
             </td>
             <td rowSpan="4"></td>
           </tr>
+
           <tr>
+            <td style={{ fontWeight: 800 }}>Oil Temp. :</td>
             <td>
-              <strong>Oil Temp. :</strong>
+              <input
+                type="text"
+                value={formData.oilTemp || ""}
+                onChange={(e) => setFormData({ ...formData, oilTemp: e.target.value })}
+              />
             </td>
+            <td style={{ fontWeight: 800 }}>Sr. No. :</td>
             <td>
-              <input type="text" value={formData.oilTemp || ""} onChange={(e) => setFormData({ ...formData, oilTemp: e.target.value })} />
-            </td>
-            <td>
-              <strong>Sr. No. :</strong>
-            </td>
-            <td>
-              <input type="text" value={formData.srNo || ""} onChange={(e) => setFormData({ ...formData, srNo: e.target.value })} />
+              <input
+                type="text"
+                value={formData.srNo || ""}
+                onChange={(e) => setFormData({ ...formData, srNo: e.target.value })}
+              />
             </td>
           </tr>
+
           <tr>
+            <td style={{ fontWeight: 800 }}>Wdg. Temp. :</td>
             <td>
-              <strong>Wdg. Temp. :</strong>
+              <input
+                type="text"
+                value={formData.wdgTemp || ""}
+                onChange={(e) => setFormData({ ...formData, wdgTemp: e.target.value })}
+              />
             </td>
+            <td style={{ fontWeight: 800 }}>Range :</td>
             <td>
-              <input type="text" value={formData.wdgTemp || ""} onChange={(e) => setFormData({ ...formData, wdgTemp: e.target.value })} />
-            </td>
-            <td>
-              <strong>Range :</strong>
-            </td>
-            <td>
-              <input type="text" value={formData.range || ""} onChange={(e) => setFormData({ ...formData, range: e.target.value })} />
+              <input
+                type="text"
+                value={formData.range || ""}
+                onChange={(e) => setFormData({ ...formData, range: e.target.value })}
+              />
             </td>
           </tr>
+
           <tr>
-            <td>
-              <strong>Relative Humidity :</strong>
-            </td>
+            <td style={{ fontWeight: 800 }}>Relative Humidity :</td>
             <td>
               <input
                 type="text"
@@ -8718,33 +8309,49 @@ export function Stage5Form11({ onSubmit, onPrevious, initialData, isLastFormOfSt
                 onChange={(e) => setFormData({ ...formData, relativeHumidity: e.target.value })}
               />
             </td>
+            <td style={{ fontWeight: 800 }}>Voltage Level :</td>
             <td>
-              <strong>Voltage Level :</strong>
-            </td>
-            <td>
-              <input type="text" value={formData.voltageLevel || ""} onChange={(e) => setFormData({ ...formData, voltageLevel: e.target.value })} />
+              <input
+                type="text"
+                value={formData.voltageLevel || ""}
+                onChange={(e) => setFormData({ ...formData, voltageLevel: e.target.value })}
+              />
             </td>
           </tr>
         </tbody>
       </table>
 
-      <table className="form-table" style={{ marginTop: "30px" }}>
+      {/* IR values table (exactly as image) */}
+      <table className="form-table" style={{ marginTop: "26px" }}>
         <thead>
           <tr>
-            <th></th>
-            <th>15 Sec (MΩ)</th>
-            <th>60 Sec (MΩ)</th>
-            <th>600 Sec (MΩ)</th>
-            <th>Ratio of IR 60/IR 15</th>
-            <th>Ratio of IR 600/IR 60</th>
+            <th style={{ width: "24%" }}></th>
+            <th style={{ width: "15%" }}>
+              15 Sec <br />
+              (MΩ)
+            </th>
+            <th style={{ width: "15%" }}>
+              60 Sec <br />
+              (MΩ)
+            </th>
+            <th style={{ width: "14%" }}>
+              600 Sec <br />
+              (MΩ)
+            </th>
+            <th style={{ width: "16%" }}>
+              Ratio of IR 60 <br />
+              IR 15
+            </th>
+            <th style={{ width: "16%" }}>
+              Ratio of IR 600 <br />
+              IR 60
+            </th>
           </tr>
         </thead>
         <tbody>
-          {defaultIrRows.map(({ label, key }) => (
+          {irRows.map(({ label, key }) => (
             <tr key={key}>
-              <td>
-                <strong>{label}</strong>
-              </td>
+              <td style={{ fontWeight: 800 }}>{label}</td>
               <td>
                 <input
                   type="text"
@@ -8785,57 +8392,80 @@ export function Stage5Form11({ onSubmit, onPrevious, initialData, isLastFormOfSt
         </tbody>
       </table>
 
-      <PhotoUploadSection
-        title="Earthing's of main tank & bushing, sealing of Cable gland, bushing test tap & thimble, Buchholz terminal plate, etc...., Full Photo of transformer"
-        photos={photoRequirements}
-        onPhotoChange={handlePhotoChange}
-      />
-
-      <div className="signature-section">
-        <div className="signature-box">
-          <label>Checked By VPES :</label>
-          <input
-            type="text"
-            placeholder="Name"
-            value={formData.signatures.vpesName}
-            onChange={(e) => handleSignatureChange("vpes", "name", e.target.value)}
-          />
-          <SignatureBox
-            label=""
-            nameValue=""
-            onNameChange={() => {}}
-            onSignatureChange={(signature) => handleSignatureChange("vpes", "signature", signature)}
-            initialSignature={formData.signatures.vpesSignature}
-          />
-          <input
-            type="date"
-            value={formData.signatures.vpesDate}
-            onChange={(e) => handleSignatureChange("vpes", "date", e.target.value)}
-          />
-        </div>
-
-        <div className="signature-box">
-          <label>Witnessed By Customer :</label>
-          <input
-            type="text"
-            placeholder="Name"
-            value={formData.signatures.customerName}
-            onChange={(e) => handleSignatureChange("customer", "name", e.target.value)}
-          />
-          <SignatureBox
-            label=""
-            nameValue=""
-            onNameChange={() => {}}
-            onSignatureChange={(signature) => handleSignatureChange("customer", "signature", signature)}
-            initialSignature={formData.signatures.customerSignature}
-          />
-          <input
-            type="date"
-            value={formData.signatures.customerDate}
-            onChange={(e) => handleSignatureChange("customer", "date", e.target.value)}
-          />
-        </div>
+      {/* Note line (exactly as image) */}
+      <div style={{ marginTop: "24px", fontWeight: 800, fontSize: "16px" }}>Note: - Photographs to be added: -</div>
+      <div style={{ marginTop: "6px", fontWeight: 800, fontSize: "16px" }}>
+        SFRA kit calibration, ten delta kit calibration, multimeter, megger, winding resistance kit, clamp meter.
       </div>
+
+      {/* Signature table (exactly as image) */}
+      <table className="form-table" style={{ marginTop: "26px" }}>
+        <tbody>
+          <tr>
+            <td style={{ width: "50%", fontWeight: 900 }}>Checked By VPES :</td>
+            <td style={{ width: "50%", fontWeight: 900 }}>Witnessed By Customer :</td>
+          </tr>
+          <tr>
+            <td style={{ padding: 0 }}>
+              <table className="form-table" style={{ marginTop: 0 }}>
+                <tbody>
+                  <tr>
+                    <td style={{ width: "25%", fontWeight: 800 }}>Signature</td>
+                    <td style={{ width: "75%" }}>
+                      <input
+                        type="text"
+                        value={formData.checkedByVPES_signature || ""}
+                        onChange={(e) => setFormData({ ...formData, checkedByVPES_signature: e.target.value })}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: 800 }}>Date</td>
+                    <td>
+                      <input
+                        type="date"
+                        value={formData.checkedByVPES_date || ""}
+                        onChange={(e) => setFormData({ ...formData, checkedByVPES_date: e.target.value })}
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+
+            <td style={{ padding: 0 }}>
+              <table className="form-table" style={{ marginTop: 0 }}>
+                <tbody>
+                  <tr>
+                    <td style={{ width: "25%", fontWeight: 800 }}>Signature</td>
+                    <td style={{ width: "75%" }}>
+                      <input
+                        type="text"
+                        value={formData.witnessedByCustomer_signature || ""}
+                        onChange={(e) =>
+                          setFormData({ ...formData, witnessedByCustomer_signature: e.target.value })
+                        }
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: 800 }}>Date</td>
+                    <td>
+                      <input
+                        type="date"
+                        value={formData.witnessedByCustomer_date || ""}
+                        onChange={(e) =>
+                          setFormData({ ...formData, witnessedByCustomer_date: e.target.value })
+                        }
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <div className="form-actions">
         {onPrevious && (
@@ -12327,7 +11957,7 @@ const VConnected63MVATransformerForms = ({
       { component: Stage5Form8, name: "Short Circuit and Winding Resistance Test" },
       { component: Stage5Form9, name: "Short Circuit and Winding Resistance Test" },
       { component: Stage5Form10, name: "Short Circuit and Winding Resistance Test" },
-      { component: Stage5Form11, name: "Short Circuit and Winding Resistance Test" },
+      { component: Stage5Form11, name: "Pre-Commissioning Checklist" },
     ],
     6: [
       { component: Stage6Form1, name: "Pre-Commissioning Checklist" },
