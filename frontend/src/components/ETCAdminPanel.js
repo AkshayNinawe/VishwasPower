@@ -3525,7 +3525,10 @@ const ETCAdminPanel = ({
                     <div className="stage-management">
                       <h4>Stage Management:</h4>
                       <div className="stages-row">
-                        {[1, 2, 3, 4, 5, 6].map((stage) => {
+                        {(selectedDepartment?.name === "V Connected 63 MVA Transformer"
+                          ? [1, 2, 3, 4, 5, 6, 7]
+                          : [1, 2, 3, 4, 5, 6]
+                        ).map((stage) => {
                           const stageStatus = getStageStatus(Project, stage);
                           return (
                             <div

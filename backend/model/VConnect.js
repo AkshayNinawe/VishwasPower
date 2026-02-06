@@ -1195,7 +1195,7 @@ const Stage5Form11SubSchema = new mongoose.Schema(
   { _id: false }
 );
 
-// --- SUB-SCHEMAS FOR STAGE 6 ---
+/* --- SUB-SCHEMAS FOR STAGE 6 --- */
 
 // Sub-schema for Stage 6 Form 1
 const Stage6Form1SubSchema = new mongoose.Schema(
@@ -1239,6 +1239,75 @@ const Stage6Form1SubSchema = new mongoose.Schema(
       type: String,
       trim: true,
       default: "",
+    },
+    completionDate: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    chargingDate: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    commissioningDate: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    signatures: {
+      type: DetailedSignatureSubSchema,
+      default: () => ({}),
+    },
+  },
+  { _id: false }
+);
+
+/* --- SUB-SCHEMAS FOR STAGE 7 --- */
+
+// Sub-schema for Stage 7 Form 1
+// Note: Stage 7 Work Completion Report currently uses the same structure as Stage 6 Form 1 in the frontend.
+const Stage7Form1SubSchema = new mongoose.Schema(
+  {
+    customerName: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    orderNumber: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    location: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    type: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    capacity: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    voltageRating: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    make: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    serialNumber: {
+      type: String,
+      trim: true,
+     default: "",
     },
     completionDate: {
       type: String,
@@ -1316,6 +1385,9 @@ const VConnectSchema = new mongoose.Schema(
       },
       stage6: {
         form1: { type: Stage6Form1SubSchema, default: () => ({}) },
+      },
+      stage7: {
+        form1: { type: Stage7Form1SubSchema, default: () => ({}) },
       },
     },
   },
