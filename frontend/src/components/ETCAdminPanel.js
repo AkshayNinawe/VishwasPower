@@ -2613,9 +2613,16 @@ const ETCAdminPanel = ({
         apiEndpoint = '/api/company/deleteProject';
       }
 
+      // Get the auth token from localStorage
+      const authToken = localStorage.getItem('authToken');
+
       const response = await axios.delete(
         `${BACKEND_API_BASE_URL}${apiEndpoint}`,
         {
+          headers: {
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json'
+          },
           data: {
             projectName: Project.name,
             companyName: Project.companyName,
@@ -2703,9 +2710,16 @@ const ETCAdminPanel = ({
         apiEndpoint = '/api/company/deleteCompany';
       }
 
+      // Get the auth token from localStorage
+      const authToken = localStorage.getItem('authToken');
+
       const response = await axios.delete(
         `${BACKEND_API_BASE_URL}${apiEndpoint}`,
         {
+          headers: {
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json'
+          },
           data: {
             companyName: company.companyName,
             department: selectedDepartment.name,

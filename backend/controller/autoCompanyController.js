@@ -1,7 +1,5 @@
 import express from "express";
 import AutoTransformerCompany from "../model/AutoTransformerCompany.js";
-import TractionCompany from "../model/TractionCompany.js";
-import VConnectCompany from "../model/VConnectCompany.js";
 import AutoTransformer from "../model/AutoTransformer.js";
 
 const router = express.Router();
@@ -64,27 +62,16 @@ export const setCompanyData = async (req, res) => {
 
 export const deleteProjectByName = async (req, res) => {
   try {
-    const { companyName, projectName, department } = req.body;
+    const { companyName, projectName } = req.body;
     
-    if (!companyName || !projectName || !department) {
+    if (!companyName || !projectName) {
       return res.status(400).json({ 
-        message: "Company name, project name, and department are required." 
+        message: "Company name and project name are required." 
       });
     }
 
-    const departmentModels = {
-      "Traction Transformer": TractionCompany,
-      "Auto Transformer": AutoTransformerCompany,
-      "V Connected 63 MVA Transformer": VConnectCompany
-    };
-
-    const Model = departmentModels[department];
-    if (!Model) {
-      return res.status(400).json({ message: "Invalid department type." });
-    }
-
-    // Delete from the department model (existing functionality)
-    const updatedCompany = await Model.findOneAndUpdate(
+    // Delete from the AutoTransformerCompany model
+    const updatedCompany = await AutoTransformerCompany.findOneAndUpdate(
       { companyName },
       {
         $pull: { companyProjects: { name: projectName } },
@@ -95,7 +82,7 @@ export const deleteProjectByName = async (req, res) => {
 
     if (!updatedCompany) {
       return res.status(404).json({
-        message: `${department} '${companyName}' not found or project '${projectName}' not deleted.`,
+        message: `Company '${companyName}' not found or project '${projectName}' not deleted.`,
       });
     }
 
@@ -115,7 +102,7 @@ export const deleteProjectByName = async (req, res) => {
     }
 
     res.status(200).json({
-      message: `Project '${projectName}' deleted successfully from ${department} '${companyName}' and associated AutoTransformer data.`,
+      message: `Project '${projectName}' deleted successfully from company '${companyName}' and associated AutoTransformer data.`,
       company: updatedCompany,
     });
   } catch (error) {
@@ -126,35 +113,24 @@ export const deleteProjectByName = async (req, res) => {
 
 export const deleteCompanyByName = async (req, res) => {
   try {
-    const { companyName, department } = req.body;
+    const { companyName } = req.body;
     
-    if (!companyName || !department) {
+    if (!companyName) {
       return res.status(400).json({ 
-        message: "Company name and department are required." 
+        message: "Company name is required." 
       });
     }
 
-    const departmentModels = {
-      "Traction Transformer": TractionCompany,
-      "Auto Transformer": AutoTransformerCompany,
-      "V Connected 63 MVA Transformer": VConnectCompany
-    };
-
-    const Model = departmentModels[department];
-    if (!Model) {
-      return res.status(400).json({ message: "Invalid department type." });
-    }
-
-    const deletedCompany = await Model.findOneAndDelete({ companyName });
+    const deletedCompany = await AutoTransformerCompany.findOneAndDelete({ companyName });
 
     if (!deletedCompany) {
       return res.status(404).json({
-        message: `${department} '${companyName}' not found.`,
+        message: `Company '${companyName}' not found.`,
       });
     }
 
     res.status(200).json({
-      message: `${department} '${companyName}' deleted successfully.`,
+      message: `Company '${companyName}' deleted successfully.`,
       company: deletedCompany,
     });
   } catch (error) {
@@ -166,22 +142,7 @@ export const deleteCompanyByName = async (req, res) => {
 // Get all Company
 export const getAllCompanyData = async (req, res) => {
   try {
-    const { departmentType } = req.query;
-
-    const departmentQueries = {
-      "Traction Transformer": () => TractionCompany.find(),
-      "Auto Transformer": () => AutoTransformerCompany.find(),
-      "V Connect": () => VConnectCompany.find()
-    };
-
-    const queryFunction = departmentQueries[departmentType];
-    if (!queryFunction) {
-      return res.status(400).json({ 
-        message: "Invalid departmentType parameter." 
-      });
-    }
-
-    const companies = await queryFunction();
+    const companies = await AutoTransformerCompany.find();
     res.json(companies);
   } catch (error) {
     console.error("Error fetching companies:", error.message);

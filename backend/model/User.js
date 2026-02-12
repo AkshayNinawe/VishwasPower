@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: ["admin", "etcadmin", "site-engineer"],
-      default: "chef",
+      default: "site-engineer",
     },
   },
   { timestamps: true }
