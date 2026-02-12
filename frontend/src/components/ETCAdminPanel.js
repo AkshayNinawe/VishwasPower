@@ -2937,7 +2937,12 @@ const ETCAdminPanel = ({
           </div>
 
           <div className="header-right desktop-only">
-            <span className="user-badge">ETC Admin</span>
+            <span className="user-badge">
+              User : {user?.name || "ETC Admin"} 
+            </span>
+            <span className="user-badge">
+              Role : {user?.role || "etcadmin"}
+            </span>
             <button onClick={handleLogoutAndClearData} className="logout-btn">
               🚪 Logout
             </button>
