@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { BACKEND_API_BASE_URL, BACKEND_IMG_API_BASE_URL, additionalLogging } from "./constant";
+import { BACKEND_API_BASE_URL, additionalLogging } from "./constant";
 import FormStage from "./FormStage"; // Import FormStage
 import VConnected63MVATransformerForms from "./VConnected63MVATransformerForms";
 import TractionTransformerForms from "./TractionTransformerForms";
@@ -48,8 +48,6 @@ const ETCAdminPanel = ({
 
   const [viewMode, setViewMode] = useState(false);
   const [selectedFormForView, setSelectedFormForView] = useState(null);
-  const [formViewData, setFormViewData] = useState({});
-  const [showPDFPreview, setShowPDFPreview] = useState(false);
 
   // State for showing and managing FormStage
   const [formDataFromDB, setFormDataFromDB] = useState(false);
@@ -1633,35 +1631,6 @@ const ETCAdminPanel = ({
     },
   ];
 
-  const defaultCompanys = [
-    {
-      id: 101,
-      name: "Smart City Infrastructure",
-      description: "Urban development Company for smart city implementation",
-      status: "active",
-      createdAt: "2024-01-15",
-      departmentId: 1,
-    },
-    {
-      id: 102,
-      name: "Railway Electrification",
-      description: "Company for electrifying railway lines",
-      status: "active",
-      createdAt: "2024-02-01",
-      departmentId: 2,
-    },
-    {
-      id: 103,
-      name: "Grid Modernization",
-      description: "Modernizing the power grid for efficiency",
-      status: "active",
-      createdAt: "2024-02-15",
-      departmentId: 3,
-    },
-  ];
-
-  const defaultCompanies = [];
-  const mockSubmittedForms = [];
 
   // Helper functions for modals
   const showNotification = (message, type = "info") => {
@@ -1704,7 +1673,7 @@ const ETCAdminPanel = ({
       return;
     }
 
-    if (selectedDepartment?.name == "Auto Transformer") {
+    if (selectedDepartment?.name === "Auto Transformer") {
       if (newCompany.name && newCompany.description && selectedDepartment) {
         const CompanyId = Math.max(...Companys.map((p) => p.id), 0) + 1;
 
@@ -1746,7 +1715,7 @@ const ETCAdminPanel = ({
         );
       }
     } else {
-      if (selectedDepartment?.name == "V Connected 63 MVA Transformer") {
+      if (selectedDepartment?.name === "V Connected 63 MVA Transformer") {
         if (newCompany.name && newCompany.description && selectedDepartment) {
           const CompanyId = Math.max(...Companys.map((p) => p.id), 0) + 1;
 
