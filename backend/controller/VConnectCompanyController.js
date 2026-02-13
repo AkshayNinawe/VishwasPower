@@ -230,6 +230,67 @@ export const rejectCompanyStage = async (req, res) => {
 };
 
 
+// Edit company name
+export const editCompanyName = async (req, res) => {
+  try {
+    const { oldCompanyName, newCompanyName } = req.body;
+
+    // Validate required fields
+    if (!oldCompanyName || !newCompanyName) {
+      return res.status(400).json({ 
+        message: "Both old company name and new company name are required" 
+      });
+    }
+
+    // Check if the old company exists
+    const existingCompany = await VConnectCompany.findOne({ companyName: oldCompanyName });
+    if (!existingCompany) {
+      return res.status(404).json({ 
+        message: `Company with name '${oldCompanyName}' not found` 
+      });
+    }
+
+    // Check if the new company name already exists
+    const duplicateCompany = await VConnectCompany.findOne({ companyName: newCompanyName });
+    if (duplicateCompany) {
+      return res.status(400).json({ 
+        message: `Company with name '${newCompanyName}' already exists` 
+      });
+    }
+
+    // Update the company name
+    const updatedCompany = await VConnectCompany.findOneAndUpdate(
+      { companyName: oldCompanyName },
+      { 
+        $set: { 
+          companyName: newCompanyName,
+          updatedAt: Date.now() 
+        } 
+      },
+      { new: true }
+    );
+
+    // Also update the company name in VConnect collection if any projects exist
+    try {
+      await VConnect.updateMany(
+        { companyName: { $regex: new RegExp(`^${oldCompanyName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') } },
+        { $set: { companyName: newCompanyName } }
+      );
+    } catch (vConnectError) {
+      console.error("Error updating VConnect collection:", vConnectError.message);
+      // Don't fail the entire operation if VConnect update fails
+    }
+
+    res.status(200).json({
+      message: `Company name updated successfully from '${oldCompanyName}' to '${newCompanyName}'.`,
+      company: updatedCompany,
+    });
+  } catch (error) {
+    console.error("Error editing company name:", error.message);
+    res.status(500).json({ message: "An internal server error occurred." });
+  }
+};
+
 // Delete a Company by ID
 export const deleteCompanyByID = async (req, res) => {
   try {
