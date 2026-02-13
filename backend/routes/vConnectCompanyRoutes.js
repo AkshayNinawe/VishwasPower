@@ -9,8 +9,9 @@ import {
   deleteProjectByName,
   deleteCompanyByName,
   rejectCompanyStage,
-  editCompanyName
-} from "../controller/vConnectCompanyController.js";
+  editCompanyName,
+  editProjectName
+} from "../controller/VConnectCompanyController.js";
 import { protect, authorize } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -22,6 +23,7 @@ router.get("/", getAllCompanyData);
 router.post("/rejectStage", rejectCompanyStage)
 router.post("/updateFormsCompleted", setFormsCompleted);
 router.put("/editCompanyName", editCompanyName);
+router.put("/editProjectName", editProjectName);
 router.delete("/deleteProject",  protect,  authorize("etcadmin", "admin"),  deleteProjectByName);
 router.delete("/deleteCompany",  protect,  authorize("etcadmin", "admin"),  deleteCompanyByName);
 

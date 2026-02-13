@@ -8,7 +8,8 @@ import {
   deleteProjectByName,
   deleteCompanyByName,
   rejectCompanyStage,
-  editCompanyName
+  editCompanyName,
+  editProjectName
 } from "../controller/autoCompanyController.js";
 import { protect, authorize } from "../middleware/authMiddleware.js";
 
@@ -22,6 +23,7 @@ router.get("/", getAllCompanyData);
 router.post("/rejectStage", rejectCompanyStage)
 router.post("/updateFormsCompleted", setFormsCompleted);
 router.put("/editCompanyName", editCompanyName);
+router.put("/editProjectName", editProjectName);
 router.delete("/deleteProject", protect, authorize("etcadmin", "admin"), deleteProjectByName);
 router.delete("/deleteCompany", protect, authorize("etcadmin", "admin"), deleteCompanyByName);
 

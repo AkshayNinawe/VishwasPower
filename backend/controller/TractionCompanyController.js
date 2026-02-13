@@ -230,6 +230,85 @@ export const rejectCompanyStage = async (req, res) => {
 };
 
 
+// Edit project name
+export const editProjectName = async (req, res) => {
+  try {
+    const { companyName, oldProjectName, newProjectName } = req.body;
+
+    // Validate required fields
+    if (!companyName || !oldProjectName || !newProjectName) {
+      return res.status(400).json({ 
+        message: "Company name, old project name, and new project name are required" 
+      });
+    }
+
+    // Check if the company exists
+    const existingCompany = await TractionCompany.findOne({ companyName });
+    if (!existingCompany) {
+      return res.status(404).json({ 
+        message: `Company with name '${companyName}' not found` 
+      });
+    }
+
+    // Check if the old project exists in the company
+    const projectExists = existingCompany.companyProjects.some(
+      project => project.name === oldProjectName
+    );
+    if (!projectExists) {
+      return res.status(404).json({ 
+        message: `Project with name '${oldProjectName}' not found in company '${companyName}'` 
+      });
+    }
+
+    // Check if the new project name already exists in the same company
+    const duplicateProject = existingCompany.companyProjects.some(
+      project => project.name === newProjectName
+    );
+    if (duplicateProject) {
+      return res.status(400).json({ 
+        message: `Project with name '${newProjectName}' already exists in company '${companyName}'` 
+      });
+    }
+
+    // Update the project name in the company's projects array
+    const updatedCompany = await TractionCompany.findOneAndUpdate(
+      { 
+        companyName: companyName,
+        "companyProjects.name": oldProjectName 
+      },
+      { 
+        $set: { 
+          "companyProjects.$.name": newProjectName,
+          updatedAt: Date.now() 
+        } 
+      },
+      { new: true }
+    );
+
+    // Also update the project name in Traction collection if it exists
+    try {
+      await Traction.updateMany(
+        { 
+          companyName: { $regex: new RegExp(`^${companyName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') },
+          projectName: { $regex: new RegExp(`^${oldProjectName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') }
+        },
+        { $set: { projectName: newProjectName } }
+      );
+    } catch (tractionError) {
+      console.error("Error updating Traction collection:", tractionError.message);
+      // Don't fail the entire operation if Traction update fails
+    }
+
+    res.status(200).json({
+      message: `Project name updated successfully from '${oldProjectName}' to '${newProjectName}' in company '${companyName}'.`,
+      company: updatedCompany,
+    });
+  } catch (error) {
+    console.error("Error editing project name:", error.message);
+    res.status(500).json({ message: "An internal server error occurred." });
+  }
+};
+
 // Edit company name
 export const editCompanyName = async (req, res) => {
   try {

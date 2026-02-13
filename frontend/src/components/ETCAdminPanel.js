@@ -78,6 +78,10 @@ const ETCAdminPanel = ({
   const [editingCompany, setEditingCompany] = useState(null);
   const [newCompanyName, setNewCompanyName] = useState("");
 
+  const [showEditProjectNameModal, setShowEditProjectNameModal] = useState(false);
+  const [editingProject, setEditingProject] = useState(null);
+  const [newProjectName, setNewProjectName] = useState("");
+
   const totalStageForm = [5, 2, 3, 4, 2, 1];
 
   const formStructures = {
@@ -2654,6 +2658,88 @@ const ETCAdminPanel = ({
     }
   };
 
+  const handleEditProjectName = (project) => {
+    setEditingProject(project);
+    setNewProjectName(project.name);
+    setShowEditProjectNameModal(true);
+  };
+
+  const confirmEditProjectName = async () => {
+    if (!newProjectName.trim()) {
+      showNotification("Project name cannot be empty", "error");
+      return;
+    }
+
+    if (newProjectName.trim() === editingProject.name) {
+      showNotification("Please enter a different name", "warning");
+      setShowEditProjectNameModal(false);
+      return;
+    }
+
+    try {
+      // Determine API endpoint based on department name
+      let apiEndpoint;
+      if (selectedDepartment.name === 'Auto Transformer') {
+        apiEndpoint = '/api/autocompany/editProjectName';
+      } else if (selectedDepartment.name === 'Traction Transformer') {
+        apiEndpoint = '/api/tractioncompany/editProjectName';
+      } else if (selectedDepartment.name === 'V Connected 63 MVA Transformer') {
+        apiEndpoint = '/api/vconnectcompany/editProjectName';
+      } else {
+        apiEndpoint = '/api/autocompany/editProjectName';
+      }
+
+      // Get the auth token from localStorage
+      const authToken = localStorage.getItem('authToken');
+
+      const response = await axios.put(
+        `${BACKEND_API_BASE_URL}${apiEndpoint}`,
+        {
+          companyName: editingProject.companyName,
+          oldProjectName: editingProject.name,
+          newProjectName: newProjectName.trim(),
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      // Update frontend state
+      setSelectedMainCompany((prevCompany) => ({
+        ...prevCompany,
+        companyProjects: prevCompany.companyProjects.map((proj) =>
+          proj.name === editingProject.name
+            ? { ...proj, name: newProjectName.trim() }
+            : proj
+        ),
+      }));
+
+      showNotification(
+        `Project name updated successfully from "${editingProject.name}" to "${newProjectName.trim()}"!`,
+        "success"
+      );
+      setShowEditProjectNameModal(false);
+      setEditingProject(null);
+      setNewProjectName("");
+    } catch (error) {
+      console.error("Error editing project name:", error);
+      
+      if (error.response?.status === 400) {
+        showNotification(
+          error.response.data.message || "Project name already exists in this company",
+          "error"
+        );
+      } else if (error.response?.status === 404) {
+        showNotification("Company or project not found", "error");
+      } else {
+        showNotification("Failed to update project name. Please try again.", "error");
+      }
+    }
+  };
+
   const handleEditCompanyName = (company) => {
     setEditingCompany(company);
     setNewCompanyName(company.companyName);
@@ -3519,7 +3605,7 @@ const ETCAdminPanel = ({
                           transition: "all 0.3s ease",
                         }}
                       >
-                        👁️ View Companies
+                        🗃️ View Companies
                       </button>
                     </div>
                   </div>
@@ -3650,8 +3736,54 @@ const ETCAdminPanel = ({
                         marginTop: "15px",
                         display: "flex",
                         gap: "10px",
+                        flexWrap: "wrap",
                       }}
                     >
+                      {/* Edit Name */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEditProjectName(Project);
+                        }}
+                        className="edit-project-btn"
+                        style={{
+                          background:
+                            "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+                          color: "white",
+                          border: "none",
+                          padding: "8px 16px",
+                          borderRadius: "8px",
+                          fontSize: "0.85rem",
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          transition: "all 0.3s ease",
+                        }}
+                      >
+                        ✏️ Edit Name
+                      </button>
+                      
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleProjectDelete(Project);
+                        }}
+                        className="delete-btn"
+                        style={{
+                          background:
+                            "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)", // red gradient
+                          color: "white",
+                          border: "none",
+                          padding: "8px 16px",
+                          borderRadius: "8px",
+                          fontSize: "0.85rem",
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          transition: "all 0.3s ease",
+                        }}
+                      >
+                        🗑️ Delete Project
+                      </button>
+
                       {/* View Forms */}
                       <button
                         onClick={(e) => {
@@ -3698,27 +3830,7 @@ const ETCAdminPanel = ({
                         📝 Submit Stage {Project.stage}
                       </button>
 
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleProjectDelete(Project);
-                        }}
-                        className="delete-btn"
-                        style={{
-                          background:
-                            "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)", // red gradient
-                          color: "white",
-                          border: "none",
-                          padding: "8px 16px",
-                          borderRadius: "8px",
-                          fontSize: "0.85rem",
-                          fontWeight: "600",
-                          cursor: "pointer",
-                          transition: "all 0.3s ease",
-                        }}
-                      >
-                        🗑️ Delete Project
-                      </button>
+                      
                     </div>
                   </div>
                 ))
@@ -3985,6 +4097,68 @@ const ETCAdminPanel = ({
               <p style={{ fontSize: "0.9rem", color: "#9ca3af", margin: "5px 0" }}>
                 This may take a few moments depending on the number of forms and images.
               </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Project Name Modal */}
+      {showEditProjectNameModal && (
+        <div
+          className="modal-overlay"
+          onClick={() => setShowEditProjectNameModal(false)}
+        >
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
+              >
+                <span style={{ fontSize: "1.5rem" }}>✏️</span>
+                <h3>Edit Project Name</h3>
+              </div>
+            </div>
+            <p style={{ fontSize: "1rem", color: "#666", marginBottom: "20px" }}>
+              Current name: <strong>{editingProject?.name}</strong>
+            </p>
+            <div className="form-group">
+              <label>New Project Name *</label>
+              <input
+                type="text"
+                placeholder="Enter new project name..."
+                value={newProjectName}
+                onChange={(e) => setNewProjectName(e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter" && newProjectName.trim()) {
+                    confirmEditProjectName();
+                  }
+                }}
+                autoFocus
+              />
+            </div>
+            <div className="modal-actions">
+              <button
+                onClick={confirmEditProjectName}
+                className="submit-btn"
+                disabled={!newProjectName.trim()}
+                style={{
+                  background: newProjectName.trim()
+                    ? "linear-gradient(135deg, #10b981, #059669)"
+                    : "#ccc",
+                  cursor: newProjectName.trim() ? "pointer" : "not-allowed",
+                }}
+              >
+                Update Name
+              </button>
+              <button
+                onClick={() => {
+                  setShowEditProjectNameModal(false);
+                  setEditingProject(null);
+                  setNewProjectName("");
+                }}
+                className="cancel-btn"
+              >
+                Cancel
+              </button>
             </div>
           </div>
         </div>

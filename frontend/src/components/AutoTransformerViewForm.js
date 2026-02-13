@@ -21,6 +21,26 @@ import {
   Stage6Form1
 } from './AutoTransformerStageReviewPanel';
 
+// Utility function to download image
+const downloadImage = async (imageUrl, filename) => {
+  try {
+    const response = await fetch(imageUrl);
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error('Error downloading image:', error);
+    // Fallback: open in new tab if download fails
+    window.open(imageUrl, '_blank');
+  }
+};
+
 // Utility function to render photos
 const renderPhotos = (photos, formKey) => {
   if (!photos || typeof photos !== "object") return null;
@@ -32,7 +52,7 @@ const renderPhotos = (photos, formKey) => {
       </label>
       <div className="photo-display-grid" style={{
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+        gridTemplateColumns: "repeat(2, 1fr)",
         gap: "15px",
         marginTop: "10px"
       }}>
@@ -92,9 +112,8 @@ const renderPhotos = (photos, formKey) => {
                 }}
               />
               <div style={{ marginTop: "8px", textAlign: "center" }}>
-                <a
-                  href={fullUrl}
-                  download={`${photoKey}.jpg`}
+                <button
+                  onClick={() => downloadImage(fullUrl, `${photoKey}.jpg`)}
                   style={{
                     display: "inline-block",
                     padding: "4px 8px",
@@ -102,11 +121,13 @@ const renderPhotos = (photos, formKey) => {
                     color: "white",
                     textDecoration: "none",
                     borderRadius: "4px",
-                    fontSize: "0.75rem"
+                    fontSize: "0.75rem",
+                    border: "none",
+                    cursor: "pointer"
                   }}
                 >
                   📥 Download
-                </a>
+                </button>
               </div>
             </div>
           );
