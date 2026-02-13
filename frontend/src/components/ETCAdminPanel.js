@@ -74,6 +74,10 @@ const ETCAdminPanel = ({
   const [rejectionStage, setRejectionStage] = useState(null);
   const [rejectionReason, setRejectionReason] = useState("");
 
+  const [showEditNameModal, setShowEditNameModal] = useState(false);
+  const [editingCompany, setEditingCompany] = useState(null);
+  const [newCompanyName, setNewCompanyName] = useState("");
+
   const totalStageForm = [5, 2, 3, 4, 2, 1];
 
   const formStructures = {
@@ -2650,6 +2654,77 @@ const ETCAdminPanel = ({
     }
   };
 
+  const handleEditCompanyName = (company) => {
+    setEditingCompany(company);
+    setNewCompanyName(company.companyName);
+    setShowEditNameModal(true);
+  };
+
+  const confirmEditCompanyName = async () => {
+    if (!newCompanyName.trim()) {
+      showNotification("Company name cannot be empty", "error");
+      return;
+    }
+
+    if (newCompanyName.trim() === editingCompany.companyName) {
+      showNotification("Please enter a different name", "warning");
+      setShowEditNameModal(false);
+      return;
+    }
+
+    try {
+      // Determine API endpoint based on department name
+      let apiEndpoint;
+      if (selectedDepartment.name === 'Auto Transformer') {
+        apiEndpoint = '/api/autocompany/editCompanyName';
+      } else if (selectedDepartment.name === 'Traction Transformer') {
+        apiEndpoint = '/api/tractioncompany/editCompanyName';
+      } else if (selectedDepartment.name === 'V Connected 63 MVA Transformer') {
+        apiEndpoint = '/api/vconnectcompany/editCompanyName';
+      } else {
+        apiEndpoint = '/api/autocompany/editCompanyName';
+      }
+
+      const response = await axios.put(
+        `${BACKEND_API_BASE_URL}${apiEndpoint}`,
+        {
+          oldCompanyName: editingCompany.companyName,
+          newCompanyName: newCompanyName.trim(),
+        }
+      );
+
+      // Update frontend state
+      setCompanys((prev) =>
+        prev.map((c) =>
+          c.companyName === editingCompany.companyName
+            ? { ...c, companyName: newCompanyName.trim() }
+            : c
+        )
+      );
+
+      showNotification(
+        `Company name updated successfully from "${editingCompany.companyName}" to "${newCompanyName.trim()}"!`,
+        "success"
+      );
+      setShowEditNameModal(false);
+      setEditingCompany(null);
+      setNewCompanyName("");
+    } catch (error) {
+      console.error("Error editing company name:", error);
+      
+      if (error.response?.status === 400) {
+        showNotification(
+          error.response.data.message || "Company name already exists",
+          "error"
+        );
+      } else if (error.response?.status === 404) {
+        showNotification("Company not found", "error");
+      } else {
+        showNotification("Failed to update company name. Please try again.", "error");
+      }
+    }
+  };
+
   const handleCompanyDelete = async (company) => {
     const confirmDelete = window.confirm(
       `Are you sure you want to delete company "${company.companyName}" and all its projects?`
@@ -3386,6 +3461,27 @@ const ETCAdminPanel = ({
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
+                          handleEditCompanyName(Company);
+                        }}
+                        className="edit-btn"
+                        style={{
+                          background:
+                            "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+                          color: "white",
+                          border: "none",
+                          padding: "8px 16px",
+                          borderRadius: "8px",
+                          fontSize: "0.85rem",
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          transition: "all 0.3s ease",
+                        }}
+                      >
+                        ✏️ Edit Name
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
                           handleCompanyDelete(Company);
                         }}
                         className="delete-btn"
@@ -3889,6 +3985,68 @@ const ETCAdminPanel = ({
               <p style={{ fontSize: "0.9rem", color: "#9ca3af", margin: "5px 0" }}>
                 This may take a few moments depending on the number of forms and images.
               </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Company Name Modal */}
+      {showEditNameModal && (
+        <div
+          className="modal-overlay"
+          onClick={() => setShowEditNameModal(false)}
+        >
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
+              >
+                <span style={{ fontSize: "1.5rem" }}>✏️</span>
+                <h3>Edit Company Name</h3>
+              </div>
+            </div>
+            <p style={{ fontSize: "1rem", color: "#666", marginBottom: "20px" }}>
+              Current name: <strong>{editingCompany?.companyName}</strong>
+            </p>
+            <div className="form-group">
+              <label>New Company Name *</label>
+              <input
+                type="text"
+                placeholder="Enter new company name..."
+                value={newCompanyName}
+                onChange={(e) => setNewCompanyName(e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter" && newCompanyName.trim()) {
+                    confirmEditCompanyName();
+                  }
+                }}
+                autoFocus
+              />
+            </div>
+            <div className="modal-actions">
+              <button
+                onClick={confirmEditCompanyName}
+                className="submit-btn"
+                disabled={!newCompanyName.trim()}
+                style={{
+                  background: newCompanyName.trim()
+                    ? "linear-gradient(135deg, #10b981, #059669)"
+                    : "#ccc",
+                  cursor: newCompanyName.trim() ? "pointer" : "not-allowed",
+                }}
+              >
+                Update Name
+              </button>
+              <button
+                onClick={() => {
+                  setShowEditNameModal(false);
+                  setEditingCompany(null);
+                  setNewCompanyName("");
+                }}
+                className="cancel-btn"
+              >
+                Cancel
+              </button>
             </div>
           </div>
         </div>

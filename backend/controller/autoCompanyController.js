@@ -273,6 +273,67 @@ export const deleteCompanyByID = async (req, res) => {
   }
 };
 
+// Edit company name
+export const editCompanyName = async (req, res) => {
+  try {
+    const { oldCompanyName, newCompanyName } = req.body;
+
+    // Validate required fields
+    if (!oldCompanyName || !newCompanyName) {
+      return res.status(400).json({ 
+        message: "Both old company name and new company name are required" 
+      });
+    }
+
+    // Check if the old company exists
+    const existingCompany = await AutoTransformerCompany.findOne({ companyName: oldCompanyName });
+    if (!existingCompany) {
+      return res.status(404).json({ 
+        message: `Company with name '${oldCompanyName}' not found` 
+      });
+    }
+
+    // Check if the new company name already exists
+    const duplicateCompany = await AutoTransformerCompany.findOne({ companyName: newCompanyName });
+    if (duplicateCompany) {
+      return res.status(400).json({ 
+        message: `Company with name '${newCompanyName}' already exists` 
+      });
+    }
+
+    // Update the company name
+    const updatedCompany = await AutoTransformerCompany.findOneAndUpdate(
+      { companyName: oldCompanyName },
+      { 
+        $set: { 
+          companyName: newCompanyName,
+          updatedAt: Date.now() 
+        } 
+      },
+      { new: true }
+    );
+
+    // Also update the company name in AutoTransformer collection if any projects exist
+    try {
+      await AutoTransformer.updateMany(
+        { companyName: { $regex: new RegExp(`^${oldCompanyName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') } },
+        { $set: { companyName: newCompanyName } }
+      );
+    } catch (autoTransformerError) {
+      console.error("Error updating AutoTransformer collection:", autoTransformerError.message);
+      // Don't fail the entire operation if AutoTransformer update fails
+    }
+
+    res.status(200).json({
+      message: `Company name updated successfully from '${oldCompanyName}' to '${newCompanyName}'.`,
+      company: updatedCompany,
+    });
+  } catch (error) {
+    console.error("Error editing company name:", error.message);
+    res.status(500).json({ message: "An internal server error occurred." });
+  }
+};
+
 export const setFormsCompleted = async (req, res) => {
   try {
     // Added 'totalForms' to the destructuring to make the logic dynamic

@@ -7,7 +7,8 @@ import {
   setapproveCompanyStage,
   deleteProjectByName,
   deleteCompanyByName,
-  rejectCompanyStage
+  rejectCompanyStage,
+  editCompanyName
 } from "../controller/autoCompanyController.js";
 import { protect, authorize } from "../middleware/authMiddleware.js";
 
@@ -20,6 +21,7 @@ router.post("/approveCompanyStage", protect, authorize("etcadmin", "admin"), set
 router.get("/", getAllCompanyData);
 router.post("/rejectStage", rejectCompanyStage)
 router.post("/updateFormsCompleted", setFormsCompleted);
+router.put("/editCompanyName", editCompanyName);
 router.delete("/deleteProject", protect, authorize("etcadmin", "admin"), deleteProjectByName);
 router.delete("/deleteCompany", protect, authorize("etcadmin", "admin"), deleteCompanyByName);
 
