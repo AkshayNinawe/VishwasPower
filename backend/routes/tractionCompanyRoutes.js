@@ -11,7 +11,7 @@ import {
   rejectCompanyStage,
   editCompanyName,
   editProjectName
-} from "../controller/tractionCompanyController.js";
+} from "../controller/TractionCompanyController.js";
 import { protect, authorize } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
