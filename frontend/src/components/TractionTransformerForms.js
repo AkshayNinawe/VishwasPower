@@ -1054,7 +1054,7 @@ function Stage1Form3({
         <thead>
           <tr>
             <th> </th>
-            <th>Obtained Value</th>
+            <th>Obtained Value (MΩ)</th>
             <th>Remarks</th>
           </tr>
         </thead>

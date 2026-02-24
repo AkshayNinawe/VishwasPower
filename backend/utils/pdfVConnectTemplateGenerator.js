@@ -468,7 +468,7 @@ function generateStage1Form3(formData) {
         <thead>
           <tr>
             <th style="width: 38%;"></th>
-            <th style="width: 31%;">Obtained Value</th>
+            <th style="width: 31%;">Obtained Value (MΩ)</th>
             <th style="width: 31%;">Remarks</th>
           </tr>
         </thead>

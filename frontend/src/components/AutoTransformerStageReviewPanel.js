@@ -185,7 +185,7 @@ const Stage1Form3 = ({ formData }) => (
       <thead>
         <tr>
           <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}></th>
-          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Obtained Value MΩ</th>
+          <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Obtained Value (MΩ)</th>
           <th style={{ border: "1px solid #e5e7eb", padding: "8px", fontWeight: "bold", backgroundColor: "#f2f2f2" }}>Remarks</th>
         </tr>
       </thead>

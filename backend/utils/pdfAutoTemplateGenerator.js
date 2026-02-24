@@ -346,7 +346,7 @@ function generateStage1Form3(formData) {
         <thead>
           <tr style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white;">
             <th></th>
-            <th>Obtained Value MΩ</th>
+            <th>Obtained Value (MΩ)</th>
             <th>Remarks</th>
           </tr>
         </thead>

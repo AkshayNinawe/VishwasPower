@@ -565,7 +565,7 @@ const Stage1Form3 = ({ formData }) => (
       <thead>
         <tr>
           <th> </th>
-          <th>Obtained Value</th>
+          <th>Obtained Value (MΩ)</th>
           <th>Remarks</th>
         </tr>
       </thead>

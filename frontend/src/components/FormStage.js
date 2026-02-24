@@ -1672,7 +1672,7 @@ function CoreInsulationCheckForm({
         <thead>
           <tr>
             <th></th>
-            <th>Obtained Value MΩ</th>
+            <th>Obtained Value (MΩ)</th>
             <th>Remarks</th>
           </tr>
         </thead>
