@@ -1197,68 +1197,200 @@ const Stage5Form11SubSchema = new mongoose.Schema(
 
 /* --- SUB-SCHEMAS FOR STAGE 6 --- */
 
-// Sub-schema for Stage 6 Form 1
+/**
+ * Sub-schema for Stage 6 Form 1 (Pre-Commissioning Checklist)
+ * Matches frontend Stage6Form1 in VConnected63MVATransformerForms.js
+ */
+const Stage6Form1ValveStatusRowSubSchema = new mongoose.Schema(
+  {
+    qty: { type: String, trim: true, default: "" },
+    open: { type: String, trim: true, default: "" },
+    shut: { type: String, trim: true, default: "" },
+    na: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+const Stage6Form1AirVentingSubSchema = new mongoose.Schema(
+  {
+    mainTank: { type: String, trim: true, default: "" },
+    pipeLineTop: { type: String, trim: true, default: "" },
+    pipeLineBottom: { type: String, trim: true, default: "" },
+    radiatorTop: { type: String, trim: true, default: "" },
+    rfbd: { type: String, trim: true, default: "" },
+    diverterSwitch: { type: String, trim: true, default: "" },
+
+    bucholzRelay: {
+      location1: { type: String, trim: true, default: "" },
+      location2: { type: String, trim: true, default: "" },
+    },
+    hvBushing: {
+      location11: { type: String, trim: true, default: "" },
+      location12: { type: String, trim: true, default: "" },
+    },
+    lvBushing: {
+      location21: { type: String, trim: true, default: "" },
+      location22: { type: String, trim: true, default: "" },
+      location31: { type: String, trim: true, default: "" },
+      location32: { type: String, trim: true, default: "" },
+    },
+    headerTop: {
+      location1: { type: String, trim: true, default: "" },
+      location2: { type: String, trim: true, default: "" },
+    },
+    headerBottom: {
+      location1: { type: String, trim: true, default: "" },
+      location2: { type: String, trim: true, default: "" },
+    },
+    oilPump: {
+      location1: { type: String, trim: true, default: "" },
+      location2: { type: String, trim: true, default: "" },
+      location3: { type: String, trim: true, default: "" },
+      location4: { type: String, trim: true, default: "" },
+    },
+  },
+  { _id: false }
+);
+
 const Stage6Form1SubSchema = new mongoose.Schema(
   {
-    customerName: {
-      type: String,
-      trim: true,
-      default: "",
+    customerName: { type: String, trim: true, default: "" },
+    projectCompanyName: { type: String, trim: true, default: "" },
+    nameOfTSS: { type: String, trim: true, default: "" },
+    ratingMVA: { type: String, trim: true, default: "" },
+    ratingVoltage: { type: String, trim: true, default: "" },
+    srNo: { type: String, trim: true, default: "" },
+    manufacturerName: { type: String, trim: true, default: "" },
+
+    // Section totals row
+    valveStatusSectionQty: { type: String, trim: true, default: "" },
+    valveStatusSectionOpen: { type: String, trim: true, default: "" },
+    valveStatusSectionShut: { type: String, trim: true, default: "" },
+    valveStatusSectionNa: { type: String, trim: true, default: "" },
+
+    // A..M rows keyed by row key (bucholzToConservator, mainTankToBucholz, etc)
+    valveStatus: { type: Map, of: Stage6Form1ValveStatusRowSubSchema, default: {} },
+
+    airVenting: { type: Stage6Form1AirVentingSubSchema, default: () => ({}) },
+
+    protectionTrails: { type: Map, of: String, default: {} },
+    otiSetTemperature: { type: String, trim: true, default: "" },
+
+    photos: { type: Map, of: String, default: {} },
+  },
+  { _id: false }
+);
+
+/**
+ * Sub-schema for Stage 6 Form 2 (Transformer Protection relay / Accessories Checking / IR Values)
+ * Matches frontend Stage6Form2 in VConnected63MVATransformerForms.js
+ */
+const Stage6Form2RelayRowSubSchema = new mongoose.Schema(
+  {
+    make: { type: String, trim: true, default: "" },
+    srNo: { type: String, trim: true, default: "" },
+    lastTestedDate: { type: String, trim: true, default: "" }, // date input
+    remark: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+const Stage6Form2AccessoriesRowSubSchema = new mongoose.Schema(
+  {
+    setTemp: { type: String, trim: true, default: "" },
+    checked: { type: String, trim: true, default: "" },
+    noOfHrsRun: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+const Stage6Form2FinalIrRowSubSchema = new mongoose.Schema(
+  {
+    at10: { type: String, trim: true, default: "" },
+    at60: { type: String, trim: true, default: "" },
+    at600: { type: String, trim: true, default: "" },
+    pi: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+const Stage6Form2SubSchema = new mongoose.Schema(
+  {
+    // Transformer Protection relay
+    overCurrentRelay: { type: Stage6Form2RelayRowSubSchema, default: () => ({}) },
+    restrictedEarthFaultRelay: { type: Stage6Form2RelayRowSubSchema, default: () => ({}) },
+    differentialRelay: { type: Stage6Form2RelayRowSubSchema, default: () => ({}) },
+    masterTripRelay: { type: Stage6Form2RelayRowSubSchema, default: () => ({}) },
+
+    separateEarthPit: { type: String, trim: true, default: "" },
+    neutralEarthPitResistanceValues: { type: String, trim: true, default: "" },
+    gridEarthResistanceValues: { type: String, trim: true, default: "" },
+    cleaningCheckingMainTankEarthing: { type: String, trim: true, default: "" },
+
+    laCounterReading: { type: Map, of: String, default: {} }, // keys: 1.1, 2.1, 3.1, 1.2, 2.2, 3.2
+    whetherLaEarthingChecked: { type: String, trim: true, default: "" },
+    irValueOfLa: { type: String, trim: true, default: "" },
+
+    phases: { type: Map, of: String, default: {} }, // keys: 1.1, 1.2, 2.1, 2.2, 3.1, 3.2
+
+    // Accessories checking (fan/pump + octc tap + octc items)
+    accessories: { type: Map, of: Stage6Form2AccessoriesRowSubSchema, default: {} }, // keys: fanStart, fanStop, pumpStart1, pumpStart2, octcTapPosition, diverterSwitch, driveMechanism, tpiRtcc
+
+    // Bushing Test Tap Earthed
+    bushingTestTapEarthed: {
+      hvChecked: { type: Map, of: String, default: {} }, // keys: 1.1, 1.2
+      lvChecked: { type: Map, of: String, default: {} }, // keys: 2.1, 2.2, 3.1, 3.2
     },
-    orderNumber: {
-      type: String,
-      trim: true,
-      default: "",
+
+    // Oil values
+    oilValues: {
+      bdvKv: { type: String, trim: true, default: "" },
+      moistureContentPpm: { type: String, trim: true, default: "" },
     },
-    location: {
-      type: String,
-      trim: true,
-      default: "",
+
+    // Final IR Values
+    finalIrValues: { type: Map, of: Stage6Form2FinalIrRowSubSchema, default: {} },
+
+    oilLevelInConservator: { type: String, trim: true, default: "" },
+
+    connectorsHvJumpers: { type: Map, of: String, default: {} }, // keys: 1.1, 1.2
+
+    photos: { type: Map, of: String, default: {} },
+  },
+  { _id: false }
+);
+
+/**
+ * Sub-schema for Stage 6 Form 3 (Final Checklist and Clearance)
+ * Matches frontend Stage6Form3 in VConnected63MVATransformerForms.js
+ */
+const Stage6Form3SubSchema = new mongoose.Schema(
+  {
+    connectors: {
+      lv21: { type: String, trim: true, default: "" },
+      lv22: { type: String, trim: true, default: "" },
+      lv31: { type: String, trim: true, default: "" },
+      lv32: { type: String, trim: true, default: "" },
     },
-    type: {
-      type: String,
-      trim: true,
-      default: "",
-    },
-    capacity: {
-      type: String,
-      trim: true,
-      default: "",
-    },
-    voltageRating: {
-      type: String,
-      trim: true,
-      default: "",
-    },
-    make: {
-      type: String,
-      trim: true,
-      default: "",
-    },
-    serialNumber: {
-      type: String,
-      trim: true,
-      default: "",
-    },
-    completionDate: {
-      type: String,
-      trim: true,
-      default: "",
-    },
-    chargingDate: {
-      type: String,
-      trim: true,
-      default: "",
-    },
-    commissioningDate: {
-      type: String,
-      trim: true,
-      default: "",
-    },
+
+    anabondApplied: { type: String, trim: true, default: "" },
+    jointsSealed: { type: String, trim: true, default: "" },
+    foreignMaterialCleared: { type: String, trim: true, default: "" },
+    temperatureWTI: { type: String, trim: true, default: "" },
+    temperatureOTI: { type: String, trim: true, default: "" },
+
+    remarks: { type: String, trim: true, default: "" },
+
     signatures: {
-      type: DetailedSignatureSubSchema,
-      default: () => ({}),
+      vpesName: { type: String, trim: true, default: "" },
+      vpesSignature: { type: String, trim: true, default: "" },
+      vpesDate: { type: String, trim: true, default: "" },
+      customerName: { type: String, trim: true, default: "" },
+      customerSignature: { type: String, trim: true, default: "" },
+      customerDate: { type: String, trim: true, default: "" },
     },
+
+    photos: { type: Map, of: String, default: {} },
   },
   { _id: false }
 );
@@ -1385,6 +1517,8 @@ const VConnectSchema = new mongoose.Schema(
       },
       stage6: {
         form1: { type: Stage6Form1SubSchema, default: () => ({}) },
+        form2: { type: Stage6Form2SubSchema, default: () => ({}) },
+        form3: { type: Stage6Form3SubSchema, default: () => ({}) },
       },
       stage7: {
         form1: { type: Stage7Form1SubSchema, default: () => ({}) },

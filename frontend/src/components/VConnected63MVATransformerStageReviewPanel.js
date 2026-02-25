@@ -5897,6 +5897,415 @@ const Stage5Form11 = ({ formData }) => (
   </div>
 );
 
+/**
+ * Stage 6 Form 1: PRE-COMMISSIONING CHECKLIST (Review)
+ * UI mirrors VConnected63MVATransformerForms.js Stage6Form1, but all inputs disabled.
+ */
+const Stage6Form1 = ({ formData }) => {
+  const valveRows = [
+    { sr: "A", particulars: "Bucholz to Conservator", key: "bucholzToConservator", qtyLabel: "" },
+    { sr: "B", particulars: "Main Tank to Bucholz", key: "mainTankToBucholz", qtyLabel: "" },
+    { sr: "C", particulars: "Radiator Top Valves", key: "radiatorTopValves", qtyLabel: "" },
+    { sr: "D", particulars: "Radiator Bottom Valves", key: "radiatorBottomValves", qtyLabel: "" },
+    { sr: "E", particulars: "Top 200mm Pipeline", key: "top200mmPipeline", qtyLabel: "" },
+    { sr: "F", particulars: "Top Header", key: "topHeader", qtyLabel: "" },
+    { sr: "G", particulars: "Bottom Header", key: "bottomHeader", qtyLabel: "" },
+    { sr: "H", particulars: "Main Tank to Radiator Bank", key: "mainTankToRadiatorBank", qtyLabel: "" },
+    { sr: "I", particulars: "Oil Pump to R.F.B.D.", key: "oilPumpToRFBD", qtyLabel: "" },
+    { sr: "J", particulars: "Oil Pump to Radiator Bank", key: "oilPumpToRadiatorBank", qtyLabel: "" },
+    { sr: "K", particulars: "Top Filter Valve", key: "topFilterValve", qtyLabel: "" },
+    { sr: "L", particulars: "Bottom Filter Valve", key: "bottomFilterValve", qtyLabel: "" },
+    { sr: "M", particulars: "Drain Valve", key: "drainValve", qtyLabel: "" },
+  ];
+
+  const airVentingSimpleRows = [
+    { sr: "A", particulars: "Main Tank", key: "mainTank" },
+    { sr: "E", particulars: "Pipe Line Top", key: "pipeLineTop" },
+    { sr: "F", particulars: "Pipe Line Bottom", key: "pipeLineBottom" },
+    { sr: "I", particulars: "Radiator – Top", key: "radiatorTop" },
+    { sr: "J", particulars: "RFBD", key: "rfbd" },
+    { sr: "L", particulars: "Diverter Switch", key: "diverterSwitch" },
+  ];
+
+  const protectionRows = [
+    { sr: "A", particulars: "BUCHHOLZ", label: "ALARM", key: "buchholzAlarm" },
+    { sr: "", particulars: "", label: "TRIP", key: "buchholzTrip" },
+    { sr: "B", particulars: "MOG", label: "ALARM", key: "mogAlarm" },
+    { sr: "C", particulars: "PRV", label: "TRIP", key: "prvTrip" },
+    { sr: "D", particulars: "OTI", label: "ALARM", key: "otiAlarm" },
+    { sr: "", particulars: "", label: "TRIP", key: "otiTrip" },
+    { sr: "E", particulars: "WTI", label: "ALARM", key: "wtiAlarm" },
+    { sr: "", particulars: "", label: "TRIP", key: "wtiTrip" },
+  ];
+
+  return (
+    <div className="form-container">
+      <div className="company-header">
+        <h2>PRE-COMMISSIONING CHECKLIST</h2>
+      </div>
+
+      <table className="form-table">
+        <tbody>
+          <tr>
+            <td style={{ width: "25%", fontWeight: 800 }}>Name of end customer</td>
+            <td style={{ width: "25%" }}>
+              <input type="text" value={formData.customerName || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ width: "25%", fontWeight: 800 }}>Rating MVA</td>
+            <td style={{ width: "25%" }}>
+              <input type="text" value={formData.ratingMVA || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800 }}>Name of project company</td>
+            <td>
+              <input type="text" value={formData.projectCompanyName || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ fontWeight: 800 }}>Rating Voltage</td>
+            <td>
+              <input type="text" value={formData.ratingVoltage || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800 }}>Name of TSS</td>
+            <td>
+              <input type="text" value={formData.nameOfTSS || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ fontWeight: 800 }}>Sr. no.</td>
+            <td>
+              <input type="text" value={formData.srNo || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800 }}>Manufacturer name</td>
+            <td colSpan={3}>
+              <input type="text" value={formData.manufacturerName || ""} disabled className="form-input disabled preview" style={{ width: "100%" }} />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table className="form-table" style={{ marginTop: "20px" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "8%" }}>Sr.No.</th>
+            <th style={{ width: "36%" }}>Particulars</th>
+            <th style={{ width: "10%" }}>Qty</th>
+            <th colSpan={3} style={{ width: "46%" }}>
+              Status
+              <div style={{ display: "flex" }}>
+                <div style={{ width: "33.33%", textAlign: "center", fontWeight: 800 }}>Open</div>
+                <div style={{ width: "33.33%", textAlign: "center", fontWeight: 800 }}>Shut</div>
+                <div style={{ width: "33.33%", textAlign: "center", fontWeight: 800 }}>N/A</div>
+              </div>
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td style={{ fontWeight: 900, textAlign: "center" }}>I</td>
+            <td style={{ fontWeight: 900 }}>Valve Status</td>
+            <td>
+              <input type="text" value={formData.valveStatusSectionQty || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <input type="text" value={formData.valveStatusSectionOpen || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <input type="text" value={formData.valveStatusSectionShut || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <input type="text" value={formData.valveStatusSectionNa || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+
+          {valveRows.map((r) => (
+            <tr key={r.key}>
+              <td style={{ fontWeight: 800, textAlign: "center" }}>{r.sr}</td>
+              <td style={{ fontWeight: 800 }}>{r.particulars}</td>
+              <td>
+                <input
+                  type="text"
+                  value={formData.valveStatus?.[r.key]?.qty || ""}
+                  disabled
+                  className="form-input disabled preview"
+                  placeholder={r.qtyLabel || ""}
+                />
+              </td>
+              <td>
+                <input type="text" value={formData.valveStatus?.[r.key]?.open || ""} disabled className="form-input disabled preview" />
+              </td>
+              <td>
+                <input type="text" value={formData.valveStatus?.[r.key]?.shut || ""} disabled className="form-input disabled preview" />
+              </td>
+              <td>
+                <input type="text" value={formData.valveStatus?.[r.key]?.na || ""} disabled className="form-input disabled preview" />
+              </td>
+            </tr>
+          ))}
+
+          <tr>
+            <td style={{ fontWeight: 900, textAlign: "center" }}>II</td>
+            <td style={{ fontWeight: 900 }}>Air Venting</td>
+            <td colSpan={3} style={{ fontWeight: 900 }}>Done from the Following Locations:</td>
+            <td></td>
+          </tr>
+
+          {airVentingSimpleRows.map((r) => (
+            <tr key={r.key}>
+              <td style={{ fontWeight: 800, textAlign: "center" }}>{r.sr}</td>
+              <td style={{ fontWeight: 800 }}>{r.particulars}</td>
+              <td></td>
+              <td colSpan={3}>
+                <input type="text" value={formData.airVenting?.[r.key] || ""} disabled className="form-input disabled preview" />
+              </td>
+            </tr>
+          ))}
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>B</td>
+            <td style={{ fontWeight: 800 }}>Bucholz Relay</td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>1</td>
+            <td>
+              <input type="text" value={formData.airVenting?.bucholzRelay?.location1 || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>2</td>
+            <td>
+              <input type="text" value={formData.airVenting?.bucholzRelay?.location2 || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>C</td>
+            <td style={{ fontWeight: 800 }}>HV Bushing</td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>1.1</td>
+            <td>
+              <input type="text" value={formData.airVenting?.hvBushing?.location11 || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>1.2</td>
+            <td>
+              <input type="text" value={formData.airVenting?.hvBushing?.location12 || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>D</td>
+            <td style={{ fontWeight: 800 }}>LV Bushing</td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>2.1</td>
+            <td>
+              <input type="text" value={formData.airVenting?.lvBushing?.location21 || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>2.2</td>
+            <td>
+              <input type="text" value={formData.airVenting?.lvBushing?.location22 || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+
+          <tr>
+            <td></td>
+            <td></td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>3.1</td>
+            <td>
+              <input type="text" value={formData.airVenting?.lvBushing?.location31 || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>3.2</td>
+            <td>
+              <input type="text" value={formData.airVenting?.lvBushing?.location32 || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>G</td>
+            <td style={{ fontWeight: 800 }}>Header – Top</td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>1</td>
+            <td>
+              <input type="text" value={formData.airVenting?.headerTop?.location1 || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>2</td>
+            <td>
+              <input type="text" value={formData.airVenting?.headerTop?.location2 || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>H</td>
+            <td style={{ fontWeight: 800 }}>Header – Bottom</td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>1</td>
+            <td>
+              <input type="text" value={formData.airVenting?.headerBottom?.location1 || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>2</td>
+            <td>
+              <input type="text" value={formData.airVenting?.headerBottom?.location2 || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>K</td>
+            <td style={{ fontWeight: 800 }}>Oil Pump</td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>1</td>
+            <td>
+              <input type="text" value={formData.airVenting?.oilPump?.location1 || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>2</td>
+            <td>
+              <input type="text" value={formData.airVenting?.oilPump?.location2 || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+
+          <tr>
+            <td></td>
+            <td></td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>3</td>
+            <td>
+              <input type="text" value={formData.airVenting?.oilPump?.location3 || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>4</td>
+            <td>
+              <input type="text" value={formData.airVenting?.oilPump?.location4 || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 900, textAlign: "center" }}>III</td>
+            <td style={{ fontWeight: 900 }}>Protection Trails</td>
+            <td colSpan={3} style={{ fontWeight: 900, textAlign: "center" }}>Checked</td>
+            <td></td>
+          </tr>
+
+          {protectionRows.map((r) => (
+            <tr key={r.key}>
+              <td style={{ fontWeight: 800, textAlign: "center" }}>{r.sr}</td>
+              <td style={{ fontWeight: 800 }}>{r.particulars}</td>
+              <td style={{ fontWeight: 800, textAlign: "center" }}>{r.label}</td>
+              <td colSpan={r.key === "otiAlarm" ? 1 : 3}>
+                <input type="text" value={formData.protectionTrails?.[r.key] || ""} disabled className="form-input disabled preview" />
+              </td>
+              {r.key === "otiAlarm" ? (
+                <>
+                  <td style={{ fontWeight: 800, textAlign: "center" }}>Set Temperature</td>
+                  <td>
+                    <input type="text" value={formData.otiSetTemperature || ""} disabled className="form-input disabled preview" />
+                  </td>
+                </>
+              ) : (
+                <>
+                  <td></td>
+                  <td></td>
+                </>
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <div className="photo-upload-section">
+        <h4>Note: - Photographs to be added: -</h4>
+        <p style={{ textAlign: "center", marginBottom: "20px", fontWeight: "600" }}>Pre-commissioning checklist photographs</p>
+
+        {formData.photos && (
+          <div
+            className="photo-display-grid"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+              gap: "15px",
+              marginTop: "10px",
+            }}
+          >
+            {Object.entries(formData.photos).map(([photoKey, url]) => {
+              let fullUrl;
+              if (typeof url === "string") {
+                if (url.startsWith("data:image/")) {
+                  fullUrl = url;
+                } else if (url.startsWith("http")) {
+                  fullUrl = url;
+                } else if (url.includes("cloudinary.com") || url.startsWith("v1")) {
+                  fullUrl = `${BACKEND_IMG_API_BASE_URL}${url}`;
+                } else if (url.startsWith("/")) {
+                  fullUrl = `${BACKEND_API_BASE_URL}${url}`;
+                } else {
+                  fullUrl = `${BACKEND_API_BASE_URL}/${url}`;
+                }
+              } else {
+                fullUrl = "/placeholder.svg";
+              }
+
+              return (
+                <div
+                  key={photoKey}
+                  className="photo-item"
+                  style={{
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "8px",
+                    padding: "10px",
+                    backgroundColor: "#f9fafb",
+                  }}
+                >
+                  <span
+                    className="photo-label"
+                    style={{
+                      display: "block",
+                      fontSize: "0.85rem",
+                      fontWeight: "600",
+                      color: "#374151",
+                      marginBottom: "8px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {photoKey}
+                  </span>
+                  <img
+                    src={fullUrl}
+                    alt={photoKey}
+                    className="photo-preview-img"
+                    style={{
+                      width: "100%",
+                      height: "150px",
+                      objectFit: "cover",
+                      borderRadius: "6px",
+                      border: "1px solid #d1d5db",
+                      cursor: "pointer",
+                    }}
+                    onError={(e) => {
+                      console.error(`Failed to load image: ${fullUrl}`);
+                      e.target.src = "/placeholder.svg";
+                    }}
+                    onClick={() => {
+                      window.open(fullUrl, "_blank");
+                    }}
+                  />
+                  <div style={{ marginTop: "8px", textAlign: "center" }}>
+                    <a
+                      href={fullUrl}
+                      download={`${photoKey}.jpg`}
+                      style={{
+                        display: "inline-block",
+                        padding: "4px 8px",
+                        backgroundColor: "#3b82f6",
+                        color: "white",
+                        textDecoration: "none",
+                        borderRadius: "4px",
+                        fontSize: "0.75rem",
+                      }}
+                    >
+                      📥 Download
+                    </a>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 // Stage 5 Review Renderer Component
 const Stage5ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
   const stage5Forms = [
@@ -6536,7 +6945,7 @@ const Stage1ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
 };
 
 /* Stage 6 Form Component (for review display) */
-const Stage6Form1 = ({ formData }) => (
+const Stage7Form1 = ({ formData }) => (
   <div
     className="form-container"
     style={{
@@ -7014,26 +7423,594 @@ const Stage6Form1 = ({ formData }) => (
 );
 
 // Stage 6 Review Renderer Component
+/**
+ * Stage 6 Form 2: Transformer Protection relay / Accessories Checking / IR Values (Review)
+ * UI mirrors VConnected63MVATransformerForms.js Stage6Form2, but all inputs disabled.
+ */
+const Stage6Form2 = ({ formData }) => {
+  const relayRows = [
+    { sr: "A", label: "Over-current relay", key: "overCurrentRelay" },
+    { sr: "B", label: "Restricted Earth fault Relay", key: "restrictedEarthFaultRelay" },
+    { sr: "C", label: "Differential Relay", key: "differentialRelay" },
+    { sr: "D", label: "Master Trip Relay", key: "masterTripRelay" },
+  ];
+
+  const phaseKeys = ["1.1", "1.2", "2.1", "2.2", "3.1", "3.2"];
+
+  const accessoriesRows = [
+    { sr: "A", label: "FAN START", key: "fanStart" },
+    { sr: "B", label: "FAN STOP", key: "fanStop" },
+    { sr: "C", label: "PUMP START", key: "pumpStart1" },
+    { sr: "D", label: "PUMP START", key: "pumpStart2" },
+  ];
+
+  const octcRows = [
+    { sr: "A", label: "DIVERTER SWITCH", key: "diverterSwitch" },
+    { sr: "B", label: "DRIVE MECHANISM", key: "driveMechanism" },
+    { sr: "C", label: "TPI - (RTCC)", key: "tpiRtcc" },
+  ];
+
+  const finalIrRows = [
+    ["HV-Earth", "hvEarth"],
+    ["LV1-Earth", "lv1Earth"],
+    ["LV2-Earth", "lv2Earth"],
+    ["HV-LV1", "hvLv1"],
+    ["HV-LV2", "hvLv2"],
+    ["LV1-LV2", "lv1Lv2"],
+    ["Core to frame", "coreToFrame"],
+    ["Frame to Tank", "frameToTank"],
+    ["Removal link again tightens and check zero megger", "removalLinkAgainTightensAndCheckZeroMegger"],
+  ];
+
+  return (
+    <div className="form-container">
+      <div className="company-header">
+        <h2>Transformer Protection relay / Accessories Checking / IR Values</h2>
+      </div>
+
+      {/* IV Transformer Protection relay */}
+      <table className="form-table">
+        <thead>
+          <tr>
+            <th style={{ width: "6%" }}>IV</th>
+            <th style={{ width: "44%" }}>Transformer Protection relay</th>
+            <th style={{ width: "12%" }}>Make</th>
+            <th style={{ width: "12%" }}>sr.no.</th>
+            <th style={{ width: "14%" }}>last tested date.</th>
+            <th style={{ width: "12%" }}>Remark</th>
+          </tr>
+        </thead>
+        <tbody>
+          {relayRows.map((r) => {
+            const relay = formData?.[r.key] || {};
+            return (
+              <tr key={r.key}>
+                <td style={{ fontWeight: 800, textAlign: "center" }}>{r.sr}</td>
+                <td style={{ fontWeight: 800 }}>{r.label}</td>
+                <td><input type="text" value={relay.make || ""} disabled className="form-input disabled preview" /></td>
+                <td><input type="text" value={relay.srNo || ""} disabled className="form-input disabled preview" /></td>
+                <td><input type="date" value={relay.lastTestedDate || ""} disabled className="form-input disabled preview" /></td>
+                <td><input type="text" value={relay.remark || ""} disabled className="form-input disabled preview" /></td>
+              </tr>
+            );
+          })}
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>E</td>
+            <td style={{ fontWeight: 800 }}>Separate earth pit for neutral earthing</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>yes/no</td>
+            <td colSpan={3}>
+              <input type="text" value={formData.separateEarthPit || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>F</td>
+            <td style={{ fontWeight: 800 }}>Neutral earth pit resistance values</td>
+            <td colSpan={4}>
+              <input type="text" value={formData.neutralEarthPitResistanceValues || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>G</td>
+            <td style={{ fontWeight: 800 }}>Grid earth resistance values</td>
+            <td colSpan={4}>
+              <input type="text" value={formData.gridEarthResistanceValues || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>H</td>
+            <td style={{ fontWeight: 800 }}>Cleaning & Checking for the main tank Earthling</td>
+            <td colSpan={4}>
+              <input type="text" value={formData.cleaningCheckingMainTankEarthing || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>I</td>
+            <td style={{ fontWeight: 800 }}>LA Counter reading</td>
+            <td colSpan={4} style={{ padding: 0 }}>
+              <table className="form-table" style={{ marginTop: 0 }}>
+                <thead>
+                  <tr>
+                    <th style={{ width: "33.33%" }}>1.1</th>
+                    <th style={{ width: "33.33%" }}>2.1</th>
+                    <th style={{ width: "33.33%" }}>3.1</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="text" value={formData.laCounterReading?.["1.1"] || ""} disabled className="form-input disabled preview" /></td>
+                    <td><input type="text" value={formData.laCounterReading?.["2.1"] || ""} disabled className="form-input disabled preview" /></td>
+                    <td><input type="text" value={formData.laCounterReading?.["3.1"] || ""} disabled className="form-input disabled preview" /></td>
+                  </tr>
+                </tbody>
+                <thead>
+                  <tr>
+                    <th>1.2</th>
+                    <th>2.2</th>
+                    <th>3.2</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="text" value={formData.laCounterReading?.["1.2"] || ""} disabled className="form-input disabled preview" /></td>
+                    <td><input type="text" value={formData.laCounterReading?.["2.2"] || ""} disabled className="form-input disabled preview" /></td>
+                    <td><input type="text" value={formData.laCounterReading?.["3.2"] || ""} disabled className="form-input disabled preview" /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>J</td>
+            <td style={{ fontWeight: 800 }}>Whether LA Earthling checked</td>
+            <td colSpan={4}>
+              <input type="text" value={formData.whetherLaEarthingChecked || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>K</td>
+            <td style={{ fontWeight: 800 }}>IR Value of LA</td>
+            <td colSpan={4}>
+              <input type="text" value={formData.irValueOfLa || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+
+          {[
+            ["L", "Phase 1.1", "1.1"],
+            ["M", "Phase 1.2", "1.2"],
+            ["N", "Phase 2.1", "2.1"],
+            ["O", "Phase 2.2", "2.2"],
+            ["P", "Phase 3.1", "3.1"],
+            ["Q", "Phase 3.2", "3.2"],
+          ].map(([sr, label, key]) => (
+            <tr key={key}>
+              <td style={{ fontWeight: 800, textAlign: "center" }}>{sr}</td>
+              <td style={{ fontWeight: 800 }}>{label}</td>
+              <td colSpan={4}>
+                <input type="text" value={formData.phases?.[key] || ""} disabled className="form-input disabled preview" />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* IV Accessories Checking */}
+      <table className="form-table" style={{ marginTop: "20px" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "6%" }}>IV</th>
+            <th style={{ width: "44%" }}>Accessories Checking</th>
+            <th style={{ width: "16%" }}>SET Temp.</th>
+            <th style={{ width: "16%" }}>Checked</th>
+            <th style={{ width: "18%" }}>No. of Hrs. RUN</th>
+          </tr>
+        </thead>
+        <tbody>
+          {accessoriesRows.map((r) => (
+            <tr key={r.key}>
+              <td style={{ fontWeight: 800, textAlign: "center" }}>{r.sr}</td>
+              <td style={{ fontWeight: 800 }}>{r.label}</td>
+              <td><input type="text" value={formData.accessories?.[r.key]?.setTemp || ""} disabled className="form-input disabled preview" /></td>
+              <td><input type="text" value={formData.accessories?.[r.key]?.checked || ""} disabled className="form-input disabled preview" /></td>
+              <td><input type="text" value={formData.accessories?.[r.key]?.noOfHrsRun || ""} disabled className="form-input disabled preview" /></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* V OCTC TAP Position */}
+      <table className="form-table" style={{ marginTop: "10px" }}>
+        <tbody>
+          <tr>
+            <td style={{ width: "6%", fontWeight: 900, textAlign: "center" }}>V</td>
+            <td style={{ width: "44%", fontWeight: 900 }}>OCTC TAP Position</td>
+            <td style={{ width: "16%" }}>
+              <input type="text" value={formData.accessories?.octcTapPosition?.setTemp || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ width: "16%" }}>
+              <input type="text" value={formData.accessories?.octcTapPosition?.checked || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ width: "18%" }}>
+              <input type="text" value={formData.accessories?.octcTapPosition?.noOfHrsRun || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table className="form-table" style={{ marginTop: "0px" }}>
+        <tbody>
+          {octcRows.map((r) => (
+            <tr key={r.key}>
+              <td style={{ width: "6%", fontWeight: 800, textAlign: "center" }}>{r.sr}</td>
+              <td style={{ width: "44%", fontWeight: 800 }}>{r.label}</td>
+              <td style={{ width: "16%" }}>
+                <input type="text" value={formData.accessories?.[r.key]?.setTemp || ""} disabled className="form-input disabled preview" />
+              </td>
+              <td style={{ width: "16%" }}>
+                <input type="text" value={formData.accessories?.[r.key]?.checked || ""} disabled className="form-input disabled preview" />
+              </td>
+              <td style={{ width: "18%" }}>
+                <input type="text" value={formData.accessories?.[r.key]?.noOfHrsRun || ""} disabled className="form-input disabled preview" />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* VI Bushing Test Tap Earthed */}
+      <table className="form-table" style={{ marginTop: "10px" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "50%" }}>VI &nbsp; Bushing Test Tap Earthed</th>
+            <th style={{ width: "25%" }}>1.1</th>
+            <th style={{ width: "25%" }}>1.2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style={{ fontWeight: 800 }}>HV Checked</td>
+            <td><input type="text" value={formData.bushingTestTapEarthed?.hvChecked?.["1.1"] || ""} disabled className="form-input disabled preview" /></td>
+            <td><input type="text" value={formData.bushingTestTapEarthed?.hvChecked?.["1.2"] || ""} disabled className="form-input disabled preview" /></td>
+          </tr>
+          <tr>
+            <td style={{ fontWeight: 800 }}>LV Checked</td>
+            <td colSpan={2} style={{ padding: 0 }}>
+              <table className="form-table" style={{ marginTop: 0 }}>
+                <thead>
+                  <tr>
+                    <th style={{ width: "25%" }}>2.1</th>
+                    <th style={{ width: "25%" }}>2.2</th>
+                    <th style={{ width: "25%" }}>3.1</th>
+                    <th style={{ width: "25%" }}>3.2</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="text" value={formData.bushingTestTapEarthed?.lvChecked?.["2.1"] || ""} disabled className="form-input disabled preview" /></td>
+                    <td><input type="text" value={formData.bushingTestTapEarthed?.lvChecked?.["2.2"] || ""} disabled className="form-input disabled preview" /></td>
+                    <td><input type="text" value={formData.bushingTestTapEarthed?.lvChecked?.["3.1"] || ""} disabled className="form-input disabled preview" /></td>
+                    <td><input type="text" value={formData.bushingTestTapEarthed?.lvChecked?.["3.2"] || ""} disabled className="form-input disabled preview" /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* VII Oil Values */}
+      <table className="form-table" style={{ marginTop: "10px" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "8%" }}>VII</th>
+            <th style={{ width: "62%" }}>Oil Values</th>
+            <th style={{ width: "30%" }}></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>A</td>
+            <td style={{ fontWeight: 800 }}>BDV</td>
+            <td style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+              <strong>KV</strong>
+              <input type="text" value={formData.oilValues?.bdvKv || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+          <tr>
+            <td style={{ fontWeight: 800, textAlign: "center" }}>B</td>
+            <td style={{ fontWeight: 800 }}>Moisture Content</td>
+            <td style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+              <strong>PPM</strong>
+              <input type="text" value={formData.oilValues?.moistureContentPpm || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* VIII Final IR Values */}
+      <table className="form-table" style={{ marginTop: "10px" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "8%" }}>VIII</th>
+            <th style={{ width: "42%" }}>Final IR Values</th>
+            <th style={{ width: "12%" }}>10</th>
+            <th style={{ width: "12%" }}>60</th>
+            <th style={{ width: "12%" }}>600</th>
+            <th style={{ width: "14%" }}>P.I</th>
+          </tr>
+        </thead>
+        <tbody>
+          {finalIrRows.map(([label, key]) => (
+            <tr key={key}>
+              <td></td>
+              <td style={{ fontWeight: 800 }}>{label}</td>
+              <td><input type="text" value={formData.finalIrValues?.[key]?.at10 || ""} disabled className="form-input disabled preview" /></td>
+              <td><input type="text" value={formData.finalIrValues?.[key]?.at60 || ""} disabled className="form-input disabled preview" /></td>
+              <td><input type="text" value={formData.finalIrValues?.[key]?.at600 || ""} disabled className="form-input disabled preview" /></td>
+              <td><input type="text" value={formData.finalIrValues?.[key]?.pi || ""} disabled className="form-input disabled preview" /></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* IX Oil Level in Conservator */}
+      <table className="form-table" style={{ marginTop: "10px" }}>
+        <tbody>
+          <tr>
+            <td style={{ width: "8%", fontWeight: 900, textAlign: "center" }}>IX</td>
+            <td style={{ width: "42%", fontWeight: 900 }}>Oil Level in Conservator</td>
+            <td colSpan={4}>
+              <input type="text" value={formData.oilLevelInConservator || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* X Connectors */}
+      <table className="form-table" style={{ marginTop: "10px" }}>
+        <thead>
+          <tr>
+            <th style={{ width: "8%" }}>X</th>
+            <th style={{ width: "42%", textAlign: "left" }}>Connectors</th>
+            <th style={{ width: "50%" }}>Conditions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td></td>
+            <td></td>
+            <td style={{ fontWeight: 800 }}>HV Jumpers</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td>
+              <div style={{ display: "flex", gap: "10px" }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 800 }}>1.1</div>
+                  <input type="text" value={formData.connectorsHvJumpers?.["1.1"] || ""} disabled className="form-input disabled preview" />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 800 }}>1.2</div>
+                  <input type="text" value={formData.connectorsHvJumpers?.["1.2"] || ""} disabled className="form-input disabled preview" />
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      {formData.photos ? renderPhotos(formData.photos) : null}
+    </div>
+  );
+};
+
+// Stage 6 Review Renderer Component
+/**
+ * Stage 6 Form 3: Final Checklist and Clearance (Review)
+ * UI mirrors VConnected63MVATransformerForms.js FinalChecklistClearanceForm (Stage 6 - Form 3),
+ * but all inputs disabled.
+ */
+const Stage6Form3 = ({ formData }) => {
+  const connectors = formData.connectors || {};
+  const photos = formData.photos;
+
+  return (
+    <div className="form-container">
+      <div className="company-header">
+        <h2>Final Checklist and Clearance</h2>
+      </div>
+
+      <table className="form-table">
+        <tbody>
+          <tr>
+            <td>
+              <strong>XI</strong>
+            </td>
+            <td>Connectors</td>
+            <td>LV Jumpers</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td>2.1</td>
+            <td>
+              <input type="text" value={connectors.lv21 || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td>2.2</td>
+            <td>
+              <input type="text" value={connectors.lv22 || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td>3.1</td>
+            <td>
+              <input type="text" value={connectors.lv31 || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td>3.2</td>
+            <td>
+              <input type="text" value={connectors.lv32 || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table className="form-table" style={{ marginTop: "20px" }}>
+        <tbody>
+          <tr>
+            <td>
+              <strong>XII</strong>
+            </td>
+            <td>Anabond applied to HV Bushing thimble Sealed</td>
+            <td>
+              <input type="text" value={formData.anabondApplied || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>1</strong>
+            </td>
+            <td>Anabond applied to HV Bushing</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>2</strong>
+            </td>
+            <td>All joints properly sealed against Water Ingress</td>
+            <td>
+              <input type="text" value={formData.jointsSealed || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>3</strong>
+            </td>
+            <td>All Foreign material cleared from Transformer</td>
+            <td>
+              <input type="text" value={formData.foreignMaterialCleared || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style={{ marginTop: "20px" }}>
+        <p>
+          <strong>Temperature of °C WTI</strong>
+          <input
+            type="text"
+            value={formData.temperatureWTI || ""}
+            disabled
+            className="form-input disabled preview"
+            style={{ marginLeft: "10px", width: "100px" }}
+          />
+        </p>
+        <p>
+          <strong>OTI</strong>
+          <input
+            type="text"
+            value={formData.temperatureOTI || ""}
+            disabled
+            className="form-input disabled preview"
+            style={{ marginLeft: "10px", width: "100px" }}
+          />
+        </p>
+      </div>
+
+      <div style={{ marginTop: "30px" }}>
+        <p>
+          <strong>
+            Remarks: The Transformer as mentioned above has been jointly cleared for charging as on _____. All the necessary pre-commissioning checks and protection trials have been found satisfactory. Transformer has been cleared from all foreign material and is ready for charging.
+          </strong>
+        </p>
+        <textarea
+          rows="4"
+          value={formData.remarks || ""}
+          disabled
+          className="form-input disabled preview"
+          style={{ width: "100%", marginTop: "10px", resize: "vertical" }}
+        />
+      </div>
+
+      {/* Photo section (re-using shared renderPhotos helper used throughout this file) */}
+      {photos ? renderPhotos(photos) : null}
+
+      {/* Signatures (display name/date + render signature images if present) */}
+      <div className="signature-section" style={{ marginTop: "30px", display: "flex", gap: "30px" }}>
+        <div className="signature-box" style={{ flex: 1 }}>
+          <label style={{ fontWeight: 800 }}>Checked by VPES :</label>
+          <input type="text" value={formData.signatures?.vpesName || ""} disabled className="form-input disabled preview" />
+          {formData.signatures?.vpesSignature ? (
+            <img
+              src={formData.signatures.vpesSignature}
+              alt="VPES Signature"
+              style={{ maxWidth: "220px", maxHeight: "120px", border: "1px solid #ccc", marginTop: "8px", display: "block" }}
+            />
+          ) : null}
+          <input type="date" value={formData.signatures?.vpesDate || ""} disabled className="form-input disabled preview" />
+        </div>
+
+        <div className="signature-box" style={{ flex: 1 }}>
+          <label style={{ fontWeight: 800 }}>Witnessed By Customer :</label>
+          <input type="text" value={formData.signatures?.customerName || ""} disabled className="form-input disabled preview" />
+          {formData.signatures?.customerSignature ? (
+            <img
+              src={formData.signatures.customerSignature}
+              alt="Customer Signature"
+              style={{ maxWidth: "220px", maxHeight: "120px", border: "1px solid #ccc", marginTop: "8px", display: "block" }}
+            />
+          ) : null}
+          <input type="date" value={formData.signatures?.customerDate || ""} disabled className="form-input disabled preview" />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Stage6ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
   const stage6Forms = [
     {
-      id: "work-completion-report",
-      title: "Work Completion Report",
-      fields: [
-        { name: "customerName", label: "Customer Name", type: "text" },
-        { name: "orderNumber", label: "Order Number", type: "text" },
-        { name: "location", label: "Location", type: "text" },
-        { name: "type", label: "Type", type: "text" },
-        { name: "capacity", label: "Capacity", type: "text" },
-        { name: "voltageRating", label: "Voltage Rating", type: "text" },
-        { name: "make", label: "Make", type: "text" },
-        { name: "serialNumber", label: "Serial Number", type: "text" },
-        { name: "completionDate", label: "Completion Date", type: "date" },
-        { name: "chargingDate", label: "Charging Date", type: "time" },
-        { name: "commissioningDate", label: "Commissioning Date", type: "date" },
-        { name: "signatures", label: "Signatures", type: "nested-object" }
-      ]
-    }
+      id: "pre-commissioning-checklist",
+      title: "Pre-Commissioning Checklist",
+      component: Stage6Form1,
+    },
+    {
+      id: "transformer-protection-accessories-ir",
+      title: "Transformer Protection relay / Accessories / IR values",
+      component: Stage6Form2,
+    },
+    {
+      id: "final-checklist-clearance",
+      title: "Final Checklist and Clearance",
+      component: Stage6Form3,
+    },
   ];
 
   const renderPhotos = (photos, formKey) => {
@@ -7134,7 +8111,8 @@ const Stage6ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
     <div className="stage6-review-container">
       {stage6Forms.map((form, formIndex) => {
         const formData = formDataFromDB[`form${formIndex + 1}`] || {};
-        
+        const FormComponent = form.component;
+
         return (
           <div key={form.id} className="form-review-card" style={{
             marginBottom: "30px",
@@ -7157,8 +8135,7 @@ const Stage6ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
               </h2>
             </div>
 
-            {/* Use the organized form component */}
-            <Stage6Form1 formData={formData} />
+            {FormComponent ? <FormComponent formData={formData} /> : null}
 
             {/* Render photos if they exist */}
             {formData.photos && renderPhotos(formData.photos, form.id)}
@@ -7701,6 +8678,9 @@ export {
   Stage5Form10,
   Stage5Form11,
   Stage6Form1,
+  Stage6Form2,
+  Stage6Form3,
+  Stage7Form1,
   Stage1ReviewRenderer,
   Stage2ReviewRenderer,
   Stage3ReviewRenderer,

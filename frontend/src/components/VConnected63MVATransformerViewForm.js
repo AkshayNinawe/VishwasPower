@@ -28,7 +28,8 @@ import {
   Stage5Form9,
   Stage5Form10,
   Stage5Form11,
-  Stage6Form1
+  Stage6Form1,
+  Stage7Form1
 } from './VConnected63MVATransformerStageReviewPanel';
 
 // Utility function to render photos
@@ -132,7 +133,7 @@ const Stage7ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
     {
       id: "work-completion-report",
       title: "Work Completion Report",
-      component: Stage6Form1 // Reuse Stage6Form1 for completion report
+      component: Stage7Form1
     }
   ];
 
@@ -202,9 +203,9 @@ const Stage7ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
 const Stage6ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
   const stage6Forms = [
     {
-      id: "pre-charging-checklist-final",
-      title: "Final Pre-Charging Check List",
-      component: Stage5Form2 // Reuse Stage5Form2 for final checklist
+      id: "pre-commissioning-checklist",
+      title: "Pre-Commissioning Checklist",
+      component: Stage6Form1
     }
   ];
 
