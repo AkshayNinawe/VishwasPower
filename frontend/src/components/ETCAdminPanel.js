@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { BACKEND_API_BASE_URL, additionalLogging } from "./constant";
+import { authenticatedFetch, getAuthToken } from "../utils/auth";
 import FormStage from "./FormStage"; // Import FormStage
 import VConnected63MVATransformerForms from "./VConnected63MVATransformerForms";
 import TractionTransformerForms from "./TractionTransformerForms";
@@ -2144,8 +2145,13 @@ const ETCAdminPanel = ({
         apiEndpoint = '/api/company/approveCompanyStage';
       }
 
-      // Get the auth token from localStorage
-      const authToken = localStorage.getItem('authToken');
+      // Get the auth token and verify it exists
+      const authToken = getAuthToken();
+      
+      if (!authToken) {
+        showNotification("Authentication token not found. Please log in again.", "error");
+        return;
+      }
       
       const response = await axios.post(
         `${BACKEND_API_BASE_URL}${apiEndpoint}`,
@@ -2170,7 +2176,7 @@ const ETCAdminPanel = ({
       
       // Check if the error is due to unauthorized access (401 or 403)
       if (error.response?.status === 401 || error.response?.status === 403) {
-        showNotification("Please contact to ETC admin to approve the page", "error");
+        showNotification("Authentication failed. Please log out and log in again.", "error");
         return;
       }
       
