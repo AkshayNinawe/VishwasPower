@@ -29,6 +29,8 @@ import {
   Stage5Form10,
   Stage5Form11,
   Stage6Form1,
+  Stage6Form2,
+  Stage6Form3,
   Stage7Form1
 } from './VConnected63MVATransformerStageReviewPanel';
 
@@ -206,6 +208,16 @@ const Stage6ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
       id: "pre-commissioning-checklist",
       title: "Pre-Commissioning Checklist",
       component: Stage6Form1
+    },
+    {
+      id: "transformer-protection-accessories-ir",
+      title: "Transformer Protection and Accessories",
+      component: Stage6Form2
+    },
+    {
+      id: "final-checklist-clearance",
+      title: "Final Checklist and Clearance",
+      component: Stage6Form3
     }
   ];
 
