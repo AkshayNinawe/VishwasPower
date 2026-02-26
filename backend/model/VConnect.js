@@ -1327,11 +1327,11 @@ const Stage6Form2SubSchema = new mongoose.Schema(
     gridEarthResistanceValues: { type: String, trim: true, default: "" },
     cleaningCheckingMainTankEarthing: { type: String, trim: true, default: "" },
 
-    laCounterReading: { type: Map, of: String, default: {} }, // keys: 1.1, 2.1, 3.1, 1.2, 2.2, 3.2
+    laCounterReading: { type: mongoose.Schema.Types.Mixed, default: {} }, // keys: 1.1, 2.1, 3.1, 1.2, 2.2, 3.2
     whetherLaEarthingChecked: { type: String, trim: true, default: "" },
     irValueOfLa: { type: String, trim: true, default: "" },
 
-    phases: { type: Map, of: String, default: {} }, // keys: 1.1, 1.2, 2.1, 2.2, 3.1, 3.2
+    phases: { type: mongoose.Schema.Types.Mixed, default: {} }, // keys: 1.1, 1.2, 2.1, 2.2, 3.1, 3.2
 
     // Accessories checking (fan/pump + octc tap + octc items)
     accessories: { type: Map, of: Stage6Form2AccessoriesRowSubSchema, default: {} }, // keys: fanStart, fanStop, pumpStart1, pumpStart2, octcTapPosition, diverterSwitch, driveMechanism, tpiRtcc
