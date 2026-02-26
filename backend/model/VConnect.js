@@ -1338,8 +1338,8 @@ const Stage6Form2SubSchema = new mongoose.Schema(
 
     // Bushing Test Tap Earthed
     bushingTestTapEarthed: {
-      hvChecked: { type: Map, of: String, default: {} }, // keys: 1.1, 1.2
-      lvChecked: { type: Map, of: String, default: {} }, // keys: 2.1, 2.2, 3.1, 3.2
+      hvChecked: { type: mongoose.Schema.Types.Mixed, default: {} }, // keys: 1.1, 1.2
+      lvChecked: { type: mongoose.Schema.Types.Mixed, default: {} }, // keys: 2.1, 2.2, 3.1, 3.2
     },
 
     // Oil values
@@ -1353,7 +1353,7 @@ const Stage6Form2SubSchema = new mongoose.Schema(
 
     oilLevelInConservator: { type: String, trim: true, default: "" },
 
-    connectorsHvJumpers: { type: Map, of: String, default: {} }, // keys: 1.1, 1.2
+    connectorsHvJumpers: { type: mongoose.Schema.Types.Mixed, default: {} }, // keys: 1.1, 1.2
 
     photos: { type: Map, of: String, default: {} },
   },
