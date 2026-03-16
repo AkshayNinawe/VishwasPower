@@ -137,11 +137,12 @@ export const setapproveCompanyStage =  async(req, res) =>{
       },
     };
 
-    if (stageNumber !== 6) {
+    // V Connect has 7 stages, so check if we're at the final stage
+    if (stageNumber !== 7) {
       updateOperation.$inc = { "companyProjects.$.stage": 1 };
       updateOperation.$set["companyProjects.$.status"] = "in-progress";
     } else {
-      console.log("white house")
+      console.log("Final stage completed")
       updateOperation.$set["companyProjects.$.status"] = "completed";
     }
   
@@ -164,7 +165,7 @@ export const setapproveCompanyStage =  async(req, res) =>{
   
     res.status(200).json({
       message:
-      stageNumber !== 6
+      stageNumber !== 7
           ? `Stage '${stageNumber}' for project '${projectName}' successfully approved.`
           : `Stage '${stageNumber}' for project '${projectName}' marked as completed.`,
       project: updatedCompany.companyProjects.find(
@@ -398,9 +399,10 @@ export const setFormsCompleted = async (req, res) => {
     }
     
     // Corrected logic: Dynamically create a Map object instead of an Array
-    if (Number(stage) && 6) {
+    // V Connect has 7 stages
+    if (Number(stage) && 7) {
       const submittedStagesMap = {};
-      for (let i = 1; i <= 6; i++) {
+      for (let i = 1; i <= 7; i++) {
         submittedStagesMap[i.toString()] = i <= stage;
       }
       updateSets["companyProjects.$.submittedStages"] = submittedStagesMap;

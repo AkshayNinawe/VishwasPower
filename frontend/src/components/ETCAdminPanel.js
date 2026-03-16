@@ -2070,12 +2070,13 @@ const ETCAdminPanel = ({
   // Helper function to get form count for each stage
   const getStageFormCount = (stage) => {
     const stageForms = {
-      1: 5, // Stage 1 has 4 forms
-      2: 1, // Stage 2 has 1 form
-      3: 7, // Stage 3 has 7 forms
-      4: 6, // Stage 4 has 6 forms
-      5: 1, // Stage 5 has 1 form
-      6: 1, // Stage 6 has 1 form
+      1: 8, // Stage 1 has 4 forms
+      2: 2, // Stage 2 has 1 form
+      3: 1, // Stage 3 has 7 forms
+      4: 4, // Stage 4 has 6 forms
+      5: 11, // Stage 5 has 11 form
+      6: 3, // Stage 6 has 3 form
+      7: 1, // Stage 7 has 1 form
     };
     return stageForms[stage] || 1;
   };
@@ -2216,9 +2217,13 @@ const ETCAdminPanel = ({
       }),
     }));
 
+    // Determine the total number of stages based on department
+    const totalStages = selectedDepartment?.name === "V Connected 63 MVA Transformer" ? 7 : 6;
+    const isProjectCompleted = selectedProjectForReview.stage === totalStages;
+    
     showNotification(
       `Stage ${selectedProjectForReview.stage} approved for ${selectedProjectForReview.name}! ${
-        selectedProjectForReview.stage === 6
+        isProjectCompleted
           ? "Project completed all stages."
           : `Stage ${selectedProjectForReview.stage + 1} is now available.`
       }`,
