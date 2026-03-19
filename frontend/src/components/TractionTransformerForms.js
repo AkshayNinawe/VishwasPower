@@ -8348,7 +8348,7 @@ export function Stage5Form6({
       {/* HV/LV tables */}
       <div style={{ display: "flex", justifyContent: "space-between", gap: 30, marginTop: 30 }}>
         <div style={{ width: "55%" }}>
-          <h3 style={{ textAlign: "center", textDecoration: "underline", textUnderlineOffset: 6 }}>HV SIDE</h3>
+          <h3 style={{ textAlign: "center", textDecoration: "underline", textUnderlineOffset: 6 }}>LV SIDE</h3>
 
           <table className="form-table" style={{ marginTop: 14 }}>
             <thead>
@@ -8377,7 +8377,7 @@ export function Stage5Form6({
         </div>
 
         <div style={{ width: "45%" }}>
-          <h3 style={{ textAlign: "center", textDecoration: "underline", textUnderlineOffset: 6 }}>LV SIDE</h3>
+          <h3 style={{ textAlign: "center", textDecoration: "underline", textUnderlineOffset: 6 }}>HV SIDE</h3>
 
           <table className="form-table" style={{ marginTop: 14 }}>
             <thead>
@@ -8454,6 +8454,14 @@ export function Stage5Form7({
       { id: "lv_22", label: "LV (2.2)", voltageKv: "", testMode: "", capFactory: "", capSite: "", tdFactory: "", tdSite: "" },
     ],
 
+    // Measurement rows for second table
+    rows2: [
+      { id: "hv_11_2", label: "HV (1.1)", voltageKv: "", testMode: "", capFactory: "", capSite: "", tdFactory: "", tdSite: "" },
+      { id: "hv_12_2", label: "HV (1.2)", voltageKv: "", testMode: "", capFactory: "", capSite: "", tdFactory: "", tdSite: "" },
+      { id: "lv_21_2", label: "LV (2.1)", voltageKv: "", testMode: "", capFactory: "", capSite: "", tdFactory: "", tdSite: "" },
+      { id: "lv_22_2", label: "LV (2.2)", voltageKv: "", testMode: "", capFactory: "", capSite: "", tdFactory: "", tdSite: "" },
+    ],
+
     photos: {},
     ...initialData,
   })
@@ -8494,6 +8502,13 @@ export function Stage5Form7({
     setFormData((prev) => ({
       ...prev,
       rows: prev.rows.map((r) => (r.id === rowId ? { ...r, [field]: value } : r)),
+    }))
+  }
+
+  const handleRow2Change = (rowId, field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      rows2: prev.rows2.map((r) => (r.id === rowId ? { ...r, [field]: value } : r)),
     }))
   }
 
@@ -8738,6 +8753,88 @@ export function Stage5Form7({
                   type="text"
                   value={row.tdSite}
                   onChange={(e) => handleRowChange(row.id, "tdSite", e.target.value)}
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* Replicated measurement table */}
+      <table className="form-table" style={{ marginTop: 22 }}>
+        <thead>
+          <tr>
+            <th rowSpan={2} style={{ width: "14%" }}>
+              VOLTAGE (KV)
+            </th>
+            <th rowSpan={2} style={{ width: "18%" }}>
+              BUSHING &
+              <br />
+              SERIAL NO.
+            </th>
+            <th rowSpan={2} style={{ width: "12%" }}>
+              TEST
+              <br />
+              MODE
+            </th>
+            <th colSpan={2} style={{ width: "26%" }}>
+              CAPACITANCE ( Pf )
+            </th>
+            <th colSpan={2} style={{ width: "30%" }}>
+              TAN DELTA %
+            </th>
+          </tr>
+          <tr>
+            <th>FACTORY</th>
+            <th>SITE</th>
+            <th>FACTORY</th>
+            <th>SITE</th>
+          </tr>
+        </thead>
+        <tbody>
+          {formData.rows2 && formData.rows2.map((row) => (
+            <tr key={row.id}>
+              <td>
+                <input
+                  type="text"
+                  value={row.voltageKv}
+                  onChange={(e) => handleRow2Change(row.id, "voltageKv", e.target.value)}
+                />
+              </td>
+              <td style={{ fontWeight: 700, textAlign: "center" }}>{row.label}</td>
+              <td>
+                <input
+                  type="text"
+                  value={row.testMode}
+                  onChange={(e) => handleRow2Change(row.id, "testMode", e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={row.capFactory}
+                  onChange={(e) => handleRow2Change(row.id, "capFactory", e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={row.capSite}
+                  onChange={(e) => handleRow2Change(row.id, "capSite", e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={row.tdFactory}
+                  onChange={(e) => handleRow2Change(row.id, "tdFactory", e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={row.tdSite}
+                  onChange={(e) => handleRow2Change(row.id, "tdSite", e.target.value)}
                 />
               </td>
             </tr>

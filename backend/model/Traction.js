@@ -986,6 +986,7 @@ const Stage5Form7SubSchema = new mongoose.Schema(
     wti: { type: String, trim: true, default: "" },
 
     rows: { type: [TanDeltaBushingRowSubSchema], default: [] },
+    rows2: { type: [TanDeltaBushingRowSubSchema], default: [] },
 
     photos: { type: Map, of: String, default: {} },
   },

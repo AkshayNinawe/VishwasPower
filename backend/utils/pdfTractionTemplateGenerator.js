@@ -2679,6 +2679,49 @@ function generateStage5Form7(formData) {
 
   const photoBaseUrl = process.env.BACKEND_API_BASE_URL || "";
 
+  const measurementTable = (rows = []) => `
+    <table class="form-table" style="margin-top: 22px;">
+      <thead>
+        <tr>
+          <th rowSpan="2" style="width: 14%;">VOLTAGE (KV)</th>
+          <th rowSpan="2" style="width: 18%;">BUSHING &<br>SERIAL NO.</th>
+          <th rowSpan="2" style="width: 12%;">TEST<br>MODE</th>
+          <th colSpan="2" style="width: 26%;">CAPACITANCE (Pf)</th>
+          <th colSpan="2" style="width: 30%;">TAN DELTA %</th>
+        </tr>
+        <tr>
+          <th>FACTORY</th>
+          <th>SITE</th>
+          <th>FACTORY</th>
+          <th>SITE</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows
+          .map(
+            (row) => `
+            <tr>
+              <td>${row.voltageKv || ""}</td>
+              <td style="font-weight: 700; text-align: center;">${row.label || ""}</td>
+              <td>${row.testMode || ""}</td>
+              <td>${row.capFactory || ""}</td>
+              <td>${row.capSite || ""}</td>
+              <td>${row.tdFactory || ""}</td>
+              <td>${row.tdSite || ""}</td>
+            </tr>
+          `,
+          )
+          .join("")}
+      </tbody>
+    </table>
+  `;
+
+  const stage5Form7Photos = `
+    ${formData.photos?.tanDeltaKit ? generatePhotoThumbnails({ tanDeltaKit: formData.photos.tanDeltaKit }, photoBaseUrl) : ""}
+    ${formData.photos?.calibrationReport ? generatePhotoThumbnails({ calibrationReport: formData.photos.calibrationReport }, photoBaseUrl) : ""}
+    ${formData.photos?.duringTanDelta ? generatePhotoThumbnails({ duringTanDelta: formData.photos.duringTanDelta }, photoBaseUrl) : ""}
+  `;
+
   return `
     <div class="form-container">
       <div class="company-header">
@@ -2688,7 +2731,6 @@ function generateStage5Form7(formData) {
         </h3>
       </div>
 
-      <!-- Top identification table -->
       <table class="form-table" style="margin-top: 10px;">
         <tbody>
           <tr>
@@ -2709,7 +2751,7 @@ function generateStage5Form7(formData) {
           <tr>
             <td colspan="2"><strong>METER USED</strong></td>
             <td><strong>DATE:</strong></td>
-            <td><strong>TIME:</strong></td>
+            <td><strong>TIME :</strong></td>
           </tr>
           <tr>
             <td colspan="2">${formData.meterUsed || ""}</td>
@@ -2737,39 +2779,10 @@ function generateStage5Form7(formData) {
         </tbody>
       </table>
 
-      <!-- Main measurement table -->
-      <table class="form-table" style="margin-top: 22px;">
-        <thead>
-          <tr>
-            <th rowSpan="2" style="width: 14%;">VOLTAGE (KV)</th>
-            <th rowSpan="2" style="width: 18%;">BUSHING &<br>SERIAL NO.</th>
-            <th rowSpan="2" style="width: 12%;">TEST<br>MODE</th>
-            <th colSpan="2" style="width: 26%;">CAPACITANCE (Pf)</th>
-            <th colSpan="2" style="width: 30%;">TAN DELTA %</th>
-          </tr>
-          <tr>
-            <th>FACTORY</th>
-            <th>SITE</th>
-            <th>FACTORY</th>
-            <th>SITE</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${formData.rows ? formData.rows.map(row => `
-            <tr>
-              <td>${row.voltageKv || ""}</td>
-              <td style="font-weight: 700; text-align: center;">${row.label || ""}</td>
-              <td>${row.testMode || ""}</td>
-              <td>${row.capFactory || ""}</td>
-              <td>${row.capSite || ""}</td>
-              <td>${row.tdFactory || ""}</td>
-              <td>${row.tdSite || ""}</td>
-            </tr>
-          `).join('') : ''}
-        </tbody>
-      </table>
+      ${measurementTable(formData.rows || [])}
+      ${measurementTable(formData.rows2 || [])}
 
-      ${generatePhotoThumbnails(formData.photos, photoBaseUrl)}
+      ${stage5Form7Photos}
     </div>
   `;
 }

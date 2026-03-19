@@ -7111,7 +7111,7 @@ const Stage5Form6 = ({ formData }) => (
     {/* HV/LV tables: use the same structure and row counts as TractionTransformerForms.js */}
     <div style={{ display: "flex", justifyContent: "space-between", gap: 30, marginTop: 30 }}>
       <div style={{ width: "55%" }}>
-        <h3 style={{ textAlign: "center", textDecoration: "underline", textUnderlineOffset: 6 }}>HV SIDE</h3>
+        <h3 style={{ textAlign: "center", textDecoration: "underline", textUnderlineOffset: 6 }}>LV SIDE</h3>
 
         <table className="form-table" style={{ marginTop: 14 }}>
           <thead>
@@ -7138,7 +7138,7 @@ const Stage5Form6 = ({ formData }) => (
       </div>
 
       <div style={{ width: "45%" }}>
-        <h3 style={{ textAlign: "center", textDecoration: "underline", textUnderlineOffset: 6 }}>LV SIDE</h3>
+        <h3 style={{ textAlign: "center", textDecoration: "underline", textUnderlineOffset: 6 }}>HV SIDE</h3>
 
         <table className="form-table" style={{ marginTop: 14 }}>
           <thead>
@@ -7176,7 +7176,6 @@ const Stage5Form7 = ({ formData }) => (
       </h3>
     </div>
 
-    {/* Top identification table (exactly like TractionTransformerForms.js Stage5Form7) */}
     <table className="form-table" style={{ marginTop: 10 }}>
       <tbody>
         <tr>
@@ -7301,7 +7300,6 @@ const Stage5Form7 = ({ formData }) => (
       </tbody>
     </table>
 
-    {/* Main measurement table */}
     <table className="form-table" style={{ marginTop: 22 }}>
       <thead>
         <tr>
@@ -7359,7 +7357,70 @@ const Stage5Form7 = ({ formData }) => (
       </tbody>
     </table>
 
-    {formData.photos ? renderPhotos(formData.photos) : null}
+    <table className="form-table" style={{ marginTop: 22 }}>
+      <thead>
+        <tr>
+          <th rowSpan={2} style={{ width: "14%" }}>
+            VOLTAGE (KV)
+          </th>
+          <th rowSpan={2} style={{ width: "18%" }}>
+            BUSHING &
+            <br />
+            SERIAL NO.
+          </th>
+          <th rowSpan={2} style={{ width: "12%" }}>
+            TEST
+            <br />
+            MODE
+          </th>
+          <th colSpan={2} style={{ width: "26%" }}>
+            CAPACITANCE ( Pf )
+          </th>
+          <th colSpan={2} style={{ width: "30%" }}>
+            TAN DELTA %
+          </th>
+        </tr>
+        <tr>
+          <th>FACTORY</th>
+          <th>SITE</th>
+          <th>FACTORY</th>
+          <th>SITE</th>
+        </tr>
+      </thead>
+      <tbody>
+        {(formData.rows2 || []).map((row) => (
+          <tr key={row.id}>
+            <td>
+              <input type="text" value={row.voltageKv || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td style={{ fontWeight: 700, textAlign: "center" }}>{row.label}</td>
+            <td>
+              <input type="text" value={row.testMode || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <input type="text" value={row.capFactory || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <input type="text" value={row.capSite || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <input type="text" value={row.tdFactory || ""} disabled className="form-input disabled preview" />
+            </td>
+            <td>
+              <input type="text" value={row.tdSite || ""} disabled className="form-input disabled preview" />
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    {formData.photos && (
+      <>
+        {renderPhotos({ tanDeltaKit: formData.photos.tanDeltaKit })}
+        {renderPhotos({ calibrationReport: formData.photos.calibrationReport })}
+        {renderPhotos({ duringTanDelta: formData.photos.duringTanDelta })}
+      </>
+    )}
   </div>
 );
 
