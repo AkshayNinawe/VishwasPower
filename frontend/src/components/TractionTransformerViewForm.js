@@ -18,7 +18,15 @@ import {
   Stage4Form4,
   Stage5Form1,
   Stage5Form2,
-  Stage6Form1
+  Stage5Form3,
+  Stage5Form4,
+  Stage5Form5,
+  Stage5Form6,
+  Stage5Form7,
+  Stage5Form8,
+  Stage6Form1,
+  Stage6Form2,
+  Stage6Form3
 } from './TractionTransformerStageReviewPanel';
 
 // Utility function to render photos
@@ -120,9 +128,19 @@ const renderPhotos = (photos, formKey) => {
 const Stage6ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
   const stage6Forms = [
     {
-      id: "work-completion-report",
-      title: "Work Completion Report",
+      id: "stage6-form1",
+      title: "Pre-Commissioning Checklist",
       component: Stage6Form1
+    },
+    {
+      id: "stage6-form2",
+      title: "Pre-Commissioning Checklist (Cont.)",
+      component: Stage6Form2
+    },
+    {
+      id: "stage6-form3",
+      title: "Work Completion Report",
+      component: Stage6Form3
     }
   ];
 
@@ -348,12 +366,12 @@ const Stage5ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
   const stage5Forms = [
     { id: "stage5-form1", title: "Magnetizing Current Test", component: Stage5Form1 },
     { id: "stage5-form2", title: "Polarity Test", component: Stage5Form2 },
-    { id: "stage5-form3", title: "MAGNETISING CURRENT TEST", component: null },
-    { id: "stage5-form4", title: "Type of Test - Polarity Test", component: null },
-    { id: "stage5-form5", title: "IR Values of Transformer", component: null },
-    { id: "stage5-form6", title: "IR Values of Transformer", component: null },
-    { id: "stage5-form7", title: "IR Values of Transformer", component: null },
-    { id: "stage5-form8", title: "IR Values of Transformer", component: null },
+    { id: "stage5-form3", title: "MAGNETISING CURRENT TEST", component: Stage5Form3 },
+    { id: "stage5-form4", title: "Type of Test - Polarity Test", component: Stage5Form4 },
+    { id: "stage5-form5", title: "IR Values of Transformer", component: Stage5Form5 },
+    { id: "stage5-form6", title: "IR Values of Transformer", component: Stage5Form6 },
+    { id: "stage5-form7", title: "IR Values of Transformer", component: Stage5Form7 },
+    { id: "stage5-form8", title: "IR Values of Transformer", component: Stage5Form8 },
   ];
 
   return (

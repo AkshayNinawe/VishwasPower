@@ -9798,7 +9798,7 @@ export function Stage6Form1({
   )
 }
 
-function Stage6Form2({
+export function Stage6Form2({
   onSubmit,
   onPrevious,
   initialData,

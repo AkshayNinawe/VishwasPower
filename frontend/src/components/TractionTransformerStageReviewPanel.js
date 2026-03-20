@@ -8447,8 +8447,205 @@ const Stage1ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
   );
 };
 
-// Stage 6 Form Component (for review display)
-const Stage6Form1 = ({ formData }) => (
+// Stage 6 Form 1: Pre-Commissioning Checklist (matches TractionTransformerForms.js Stage6Form1)
+const Stage6Form1 = ({ formData }) => {
+  const disabledInput = (path, style = {}) => {
+    const value = path.reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : ""), formData) || "";
+    return (
+      <input
+        type="text"
+        value={value}
+        disabled
+        className="form-input disabled preview"
+        style={{ width: "100%", minWidth: 70, ...style }}
+      />
+    );
+  };
+
+  return (
+    <div className="form-container">
+      <div className="company-header" style={{ marginBottom: 10 }}>
+        <h2 style={{ textAlign: "left", textDecoration: "underline", textUnderlineOffset: 6 }}>
+          PRE-COMMISSIONING CHECKLIST
+        </h2>
+      </div>
+
+      <table className="form-table" style={{ marginTop: 10 }}>
+        <thead>
+          <tr>
+            <th style={{ width: "10%" }}>Sr.No.</th>
+            <th style={{ width: "40%" }}>Particulars</th>
+            <th style={{ width: "10%" }}>Qty</th>
+            <th colSpan={3} style={{ width: "40%" }}>Status</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th style={{ width: "13%" }}>Open</th>
+            <th style={{ width: "13%" }}>Shut</th>
+            <th style={{ width: "14%" }}>N/A</th>
+          </tr>
+        </thead>
+        <tbody>
+          {/* I - Valve Status */}
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>I</td>
+            <td style={{ fontWeight: 700 }}>Valve Status</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          {[
+            { code: "A", label: "Bucholz to Conservator" },
+            { code: "B", label: "Main Tank to Bucholz" },
+            { code: "C", label: "Radiator Top Valves" },
+            { code: "D", label: "Radiator Bottom Valves" },
+            { code: "F", label: "Top Header" },
+            { code: "G", label: "Bottom Header" },
+            { code: "H", label: "Main Tank to Radiator Bank" },
+            { code: "K", label: "Top Filter Valve" },
+            { code: "L", label: "Bottom Filter Valve" },
+            { code: "M", label: "Drain Valve" },
+          ].map((row) => (
+            <tr key={`valve-${row.code}`}>
+              <td style={{ textAlign: "center", fontWeight: 700 }}>{row.code}</td>
+              <td style={{ fontWeight: 700 }}>{row.label}</td>
+              <td></td>
+              <td>{disabledInput(["valveStatus", row.code, "open"])}</td>
+              <td>{disabledInput(["valveStatus", row.code, "shut"])}</td>
+              <td>{disabledInput(["valveStatus", row.code, "na"])}</td>
+            </tr>
+          ))}
+
+          {/* II - Air Venting */}
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>II</td>
+            <td style={{ fontWeight: 700 }}>Air Venting</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td style={{ fontWeight: 700 }}>Done from the Following Locations:</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          {[
+            { code: "A", label: "Main Tank" },
+            { code: "B", label: "Bucholz Relay" },
+            { code: "C", label: "HV Bushing" },
+            { code: "D", label: "LV Bushing" },
+            { code: "G", label: "Header – Top" },
+            { code: "H", label: "Header – Bottom" },
+            { code: "I", label: "Radiator – Top" },
+            { code: "L", label: "Diverter Switch" },
+          ].map((row) => (
+            <tr key={`air-${row.code}`}>
+              <td style={{ textAlign: "center", fontWeight: 700 }}>{row.code}</td>
+              <td style={{ fontWeight: 700 }}>{row.label}</td>
+              <td>
+                <input
+                  type="text"
+                  value={formData?.airVenting?.[row.code]?.qty || ""}
+                  disabled
+                  className="form-input disabled preview"
+                  style={{ width: "100%", minWidth: 60 }}
+                />
+              </td>
+              <td>{disabledInput(["airVenting", row.code, "open"])}</td>
+              <td>{disabledInput(["airVenting", row.code, "shut"])}</td>
+              <td>{disabledInput(["airVenting", row.code, "na"])}</td>
+            </tr>
+          ))}
+
+          {/* III - Protection Trials */}
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>III</td>
+            <td style={{ fontWeight: 700 }}>Protection Trails</td>
+            <td></td>
+            <td colSpan={3} style={{ textAlign: "center", fontWeight: 700 }}>Checked</td>
+          </tr>
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>A</td>
+            <td style={{ fontWeight: 700 }}>BUCHHOLZ</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>ALARM</td>
+            <td colSpan={3}>
+              <input type="text" value={formData?.protectionTrials?.buchholzAlarm || ""} disabled className="form-input disabled preview" style={{ width: "100%" }} />
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>TRIP</td>
+            <td colSpan={3}>
+              <input type="text" value={formData?.protectionTrials?.buchholzTrip || ""} disabled className="form-input disabled preview" style={{ width: "100%" }} />
+            </td>
+          </tr>
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>B</td>
+            <td style={{ fontWeight: 700 }}>MOG</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>ALARM</td>
+            <td colSpan={3}>
+              <input type="text" value={formData?.protectionTrials?.mogAlarm || ""} disabled className="form-input disabled preview" style={{ width: "100%" }} />
+            </td>
+          </tr>
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>C</td>
+            <td style={{ fontWeight: 700 }}>PRV</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>TRIP</td>
+            <td colSpan={3}>
+              <input type="text" value={formData?.protectionTrials?.prvTrip || ""} disabled className="form-input disabled preview" style={{ width: "100%" }} />
+            </td>
+          </tr>
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>D</td>
+            <td style={{ fontWeight: 700 }}>OTI</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>ALARM</td>
+            <td colSpan={3} style={{ textAlign: "center" }}>
+              <strong>Set Temperature</strong>
+              <input type="text" value={formData?.protectionTrials?.setTemperature || ""} disabled className="form-input disabled preview" style={{ width: "100%", marginTop: 6 }} />
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>TRIP</td>
+            <td colSpan={3}>
+              <input type="text" value={formData?.protectionTrials?.otiTrip || ""} disabled className="form-input disabled preview" style={{ width: "100%" }} />
+            </td>
+          </tr>
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>E</td>
+            <td style={{ fontWeight: 700 }}>WTI</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>ALARM</td>
+            <td colSpan={3}>
+              <input type="text" value={formData?.protectionTrials?.wtiAlarm || ""} disabled className="form-input disabled preview" style={{ width: "100%" }} />
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>TRIP</td>
+            <td colSpan={3}>
+              <input type="text" value={formData?.protectionTrials?.wtiTrip || ""} disabled className="form-input disabled preview" style={{ width: "100%" }} />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      {formData.photos ? renderPhotos(formData.photos) : null}
+    </div>
+  );
+};
+
+// Stage 6 Form 3: Work Completion Report (for review display)
+const Stage6Form3 = ({ formData }) => (
   <div
     className="form-container"
     style={{
@@ -8925,26 +9122,465 @@ const Stage6Form1 = ({ formData }) => (
   </div>
 );
 
+// Stage 6 Form 2: Pre-Commissioning Checklist (Cont.) - review UI mirrors TractionTransformerForms.js Stage6Form2
+const Stage6Form2 = ({ formData }) => {
+  const valueAt = (path) => path.reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : ""), formData) || "";
+
+  const disabledInput = (path, style = {}) => (
+    <input
+      type="text"
+      value={valueAt(path)}
+      disabled
+      className="form-input disabled preview"
+      style={{ width: "100%", minWidth: 70, ...style }}
+    />
+  );
+
+  return (
+    <div className="form-container">
+      <div className="company-header" style={{ marginBottom: 10 }}>
+        <h2 style={{ textAlign: "left", textDecoration: "underline", textUnderlineOffset: 6 }}>
+          PRE-COMMISSIONING CHECKLIST (CONT.)
+        </h2>
+      </div>
+
+      <table className="form-table" style={{ marginTop: 22 }}>
+        <tbody>
+          <tr>
+            <td style={{ width: "6%", textAlign: "center", fontWeight: 700 }}>IV</td>
+            <td style={{ width: "38%", fontWeight: 700 }}>Transformer Protection relay</td>
+            <td style={{ width: "14%", textAlign: "center", fontWeight: 700 }}>Make</td>
+            <td style={{ width: "14%", textAlign: "center", fontWeight: 700 }}>sr.no.</td>
+            <td style={{ width: "14%", textAlign: "center", fontWeight: 700 }}>last tested date.</td>
+            <td style={{ width: "14%", textAlign: "center", fontWeight: 700 }}>Remark</td>
+          </tr>
+
+          {[
+            { code: "A", label: "Over-current relay" },
+            { code: "B", label: "Restricted Earth fault Relay" },
+            { code: "C", label: "Differential  Relay" },
+            { code: "D", label: "Master Trip Relay" },
+          ].map((r) => (
+            <tr key={`pr-${r.code}`}>
+              <td style={{ textAlign: "center", fontWeight: 700 }}>{r.code}</td>
+              <td style={{ fontWeight: 700 }}>{r.label}</td>
+              <td>{disabledInput(["protectionRelay", r.code, "make"])}</td>
+              <td>{disabledInput(["protectionRelay", r.code, "srNo"])}</td>
+              <td>{disabledInput(["protectionRelay", r.code, "lastTested"])}</td>
+              <td>{disabledInput(["protectionRelay", r.code, "remark"])}</td>
+            </tr>
+          ))}
+
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>E</td>
+            <td style={{ fontWeight: 700 }}>Separate earth pit for neutral earthling</td>
+            <td></td>
+            <td>{disabledInput(["protectionRelay", "E", "yesNo"], { minWidth: 90 })}</td>
+            <td>{disabledInput(["protectionRelay", "E", "lastTested"])}</td>
+            <td>{disabledInput(["protectionRelay", "E", "remark"])}</td>
+          </tr>
+
+          {[
+            { code: "F", label: "Neutral earth pit resistance values" },
+            { code: "G", label: "Grid earth resistance values" },
+            { code: "H", label: "Cleaning & Checking for the main tank Earthing" },
+          ].map((r) => (
+            <tr key={`pr-${r.code}`}>
+              <td style={{ textAlign: "center", fontWeight: 700 }}>{r.code}</td>
+              <td style={{ fontWeight: 700 }}>{r.label}</td>
+              <td>{disabledInput(["protectionRelay", r.code, "make"])}</td>
+              <td>{disabledInput(["protectionRelay", r.code, "srNo"])}</td>
+              <td>{disabledInput(["protectionRelay", r.code, "lastTested"])}</td>
+              <td>{disabledInput(["protectionRelay", r.code, "remark"])}</td>
+            </tr>
+          ))}
+
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }} rowSpan={2}>I</td>
+            <td style={{ fontWeight: 700 }} rowSpan={2}>LA Counter reading</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>1.1</td>
+            <td>{disabledInput(["protectionRelay", "I", "srNo", "1.1"])}</td>
+            <td>{disabledInput(["protectionRelay", "I", "lastTested", "1.1"])}</td>
+            <td rowSpan={2}>{disabledInput(["protectionRelay", "I", "remark"])}</td>
+          </tr>
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>1.2</td>
+            <td>{disabledInput(["protectionRelay", "I", "srNo", "1.2"])}</td>
+            <td>{disabledInput(["protectionRelay", "I", "lastTested", "1.2"])}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>2.1</td>
+            <td>{disabledInput(["protectionRelay", "I", "srNo", "2.1"])}</td>
+            <td>{disabledInput(["protectionRelay", "I", "lastTested", "2.1"])}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>2.2</td>
+            <td>{disabledInput(["protectionRelay", "I", "srNo", "2.2"])}</td>
+            <td>{disabledInput(["protectionRelay", "I", "lastTested", "2.2"])}</td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>J</td>
+            <td style={{ fontWeight: 700 }}>Whether LA Earthing checked</td>
+            <td>{disabledInput(["protectionRelay", "J", "make"])}</td>
+            <td>{disabledInput(["protectionRelay", "J", "srNo"])}</td>
+            <td>{disabledInput(["protectionRelay", "J", "lastTested"])}</td>
+            <td>{disabledInput(["protectionRelay", "J", "remark"])}</td>
+          </tr>
+
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>K</td>
+            <td style={{ fontWeight: 700 }}>IR Value of LA</td>
+            <td>{disabledInput(["protectionRelay", "K", "make"])}</td>
+            <td>{disabledInput(["protectionRelay", "K", "srNo"])}</td>
+            <td>{disabledInput(["protectionRelay", "K", "lastTested"])}</td>
+            <td>{disabledInput(["protectionRelay", "K", "remark"])}</td>
+          </tr>
+
+          {[
+            { code: "L", label: "Phase 1.1" },
+            { code: "M", label: "Phase 1.2" },
+            { code: "N", label: "Phase 2.1" },
+            { code: "O", label: "Phase 2.2" },
+          ].map((r) => (
+            <tr key={`pr-${r.code}`}>
+              <td style={{ textAlign: "center", fontWeight: 700 }}>{r.code}</td>
+              <td style={{ fontWeight: 700 }}>{r.label}</td>
+              <td>{disabledInput(["protectionRelay", r.code, "make"])}</td>
+              <td>{disabledInput(["protectionRelay", r.code, "srNo"])}</td>
+              <td>{disabledInput(["protectionRelay", r.code, "lastTested"])}</td>
+              <td>{disabledInput(["protectionRelay", r.code, "remark"])}</td>
+            </tr>
+          ))}
+
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>IV</td>
+            <td style={{ fontWeight: 700 }}>Accessories&nbsp;&nbsp;Checking</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>SET Temp.</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }} colSpan={2}>Checked</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>No. of Hrs. RUN</td>
+          </tr>
+
+          {[
+            { code: "A", label: "FAN START" },
+            { code: "B", label: "FAN STOP" },
+            { code: "C", label: "PUMP START" },
+            { code: "D", label: "PUMP START" },
+          ].map((r) => (
+            <tr key={`ac-${r.code}`}>
+              <td style={{ textAlign: "center", fontWeight: 700 }}>{r.code}</td>
+              <td style={{ fontWeight: 700 }}>{r.label}</td>
+              <td>{disabledInput(["accessoriesChecking", r.code, "setTemp"])}</td>
+              <td colSpan={2}>{disabledInput(["accessoriesChecking", r.code, "checked"])}</td>
+              <td>{disabledInput(["accessoriesChecking", r.code, "hrsRun"])}</td>
+            </tr>
+          ))}
+
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>V</td>
+            <td style={{ fontWeight: 700 }}>OCTC TAP Position</td>
+            <td colSpan={4}></td>
+          </tr>
+          {[
+            { code: "A", label: "DIVERTER SWITCH" },
+            { code: "B", label: "DRIVE MECHANISM" },
+            { code: "C", label: "TPI - (RTCC)" },
+          ].map((r) => (
+            <tr key={`octc-${r.code}`}>
+              <td style={{ textAlign: "center", fontWeight: 700 }}>{r.code}</td>
+              <td style={{ fontWeight: 700 }}>{r.label}</td>
+              <td colSpan={4}>{disabledInput(["octcTapPosition", r.code])}</td>
+            </tr>
+          ))}
+
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>VI</td>
+            <td style={{ fontWeight: 700 }}>Bushing Test Tap Earthed</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>HV Checked</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>1.1</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>1.2</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{disabledInput(["bushingTestTapEarthed", "hvChecked", "1.1"])}</td>
+            <td>{disabledInput(["bushingTestTapEarthed", "hvChecked", "1.2"])}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>LV Checked</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>2.1</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>2.2</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{disabledInput(["bushingTestTapEarthed", "lvChecked", "2.1"])}</td>
+            <td>{disabledInput(["bushingTestTapEarthed", "lvChecked", "2.2"])}</td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>VII</td>
+            <td style={{ fontWeight: 700 }}>Oil Values</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>BDV</td>
+            <td colSpan={2} style={{ textAlign: "center", fontWeight: 700 }}>KV</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>A</td>
+            <td style={{ fontWeight: 700 }}>BDV</td>
+            <td colSpan={3}>{disabledInput(["oilValues", "bdvKV"])}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>B</td>
+            <td style={{ fontWeight: 700 }}>Moisture Content</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>PPM</td>
+            <td colSpan={2}>{disabledInput(["oilValues", "moisturePPM"])}</td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>VIII</td>
+            <td style={{ fontWeight: 700 }}>Final IR Values in MΩ</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>10</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>60</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>600</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>P.I</td>
+          </tr>
+
+          {[
+            { key: "hvEarth", label: "HV-Earth" },
+            { key: "lvEarth", label: "LV-Earth" },
+            { key: "hvLv", label: "HV-LV" },
+          ].map((r) => (
+            <tr key={`ir-${r.key}`}>
+              <td></td>
+              <td style={{ fontWeight: 700 }}>{r.label}</td>
+              <td>{disabledInput(["finalIR", r.key, "10"])}</td>
+              <td>{disabledInput(["finalIR", r.key, "60"])}</td>
+              <td>{disabledInput(["finalIR", r.key, "600"])}</td>
+              <td>{disabledInput(["finalIR", r.key, "pi"])}</td>
+            </tr>
+          ))}
+
+          <tr>
+            <td></td>
+            <td style={{ fontWeight: 700 }}>Core to frame</td>
+            <td colSpan={4}>{disabledInput(["finalIR", "coreToFrame"])}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td style={{ fontWeight: 700 }}>Frame to Tank</td>
+            <td colSpan={4}>{disabledInput(["finalIR", "frameToTank"])}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td style={{ fontWeight: 700 }}>Removal link again tightens and check zero megger</td>
+            <td colSpan={4}>{disabledInput(["finalIR", "removalLinkTightensAndCheckZeroMegger"])}</td>
+          </tr>
+
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>IX</td>
+            <td style={{ fontWeight: 700 }}>Oil Level in Conservator</td>
+            <td colSpan={4}>{disabledInput(["oilLevelInConservator"])}</td>
+          </tr>
+
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>X</td>
+            <td style={{ fontWeight: 700 }}>Connectors</td>
+            <td style={{ textAlign: "center", fontWeight: 700 }} colSpan={2}>Conditions</td>
+            <td colSpan={2} style={{ fontWeight: 700 }}>HV Jumpers</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td colSpan={2}>{disabledInput(["connectors", "conditions"])}</td>
+            <td colSpan={2}>{disabledInput(["connectors", "hvJumpers", "1.1"])}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td colSpan={2}></td>
+            <td colSpan={2}>{disabledInput(["connectors", "hvJumpers", "1.2"])}</td>
+          </tr>
+
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>XI</td>
+            <td style={{ fontWeight: 700 }}>Connectors</td>
+            <td colSpan={2} style={{ fontWeight: 700 }}>
+              LV Jumpers
+              <br />
+              2.1
+              <br />
+              2.2
+            </td>
+            <td colSpan={2}>
+              <div style={{ display: "grid", gap: 6 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "60px 1fr", gap: 8, alignItems: "center" }}>
+                  <strong>2.1</strong>
+                  {disabledInput(["connectorsLvJumpers", "2.1"])}
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "60px 1fr", gap: 8, alignItems: "center" }}>
+                  <strong>2.2</strong>
+                  {disabledInput(["connectorsLvJumpers", "2.2"])}
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>XII</td>
+            <td style={{ fontWeight: 700 }} colSpan={5}>
+              All CT Cable Terminated and Glands Sealed
+              {disabledInput(["ctCableAndGlandsSealed"], { marginTop: 6 })}
+            </td>
+          </tr>
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>1</td>
+            <td style={{ fontWeight: 700 }} colSpan={5}>
+              Anabond applied to HV Bushings
+              {disabledInput(["anabondAppliedHvBushings"], { marginTop: 6 })}
+            </td>
+          </tr>
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>2</td>
+            <td style={{ fontWeight: 700 }} colSpan={5}>
+              All joints properly sealed against Water Ingress
+              {disabledInput(["allJointsSealedAgainstWaterIngress"], { marginTop: 6 })}
+            </td>
+          </tr>
+          <tr>
+            <td style={{ textAlign: "center", fontWeight: 700 }}>3</td>
+            <td style={{ fontWeight: 700 }} colSpan={5}>
+              All Foreign material cleared from Transformer
+              {disabledInput(["foreignMaterialCleared"], { marginTop: 6 })}
+            </td>
+          </tr>
+
+          <tr>
+            <td style={{ fontWeight: 700 }} colSpan={2}>
+              Temperature of&nbsp;&nbsp;&nbsp;&nbsp;°C
+            </td>
+            <td style={{ fontWeight: 700, textAlign: "center" }}>WTI</td>
+            <td>{disabledInput(["temperature", "wti"])}</td>
+            <td style={{ fontWeight: 700, textAlign: "center" }}>OTI</td>
+            <td>{disabledInput(["temperature", "oti"])}</td>
+          </tr>
+
+          <tr>
+            <td colSpan={6} style={{ padding: 14, lineHeight: 1.6 }}>
+              <strong>Remarks:</strong> The Transformer as mentioned above has been jointly cleared for charging as on{" "}
+              {disabledInput(["remarksChargingAsOn"], { display: "inline-block", width: 140, marginLeft: 6, marginRight: 6 })}
+              . {disabledInput(["remarksText"], { marginTop: 8 })}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style={{ display: "flex", gap: 18, marginTop: 18, justifyContent: "space-between" }}>
+        <table className="form-table" style={{ width: "50%", margin: 0 }}>
+          <tbody>
+            <tr>
+              <td style={{ width: "45%", fontWeight: 700 }}>Checked By :</td>
+              <td>{disabledInput(["checkedBy", "name"])}</td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 700 }}>Signature :</td>
+              <td>{disabledInput(["checkedBy", "signature"])}</td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 700 }}>Date :</td>
+              <td>{disabledInput(["checkedBy", "date"])}</td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 700 }}>Reviewed By :</td>
+              <td>{disabledInput(["reviewedBy", "name"])}</td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 700 }}>Signature :</td>
+              <td>{disabledInput(["reviewedBy", "signature"])}</td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 700 }}>Date :</td>
+              <td>{disabledInput(["reviewedBy", "date"])}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table className="form-table" style={{ width: "50%", margin: 0 }}>
+          <tbody>
+            <tr>
+              <td style={{ width: "45%", fontWeight: 700 }}>Witnessed By :</td>
+              <td>{disabledInput(["witnessedBy", "name"])}</td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 700 }}>Signature :</td>
+              <td>{disabledInput(["witnessedBy", "signature"])}</td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 700 }}>Date :</td>
+              <td>{disabledInput(["witnessedBy", "date"])}</td>
+            </tr>
+            <tr>
+              <td style={{ width: "45%", fontWeight: 700 }}>Witnessed By :</td>
+              <td>{disabledInput(["witnessedBy2", "name"])}</td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 700 }}>Signature :</td>
+              <td>{disabledInput(["witnessedBy2", "signature"])}</td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 700 }}>Date :</td>
+              <td>{disabledInput(["witnessedBy2", "date"])}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style={{ marginTop: 18, fontWeight: 700 }}>
+        Note :- Photographs to be added:-
+        <div style={{ marginTop: 6, fontWeight: 600 }}>
+          Earthing’s of main tank & bushing, sealing of Cable gland, bushing test tap & thimble, Buchholz terminal
+          plate, etc....
+        </div>
+      </div>
+
+      {formData.photos ? renderPhotos(formData.photos) : null}
+    </div>
+  );
+};
+
 // Stage 6 Review Renderer Component
 const Stage6ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
   const stage6Forms = [
     {
-      id: "work-completion-report",
+      id: "stage6-form1",
+      title: "Pre-Commissioning Checklist",
+      component: Stage6Form1
+    },
+    {
+      id: "stage6-form2",
+      title: "Pre-Commissioning Checklist (Cont.)",
+      component: Stage6Form2
+    },
+    {
+      id: "stage6-form3",
       title: "Work Completion Report",
-      fields: [
-        { name: "customerName", label: "Customer Name", type: "text" },
-        { name: "orderNumber", label: "Order Number", type: "text" },
-        { name: "location", label: "Location", type: "text" },
-        { name: "type", label: "Type", type: "text" },
-        { name: "capacity", label: "Capacity", type: "text" },
-        { name: "voltageRating", label: "Voltage Rating", type: "text" },
-        { name: "make", label: "Make", type: "text" },
-        { name: "serialNumber", label: "Serial Number", type: "text" },
-        { name: "completionDate", label: "Completion Date", type: "date" },
-        { name: "chargingDate", label: "Charging Date", type: "time" },
-        { name: "commissioningDate", label: "Commissioning Date", type: "date" },
-        { name: "signatures", label: "Signatures", type: "nested-object" }
-      ]
+      component: Stage6Form3
     }
   ];
 
@@ -9070,7 +9706,7 @@ const Stage6ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
             </div>
 
             {/* Use the organized form component */}
-            <Stage6Form1 formData={formData} />
+            <form.component formData={formData} />
 
             {/* Render photos if they exist */}
             {formData.photos && renderPhotos(formData.photos, form.id)}
@@ -9600,6 +10236,8 @@ export {
   Stage5Form7,
   Stage5Form8,
   Stage6Form1,
+  Stage6Form2,
+  Stage6Form3,
   Stage1ReviewRenderer,
   Stage2ReviewRenderer,
   Stage3ReviewRenderer,
