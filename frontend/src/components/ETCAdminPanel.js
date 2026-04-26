@@ -1638,6 +1638,29 @@ const ETCAdminPanel = ({
       icon: "🔌",
       color: "#047857",
     },
+    {
+      id: 4,
+      name: "Testing Auto Transformer",
+      description:
+        "Testing Auto transformer department for power distribution systems",
+      icon: "🗲",
+      color: "#C41E3A",
+    },
+    {
+      id: 5,
+      name: "Testing Traction Transformer",
+      description: "Testing Traction transformer department for railway systems",
+      icon: "🗲",
+      color: "#1E3A8A",
+    },
+    {
+      id: 6,
+      name: "Testing V Connected 63 MVA Transformer",
+      description:
+        "Testing V Connected 63 MVA transformer department for high voltage systems",
+      icon: "🗲",
+      color: "#047857",
+    },
   ];
 
 
@@ -1668,6 +1691,8 @@ const ETCAdminPanel = ({
   }, []);
 
   const handleCreateCompany = async () => {
+    if (!newCompany.name || !newCompany.description || !selectedDepartment) return;
+
     // Check if company with same name already exists
     const existingCompany = Companys.find(
       (company) =>
@@ -1682,389 +1707,147 @@ const ETCAdminPanel = ({
       return;
     }
 
-    if (selectedDepartment?.name === "Auto Transformer") {
-      if (newCompany.name && newCompany.description && selectedDepartment) {
-        const CompanyId = Math.max(...Companys.map((p) => p.id), 0) + 1;
+    // Map each department to its POST API route
+    const createCompanyApiMap = {
+      "Auto Transformer":                       "/api/autocompany",
+      "Traction Transformer":                   "/api/tractioncompany",
+      "V Connected 63 MVA Transformer":         "/api/vconnectcompany",
+      "Testing Auto Transformer":               "/api/test_autocompany",
+      "Testing Traction Transformer":           "/api/test_tractioncompany",
+      "Testing V Connected 63 MVA Transformer": "/api/test_vconnectcompany",
+    };
 
-        const Company = {
-          id: CompanyId,
+    const apiRoute = createCompanyApiMap[selectedDepartment.name];
+
+    if (!apiRoute) {
+      showNotification("Unknown department. Cannot create company.", "error");
+      return;
+    }
+
+    const CompanyId = Math.max(...Companys.map((p) => p.id), 0) + 1;
+    const newCompanyObj = {
+      id: CompanyId,
+      companyName: newCompany.name,
+      companyDescription: newCompany.description,
+      status: "active",
+      createdAt: new Date().toISOString().split("T")[0],
+      departmentId: selectedDepartment.id,
+      departmentType: selectedDepartment.name,
+    };
+
+    try {
+      const response = await axios.post(
+        `${BACKEND_API_BASE_URL}${apiRoute}`,
+        {
           companyName: newCompany.name,
           companyDescription: newCompany.description,
-          status: "active",
-          createdAt: new Date().toISOString().split("T")[0],
-          departmentId: selectedDepartment.id,
           departmentType: selectedDepartment.name,
-        };
-
-        try {
-          const response = await axios.post(
-            `${BACKEND_API_BASE_URL}/api/autocompany`,
-            {
-              companyName: newCompany.name,
-              companyDescription: newCompany.description,
-              departmentType: selectedDepartment.name,
-            }
-          );
-          console.log(
-            "company created successfully on the backend:",
-            response.data
-          );
-        } catch (error) {
-          console.error("Error creating company on the backend:", error);
-          alert("Failed to create company. Please try again.");
-          return;
         }
-
-        setCompanys([...Companys, Company]);
-        // setNewCompany({ name: "", description: "" })
-        setShowCreateCompanyForm(false);
-        showNotification(
-          `Company "${Company.companyName}" created successfully in ${selectedDepartment.name}!`,
-          "success"
-        );
-      }
-    } else {
-      if (selectedDepartment?.name === "V Connected 63 MVA Transformer") {
-        if (newCompany.name && newCompany.description && selectedDepartment) {
-          const CompanyId = Math.max(...Companys.map((p) => p.id), 0) + 1;
-
-          const newVConnectCompany = {
-            id: CompanyId,
-            companyName: newCompany.name,
-            companyDescription: newCompany.description,
-            status: "active",
-            createdAt: new Date().toISOString().split("T")[0],
-            departmentId: selectedDepartment.id,
-          };
-
-          try {
-            const response = await axios.post(
-              `${BACKEND_API_BASE_URL}/api/vconnectcompany`,
-              {
-                companyName: newCompany.name,
-                companyDescription: newCompany.description,
-              }
-            );
-            console.log(
-              "company created successfully on the backend:",
-              response.data
-            );
-          } catch (error) {
-            console.error("Error creating company on the backend:", error);
-            alert("Failed to create company. Please try again.");
-            return;
-          }
-
-          setCompanys([...Companys, newVConnectCompany]);
-          // setNewCompany({ name: "", description: "" })
-          setShowCreateCompanyForm(false);
-          showNotification(
-            `Company "${newVConnectCompany.companyName}" created successfully in ${selectedDepartment.name}!`,
-            "success"
-          );
-        }
-      } else {
-        if (newCompany.name && newCompany.description && selectedDepartment) {
-          const CompanyId = Math.max(...Companys.map((p) => p.id), 0) + 1;
-
-          const newVConnectCompany = {
-            id: CompanyId,
-            companyName: newCompany.name,
-            companyDescription: newCompany.description,
-            status: "active",
-            createdAt: new Date().toISOString().split("T")[0],
-            departmentId: selectedDepartment.id,
-          };
-
-          try {
-            const response = await axios.post(
-              `${BACKEND_API_BASE_URL}/api/tractioncompany`,
-              {
-                companyName: newCompany.name,
-                companyDescription: newCompany.description,
-              }
-            );
-            console.log(
-              "company created successfully on the backend:",
-              response.data
-            );
-          } catch (error) {
-            console.error("Error creating company on the backend:", error);
-            alert("Failed to create company. Please try again.");
-            return;
-          }
-
-          setCompanys([...Companys, newVConnectCompany]);
-          // setNewCompany({ name: "", description: "" })
-          setShowCreateCompanyForm(false);
-          showNotification(
-            `Company "${newVConnectCompany.companyName}" created successfully in ${selectedDepartment.name}!`,
-            "success"
-          );
-        }
-      }
+      );
+      console.log("Company created successfully on the backend:", response.data);
+    } catch (error) {
+      console.error("Error creating company on the backend:", error);
+      alert("Failed to create company. Please try again.");
+      return;
     }
+
+    setCompanys([...Companys, newCompanyObj]);
+    setShowCreateCompanyForm(false);
+    showNotification(
+      `Company "${newCompanyObj.companyName}" created successfully in ${selectedDepartment.name}!`,
+      "success"
+    );
   };
 
   const handleAddProject = (CompanyName) => {
-    if (selectedDepartment?.name == "Auto Transformer") {
-      showInputDialog(
-        "Create New Project",
-        "Enter Project name...",
-        async (ProjectName) => {
-          if (ProjectName.trim()) {
-            // Check if project with same name already exists in this company
-            const existingProject = selectedMainCompany.companyProjects?.find(
-              (project) =>
-                project.name.toLowerCase() === ProjectName.toLowerCase()
-            );
+    // Map each department to its addCompany API route
+    const addProjectApiMap = {
+      "Auto Transformer":                       "/api/autocompany/addCompany",
+      "Traction Transformer":                   "/api/tractioncompany/addCompany",
+      "V Connected 63 MVA Transformer":         "/api/vconnectcompany/addCompany",
+      "Testing Auto Transformer":               "/api/test_autocompany/addCompany",
+      "Testing Traction Transformer":           "/api/test_tractioncompany/addCompany",
+      "Testing V Connected 63 MVA Transformer": "/api/test_vconnectcompany/addCompany",
+    };
 
-            if (existingProject) {
-              showNotification(
-                `Project with name "${ProjectName}" already exists in this company. Please choose a different name.`,
-                "error"
-              );
-              return;
-            }
+    // V Connected variants use 7 stages; all others use 6
+    const vConnectedDepts = [
+      "V Connected 63 MVA Transformer",
+      "Testing V Connected 63 MVA Transformer",
+    ];
+    const totalStages = vConnectedDepts.includes(selectedDepartment?.name) ? 7 : 6;
 
-            const newProject = {
-              id: Math.max(...companies.map((c) => c.id), 0) + 1,
-              name: ProjectName,
-              companyName: CompanyName,
-              stage: 1,
-              formsCompleted: 0,
-              totalForms: getStageFormCount(1),
-              status: "in-progress",
-              lastActivity: new Date().toISOString().split("T")[0],
-              stageApprovals: {
-                1: false,
-                2: false,
-                3: false,
-                4: false,
-                5: false,
-                6: false,
-              },
-              submittedStages: {
-                1: false,
-                2: false,
-                3: false,
-                4: false,
-                5: false,
-                6: false,
-              },
-            };
-            try {
-              // --- UPDATED POST REQUEST ---
-              // We are now sending both the projectName and the CompanyId in the payload.
-              if (additionalLogging) {
-                console.log(
-                  "Frontend : From handleAddProject post call to api/company/addCompany"
-                );
-              }
-              const response = await axios.post(
-                `${BACKEND_API_BASE_URL}/api/autocompany/addCompany`,
-                {
-                  projectName: ProjectName,
-                  companyName: CompanyName, // Pass the CompanyId to the backend
-                  companyProjects: newProject,
-                }
-              );
-
-              console.log(
-                "Project created successfully on the backend:",
-                response.data
-              );
-
-              selectedMainCompany.companyProjects =
-                selectedMainCompany.companyProjects ?? [];
-              selectedMainCompany.companyProjects.push(newProject);
-
-              setCompanies((prev) => [...prev, newProject]);
-              showNotification(
-                `Project "${ProjectName}" added to this Company!`,
-                "success"
-              );
-            } catch (error) {
-              console.error("Error creating project on the backend:", error);
-
-              showNotification(
-                "Failed to create project. Please try again.",
-                "error"
-              );
-              return;
-            }
-          }
-        }
-      );
-    } else {
-      if (selectedDepartment?.name == "V Connected 63 MVA Transformer") {
-        showInputDialog(
-          "Create New Project",
-          "Enter Project name...",
-          async (ProjectName) => {
-            if (ProjectName.trim()) {
-              // Check if project with same name already exists in this company
-              const existingProject = selectedMainCompany.companyProjects?.find(
-                (project) =>
-                  project.name.toLowerCase() === ProjectName.toLowerCase()
-              );
-
-              if (existingProject) {
-                showNotification(
-                  `Project with name "${ProjectName}" already exists in this company. Please choose a different name.`,
-                  "error"
-                );
-                return;
-              }
-
-              const newProject = {
-                id: Math.max(...companies.map((c) => c.id), 0) + 1,
-                name: ProjectName,
-                companyName: CompanyName,
-                stage: 1,
-                formsCompleted: 0,
-                totalForms: getStageFormCount(1),
-                status: "in-progress",
-                lastActivity: new Date().toISOString().split("T")[0],
-                stageApprovals: {
-                  1: false,
-                  2: false,
-                  3: false,
-                  4: false,
-                  5: false,
-                  6: false,
-                  7: false,
-                },
-                submittedStages: {
-                  1: false,
-                  2: false,
-                  3: false,
-                  4: false,
-                  5: false,
-                  6: false,
-                  7: false,
-                },
-              };
-              try {
-                const response = await axios.post(
-                  `${BACKEND_API_BASE_URL}/api/vconnectcompany/addCompany`,
-                  {
-                    projectName: ProjectName,
-                    companyName: CompanyName, // Pass the CompanyId to the backend
-                    companyProjects: newProject,
-                  }
-                );
-
-                console.log(
-                  "Project created successfully on the backend:",
-                  response.data
-                );
-
-                selectedMainCompany.companyProjects =
-                  selectedMainCompany.companyProjects ?? [];
-                selectedMainCompany.companyProjects.push(newProject);
-
-                setCompanies((prev) => [...prev, newProject]);
-                showNotification(
-                  `Project "${ProjectName}" added to this Company!`,
-                  "success"
-                );
-              } catch (error) {
-                console.error("Error creating project on the backend:", error);
-
-                showNotification(
-                  "Failed to create project. Please try again.",
-                  "error"
-                );
-                return;
-              }
-            }
-          }
-        );
-      } else {
-        showInputDialog(
-          "Create New Project",
-          "Enter Project name...",
-          async (ProjectName) => {
-            if (ProjectName.trim()) {
-              // Check if project with same name already exists in this company
-              const existingProject = selectedMainCompany.companyProjects?.find(
-                (project) =>
-                  project.name.toLowerCase() === ProjectName.toLowerCase()
-              );
-
-              if (existingProject) {
-                showNotification(
-                  `Project with name "${ProjectName}" already exists in this company. Please choose a different name.`,
-                  "error"
-                );
-                return;
-              }
-
-              const newProject = {
-                id: Math.max(...companies.map((c) => c.id), 0) + 1,
-                name: ProjectName,
-                companyName: CompanyName,
-                stage: 1,
-                formsCompleted: 0,
-                totalForms: getStageFormCount(1),
-                status: "in-progress",
-                lastActivity: new Date().toISOString().split("T")[0],
-                stageApprovals: {
-                  1: false,
-                  2: false,
-                  3: false,
-                  4: false,
-                  5: false,
-                  6: false,
-                },
-                submittedStages: {
-                  1: false,
-                  2: false,
-                  3: false,
-                  4: false,
-                  5: false,
-                  6: false,
-                },
-              };
-              try {
-                const response = await axios.post(
-                  `${BACKEND_API_BASE_URL}/api/tractioncompany/addCompany`,
-                  {
-                    projectName: ProjectName,
-                    companyName: CompanyName, // Pass the CompanyId to the backend
-                    companyProjects: newProject,
-                  }
-                );
-
-                console.log(
-                  "Project created successfully on the backend:",
-                  response.data
-                );
-
-                selectedMainCompany.companyProjects =
-                  selectedMainCompany.companyProjects ?? [];
-                selectedMainCompany.companyProjects.push(newProject);
-
-                setCompanies((prev) => [...prev, newProject]);
-                showNotification(
-                  `Project "${ProjectName}" added to this Company!`,
-                  "success"
-                );
-              } catch (error) {
-                console.error("Error creating project on the backend:", error);
-
-                showNotification(
-                  "Failed to create project. Please try again.",
-                  "error"
-                );
-                return;
-              }
-            }
-          }
-        );
-      }
+    const apiRoute = addProjectApiMap[selectedDepartment?.name];
+    if (!apiRoute) {
+      showNotification("Unknown department. Cannot create project.", "error");
+      return;
     }
+
+    showInputDialog(
+      "Create New Project",
+      "Enter Project name...",
+      async (ProjectName) => {
+        if (!ProjectName.trim()) return;
+
+        // Check if project with same name already exists in this company
+        const existingProject = selectedMainCompany.companyProjects?.find(
+          (project) => project.name.toLowerCase() === ProjectName.toLowerCase()
+        );
+
+        if (existingProject) {
+          showNotification(
+            `Project with name "${ProjectName}" already exists in this company. Please choose a different name.`,
+            "error"
+          );
+          return;
+        }
+
+        // Build stage approvals / submitted stages dynamically
+        const stageFlags = {};
+        for (let i = 1; i <= totalStages; i++) stageFlags[i] = false;
+
+        const newProject = {
+          id: Math.max(...companies.map((c) => c.id), 0) + 1,
+          name: ProjectName,
+          companyName: CompanyName,
+          stage: 1,
+          formsCompleted: 0,
+          totalForms: getStageFormCount(1),
+          status: "in-progress",
+          lastActivity: new Date().toISOString().split("T")[0],
+          stageApprovals: { ...stageFlags },
+          submittedStages: { ...stageFlags },
+        };
+
+        try {
+          if (additionalLogging) {
+            console.log("Frontend : From handleAddProject post call to", apiRoute);
+          }
+          const response = await axios.post(
+            `${BACKEND_API_BASE_URL}${apiRoute}`,
+            {
+              projectName: ProjectName,
+              companyName: CompanyName,
+              companyProjects: newProject,
+            }
+          );
+          console.log("Project created successfully on the backend:", response.data);
+
+          selectedMainCompany.companyProjects =
+            selectedMainCompany.companyProjects ?? [];
+          selectedMainCompany.companyProjects.push(newProject);
+
+          setCompanies((prev) => [...prev, newProject]);
+          showNotification(
+            `Project "${ProjectName}" added to this Company!`,
+            "success"
+          );
+        } catch (error) {
+          console.error("Error creating project on the backend:", error);
+          showNotification("Failed to create project. Please try again.", "error");
+        }
+      }
+    );
   };
 
   // Helper function to get form count for each stage
@@ -2086,23 +1869,20 @@ const ETCAdminPanel = ({
       showNotification(`No forms submitted for Stage ${stage} yet.`, "warning");
       return;
     }
-    
-    try {
-      // Determine API endpoint based on department name
-      let apiEndpoint;
-      if (selectedDepartment.name === 'Traction Transformer') {
-        apiEndpoint = `${BACKEND_API_BASE_URL}/api/tractionData/getStageTable`;
-      } else if (selectedDepartment.name === 'Auto Transformer') {
-        apiEndpoint = `${BACKEND_API_BASE_URL}/api/autoData/getStageTable`;
-      } else if (selectedDepartment.name === 'V Connected 63 MVA Transformer') {
-        apiEndpoint = `${BACKEND_API_BASE_URL}/api/vconnectData/getStageTable`;
-      } else {
-        // Fallback to auto transformer API
-        apiEndpoint = `${BACKEND_API_BASE_URL}/api/autoData/getStageTable`;
-      }
 
+    const reviewStageApiMap = {
+      "Auto Transformer":                       "/api/autoData/getStageTable",
+      "Traction Transformer":                   "/api/tractionData/getStageTable",
+      "V Connected 63 MVA Transformer":         "/api/vconnectData/getStageTable",
+      "Testing Auto Transformer":               "/api/test_autoData/getStageTable",
+      "Testing Traction Transformer":           "/api/test_tractionData/getStageTable",
+      "Testing V Connected 63 MVA Transformer": "/api/test_vconnectData/getStageTable",
+    };
+    const stageApiRoute = reviewStageApiMap[selectedDepartment?.name] || "/api/autoData/getStageTable";
+
+    try {
       const response = await axios.post(
-        apiEndpoint,
+        `${BACKEND_API_BASE_URL}${stageApiRoute}`,
         {
           projectName: Project.name,
           companyName: Project.companyName,
@@ -2126,34 +1906,40 @@ const ETCAdminPanel = ({
   };
 
   const handleApproveStage = async (stage) => {
+    // Map each department to its approveCompanyStage API route
+    const approveStageApiMap = {
+      "Auto Transformer":                       "/api/autocompany/approveCompanyStage",
+      "Traction Transformer":                   "/api/tractioncompany/approveCompanyStage",
+      "V Connected 63 MVA Transformer":         "/api/vconnectcompany/approveCompanyStage",
+      "Testing Auto Transformer":               "/api/test_autocompany/approveCompanyStage",
+      "Testing Traction Transformer":           "/api/test_tractioncompany/approveCompanyStage",
+      "Testing V Connected 63 MVA Transformer": "/api/test_vconnectcompany/approveCompanyStage",
+    };
+
+    // V Connected variants use 7 stages; all others use 6
+    const vConnectedDepts = [
+      "V Connected 63 MVA Transformer",
+      "Testing V Connected 63 MVA Transformer",
+    ];
+    const totalStages = vConnectedDepts.includes(selectedDepartment?.name) ? 7 : 6;
+
+    const apiEndpoint = approveStageApiMap[selectedDepartment?.name];
+    if (!apiEndpoint) {
+      showNotification("Unknown department. Cannot approve stage.", "error");
+      return;
+    }
+
     try {
       if (additionalLogging) {
-        console.log(
-          "Frontend : From handleApproveStage post call to api/company/approveCompanyStage"
-        );
+        console.log("Frontend : From handleApproveStage post call to", apiEndpoint);
       }
 
-      // If-else block for three departments
-      let apiEndpoint;
-      if (selectedDepartment.name === 'Auto Transformer') {
-        apiEndpoint = '/api/autocompany/approveCompanyStage';
-      } else if (selectedDepartment.name === 'Traction Transformer') {
-        apiEndpoint = '/api/tractioncompany/approveCompanyStage';
-      } else if (selectedDepartment.name === 'V Connected 63 MVA Transformer') {
-        apiEndpoint = '/api/vconnectcompany/approveCompanyStage';
-      } else {
-        // Fallback to original API
-        apiEndpoint = '/api/company/approveCompanyStage';
-      }
-
-      // Get the auth token and verify it exists
       const authToken = getAuthToken();
-      
       if (!authToken) {
         showNotification("Authentication token not found. Please log in again.", "error");
         return;
       }
-      
+
       const response = await axios.post(
         `${BACKEND_API_BASE_URL}${apiEndpoint}`,
         {
@@ -2163,25 +1949,18 @@ const ETCAdminPanel = ({
         },
         {
           headers: {
-            'Authorization': `Bearer ${authToken}`,
-            'Content-Type': 'application/json'
-          }
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
         }
       );
-      console.log(
-        "company created successfully on the backend:",
-        response.data
-      );
+      console.log("Stage approved successfully on the backend:", response.data);
     } catch (error) {
       console.error("Error approving stage:", error);
-      
-      // Check if the error is due to unauthorized access (401 or 403)
       if (error.response?.status === 401 || error.response?.status === 403) {
         showNotification("Authentication failed. Please log out and log in again.", "error");
         return;
       }
-      
-      // For other errors, show generic message
       showNotification("Failed to approve stage. Please try again.", "error");
       return;
     }
@@ -2205,22 +1984,20 @@ const ETCAdminPanel = ({
           const currentStage = project.stage;
           return {
             ...project,
-            stage: currentStage !== 6 ? currentStage + 1 : currentStage,
-            status: currentStage === 6 ? "completed" : "in-progress",
+            stage: currentStage !== totalStages ? currentStage + 1 : currentStage,
+            status: currentStage === totalStages ? "completed" : "in-progress",
             stageApprovals: {
               ...project.stageApprovals,
               [currentStage]: true,
             },
           };
         }
-        return project; // unchanged projects
+        return project;
       }),
     }));
 
-    // Determine the total number of stages based on department
-    const totalStages = selectedDepartment?.name === "V Connected 63 MVA Transformer" ? 7 : 6;
     const isProjectCompleted = selectedProjectForReview.stage === totalStages;
-    
+
     showNotification(
       `Stage ${selectedProjectForReview.stage} approved for ${selectedProjectForReview.name}! ${
         isProjectCompleted
@@ -2255,22 +2032,19 @@ const ETCAdminPanel = ({
       return;
     }
 
-    try {
-      // If-else block for three departments
-      let apiEndpoint;
-      if (selectedDepartment.name === 'Auto Transformer') {
-        apiEndpoint = `${BACKEND_API_BASE_URL}/api/autocompany/rejectStage`;
-      } else if (selectedDepartment.name === 'Traction Transformer') {
-        apiEndpoint = `${BACKEND_API_BASE_URL}/api/tractioncompany/rejectStage`;
-      } else if (selectedDepartment.name === 'V Connected 63 MVA Transformer') {
-        apiEndpoint = `${BACKEND_API_BASE_URL}/api/vconnectcompany/rejectStage`;
-      } else {
-        // Fallback to auto transformer API
-        apiEndpoint = `${BACKEND_API_BASE_URL}/api/autoData/rejectStage`;
-      }
+    const rejectStageApiMap = {
+      "Auto Transformer":                       "/api/autocompany/rejectStage",
+      "Traction Transformer":                   "/api/tractioncompany/rejectStage",
+      "V Connected 63 MVA Transformer":         "/api/vconnectcompany/rejectStage",
+      "Testing Auto Transformer":               "/api/test_autocompany/rejectStage",
+      "Testing Traction Transformer":           "/api/test_tractioncompany/rejectStage",
+      "Testing V Connected 63 MVA Transformer": "/api/test_vconnectcompany/rejectStage",
+    };
+    const rejectApiRoute = rejectStageApiMap[selectedDepartment?.name] || "/api/autocompany/rejectStage";
 
+    try {
       const { data } = await axios.post(
-        apiEndpoint,
+        `${BACKEND_API_BASE_URL}${rejectApiRoute}`,
         {
           companyName: selectedProjectForReview.companyName,
           projectName: selectedProjectForReview.name,
@@ -2331,21 +2105,18 @@ const ETCAdminPanel = ({
         );
       }
 
-      // Determine API endpoint based on department name
-      let apiEndpoint;
-      if (selectedDepartment.name === 'Traction Transformer') {
-        apiEndpoint = `${BACKEND_API_BASE_URL}/api/tractionData/getCompleteTable`;
-      } else if (selectedDepartment.name === 'Auto Transformer') {
-        apiEndpoint = `${BACKEND_API_BASE_URL}/api/autoData/getCompleteTable`;
-      } else if (selectedDepartment.name === 'V Connected 63 MVA Transformer') {
-        apiEndpoint = `${BACKEND_API_BASE_URL}/api/vconnectData/getCompleteTable`;
-      } else {
-        // Fallback to auto transformer API
-        apiEndpoint = `${BACKEND_API_BASE_URL}/api/autoData/getCompleteTable`;
-      }
+      const completeTableApiMap = {
+        "Auto Transformer":                       "/api/autoData/getCompleteTable",
+        "Traction Transformer":                   "/api/tractionData/getCompleteTable",
+        "V Connected 63 MVA Transformer":         "/api/vconnectData/getCompleteTable",
+        "Testing Auto Transformer":               "/api/test_autoData/getCompleteTable",
+        "Testing Traction Transformer":           "/api/test_tractionData/getCompleteTable",
+        "Testing V Connected 63 MVA Transformer": "/api/test_vconnectData/getCompleteTable",
+      };
+      const completeTableRoute = completeTableApiMap[selectedDepartment?.name] || "/api/autoData/getCompleteTable";
 
       const response = await axios.post(
-        apiEndpoint,
+        `${BACKEND_API_BASE_URL}${completeTableRoute}`,
         {
           projectName: Project.name,
           companyName: Project.companyName,
@@ -2356,16 +2127,15 @@ const ETCAdminPanel = ({
         response.data
       );
 
-      // Set form data based on department type
-      let formData = null;
-      if (selectedDepartment.name === 'Traction Transformer') {
-        formData = response.data.data?.TractionData;
-      } else if (selectedDepartment.name === 'V Connected 63 MVA Transformer') {
-        formData = response.data.data?.vConnectData;
-      } else {
-        // Auto Transformer or fallback
-        formData = response.data.data?.autoTransformerData;
-      }
+      // Map department to its response data key
+      const formDataKeyMap = {
+        "Traction Transformer":                   "TractionData",
+        "Testing Traction Transformer":           "TractionData",
+        "V Connected 63 MVA Transformer":         "vConnectData",
+        "Testing V Connected 63 MVA Transformer": "vConnectData",
+      };
+      const formDataKey = formDataKeyMap[selectedDepartment?.name] || "autoTransformerData";
+      let formData = response.data.data?.[formDataKey] ?? null;
 
       // Ensure formData is not null/undefined and is an object
       if (formData && typeof formData === 'object') {
@@ -2586,26 +2356,21 @@ const ETCAdminPanel = ({
         );
       }
 
-      // ✅ Axios DELETE requires "data" wrapper for body
-      let apiEndpoint;
-      
-      // If-else block for three departments
-      if (selectedDepartment.name === 'Auto Transformer') {
-        apiEndpoint = '/api/autocompany/deleteProject';
-      } else if (selectedDepartment.name === 'Traction Transformer') {
-        apiEndpoint = '/api/tractioncompany/deleteProject';
-      } else if (selectedDepartment.name === 'V Connected 63 MVA Transformer') {
-        apiEndpoint = '/api/vconnectcompany/deleteProject';
-      } else {
-        // Fallback to original API
-        apiEndpoint = '/api/company/deleteProject';
-      }
+      // Map each department to its deleteProject API route
+      const deleteProjectApiMap = {
+        "Auto Transformer":                       "/api/autocompany/deleteProject",
+        "Traction Transformer":                   "/api/tractioncompany/deleteProject",
+        "V Connected 63 MVA Transformer":         "/api/vconnectcompany/deleteProject",
+        "Testing Auto Transformer":               "/api/test_autocompany/deleteProject",
+        "Testing Traction Transformer":           "/api/test_tractioncompany/deleteProject",
+        "Testing V Connected 63 MVA Transformer": "/api/test_vconnectcompany/deleteProject",
+      };
+      const deleteProjectRoute = deleteProjectApiMap[selectedDepartment?.name] || "/api/autocompany/deleteProject";
 
-      // Get the auth token from localStorage
       const authToken = localStorage.getItem('authToken');
 
       const response = await axios.delete(
-        `${BACKEND_API_BASE_URL}${apiEndpoint}`,
+        `${BACKEND_API_BASE_URL}${deleteProjectRoute}`,
         {
           headers: {
             'Authorization': `Bearer ${authToken}`,
@@ -2688,23 +2453,20 @@ const ETCAdminPanel = ({
     }
 
     try {
-      // Determine API endpoint based on department name
-      let apiEndpoint;
-      if (selectedDepartment.name === 'Auto Transformer') {
-        apiEndpoint = '/api/autocompany/editProjectName';
-      } else if (selectedDepartment.name === 'Traction Transformer') {
-        apiEndpoint = '/api/tractioncompany/editProjectName';
-      } else if (selectedDepartment.name === 'V Connected 63 MVA Transformer') {
-        apiEndpoint = '/api/vconnectcompany/editProjectName';
-      } else {
-        apiEndpoint = '/api/autocompany/editProjectName';
-      }
+      const editProjectNameApiMap = {
+        "Auto Transformer":                       "/api/autocompany/editProjectName",
+        "Traction Transformer":                   "/api/tractioncompany/editProjectName",
+        "V Connected 63 MVA Transformer":         "/api/vconnectcompany/editProjectName",
+        "Testing Auto Transformer":               "/api/test_autocompany/editProjectName",
+        "Testing Traction Transformer":           "/api/test_tractioncompany/editProjectName",
+        "Testing V Connected 63 MVA Transformer": "/api/test_vconnectcompany/editProjectName",
+      };
+      const editProjectNameRoute = editProjectNameApiMap[selectedDepartment?.name] || "/api/autocompany/editProjectName";
 
-      // Get the auth token from localStorage
       const authToken = localStorage.getItem('authToken');
 
       const response = await axios.put(
-        `${BACKEND_API_BASE_URL}${apiEndpoint}`,
+        `${BACKEND_API_BASE_URL}${editProjectNameRoute}`,
         {
           companyName: editingProject.companyName,
           oldProjectName: editingProject.name,
@@ -2770,20 +2532,18 @@ const ETCAdminPanel = ({
     }
 
     try {
-      // Determine API endpoint based on department name
-      let apiEndpoint;
-      if (selectedDepartment.name === 'Auto Transformer') {
-        apiEndpoint = '/api/autocompany/editCompanyName';
-      } else if (selectedDepartment.name === 'Traction Transformer') {
-        apiEndpoint = '/api/tractioncompany/editCompanyName';
-      } else if (selectedDepartment.name === 'V Connected 63 MVA Transformer') {
-        apiEndpoint = '/api/vconnectcompany/editCompanyName';
-      } else {
-        apiEndpoint = '/api/autocompany/editCompanyName';
-      }
+      const editCompanyNameApiMap = {
+        "Auto Transformer":                       "/api/autocompany/editCompanyName",
+        "Traction Transformer":                   "/api/tractioncompany/editCompanyName",
+        "V Connected 63 MVA Transformer":         "/api/vconnectcompany/editCompanyName",
+        "Testing Auto Transformer":               "/api/test_autocompany/editCompanyName",
+        "Testing Traction Transformer":           "/api/test_tractioncompany/editCompanyName",
+        "Testing V Connected 63 MVA Transformer": "/api/test_vconnectcompany/editCompanyName",
+      };
+      const editCompanyNameRoute = editCompanyNameApiMap[selectedDepartment?.name] || "/api/autocompany/editCompanyName";
 
       const response = await axios.put(
-        `${BACKEND_API_BASE_URL}${apiEndpoint}`,
+        `${BACKEND_API_BASE_URL}${editCompanyNameRoute}`,
         {
           oldCompanyName: editingCompany.companyName,
           newCompanyName: newCompanyName.trim(),
@@ -2836,26 +2596,20 @@ const ETCAdminPanel = ({
         );
       }
 
-      // ✅ Axios DELETE requires "data" wrapper for body
-      let apiEndpoint;
-      
-      // If-else block for three departments
-      if (selectedDepartment.name === 'Auto Transformer') {
-        apiEndpoint = '/api/autocompany/deleteCompany';
-      } else if (selectedDepartment.name === 'Traction Transformer') {
-        apiEndpoint = '/api/tractioncompany/deleteCompany';
-      } else if (selectedDepartment.name === 'V Connected 63 MVA Transformer') {
-        apiEndpoint = '/api/vconnectcompany/deleteCompany';
-      } else {
-        // Fallback to original API
-        apiEndpoint = '/api/company/deleteCompany';
-      }
+      const deleteCompanyApiMap = {
+        "Auto Transformer":                       "/api/autocompany/deleteCompany",
+        "Traction Transformer":                   "/api/tractioncompany/deleteCompany",
+        "V Connected 63 MVA Transformer":         "/api/vconnectcompany/deleteCompany",
+        "Testing Auto Transformer":               "/api/test_autocompany/deleteCompany",
+        "Testing Traction Transformer":           "/api/test_tractioncompany/deleteCompany",
+        "Testing V Connected 63 MVA Transformer": "/api/test_vconnectcompany/deleteCompany",
+      };
+      const deleteCompanyRoute = deleteCompanyApiMap[selectedDepartment?.name] || "/api/autocompany/deleteCompany";
 
-      // Get the auth token from localStorage
       const authToken = localStorage.getItem('authToken');
 
       const response = await axios.delete(
-        `${BACKEND_API_BASE_URL}${apiEndpoint}`,
+        `${BACKEND_API_BASE_URL}${deleteCompanyRoute}`,
         {
           headers: {
             'Authorization': `Bearer ${authToken}`,
@@ -2916,23 +2670,19 @@ const ETCAdminPanel = ({
       // Show loading UI
       setIsDownloading(true);
 
-      // If-else block for three departments (same pattern as handleCompanyDelete)
-      let apiEndpoint;
-
-      if (selectedDepartment.name === "Auto Transformer") {
-        apiEndpoint = "/api/autoData/download-all-forms";
-      } else if (selectedDepartment.name === "Traction Transformer") {
-        apiEndpoint = "/api/tractionData/download-all-forms";
-      } else if (selectedDepartment.name === "V Connected 63 MVA Transformer") {
-        apiEndpoint = "/api/vconnectData/download-all-forms";
-      } else {
-        // Fallback to auto transformer API
-        apiEndpoint = "/api/autoData/download-all-forms";
-      }
+      const downloadFormsApiMap = {
+        "Auto Transformer":                       "/api/autoData/download-all-forms",
+        "Traction Transformer":                   "/api/tractionData/download-all-forms",
+        "V Connected 63 MVA Transformer":         "/api/vconnectData/download-all-forms",
+        "Testing Auto Transformer":               "/api/test_autoData/download-all-forms",
+        "Testing Traction Transformer":           "/api/test_tractionData/download-all-forms",
+        "Testing V Connected 63 MVA Transformer": "/api/test_vconnectData/download-all-forms",
+      };
+      const downloadRoute = downloadFormsApiMap[selectedDepartment?.name] || "/api/autoData/download-all-forms";
 
       // Send request to backend
       const response = await axios.post(
-        `${BACKEND_API_BASE_URL}${apiEndpoint}`,
+        `${BACKEND_API_BASE_URL}${downloadRoute}`,
         {
           projectName: selectedProjectForReview?.name,
           companyName: selectedProjectForReview?.companyName,
@@ -2967,64 +2717,38 @@ const ETCAdminPanel = ({
 
   const setDepartmentData = (department) => {
     console.log(department);
+    const name = department?.name;
 
-    if (department?.name === "Auto Transformer") {
-      let backendSavedCompanys = []; // Corrected redeclaration
-      axios
-        .get(`${BACKEND_API_BASE_URL}/api/autocompany`, {
-          params: {
-            departmentType: "Auto Transformer",
-          },
-        })
-        .then((response) => {
-          backendSavedCompanys = response.data;
-          setCompanys(backendSavedCompanys);
-        })
-        .catch((error) => {
-          console.error("Error fetching Auto Transformer companies:", error);
-          alert("Failed to fetch companies. Please try again.");
-        });
-      setSelectedDepartment(department);
-    } else {
-      if (department?.name === "Traction Transformer") {
-        let backendSavedCompanys = [];
-        axios
-          .get(`${BACKEND_API_BASE_URL}/api/tractioncompany`, {
-            params: {
-              departmentType: "Traction Transformer",
-            },
-          })
-          .then((response) => {
-            backendSavedCompanys = response.data;
-            setCompanys(backendSavedCompanys);
-          })
-          .catch((error) => {
-            console.error(
-              "Error fetching Traction Transformer companies:",
-              error
-            );
-            alert("Failed to fetch companies. Please try again.");
-          });
-        setSelectedDepartment(department);
-      } else {
-        let backendSavedCompanys = []; // Corrected redeclaration
-        axios
-          .get(`${BACKEND_API_BASE_URL}/api/vconnectcompany`, {
-            params: {
-              departmentType: "V Connect",
-            },
-          })
-          .then((response) => {
-            backendSavedCompanys = response.data;
-            setCompanys(backendSavedCompanys);
-          })
-          .catch((error) => {
-            console.error("Error fetching V Connect companies:", error);
-            alert("Failed to fetch companies. Please try again.");
-          });
-        setSelectedDepartment(department);
-      }
+    // Map each department name to its API route
+    const departmentApiMap = {
+      "Auto Transformer":                       "/api/autocompany",
+      "Traction Transformer":                   "/api/tractioncompany",
+      "V Connected 63 MVA Transformer":         "/api/vconnectcompany",
+      "Testing Auto Transformer":               "/api/test_autocompany",
+      "Testing Traction Transformer":           "/api/test_tractioncompany",
+      "Testing V Connected 63 MVA Transformer": "/api/test_vconnectcompany",
+    };
+
+    const apiRoute = departmentApiMap[name];
+
+    if (!apiRoute) {
+      console.error("Unknown department:", name);
+      return;
     }
+
+    axios
+      .get(`${BACKEND_API_BASE_URL}${apiRoute}`, {
+        params: { departmentType: name },
+      })
+      .then((response) => {
+        setCompanys(response.data);
+      })
+      .catch((error) => {
+        console.error(`Error fetching companies for ${name}:`, error);
+        alert("Failed to fetch companies. Please try again.");
+      });
+
+    setSelectedDepartment(department);
   };
 
   return (
