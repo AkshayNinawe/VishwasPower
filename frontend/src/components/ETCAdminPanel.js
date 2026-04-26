@@ -16,6 +16,7 @@ import { VConnected63MVATransformerViewFormRenderer } from "./VConnected63MVATra
 import "./stage-review-styles.css";
 import "./form-styles.css";
 import html2pdf from "html2pdf.js";
+import TestingAutoTransformerForms from "./TestingAutoTransformerForms";
 
 const ETCAdminPanel = ({
   user,
@@ -82,6 +83,10 @@ const ETCAdminPanel = ({
   const [showEditProjectNameModal, setShowEditProjectNameModal] = useState(false);
   const [editingProject, setEditingProject] = useState(null);
   const [newProjectName, setNewProjectName] = useState("");
+
+  // Testing department form state
+  const [activeTestingButton, setActiveTestingButton] = useState(null);
+  const [activeTestingProject, setActiveTestingProject] = useState(null);
 
   const totalStageForm = [5, 2, 3, 4, 2, 1];
 
@@ -2309,6 +2314,201 @@ const ETCAdminPanel = ({
     return String(val);
   };
 
+  // ─── Testing Department Project Card ───────────────────────────────────────
+  const TESTING_SPEC_ROWS = [
+    { no: 1,  label: "Sr. No",                                          value: "V/M/" },
+    { no: 2,  label: "Commissioning year",                              value: "" },
+    { no: 3,  label: "Voltage rating (kV)",                             value: "55 / 27.5" },
+    { no: 4,  label: "HV Current (Amp.)",                               value: "145.45" },
+    { no: 5,  label: "LV Current (Amp.)",                               value: "290.91" },
+    { no: 6,  label: "Oil Quantity (Ltrs.)",                            value: "2500 Ltrs" },
+    { no: 7,  label: "Oil Quantity (kG.)",                              value: "2225 kG" },
+    { no: 8,  label: "Core + Winding",                                  value: "7350 kG" },
+    { no: 9,  label: "No. of Taps",                                     value: "NA" },
+    { no: 10, label: "% impedance (%)",                                 value: "0.49 %" },
+    { no: 11, label: "Permissible Temp rise over Amb. Oil / Winding",   value: "40/50 °C" },
+    { no: 12, label: "Transport weight",                                value: "13375 KG (WITH OIL)" },
+    { no: 13, label: "Length * Width * Height",                         value: "" },
+    { no: 14, label: "No. of radiator",                                 value: "4 NOS" },
+  ];
+
+  const TESTING_BUTTONS = [
+    // Row 1
+    { label: "CT TEST"                    },
+    { label: "BUSHING TEST"               },
+    { label: "2 KV TEST"                  },
+    { label: "PRE-CONNECTION TEST"        },
+    { label: "POST-CONNECTION TESTING"    },
+    { label: "PRE & POST VPD SERVICING"   },
+    // Row 2
+    { label: "OIL Soaking servicing planning" },
+    { label: "POST-TANKING TEST"          },
+    { label: "FINAL LV TEST"              },
+    { label: "Checklist for TFR BEFORE HV" },
+    { label: "List of HV Test"            },
+  ];
+
+  // Track which test buttons have been submitted per project
+  const [submittedTests, setSubmittedTests] = useState({});
+
+  const handleTestFormSubmit = (buttonLabel) => {
+    if (activeTestingProject) {
+      const key = `${activeTestingProject.companyName}_${activeTestingProject.name}`;
+      setSubmittedTests((prev) => ({
+        ...prev,
+        [key]: [...new Set([...(prev[key] || []), buttonLabel])],
+      }));
+    }
+  };
+
+  const renderTestingProjectCard = (Project, index) => (
+    <div
+      key={index}
+      style={{
+        background: "#fff",
+        borderRadius: "12px",
+        boxShadow: "0 2px 12px rgba(0,0,0,0.10)",
+        padding: "24px",
+        marginBottom: "24px",
+      }}
+    >
+      {/* Header */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+        <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: "700", color: "#1e3a8a" }}>
+          🧪 {Project.name}
+        </h3>
+        <div style={{ display: "flex", gap: "8px" }}>
+          <button
+            onClick={(e) => { e.stopPropagation(); handleEditProjectName(Project); }}
+            style={{ background: "linear-gradient(135deg,#f59e0b,#d97706)", color: "#fff", border: "none", padding: "6px 14px", borderRadius: "6px", fontWeight: "600", cursor: "pointer" }}
+          >
+            ✏️ Edit Name
+          </button>
+          <button
+            onClick={(e) => { e.stopPropagation(); handleProjectDelete(Project); }}
+            style={{ background: "linear-gradient(135deg,#ef4444,#dc2626)", color: "#fff", border: "none", padding: "6px 14px", borderRadius: "6px", fontWeight: "600", cursor: "pointer" }}
+          >
+            🗑️ Delete
+          </button>
+        </div>
+      </div>
+
+      {/* Specs Table */}
+      <div style={{ overflowX: "auto", marginBottom: "20px" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.9rem", border: "1px solid #d1d5db" }}>
+          <tbody>
+            {TESTING_SPEC_ROWS.map((row) => (
+              <tr key={row.no} style={{ borderBottom: "1px solid #d1d5db" }}>
+                <td style={{
+                  padding: "8px 12px",
+                  color: "#6b7280",
+                  width: "44px",
+                  textAlign: "center",
+                  border: "1px solid #d1d5db",
+                  backgroundColor: "#f9fafb",
+                  fontSize: "0.8rem",
+                }}>
+                  {row.no}
+                </td>
+                <td style={{
+                  padding: "8px 12px",
+                  fontWeight: "500",
+                  color: "#374151",
+                  width: "260px",
+                  border: "1px solid #d1d5db",
+                }}>
+                  {row.label}
+                </td>
+                <td style={{
+                  padding: "8px 12px",
+                  color: "#374151",
+                  width: "24px",
+                  textAlign: "center",
+                  border: "1px solid #d1d5db",
+                }}>
+                  :
+                </td>
+                <td style={{
+                  padding: "8px 16px",
+                  fontWeight: "700",
+                  color: "#111827",
+                  border: "1px solid #d1d5db",
+                  textAlign: "center",
+                }}>
+                  {row.value}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Test Buttons */}
+      {(() => {
+        const projectKey = `${Project.companyName}_${Project.name}`;
+        const submitted = submittedTests[projectKey] || [];
+        return (
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+            {TESTING_BUTTONS.map((btn) => {
+              const isSubmitted = submitted.includes(btn.label);
+              return (
+                <button
+                  key={btn.label}
+                  onClick={() => {
+                    setActiveTestingButton(btn.label);
+                    setActiveTestingProject(Project);
+                  }}
+                  style={{
+                    background: isSubmitted
+                      ? "linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%)"
+                      : "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
+                    color: "#fff",
+                    border: isSubmitted ? "2px solid #93c5fd" : "2px solid transparent",
+                    padding: "10px 16px",
+                    borderRadius: "8px",
+                    fontWeight: "700",
+                    fontSize: "0.82rem",
+                    cursor: "pointer",
+                    textAlign: "center",
+                    minWidth: "120px",
+                    lineHeight: "1.3",
+                    boxShadow: isSubmitted
+                      ? "0 2px 8px rgba(37,99,235,0.4)"
+                      : "0 2px 6px rgba(59,130,246,0.3)",
+                    transition: "all 0.2s",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "6px",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
+                  onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+                >
+                  {isSubmitted && (
+                    <span style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "16px",
+                      height: "16px",
+                      borderRadius: "50%",
+                      backgroundColor: "#22c55e",
+                      fontSize: "10px",
+                      fontWeight: "900",
+                      flexShrink: 0,
+                    }}>✓</span>
+                  )}
+                  {btn.label}
+                </button>
+              );
+            })}
+          </div>
+        );
+      })()}
+    </div>
+  );
+  // ───────────────────────────────────────────────────────────────────────────
+
   const handleStageSubmit = async (Project) => {
     if (Project.status === "rejected" && Project.rejectionReason) {
       showNotification(
@@ -2850,7 +3050,18 @@ const ETCAdminPanel = ({
       </header>
 
       <main className="etc-main">
-        {viewMode ? (
+        {activeTestingButton && activeTestingProject ? (
+          <TestingAutoTransformerForms
+            activeButton={activeTestingButton}
+            projectName={activeTestingProject.name}
+            companyName={activeTestingProject.companyName}
+            onFormSubmit={() => handleTestFormSubmit(activeTestingButton)}
+            onBack={() => {
+              setActiveTestingButton(null);
+              setActiveTestingProject(null);
+            }}
+          />
+        ) : viewMode ? (
           renderFormView()
         ) : showFormStage && formStageProject ? (
           (() => {
@@ -3381,7 +3592,10 @@ const ETCAdminPanel = ({
                   create one.
                 </p>
               ) : (
-                selectedMainCompany.companyProjects.map((Project, index) => (
+                selectedMainCompany.companyProjects.map((Project, index) =>
+                  selectedDepartment?.name?.startsWith("Testing ")
+                    ? renderTestingProjectCard(Project, index)
+                    : (
                   <div key={index} className="Project-card">
                     <div className="Project-header">
                       <div
@@ -3567,9 +3781,9 @@ const ETCAdminPanel = ({
 
                       
                     </div>
-                  </div>
-                ))
-              )}
+                    </div>
+                  ))
+                )}
             </div>
           </>
         )}
