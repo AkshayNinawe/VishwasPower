@@ -11,6 +11,8 @@ const projectSchema = {
   lastActivity: { type: Date, default: Date.now },
   stageApprovals: { type: Map, of: Boolean },
   submittedStages: { type: Map, of: Boolean },
+  submittedForms: { type: Map, of: Boolean, default: () => new Map() },
+  jobRating: { type: String, default: "" },
   rejectionReason: { type: String, default: "" },
 };
 

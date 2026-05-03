@@ -88,6 +88,12 @@ const ETCAdminPanel = ({
   const [activeTestingButton, setActiveTestingButton] = useState(null);
   const [activeTestingProject, setActiveTestingProject] = useState(null);
 
+  // Create Project modal state (for Testing departments — includes Job Rating)
+  const [showCreateProjectModal, setShowCreateProjectModal] = useState(false);
+  const [createProjectCompanyName, setCreateProjectCompanyName] = useState("");
+  const [createProjectName, setCreateProjectName] = useState("");
+  const [createProjectJobRating, setCreateProjectJobRating] = useState("8");
+
   const totalStageForm = [5, 2, 3, 4, 2, 1];
 
   const formStructures = {
@@ -1764,6 +1770,76 @@ const ETCAdminPanel = ({
     );
   };
 
+  // ── Core project-creation logic (shared by both modal paths) ──────────────
+  const doCreateProject = async (CompanyName, ProjectName, jobRating, apiRoute) => {
+    if (!ProjectName.trim()) return;
+
+    // Check if project with same name already exists in this company
+    const existingProject = selectedMainCompany.companyProjects?.find(
+      (project) => project.name.toLowerCase() === ProjectName.toLowerCase()
+    );
+
+    if (existingProject) {
+      showNotification(
+        `Project with name "${ProjectName}" already exists in this company. Please choose a different name.`,
+        "error"
+      );
+      return;
+    }
+
+    const vConnectedDepts = [
+      "V Connected 63 MVA Transformer",
+      "Testing V Connected 63 MVA Transformer",
+    ];
+    const totalStages = vConnectedDepts.includes(selectedDepartment?.name) ? 7 : 6;
+
+    // Build stage approvals / submitted stages dynamically
+    const stageFlags = {};
+    for (let i = 1; i <= totalStages; i++) stageFlags[i] = false;
+
+    const newProject = {
+      id: Math.max(...companies.map((c) => c.id), 0) + 1,
+      name: ProjectName,
+      companyName: CompanyName,
+      stage: 1,
+      formsCompleted: 0,
+      totalForms: getStageFormCount(1),
+      status: "in-progress",
+      lastActivity: new Date().toISOString().split("T")[0],
+      stageApprovals: { ...stageFlags },
+      submittedStages: { ...stageFlags },
+      ...(jobRating ? { jobRating } : {}),
+    };
+
+    try {
+      if (additionalLogging) {
+        console.log("Frontend : From doCreateProject post call to", apiRoute);
+      }
+      const response = await axios.post(
+        `${BACKEND_API_BASE_URL}${apiRoute}`,
+        {
+          projectName: ProjectName,
+          companyName: CompanyName,
+          companyProjects: newProject,
+        }
+      );
+      console.log("Project created successfully on the backend:", response.data);
+
+      selectedMainCompany.companyProjects =
+        selectedMainCompany.companyProjects ?? [];
+      selectedMainCompany.companyProjects.push(newProject);
+
+      setCompanies((prev) => [...prev, newProject]);
+      showNotification(
+        `Project "${ProjectName}" added to this Company!`,
+        "success"
+      );
+    } catch (error) {
+      console.error("Error creating project on the backend:", error);
+      showNotification("Failed to create project. Please try again.", "error");
+    }
+  };
+
   const handleAddProject = (CompanyName) => {
     // Map each department to its addCompany API route
     const addProjectApiMap = {
@@ -1775,84 +1851,52 @@ const ETCAdminPanel = ({
       "Testing V Connected 63 MVA Transformer": "/api/test_vconnectcompany/addCompany",
     };
 
-    // V Connected variants use 7 stages; all others use 6
-    const vConnectedDepts = [
-      "V Connected 63 MVA Transformer",
-      "Testing V Connected 63 MVA Transformer",
-    ];
-    const totalStages = vConnectedDepts.includes(selectedDepartment?.name) ? 7 : 6;
-
     const apiRoute = addProjectApiMap[selectedDepartment?.name];
     if (!apiRoute) {
       showNotification("Unknown department. Cannot create project.", "error");
       return;
     }
 
-    showInputDialog(
-      "Create New Project",
-      "Enter Project name...",
-      async (ProjectName) => {
-        if (!ProjectName.trim()) return;
-
-        // Check if project with same name already exists in this company
-        const existingProject = selectedMainCompany.companyProjects?.find(
-          (project) => project.name.toLowerCase() === ProjectName.toLowerCase()
-        );
-
-        if (existingProject) {
-          showNotification(
-            `Project with name "${ProjectName}" already exists in this company. Please choose a different name.`,
-            "error"
-          );
-          return;
+    if (selectedDepartment?.name?.startsWith("Testing ")) {
+      // Testing departments → custom modal with Project Name + Job Rating
+      setCreateProjectCompanyName(CompanyName);
+      setCreateProjectName("");
+      setCreateProjectJobRating("8");
+      setShowCreateProjectModal(true);
+    } else {
+      // Non-testing departments → simple single-input dialog
+      showInputDialog(
+        "Create New Project",
+        "Enter Project name...",
+        async (ProjectName) => {
+          await doCreateProject(CompanyName, ProjectName, null, apiRoute);
         }
+      );
+    }
+  };
 
-        // Build stage approvals / submitted stages dynamically
-        const stageFlags = {};
-        for (let i = 1; i <= totalStages; i++) stageFlags[i] = false;
+  // Submit handler for the Testing-department create-project modal
+  const handleCreateProjectModalSubmit = async () => {
+    if (!createProjectName.trim()) return;
 
-        const newProject = {
-          id: Math.max(...companies.map((c) => c.id), 0) + 1,
-          name: ProjectName,
-          companyName: CompanyName,
-          stage: 1,
-          formsCompleted: 0,
-          totalForms: getStageFormCount(1),
-          status: "in-progress",
-          lastActivity: new Date().toISOString().split("T")[0],
-          stageApprovals: { ...stageFlags },
-          submittedStages: { ...stageFlags },
-        };
+    const addProjectApiMap = {
+      "Testing Auto Transformer":               "/api/test_autocompany/addCompany",
+      "Testing Traction Transformer":           "/api/test_tractioncompany/addCompany",
+      "Testing V Connected 63 MVA Transformer": "/api/test_vconnectcompany/addCompany",
+    };
+    const apiRoute = addProjectApiMap[selectedDepartment?.name];
+    if (!apiRoute) {
+      showNotification("Unknown department. Cannot create project.", "error");
+      return;
+    }
 
-        try {
-          if (additionalLogging) {
-            console.log("Frontend : From handleAddProject post call to", apiRoute);
-          }
-          const response = await axios.post(
-            `${BACKEND_API_BASE_URL}${apiRoute}`,
-            {
-              projectName: ProjectName,
-              companyName: CompanyName,
-              companyProjects: newProject,
-            }
-          );
-          console.log("Project created successfully on the backend:", response.data);
-
-          selectedMainCompany.companyProjects =
-            selectedMainCompany.companyProjects ?? [];
-          selectedMainCompany.companyProjects.push(newProject);
-
-          setCompanies((prev) => [...prev, newProject]);
-          showNotification(
-            `Project "${ProjectName}" added to this Company!`,
-            "success"
-          );
-        } catch (error) {
-          console.error("Error creating project on the backend:", error);
-          showNotification("Failed to create project. Please try again.", "error");
-        }
-      }
+    await doCreateProject(
+      createProjectCompanyName,
+      createProjectName.trim(),
+      createProjectJobRating,
+      apiRoute
     );
+    setShowCreateProjectModal(false);
   };
 
   // Helper function to get form count for each stage
@@ -2334,29 +2378,43 @@ const ETCAdminPanel = ({
 
   const TESTING_BUTTONS = [
     // Row 1
-    { label: "CT TEST"                    },
-    { label: "BUSHING TEST"               },
-    { label: "2 KV TEST"                  },
-    { label: "PRE-CONNECTION TEST"        },
-    { label: "POST-CONNECTION TESTING"    },
-    { label: "PRE & POST VPD SERVICING"   },
+    { label: "CT TEST",                        formName: "CTTestForm" },
+    { label: "BUSHING TEST",                   formName: "BushingTestForm" },
+    { label: "2 KV TEST",                      formName: "TwoKVTestForm" },
+    { label: "PRE-CONNECTION TEST",            formName: "PreConnectionTestForm" },
+    { label: "POST-CONNECTION TESTING",        formName: "PostConnectionTestForm" },
+    { label: "PRE & POST VPD SERVICING",       formName: "PrePostVPDServicingForm" },
     // Row 2
-    { label: "OIL Soaking servicing planning" },
-    { label: "POST-TANKING TEST"          },
-    { label: "FINAL LV TEST"              },
-    { label: "Checklist for TFR BEFORE HV" },
-    { label: "List of HV Test"            },
+    { label: "OIL Soaking servicing planning", formName: "OilSoakingForm" },
+    { label: "POST-TANKING TEST",              formName: "PostTankingTestForm" },
+    { label: "FINAL LV TEST",                  formName: "FinalLVTestForm" },
+    { label: "Checklist for TFR BEFORE HV",    formName: "ChecklistTFRBeforeHVForm" },
+    { label: "List of HV Test",                formName: "ListOfHVTestForm" },
   ];
-
-  // Track which test buttons have been submitted per project
-  const [submittedTests, setSubmittedTests] = useState({});
 
   const handleTestFormSubmit = (buttonLabel) => {
     if (activeTestingProject) {
-      const key = `${activeTestingProject.companyName}_${activeTestingProject.name}`;
-      setSubmittedTests((prev) => ({
-        ...prev,
-        [key]: [...new Set([...(prev[key] || []), buttonLabel])],
+      // Find the formName for this button
+      const btn = TESTING_BUTTONS.find((b) => b.label === buttonLabel);
+      const formName = btn?.formName;
+      if (!formName) return;
+
+      // Optimistically update the local project's submittedForms so the tick
+      // mark appears immediately without waiting for a page refresh
+      setSelectedMainCompany((prevCompany) => ({
+        ...prevCompany,
+        companyProjects: (prevCompany.companyProjects || []).map((proj) =>
+          proj.name === activeTestingProject.name &&
+          proj.companyName === activeTestingProject.companyName
+            ? {
+                ...proj,
+                submittedForms: {
+                  ...(proj.submittedForms || {}),
+                  [formName]: true,
+                },
+              }
+            : proj
+        ),
       }));
     }
   };
@@ -2443,14 +2501,14 @@ const ETCAdminPanel = ({
         </table>
       </div>
 
-      {/* Test Buttons */}
+      {/* Test Buttons — tick marks driven by DB-backed Project.submittedForms */}
       {(() => {
-        const projectKey = `${Project.companyName}_${Project.name}`;
-        const submitted = submittedTests[projectKey] || [];
+        // submittedForms comes from MongoDB Map, serialised as a plain object
+        const submittedForms = Project.submittedForms || {};
         return (
           <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
             {TESTING_BUTTONS.map((btn) => {
-              const isSubmitted = submitted.includes(btn.label);
+              const isSubmitted = submittedForms[btn.formName] === true;
               return (
                 <button
                   key={btn.label}
@@ -4166,6 +4224,91 @@ const ETCAdminPanel = ({
                   setEditingCompany(null);
                   setNewCompanyName("");
                 }}
+                className="cancel-btn"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Create Project Modal — Testing departments (Project Name + Job Rating) */}
+      {showCreateProjectModal && (
+        <div
+          className="modal-overlay"
+          onClick={() => setShowCreateProjectModal(false)}
+        >
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <span style={{ fontSize: "1.5rem" }}>✏️</span>
+                <h3>Create New Project</h3>
+              </div>
+            </div>
+
+            {/* Project Name */}
+            <div className="form-group" style={{ marginBottom: "16px" }}>
+              <label style={{ display: "block", fontWeight: "600", marginBottom: "6px" }}>
+                Project Name *
+              </label>
+              <input
+                type="text"
+                placeholder="Enter Project name..."
+                value={createProjectName}
+                onChange={(e) => setCreateProjectName(e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter" && createProjectName.trim()) {
+                    handleCreateProjectModalSubmit();
+                  }
+                }}
+                autoFocus
+                style={{ width: "100%", boxSizing: "border-box" }}
+              />
+            </div>
+
+            {/* Job Rating Dropdown */}
+            <div className="form-group" style={{ marginBottom: "20px" }}>
+              <label style={{ display: "block", fontWeight: "600", marginBottom: "6px" }}>
+                Job Rating (MVA) *
+              </label>
+              <select
+                value={createProjectJobRating}
+                onChange={(e) => setCreateProjectJobRating(e.target.value)}
+                style={{
+                  width: "100%",
+                  padding: "10px 12px",
+                  borderRadius: "8px",
+                  border: "2px solid #e2e8f0",
+                  fontSize: "1rem",
+                  outline: "none",
+                  cursor: "pointer",
+                  backgroundColor: "#fff",
+                  boxSizing: "border-box",
+                }}
+              >
+                <option value="8">8 MVA</option>
+                <option value="12.3">12.3 MVA</option>
+                <option value="16.5">16.5 MVA</option>
+              </select>
+            </div>
+
+            <div className="modal-actions">
+              <button
+                onClick={handleCreateProjectModalSubmit}
+                className="submit-btn"
+                disabled={!createProjectName.trim()}
+                style={{
+                  background: createProjectName.trim()
+                    ? "linear-gradient(135deg, #10b981, #059669)"
+                    : "#ccc",
+                  cursor: createProjectName.trim() ? "pointer" : "not-allowed",
+                }}
+              >
+                Submit
+              </button>
+              <button
+                onClick={() => setShowCreateProjectModal(false)}
                 className="cancel-btn"
               >
                 Cancel

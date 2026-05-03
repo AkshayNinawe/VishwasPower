@@ -18,6 +18,7 @@ import TractionDataRoute from "./routes/tractionDataRoutes.js"
 // Testing department routes
 import TestAutoCompanyRoute from "./routes/testAutoCompanyRoutes.js";
 import TestAutoDataRoute from "./routes/autoDataRoutes.js";
+import TestAutoTransformerDataRoute from "./routes/testAutoDataRoutes.js";
 import TestTractionCompanyRoute from "./routes/testTractionCompanyRoutes.js";
 import TestTractionDataRoute from "./routes/tractionDataRoutes.js";
 import TestVConnectCompanyRoute from "./routes/testVConnectCompanyRoutes.js";
@@ -55,6 +56,7 @@ app.use("/api/tractionData/", TractionDataRoute);
 // Testing department routes
 app.use("/api/test_autocompany", TestAutoCompanyRoute);
 app.use("/api/test_autoData/", TestAutoDataRoute);
+app.use("/api/test_autoTransformerData/", TestAutoTransformerDataRoute);
 app.use("/api/test_tractioncompany", TestTractionCompanyRoute);
 app.use("/api/test_tractionData/", TestTractionDataRoute);
 app.use("/api/test_vconnectcompany", TestVConnectCompanyRoute);

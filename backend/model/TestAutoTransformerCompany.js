@@ -41,6 +41,15 @@ const projectSchema = {
     type: Map,
     of: Boolean,
   },
+  submittedForms: {
+    type: Map,
+    of: Boolean,
+    default: () => new Map(),
+  },
+  jobRating: {
+    type: String,
+    default: "",
+  },
   rejectionReason: {
     type: String,
     default: "",

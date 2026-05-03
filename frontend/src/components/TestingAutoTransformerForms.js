@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { BACKEND_API_BASE_URL } from "./constant";
 import "./form-styles.css";
 
 // ─── Main Component ────────────────────────────────────────────────────────────
@@ -92,11 +94,39 @@ function BushingTestForm({ projectName, companyName, onBack, onFormSubmit }) {
 
   const update = (field, value) => setFormData((prev) => ({ ...prev, [field]: value }));
 
-  const handleDone = () => {
-    console.log("Bushing Test form data:", formData);
-    alert("Test data saved successfully!");
-    if (onFormSubmit) onFormSubmit();
-    onBack();
+  useEffect(() => {
+    const fetchExistingData = async () => {
+      try {
+        const response = await axios.post(`${BACKEND_API_BASE_URL}/api/test_autoTransformerData/getTable`, {
+          projectName,
+          companyName,
+          formName: "BushingTestForm",
+        });
+        if (response.data && response.data.data) {
+          setFormData(prev => ({ ...prev, ...response.data.data }));
+        }
+      } catch (error) {
+        // No existing data found, keep defaults
+      }
+    };
+    fetchExistingData();
+  }, [projectName, companyName]);
+
+  const handleDone = async () => {
+    try {
+      await axios.post(`${BACKEND_API_BASE_URL}/api/test_autoTransformerData/setTable`, {
+        projectName,
+        companyName,
+        formName: "BushingTestForm",
+        ...formData,
+      });
+      alert("Bushing Test data saved successfully!");
+      if (onFormSubmit) onFormSubmit();
+      onBack();
+    } catch (error) {
+      console.error("Error saving Bushing Test form data:", error);
+      alert("Failed to save data. Please try again.");
+    }
   };
 
   return (
@@ -312,11 +342,39 @@ function TwoKVTestForm({ projectName, companyName, onBack, onFormSubmit }) {
 
   const update = (field, value) => setFormData((prev) => ({ ...prev, [field]: value }));
 
-  const handleDone = () => {
-    console.log("2 KV Test form data:", formData);
-    alert("2 KV Test data submitted successfully!");
-    if (onFormSubmit) onFormSubmit();
-    onBack();
+  useEffect(() => {
+    const fetchExistingData = async () => {
+      try {
+        const response = await axios.post(`${BACKEND_API_BASE_URL}/api/test_autoTransformerData/getTable`, {
+          projectName,
+          companyName,
+          formName: "TwoKVTestForm",
+        });
+        if (response.data && response.data.data) {
+          setFormData(prev => ({ ...prev, ...response.data.data }));
+        }
+      } catch (error) {
+        // No existing data found, keep defaults
+      }
+    };
+    fetchExistingData();
+  }, [projectName, companyName]);
+
+  const handleDone = async () => {
+    try {
+      await axios.post(`${BACKEND_API_BASE_URL}/api/test_autoTransformerData/setTable`, {
+        projectName,
+        companyName,
+        formName: "TwoKVTestForm",
+        ...formData,
+      });
+      alert("2 KV Test data submitted successfully!");
+      if (onFormSubmit) onFormSubmit();
+      onBack();
+    } catch (error) {
+      console.error("Error saving 2 KV Test form data:", error);
+      alert("Failed to save data. Please try again.");
+    }
   };
 
   return (
@@ -523,11 +581,39 @@ function OilSoakingForm({ projectName, companyName, onBack, onFormSubmit }) {
 
   const update = (field, value) => setFormData((prev) => ({ ...prev, [field]: value }));
 
-  const handleDone = () => {
-    console.log("Oil Soaking form data:", formData);
-    alert("Oil Soaking Servicing data submitted successfully!");
-    if (onFormSubmit) onFormSubmit();
-    onBack();
+  useEffect(() => {
+    const fetchExistingData = async () => {
+      try {
+        const response = await axios.post(`${BACKEND_API_BASE_URL}/api/test_autoTransformerData/getTable`, {
+          projectName,
+          companyName,
+          formName: "OilSoakingForm",
+        });
+        if (response.data && response.data.data) {
+          setFormData(prev => ({ ...prev, ...response.data.data }));
+        }
+      } catch (error) {
+        // No existing data found, keep defaults
+      }
+    };
+    fetchExistingData();
+  }, [projectName, companyName]);
+
+  const handleDone = async () => {
+    try {
+      await axios.post(`${BACKEND_API_BASE_URL}/api/test_autoTransformerData/setTable`, {
+        projectName,
+        companyName,
+        formName: "OilSoakingForm",
+        ...formData,
+      });
+      alert("Oil Soaking Servicing data submitted successfully!");
+      if (onFormSubmit) onFormSubmit();
+      onBack();
+    } catch (error) {
+      console.error("Error saving Oil Soaking form data:", error);
+      alert("Failed to save data. Please try again.");
+    }
   };
 
   return (
@@ -818,11 +904,39 @@ function PostTankingTestForm({ projectName, companyName, onBack, onFormSubmit })
   const update = (field, value) => setFormData((prev) => ({ ...prev, [field]: value }));
   const inp = (field) => <input type="text" value={formData[field]} onChange={(e) => update(field, e.target.value)} />;
 
-  const handleDone = () => {
-    console.log("Post-Tanking Test form data:", formData);
-    alert("Post-Tanking Test data submitted successfully!");
-    if (onFormSubmit) onFormSubmit();
-    onBack();
+  useEffect(() => {
+    const fetchExistingData = async () => {
+      try {
+        const response = await axios.post(`${BACKEND_API_BASE_URL}/api/test_autoTransformerData/getTable`, {
+          projectName,
+          companyName,
+          formName: "PostTankingTestForm",
+        });
+        if (response.data && response.data.data) {
+          setFormData(prev => ({ ...prev, ...response.data.data }));
+        }
+      } catch (error) {
+        // No existing data found, keep defaults
+      }
+    };
+    fetchExistingData();
+  }, [projectName, companyName]);
+
+  const handleDone = async () => {
+    try {
+      await axios.post(`${BACKEND_API_BASE_URL}/api/test_autoTransformerData/setTable`, {
+        projectName,
+        companyName,
+        formName: "PostTankingTestForm",
+        ...formData,
+      });
+      alert("Post-Tanking Test data submitted successfully!");
+      if (onFormSubmit) onFormSubmit();
+      onBack();
+    } catch (error) {
+      console.error("Error saving Post-Tanking Test form data:", error);
+      alert("Failed to save data. Please try again.");
+    }
   };
 
   const sectionBanner = (text, bg = "#dce6f1") => (
@@ -1082,11 +1196,39 @@ function FinalLVTestForm({ projectName, companyName, onBack, onFormSubmit }) {
   const update = (field, value) => setFormData((prev) => ({ ...prev, [field]: value }));
   const inp = (field) => <input type="text" value={formData[field]} onChange={(e) => update(field, e.target.value)} />;
 
-  const handleDone = () => {
-    console.log("Final LV Test form data:", formData);
-    alert("Final LV Test data submitted successfully!");
-    if (onFormSubmit) onFormSubmit();
-    onBack();
+  useEffect(() => {
+    const fetchExistingData = async () => {
+      try {
+        const response = await axios.post(`${BACKEND_API_BASE_URL}/api/test_autoTransformerData/getTable`, {
+          projectName,
+          companyName,
+          formName: "FinalLVTestForm",
+        });
+        if (response.data && response.data.data) {
+          setFormData(prev => ({ ...prev, ...response.data.data }));
+        }
+      } catch (error) {
+        // No existing data found, keep defaults
+      }
+    };
+    fetchExistingData();
+  }, [projectName, companyName]);
+
+  const handleDone = async () => {
+    try {
+      await axios.post(`${BACKEND_API_BASE_URL}/api/test_autoTransformerData/setTable`, {
+        projectName,
+        companyName,
+        formName: "FinalLVTestForm",
+        ...formData,
+      });
+      alert("Final LV Test data submitted successfully!");
+      if (onFormSubmit) onFormSubmit();
+      onBack();
+    } catch (error) {
+      console.error("Error saving Final LV Test form data:", error);
+      alert("Failed to save data. Please try again.");
+    }
   };
 
   const sectionBanner = (text, bg = "#dce6f1") => (
@@ -1331,11 +1473,57 @@ function ChecklistTFRBeforeHVForm({ projectName, companyName, onBack, onFormSubm
   const updateRow = (no, field, value) => setRows((prev) => ({ ...prev, [no]: { ...prev[no], [field]: value } }));
   const updateForm = (field, value) => setFormData((prev) => ({ ...prev, [field]: value }));
 
-  const handleDone = () => {
-    console.log("Checklist TFR Before HV:", rows);
-    alert("Checklist submitted successfully!");
-    if (onFormSubmit) onFormSubmit();
-    onBack();
+  useEffect(() => {
+    const fetchExistingData = async () => {
+      try {
+        const response = await axios.post(`${BACKEND_API_BASE_URL}/api/test_autoTransformerData/getTable`, {
+          projectName,
+          companyName,
+          formName: "ChecklistTFRBeforeHVForm",
+        });
+        if (response.data && response.data.data) {
+          const { rows: savedRows, testedByDate, reviewedByDate, authorizedByDate } = response.data.data;
+          if (savedRows && Array.isArray(savedRows)) {
+            const rowsObj = savedRows.reduce((acc, row) => {
+              acc[row.no] = {
+                confirmValue: row.confirmValue || "",
+                done: row.done !== undefined ? row.done : true,
+                remark: row.remark || "",
+              };
+              return acc;
+            }, {});
+            setRows(rowsObj);
+          }
+          setFormData(prev => ({
+            ...prev,
+            ...(testedByDate !== undefined && { testedByDate }),
+            ...(reviewedByDate !== undefined && { reviewedByDate }),
+            ...(authorizedByDate !== undefined && { authorizedByDate }),
+          }));
+        }
+      } catch (error) {
+        // No existing data found, keep defaults
+      }
+    };
+    fetchExistingData();
+  }, [projectName, companyName]);
+
+  const handleDone = async () => {
+    try {
+      await axios.post(`${BACKEND_API_BASE_URL}/api/test_autoTransformerData/setTable`, {
+        projectName,
+        companyName,
+        formName: "ChecklistTFRBeforeHVForm",
+        rows: Object.entries(rows).map(([no, data]) => ({ no: Number(no), ...data })),
+        ...formData,
+      });
+      alert("Checklist submitted successfully!");
+      if (onFormSubmit) onFormSubmit();
+      onBack();
+    } catch (error) {
+      console.error("Error saving Checklist form data:", error);
+      alert("Failed to save data. Please try again.");
+    }
   };
 
   return (
@@ -1461,11 +1649,39 @@ function ListOfHVTestForm({ projectName, companyName, onBack, onFormSubmit }) {
   const update = (field, value) => setFormData((prev) => ({ ...prev, [field]: value }));
   const inp = (field, style = {}) => <input type="text" value={formData[field]} onChange={(e) => update(field, e.target.value)} style={style} />;
 
-  const handleDone = () => {
-    console.log("List of HV Test form data:", formData);
-    alert("HV Test data submitted successfully!");
-    if (onFormSubmit) onFormSubmit();
-    onBack();
+  useEffect(() => {
+    const fetchExistingData = async () => {
+      try {
+        const response = await axios.post(`${BACKEND_API_BASE_URL}/api/test_autoTransformerData/getTable`, {
+          projectName,
+          companyName,
+          formName: "ListOfHVTestForm",
+        });
+        if (response.data && response.data.data) {
+          setFormData(prev => ({ ...prev, ...response.data.data }));
+        }
+      } catch (error) {
+        // No existing data found, keep defaults
+      }
+    };
+    fetchExistingData();
+  }, [projectName, companyName]);
+
+  const handleDone = async () => {
+    try {
+      await axios.post(`${BACKEND_API_BASE_URL}/api/test_autoTransformerData/setTable`, {
+        projectName,
+        companyName,
+        formName: "ListOfHVTestForm",
+        ...formData,
+      });
+      alert("HV Test data submitted successfully!");
+      if (onFormSubmit) onFormSubmit();
+      onBack();
+    } catch (error) {
+      console.error("Error saving HV Test form data:", error);
+      alert("Failed to save data. Please try again.");
+    }
   };
 
   const sectionBanner = (text) => (
@@ -1754,11 +1970,39 @@ function CTTestForm({ projectName, companyName, onBack, onFormSubmit }) {
     />
   );
 
-  const handleDone = () => {
-    console.log("CT Test form data:", formData);
-    alert("CT Test data saved successfully!");
-    if (onFormSubmit) onFormSubmit();
-    onBack();
+  useEffect(() => {
+    const fetchExistingData = async () => {
+      try {
+        const response = await axios.post(`${BACKEND_API_BASE_URL}/api/test_autoTransformerData/getTable`, {
+          projectName,
+          companyName,
+          formName: "CTTestForm",
+        });
+        if (response.data && response.data.data) {
+          setFormData(prev => ({ ...prev, ...response.data.data }));
+        }
+      } catch (error) {
+        // No existing data found, keep defaults
+      }
+    };
+    fetchExistingData();
+  }, [projectName, companyName]);
+
+  const handleDone = async () => {
+    try {
+      await axios.post(`${BACKEND_API_BASE_URL}/api/test_autoTransformerData/setTable`, {
+        projectName,
+        companyName,
+        formName: "CTTestForm",
+        ...formData,
+      });
+      alert("CT Test data saved successfully!");
+      if (onFormSubmit) onFormSubmit();
+      onBack();
+    } catch (error) {
+      console.error("Error saving CT Test form data:", error);
+      alert("Failed to save data. Please try again.");
+    }
   };
 
   // ── Helper: render one Ratio Test block ──────────────────────────────────────
@@ -2145,11 +2389,39 @@ function PreConnectionTestForm({ projectName, companyName, onBack, onFormSubmit 
   const update = (field, value) => setFormData((prev) => ({ ...prev, [field]: value }));
   const inp = (field) => <input type="text" value={formData[field]} onChange={(e) => update(field, e.target.value)} />;
 
-  const handleDone = () => {
-    console.log("Pre-Connection Test form data:", formData);
-    alert("Pre-Connection Test data submitted successfully!");
-    if (onFormSubmit) onFormSubmit();
-    onBack();
+  useEffect(() => {
+    const fetchExistingData = async () => {
+      try {
+        const response = await axios.post(`${BACKEND_API_BASE_URL}/api/test_autoTransformerData/getTable`, {
+          projectName,
+          companyName,
+          formName: "PreConnectionTestForm",
+        });
+        if (response.data && response.data.data) {
+          setFormData(prev => ({ ...prev, ...response.data.data }));
+        }
+      } catch (error) {
+        // No existing data found, keep defaults
+      }
+    };
+    fetchExistingData();
+  }, [projectName, companyName]);
+
+  const handleDone = async () => {
+    try {
+      await axios.post(`${BACKEND_API_BASE_URL}/api/test_autoTransformerData/setTable`, {
+        projectName,
+        companyName,
+        formName: "PreConnectionTestForm",
+        ...formData,
+      });
+      alert("Pre-Connection Test data submitted successfully!");
+      if (onFormSubmit) onFormSubmit();
+      onBack();
+    } catch (error) {
+      console.error("Error saving Pre-Connection Test form data:", error);
+      alert("Failed to save data. Please try again.");
+    }
   };
 
   const sectionBanner = (text) => (
@@ -2535,11 +2807,39 @@ function PostConnectionTestForm({ projectName, companyName, onBack, onFormSubmit
   const update = (field, value) => setFormData((prev) => ({ ...prev, [field]: value }));
   const inp = (field) => <input type="text" value={formData[field]} onChange={(e) => update(field, e.target.value)} />;
 
-  const handleDone = () => {
-    console.log("Post-Connection Test form data:", formData);
-    alert("Post-Connection Test data submitted successfully!");
-    if (onFormSubmit) onFormSubmit();
-    onBack();
+  useEffect(() => {
+    const fetchExistingData = async () => {
+      try {
+        const response = await axios.post(`${BACKEND_API_BASE_URL}/api/test_autoTransformerData/getTable`, {
+          projectName,
+          companyName,
+          formName: "PostConnectionTestForm",
+        });
+        if (response.data && response.data.data) {
+          setFormData(prev => ({ ...prev, ...response.data.data }));
+        }
+      } catch (error) {
+        // No existing data found, keep defaults
+      }
+    };
+    fetchExistingData();
+  }, [projectName, companyName]);
+
+  const handleDone = async () => {
+    try {
+      await axios.post(`${BACKEND_API_BASE_URL}/api/test_autoTransformerData/setTable`, {
+        projectName,
+        companyName,
+        formName: "PostConnectionTestForm",
+        ...formData,
+      });
+      alert("Post-Connection Test data submitted successfully!");
+      if (onFormSubmit) onFormSubmit();
+      onBack();
+    } catch (error) {
+      console.error("Error saving Post-Connection Test form data:", error);
+      alert("Failed to save data. Please try again.");
+    }
   };
 
   const sectionBanner = (text) => (
@@ -2972,11 +3272,39 @@ function PrePostVPDServicingForm({ projectName, companyName, onBack, onFormSubmi
   const update = (field, value) => setFormData((prev) => ({ ...prev, [field]: value }));
   const inp = (field) => <input type="text" value={formData[field]} onChange={(e) => update(field, e.target.value)} />;
 
-  const handleDone = () => {
-    console.log("Pre & Post VPD Servicing form data:", formData);
-    alert("Pre & Post VPD Servicing data submitted successfully!");
-    if (onFormSubmit) onFormSubmit();
-    onBack();
+  useEffect(() => {
+    const fetchExistingData = async () => {
+      try {
+        const response = await axios.post(`${BACKEND_API_BASE_URL}/api/test_autoTransformerData/getTable`, {
+          projectName,
+          companyName,
+          formName: "PrePostVPDServicingForm",
+        });
+        if (response.data && response.data.data) {
+          setFormData(prev => ({ ...prev, ...response.data.data }));
+        }
+      } catch (error) {
+        // No existing data found, keep defaults
+      }
+    };
+    fetchExistingData();
+  }, [projectName, companyName]);
+
+  const handleDone = async () => {
+    try {
+      await axios.post(`${BACKEND_API_BASE_URL}/api/test_autoTransformerData/setTable`, {
+        projectName,
+        companyName,
+        formName: "PrePostVPDServicingForm",
+        ...formData,
+      });
+      alert("Pre & Post VPD Servicing data submitted successfully!");
+      if (onFormSubmit) onFormSubmit();
+      onBack();
+    } catch (error) {
+      console.error("Error saving Pre & Post VPD Servicing form data:", error);
+      alert("Failed to save data. Please try again.");
+    }
   };
 
   // ── Helper: render one servicing block (Pre or Post) ──────────────────────
