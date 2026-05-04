@@ -2435,7 +2435,25 @@ const ETCAdminPanel = ({
         <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: "700", color: "#1e3a8a" }}>
           🧪 {Project.name}
         </h3>
-        <div style={{ display: "flex", gap: "8px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          {Project.jobRating && (
+            <div style={{
+              background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
+              borderRadius: "20px",
+              padding: "5px 16px",
+              fontWeight: "700",
+              fontSize: "0.85rem",
+              color: "#fff",
+              letterSpacing: "0.5px",
+              whiteSpace: "nowrap",
+              boxShadow: "0 2px 8px rgba(99,102,241,0.4)",
+              display: "flex",
+              alignItems: "center",
+              gap: "5px",
+            }}>
+              ⚡ {Project.jobRating} MVA
+            </div>
+          )}
           <button
             onClick={(e) => { e.stopPropagation(); handleEditProjectName(Project); }}
             style={{ background: "linear-gradient(135deg,#f59e0b,#d97706)", color: "#fff", border: "none", padding: "6px 14px", borderRadius: "6px", fontWeight: "600", cursor: "pointer" }}
@@ -3399,16 +3417,6 @@ const ETCAdminPanel = ({
                     </div>
                     <h3>{department.name}</h3>
                     <p>{department.description}</p>
-                    <div className="department-footer">
-                      <span>📁 {departmentCompanys.length} Companys</span>
-                      <span>
-                        🏢{" "}
-                        {departmentCompanys.reduce((acc, proj) => {
-                          return acc + getCompanyCompanies(proj.id).length;
-                        }, 0)}{" "}
-                        companies
-                      </span>
-                    </div>
                   </div>
                 );
               })}
