@@ -1699,7 +1699,7 @@ const ETCAdminPanel = ({
   // Load data from localStorage on component mount
   useEffect(() => {
     const visibleDepartments = TESTING_DEPARTMENT
-      ? defaultDepartments
+      ? defaultDepartments.filter((d) => d.name.startsWith("Testing "))
       : defaultDepartments.filter((d) => !d.name.startsWith("Testing "));
     setDepartments(visibleDepartments);
   }, []);
