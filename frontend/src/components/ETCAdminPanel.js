@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { BACKEND_API_BASE_URL, additionalLogging } from "./constant";
+import { BACKEND_API_BASE_URL, additionalLogging, TESTING_DEPARTMENT } from "./constant";
 import { authenticatedFetch, getAuthToken } from "../utils/auth";
 import FormStage from "./FormStage"; // Import FormStage
 import VConnected63MVATransformerForms from "./VConnected63MVATransformerForms";
@@ -1698,7 +1698,10 @@ const ETCAdminPanel = ({
 
   // Load data from localStorage on component mount
   useEffect(() => {
-    setDepartments(defaultDepartments);
+    const visibleDepartments = TESTING_DEPARTMENT
+      ? defaultDepartments
+      : defaultDepartments.filter((d) => !d.name.startsWith("Testing "));
+    setDepartments(visibleDepartments);
   }, []);
 
   const handleCreateCompany = async () => {

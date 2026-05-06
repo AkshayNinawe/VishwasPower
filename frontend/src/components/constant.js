@@ -6,3 +6,6 @@ export const additionalLogging = true
 
 export const CLOUD_NAME = 'dfqczollw';
 export const CLOUD_PRESET = 'img_vishvaspower';
+
+// Feature flag: set to true to show Testing departments, false to hide them
+export const TESTING_DEPARTMENT = false;
