@@ -1790,11 +1790,12 @@ const ETCAdminPanel = ({
       return;
     }
 
-    const vConnectedDepts = [
+    const sevenStageDepts = [
       "V Connected 63 MVA Transformer",
       "Testing V Connected 63 MVA Transformer",
+      "Traction Transformer",
     ];
-    const totalStages = vConnectedDepts.includes(selectedDepartment?.name) ? 7 : 6;
+    const totalStages = sevenStageDepts.includes(selectedDepartment?.name) ? 7 : 6;
 
     // Build stage approvals / submitted stages dynamically
     const stageFlags = {};
@@ -1968,12 +1969,13 @@ const ETCAdminPanel = ({
       "Testing V Connected 63 MVA Transformer": "/api/test_vconnectcompany/approveCompanyStage",
     };
 
-    // V Connected variants use 7 stages; all others use 6
-    const vConnectedDepts = [
+    // V Connected and Traction variants use 7 stages; all others use 6
+    const sevenStageDepts = [
       "V Connected 63 MVA Transformer",
       "Testing V Connected 63 MVA Transformer",
+      "Traction Transformer",
     ];
-    const totalStages = vConnectedDepts.includes(selectedDepartment?.name) ? 7 : 6;
+    const totalStages = sevenStageDepts.includes(selectedDepartment?.name) ? 7 : 6;
 
     const apiEndpoint = approveStageApiMap[selectedDepartment?.name];
     if (!apiEndpoint) {
@@ -3713,7 +3715,7 @@ const ETCAdminPanel = ({
                     <div className="stage-management">
                       <h4>Stage Management:</h4>
                       <div className="stages-row">
-                        {(selectedDepartment?.name === "V Connected 63 MVA Transformer"
+                        {(["V Connected 63 MVA Transformer", "Traction Transformer"].includes(selectedDepartment?.name)
                           ? [1, 2, 3, 4, 5, 6, 7]
                           : [1, 2, 3, 4, 5, 6]
                         ).map((stage) => {

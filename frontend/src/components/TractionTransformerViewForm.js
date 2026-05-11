@@ -26,7 +26,7 @@ import {
   Stage5Form8,
   Stage6Form1,
   Stage6Form2,
-  Stage6Form3
+  Stage7Form1
 } from './TractionTransformerStageReviewPanel';
 
 // Utility function to render photos
@@ -136,11 +136,6 @@ const Stage6ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
       id: "stage6-form2",
       title: "Pre-Commissioning Checklist (Cont.)",
       component: Stage6Form2
-    },
-    {
-      id: "stage6-form3",
-      title: "Work Completion Report",
-      component: Stage6Form3
     }
   ];
 
@@ -633,6 +628,41 @@ const Stage1ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
   );
 };
 
+// Stage 7 Review Renderer Component - Work Completion Report
+const Stage7ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
+  const formData = formDataFromDB?.form1 || {};
+
+  return (
+    <div className="stage7-review-container">
+      <div className="form-review-card" style={{
+        marginBottom: "30px",
+        border: "2px solid #e5e7eb",
+        borderRadius: "12px",
+        padding: "20px",
+        background: "white",
+        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+      }}>
+        <div className="company-header" style={{
+          textAlign: "center",
+          marginBottom: "20px",
+          padding: "15px",
+          backgroundColor: "#f8fafc",
+          borderRadius: "8px",
+          border: "1px solid #e2e8f0"
+        }}>
+          <h2 style={{ margin: 0, color: "#1e293b", fontSize: "1.25rem" }}>
+            Traction Transformer - Work Completion Report
+          </h2>
+        </div>
+
+        <Stage7Form1 formData={formData} />
+
+        {formData.photos && renderPhotos(formData.photos, "stage7-form1")}
+      </div>
+    </div>
+  );
+};
+
 // Generic Stage Renderer for stages without specific components
 const GenericStageRenderer = ({ formDataFromDB, formatLabel, stageTitle }) => {
   return (
@@ -837,7 +867,8 @@ export const TractionTransformerViewFormRenderer = ({ stageNumber, formDataFromD
     3: "Stage 3 - Oil Filtration & Pressure Testing",
     4: "Stage 4 - Electrical Testing",
     5: "Stage 5 - Pre-Charging Checklist",
-    6: "Stage 6 - Work Completion Certificate"
+    6: "Stage 6 - Pre-Commissioning Checklist",
+    7: "Stage 7 - Work Completion Report"
   };
 
   switch(stageNumber) {
@@ -853,6 +884,8 @@ export const TractionTransformerViewFormRenderer = ({ stageNumber, formDataFromD
       return <Stage5ReviewRenderer formDataFromDB={formDataFromDB} formatLabel={formatLabel} />;
     case 6:
       return <Stage6ReviewRenderer formDataFromDB={formDataFromDB} formatLabel={formatLabel} />;
+    case 7:
+      return <Stage7ReviewRenderer formDataFromDB={formDataFromDB} formatLabel={formatLabel} />;
     default:
       return <GenericStageRenderer 
         formDataFromDB={formDataFromDB} 

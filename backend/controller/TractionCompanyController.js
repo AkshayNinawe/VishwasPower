@@ -137,11 +137,11 @@ export const setapproveCompanyStage =  async(req, res) =>{
       },
     };
 
-    if (stageNumber !== 6) {
+    if (stageNumber !== 7) {
       updateOperation.$inc = { "companyProjects.$.stage": 1 };
       updateOperation.$set["companyProjects.$.status"] = "in-progress";
     } else {
-      console.log("white house")
+      console.log("Stage 7 completed - project done")
       updateOperation.$set["companyProjects.$.status"] = "completed";
     }
   
@@ -398,9 +398,9 @@ export const setFormsCompleted = async (req, res) => {
     }
     
     // Corrected logic: Dynamically create a Map object instead of an Array
-    if (Number(stage) && 6) {
+    if (Number(stage)) {
       const submittedStagesMap = {};
-      for (let i = 1; i <= 6; i++) {
+      for (let i = 1; i <= 7; i++) {
         submittedStagesMap[i.toString()] = i <= stage;
       }
       updateSets["companyProjects.$.submittedStages"] = submittedStagesMap;

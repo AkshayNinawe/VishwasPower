@@ -8644,8 +8644,8 @@ const Stage6Form1 = ({ formData }) => {
   );
 };
 
-// Stage 6 Form 3: Work Completion Report (for review display)
-const Stage6Form3 = ({ formData }) => (
+// Stage 7 Form 1: Work Completion Report (for review display)
+const Stage7Form1 = ({ formData }) => (
   <div
     className="form-container"
     style={{
@@ -9564,6 +9564,45 @@ const Stage6Form2 = ({ formData }) => {
   );
 };
 
+// Stage 7 Review Renderer Component - Work Completion Report
+const Stage7ReviewRenderer = ({ formDataFromDB }) => {
+  const formData = formDataFromDB?.form1 || {};
+
+  return (
+    <div className="stage7-review-container">
+      <div
+        className="form-review-card"
+        style={{
+          marginBottom: "30px",
+          border: "2px solid #e5e7eb",
+          borderRadius: "12px",
+          padding: "20px",
+          background: "white",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <div
+          className="company-header"
+          style={{
+            textAlign: "center",
+            marginBottom: "20px",
+            padding: "15px",
+            backgroundColor: "#f8fafc",
+            borderRadius: "8px",
+            border: "1px solid #e2e8f0",
+          }}
+        >
+          <h2 style={{ margin: 0, color: "#1e293b", fontSize: "1.25rem" }}>
+            Work Completion Report (Stage 7 - Form 1)
+          </h2>
+        </div>
+        <Stage7Form1 formData={formData} />
+        {formData.photos ? renderPhotos(formData.photos) : null}
+      </div>
+    </div>
+  );
+};
+
 // Stage 6 Review Renderer Component
 const Stage6ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
   const stage6Forms = [
@@ -9576,11 +9615,6 @@ const Stage6ReviewRenderer = ({ formDataFromDB, formatLabel }) => {
       id: "stage6-form2",
       title: "Pre-Commissioning Checklist (Cont.)",
       component: Stage6Form2
-    },
-    {
-      id: "stage6-form3",
-      title: "Work Completion Report",
-      component: Stage6Form3
     }
   ];
 
@@ -9757,6 +9791,11 @@ const TractionTransformerStageReviewPanel = ({
         />;
       case 6:
         return <Stage6ReviewRenderer 
+          formDataFromDB={formDataFromDB} 
+          formatLabel={formatLabel}
+        />;
+      case 7:
+        return <Stage7ReviewRenderer 
           formDataFromDB={formDataFromDB} 
           formatLabel={formatLabel}
         />;
@@ -10237,13 +10276,14 @@ export {
   Stage5Form8,
   Stage6Form1,
   Stage6Form2,
-  Stage6Form3,
+  Stage7Form1,
   Stage1ReviewRenderer,
   Stage2ReviewRenderer,
   Stage3ReviewRenderer,
   Stage4ReviewRenderer,
   Stage5ReviewRenderer,
-  Stage6ReviewRenderer
+  Stage6ReviewRenderer,
+  Stage7ReviewRenderer
 };
 
 export default TractionTransformerStageReviewPanel;

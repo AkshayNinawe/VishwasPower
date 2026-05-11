@@ -1148,6 +1148,42 @@ const Stage6Form2SubSchema = new mongoose.Schema(
   { _id: false }
 );
 
+// --------------------
+// Stage 7 - Form 1 (Work Completion Report)
+// --------------------
+const Stage7Form1SignaturesSubSchema = new mongoose.Schema(
+  {
+    vpesName: { type: String, trim: true, default: "" },
+    vpesDesignation: { type: String, trim: true, default: "" },
+    vpesSignature: { type: String, trim: true, default: "" },
+    vpesDate: { type: String, trim: true, default: "" },
+    customerName: { type: String, trim: true, default: "" },
+    customerDesignation: { type: String, trim: true, default: "" },
+    customerSignature: { type: String, trim: true, default: "" },
+    customerDate: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+const Stage7Form1SubSchema = new mongoose.Schema(
+  {
+    customerName: { type: String, trim: true, default: "" },
+    orderNumber: { type: String, trim: true, default: "" },
+    location: { type: String, trim: true, default: "" },
+    type: { type: String, trim: true, default: "" },
+    capacity: { type: String, trim: true, default: "" },
+    voltageRating: { type: String, trim: true, default: "" },
+    make: { type: String, trim: true, default: "" },
+    serialNumber: { type: String, trim: true, default: "" },
+    completionDate: { type: String, trim: true, default: "" },
+    chargingDate: { type: String, trim: true, default: "" },
+    commissioningDate: { type: String, trim: true, default: "" },
+    signatures: { type: Stage7Form1SignaturesSubSchema, default: () => ({}) },
+    photos: { type: Map, of: String, default: {} },
+  },
+  { _id: false }
+);
+
 // ============================================================
 // Main schema
 // ============================================================
@@ -1192,6 +1228,9 @@ const TractionSchema = new mongoose.Schema(
       stage6: {
         form1: { type: Stage6Form1SubSchema, default: () => ({}) },
         form2: { type: Stage6Form2SubSchema, default: () => ({}) },
+      },
+      stage7: {
+        form1: { type: Stage7Form1SubSchema, default: () => ({}) },
       },
     },
   },

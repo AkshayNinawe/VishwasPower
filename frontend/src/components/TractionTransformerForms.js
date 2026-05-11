@@ -10935,7 +10935,10 @@ const TractionTransformerForms = ({
     ],
     6: [
       { component: Stage6Form1, name: "Pre-Commissioning Checklist" },
-      { component: Stage6Form2, name: "Pre-Commissioning Checklist" }
+      { component: Stage6Form2, name: "Pre-Commissioning Checklist (Cont.)" }
+    ],
+    7: [
+      { component: WorkCompletionReportForm, name: "Work Completion Report" }
     ]
   }
 
