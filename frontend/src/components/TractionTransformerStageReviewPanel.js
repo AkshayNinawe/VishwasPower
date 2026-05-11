@@ -6791,7 +6791,7 @@ const Stage5Form4 = ({ formData }) => {
     );
   };
 
-  const ConditionBlock = ({ title, rows, equation }) => (
+  const ConditionBlock = ({ title, rows, equation, eqLhsKey, eqRhs1Key, eqRhs2Key, eqOperator, eqCheckLhsKey, eqCheckRhsKey }) => (
     <table className="form-table" style={{ marginTop: "16px" }}>
       <thead>
         <tr>
@@ -6825,6 +6825,57 @@ const Stage5Form4 = ({ formData }) => {
                     <strong>{equation}</strong>
                   </td>
                 </tr>
+                {/* Equation result input boxes */}
+                <tr>
+                  <td colSpan={2} style={{ paddingTop: "10px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <input
+                        type="text"
+                        value={formData?.[eqLhsKey] || ""}
+                        disabled
+                        className="form-input disabled preview"
+                        style={{ flex: 2 }}
+                      />
+                      <strong>=</strong>
+                      <input
+                        type="text"
+                        value={formData?.[eqRhs1Key] || ""}
+                        disabled
+                        className="form-input disabled preview"
+                        style={{ flex: 1 }}
+                      />
+                      <strong>{eqOperator}</strong>
+                      <input
+                        type="text"
+                        value={formData?.[eqRhs2Key] || ""}
+                        disabled
+                        className="form-input disabled preview"
+                        style={{ flex: 2 }}
+                      />
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={2} style={{ paddingTop: "8px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <input
+                        type="text"
+                        value={formData?.[eqCheckLhsKey] || ""}
+                        disabled
+                        className="form-input disabled preview"
+                        style={{ flex: 2 }}
+                      />
+                      <strong>=</strong>
+                      <input
+                        type="text"
+                        value={formData?.[eqCheckRhsKey] || ""}
+                        disabled
+                        className="form-input disabled preview"
+                        style={{ flex: 3 }}
+                      />
+                    </div>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </td>
@@ -6850,6 +6901,12 @@ const Stage5Form4 = ({ formData }) => {
           { label: "1.1-2.2", key: "cond1_11_22" },
         ]}
         equation="(1.1-2.2) = (1.1-1.2) + (2.1-2.2)"
+        eqLhsKey="cond1_eq_lhs"
+        eqRhs1Key="cond1_eq_rhs1"
+        eqRhs2Key="cond1_eq_rhs2"
+        eqOperator="+"
+        eqCheckLhsKey="cond1_eq_check_lhs"
+        eqCheckRhsKey="cond1_eq_check_rhs"
       />
 
       <ConditionBlock
@@ -6860,6 +6917,12 @@ const Stage5Form4 = ({ formData }) => {
           { label: "1.1-2.1", key: "cond2_11_21" },
         ]}
         equation="(1.2-2.1) = (1.1-1.2) - (2.1-2.2)"
+        eqLhsKey="cond2_eq_lhs"
+        eqRhs1Key="cond2_eq_rhs1"
+        eqRhs2Key="cond2_eq_rhs2"
+        eqOperator="-"
+        eqCheckLhsKey="cond2_eq_check_lhs"
+        eqCheckRhsKey="cond2_eq_check_rhs"
       />
 
       {formData.photos ? renderPhotos(formData.photos) : null}

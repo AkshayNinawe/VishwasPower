@@ -7692,11 +7692,23 @@ export function Stage5Form4({ onSubmit, onPrevious, initialData, companyName, pr
     cond1_11_12: "",
     cond1_21_22: "",
     cond1_11_22: "",
+    // Condition 1 equation result boxes
+    cond1_eq_lhs: "",
+    cond1_eq_rhs1: "",
+    cond1_eq_rhs2: "",
+    cond1_eq_check_lhs: "",
+    cond1_eq_check_rhs: "",
 
     // Condition 2 readings
     cond2_11_12: "",
     cond2_21_22: "",
     cond2_11_21: "",
+    // Condition 2 equation result boxes
+    cond2_eq_lhs: "",
+    cond2_eq_rhs1: "",
+    cond2_eq_rhs2: "",
+    cond2_eq_check_lhs: "",
+    cond2_eq_check_rhs: "",
 
     photos: {},
     ...initialData,
@@ -7823,7 +7835,7 @@ export function Stage5Form4({ onSubmit, onPrevious, initialData, companyName, pr
     )
   }
 
-  const ConditionBlock = ({ title, rows, equation }) => (
+  const ConditionBlock = ({ title, rows, equation, eqLhsKey, eqRhs1Key, eqRhs2Key, eqOperator, eqCheckLhsKey, eqCheckRhsKey }) => (
     <table className="form-table" style={{ marginTop: "16px" }}>
       <thead>
         <tr>
@@ -7856,6 +7868,52 @@ export function Stage5Form4({ onSubmit, onPrevious, initialData, companyName, pr
                     <strong>{equation}</strong>
                   </td>
                 </tr>
+                {/* Equation result input boxes */}
+                <tr>
+                  <td colSpan={2} style={{ paddingTop: "10px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <input
+                        type="text"
+                        value={formData[eqLhsKey] || ""}
+                        onChange={(e) => setFormData({ ...formData, [eqLhsKey]: e.target.value })}
+                        style={{ flex: 2 }}
+                      />
+                      <strong>=</strong>
+                      <input
+                        type="text"
+                        value={formData[eqRhs1Key] || ""}
+                        onChange={(e) => setFormData({ ...formData, [eqRhs1Key]: e.target.value })}
+                        style={{ flex: 1 }}
+                      />
+                      <strong>{eqOperator}</strong>
+                      <input
+                        type="text"
+                        value={formData[eqRhs2Key] || ""}
+                        onChange={(e) => setFormData({ ...formData, [eqRhs2Key]: e.target.value })}
+                        style={{ flex: 2 }}
+                      />
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={2} style={{ paddingTop: "8px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <input
+                        type="text"
+                        value={formData[eqCheckLhsKey] || ""}
+                        onChange={(e) => setFormData({ ...formData, [eqCheckLhsKey]: e.target.value })}
+                        style={{ flex: 2 }}
+                      />
+                      <strong>=</strong>
+                      <input
+                        type="text"
+                        value={formData[eqCheckRhsKey] || ""}
+                        onChange={(e) => setFormData({ ...formData, [eqCheckRhsKey]: e.target.value })}
+                        style={{ flex: 3 }}
+                      />
+                    </div>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </td>
@@ -7881,6 +7939,12 @@ export function Stage5Form4({ onSubmit, onPrevious, initialData, companyName, pr
           { label: "1.1-2.2", key: "cond1_11_22" },
         ]}
         equation="(1.1-2.2) = (1.1-1.2) + (2.1-2.2)"
+        eqLhsKey="cond1_eq_lhs"
+        eqRhs1Key="cond1_eq_rhs1"
+        eqRhs2Key="cond1_eq_rhs2"
+        eqOperator="+"
+        eqCheckLhsKey="cond1_eq_check_lhs"
+        eqCheckRhsKey="cond1_eq_check_rhs"
       />
 
       <ConditionBlock
@@ -7891,6 +7955,12 @@ export function Stage5Form4({ onSubmit, onPrevious, initialData, companyName, pr
           { label: "1.1-2.1", key: "cond2_11_21" },
         ]}
         equation="(1.2-2.1) = (1.1-1.2) - (2.1-2.2)"
+        eqLhsKey="cond2_eq_lhs"
+        eqRhs1Key="cond2_eq_rhs1"
+        eqRhs2Key="cond2_eq_rhs2"
+        eqOperator="-"
+        eqCheckLhsKey="cond2_eq_check_lhs"
+        eqCheckRhsKey="cond2_eq_check_rhs"
       />
 
       <div className="form-actions">

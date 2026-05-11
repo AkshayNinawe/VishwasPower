@@ -876,10 +876,22 @@ const Stage5Form4SubSchema = new mongoose.Schema(
     cond1_11_12: { type: String, trim: true, default: "" },
     cond1_21_22: { type: String, trim: true, default: "" },
     cond1_11_22: { type: String, trim: true, default: "" },
+    // Condition 1 equation result boxes
+    cond1_eq_lhs: { type: String, trim: true, default: "" },
+    cond1_eq_rhs1: { type: String, trim: true, default: "" },
+    cond1_eq_rhs2: { type: String, trim: true, default: "" },
+    cond1_eq_check_lhs: { type: String, trim: true, default: "" },
+    cond1_eq_check_rhs: { type: String, trim: true, default: "" },
 
     cond2_11_12: { type: String, trim: true, default: "" },
     cond2_21_22: { type: String, trim: true, default: "" },
     cond2_11_21: { type: String, trim: true, default: "" },
+    // Condition 2 equation result boxes
+    cond2_eq_lhs: { type: String, trim: true, default: "" },
+    cond2_eq_rhs1: { type: String, trim: true, default: "" },
+    cond2_eq_rhs2: { type: String, trim: true, default: "" },
+    cond2_eq_check_lhs: { type: String, trim: true, default: "" },
+    cond2_eq_check_rhs: { type: String, trim: true, default: "" },
 
     photos: { type: Map, of: String, default: {} },
   },
