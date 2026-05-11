@@ -7686,6 +7686,138 @@ export function Stage5Form3({ onSubmit, onPrevious, initialData, isLastFormOfSta
   )
 }
 
+// DiagramImage and ConditionBlock are defined OUTSIDE Stage5Form4
+// to prevent re-creation on every keystroke (which causes focus loss)
+const PolarityDiagramImage = ({ variant }) => {
+  const commonTextStyle = { fontFamily: "Arial, sans-serif", fontSize: 12, fill: "#111" };
+  const commonLineStyle = { stroke: "#111", strokeWidth: 2, strokeLinecap: "round" };
+  const commonThinLineStyle = { stroke: "#111", strokeWidth: 1.5, strokeLinecap: "round" };
+  const commonRectStyle = { fill: "#111" };
+
+  return (
+    <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+      <svg viewBox="0 0 240 220" width="220" height="200" role="img" aria-label="Polarity test diagram" style={{ maxWidth: "220px", width: "100%", height: "auto" }}>
+        <text x="78" y="36" style={commonTextStyle}>1.1</text>
+        <text x="148" y="36" style={commonTextStyle}>2.1</text>
+        {variant === "condition2" ? (
+          <>
+            <line x1="60" y1="48" x2="180" y2="48" style={commonLineStyle} />
+            <circle cx="90" cy="48" r="4" fill="#111" />
+            <circle cx="150" cy="48" r="4" fill="#111" />
+          </>
+        ) : (
+          <>
+            <line x1="60" y1="48" x2="105" y2="48" style={commonLineStyle} />
+            <line x1="135" y1="48" x2="180" y2="48" style={commonLineStyle} />
+            <circle cx="90" cy="48" r="4" fill="#111" />
+            <circle cx="150" cy="48" r="4" fill="#111" />
+          </>
+        )}
+        <rect x="82" y="70" width="12" height="78" style={commonRectStyle} />
+        <rect x="142" y="70" width="12" height="78" style={commonRectStyle} />
+        <line x1="90" y1="48" x2="90" y2="70" style={commonLineStyle} />
+        <line x1="150" y1="48" x2="150" y2="70" style={commonLineStyle} />
+        <circle cx="90" cy="160" r="4" fill="#111" />
+        <circle cx="150" cy="160" r="4" fill="#111" />
+        <text x="66" y="196" style={commonTextStyle}>1.2</text>
+        <text x="156" y="196" style={commonTextStyle}>2.2</text>
+        <line x1="48" y1="176" x2="90" y2="176" style={commonThinLineStyle} />
+        <line x1="150" y1="176" x2="192" y2="176" style={commonThinLineStyle} />
+        <line x1="90" y1="160" x2="90" y2="176" style={commonThinLineStyle} />
+        <line x1="150" y1="160" x2="150" y2="176" style={commonThinLineStyle} />
+      </svg>
+    </div>
+  );
+};
+
+const PolarityConditionBlock = ({ title, rows, equation, eqLhsKey, eqRhs1Key, eqRhs2Key, eqOperator, eqCheckLhsKey, eqCheckRhsKey, formData, setFormData }) => (
+  <table className="form-table" style={{ marginTop: "16px" }}>
+    <thead>
+      <tr>
+        <th colSpan={2} style={{ textAlign: "center" }}>{title}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style={{ width: "55%" }}>
+          <table className="form-table" style={{ margin: 0 }}>
+            <tbody>
+              {rows.map((r) => (
+                <tr key={r.key}>
+                  <td style={{ width: "35%" }}>
+                    <strong>{r.label} =</strong>
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      value={formData[r.key]}
+                      onChange={(e) => setFormData({ ...formData, [r.key]: e.target.value })}
+                    />
+                  </td>
+                </tr>
+              ))}
+              <tr>
+                <td colSpan={2} style={{ paddingTop: "14px" }}>
+                  <strong>{equation}</strong>
+                </td>
+              </tr>
+              {/* Equation result input boxes */}
+              <tr>
+                <td colSpan={2} style={{ paddingTop: "10px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    <input
+                      type="text"
+                      value={formData[eqLhsKey] || ""}
+                      onChange={(e) => setFormData({ ...formData, [eqLhsKey]: e.target.value })}
+                      style={{ flex: 2 }}
+                    />
+                    <strong>=</strong>
+                    <input
+                      type="text"
+                      value={formData[eqRhs1Key] || ""}
+                      onChange={(e) => setFormData({ ...formData, [eqRhs1Key]: e.target.value })}
+                      style={{ flex: 1 }}
+                    />
+                    <strong>{eqOperator}</strong>
+                    <input
+                      type="text"
+                      value={formData[eqRhs2Key] || ""}
+                      onChange={(e) => setFormData({ ...formData, [eqRhs2Key]: e.target.value })}
+                      style={{ flex: 2 }}
+                    />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan={2} style={{ paddingTop: "8px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    <input
+                      type="text"
+                      value={formData[eqCheckLhsKey] || ""}
+                      onChange={(e) => setFormData({ ...formData, [eqCheckLhsKey]: e.target.value })}
+                      style={{ flex: 2 }}
+                    />
+                    <strong>=</strong>
+                    <input
+                      type="text"
+                      value={formData[eqCheckRhsKey] || ""}
+                      onChange={(e) => setFormData({ ...formData, [eqCheckRhsKey]: e.target.value })}
+                      style={{ flex: 3 }}
+                    />
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td style={{ width: "45%", verticalAlign: "middle" }}>
+          <PolarityDiagramImage variant={title === "CONDITION 2" ? "condition2" : "condition1"} />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+);
+
 export function Stage5Form4({ onSubmit, onPrevious, initialData, companyName, projectName }) {
   const [formData, setFormData] = useState({
     // Condition 1 readings
@@ -7738,200 +7870,13 @@ export function Stage5Form4({ onSubmit, onPrevious, initialData, companyName, pr
     onSubmit(formData)
   }
 
-  const DiagramImage = ({ variant }) => {
-    // Inline SVG to match reference "diagram" (instead of showing a static image)
-    const commonTextStyle = {
-      fontFamily: "Arial, sans-serif",
-      fontSize: 12,
-      fill: "#111",
-    }
-
-    const commonLineStyle = {
-      stroke: "#111",
-      strokeWidth: 2,
-      strokeLinecap: "round",
-    }
-
-    const commonThinLineStyle = {
-      stroke: "#111",
-      strokeWidth: 1.5,
-      strokeLinecap: "round",
-    }
-
-    const commonRectStyle = {
-      fill: "#111",
-    }
-
-    // Two variants based on the reference image:
-    // - condition1: separate top rails for 1.1 and 2.1
-    // - condition2: common top rail connecting both
-    return (
-      <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-        <svg
-          viewBox="0 0 240 220"
-          width="220"
-          height="200"
-          role="img"
-          aria-label="Polarity test diagram"
-          style={{ maxWidth: "220px", width: "100%", height: "auto" }}
-        >
-          {/* labels */}
-          <text x="78" y="36" style={commonTextStyle}>
-            1.1
-          </text>
-          <text x="148" y="36" style={commonTextStyle}>
-            2.1
-          </text>
-
-          {/* top connections */}
-          {variant === "condition2" ? (
-            <>
-              {/* single top rail */}
-              <line x1="60" y1="48" x2="180" y2="48" style={commonLineStyle} />
-              <circle cx="90" cy="48" r="4" fill="#111" />
-              <circle cx="150" cy="48" r="4" fill="#111" />
-            </>
-          ) : (
-            <>
-              {/* separate top rails */}
-              <line x1="60" y1="48" x2="105" y2="48" style={commonLineStyle} />
-              <line x1="135" y1="48" x2="180" y2="48" style={commonLineStyle} />
-              <circle cx="90" cy="48" r="4" fill="#111" />
-              <circle cx="150" cy="48" r="4" fill="#111" />
-            </>
-          )}
-
-          {/* left vertical element */}
-          <rect x="82" y="70" width="12" height="78" style={commonRectStyle} />
-          {/* right vertical element */}
-          <rect x="142" y="70" width="12" height="78" style={commonRectStyle} />
-
-          {/* left down lead */}
-          <line x1="90" y1="48" x2="90" y2="70" style={commonLineStyle} />
-          <line x1="150" y1="48" x2="150" y2="70" style={commonLineStyle} />
-
-          {/* bottom connection points */}
-          <circle cx="90" cy="160" r="4" fill="#111" />
-          <circle cx="150" cy="160" r="4" fill="#111" />
-
-          {/* bottom labels */}
-          <text x="66" y="196" style={commonTextStyle}>
-            1.2
-          </text>
-          <text x="156" y="196" style={commonTextStyle}>
-            2.2
-          </text>
-
-          {/* bottom rails: for condition1, left rail goes to 1.2 label; right rail goes to 2.2 label
-              for condition2, keep rails similar but with a slight offset to match reference */}
-          <line x1="48" y1="176" x2="90" y2="176" style={commonThinLineStyle} />
-          <line x1="150" y1="176" x2="192" y2="176" style={commonThinLineStyle} />
-
-          {/* drops from bottom nodes to rails */}
-          <line x1="90" y1="160" x2="90" y2="176" style={commonThinLineStyle} />
-          <line x1="150" y1="160" x2="150" y2="176" style={commonThinLineStyle} />
-        </svg>
-      </div>
-    )
-  }
-
-  const ConditionBlock = ({ title, rows, equation, eqLhsKey, eqRhs1Key, eqRhs2Key, eqOperator, eqCheckLhsKey, eqCheckRhsKey }) => (
-    <table className="form-table" style={{ marginTop: "16px" }}>
-      <thead>
-        <tr>
-          <th colSpan={2} style={{ textAlign: "center" }}>
-            {title}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style={{ width: "55%" }}>
-            <table className="form-table" style={{ margin: 0 }}>
-              <tbody>
-                {rows.map((r) => (
-                  <tr key={r.key}>
-                    <td style={{ width: "35%" }}>
-                      <strong>{r.label} =</strong>
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value={formData[r.key]}
-                        onChange={(e) => setFormData({ ...formData, [r.key]: e.target.value })}
-                      />
-                    </td>
-                  </tr>
-                ))}
-                <tr>
-                  <td colSpan={2} style={{ paddingTop: "14px" }}>
-                    <strong>{equation}</strong>
-                  </td>
-                </tr>
-                {/* Equation result input boxes */}
-                <tr>
-                  <td colSpan={2} style={{ paddingTop: "10px" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <input
-                        type="text"
-                        value={formData[eqLhsKey] || ""}
-                        onChange={(e) => setFormData({ ...formData, [eqLhsKey]: e.target.value })}
-                        style={{ flex: 2 }}
-                      />
-                      <strong>=</strong>
-                      <input
-                        type="text"
-                        value={formData[eqRhs1Key] || ""}
-                        onChange={(e) => setFormData({ ...formData, [eqRhs1Key]: e.target.value })}
-                        style={{ flex: 1 }}
-                      />
-                      <strong>{eqOperator}</strong>
-                      <input
-                        type="text"
-                        value={formData[eqRhs2Key] || ""}
-                        onChange={(e) => setFormData({ ...formData, [eqRhs2Key]: e.target.value })}
-                        style={{ flex: 2 }}
-                      />
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td colSpan={2} style={{ paddingTop: "8px" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <input
-                        type="text"
-                        value={formData[eqCheckLhsKey] || ""}
-                        onChange={(e) => setFormData({ ...formData, [eqCheckLhsKey]: e.target.value })}
-                        style={{ flex: 2 }}
-                      />
-                      <strong>=</strong>
-                      <input
-                        type="text"
-                        value={formData[eqCheckRhsKey] || ""}
-                        onChange={(e) => setFormData({ ...formData, [eqCheckRhsKey]: e.target.value })}
-                        style={{ flex: 3 }}
-                      />
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
-          <td style={{ width: "45%", verticalAlign: "middle" }}>
-            <DiagramImage variant={title === "CONDITION 2" ? "condition2" : "condition1"} />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  )
-
   return (
     <form onSubmit={handleSubmit} className="form-container">
       <div className="company-header">
         <h2>TYPE OF TEST – POLARITY TEST</h2>
       </div>
 
-      <ConditionBlock
+      <PolarityConditionBlock
         title="CONDITION 1"
         rows={[
           { label: "1.1-1.2", key: "cond1_11_12" },
@@ -7945,9 +7890,11 @@ export function Stage5Form4({ onSubmit, onPrevious, initialData, companyName, pr
         eqOperator="+"
         eqCheckLhsKey="cond1_eq_check_lhs"
         eqCheckRhsKey="cond1_eq_check_rhs"
+        formData={formData}
+        setFormData={setFormData}
       />
 
-      <ConditionBlock
+      <PolarityConditionBlock
         title="CONDITION 2"
         rows={[
           { label: "1.1-1.2", key: "cond2_11_12" },
@@ -7961,6 +7908,8 @@ export function Stage5Form4({ onSubmit, onPrevious, initialData, companyName, pr
         eqOperator="-"
         eqCheckLhsKey="cond2_eq_check_lhs"
         eqCheckRhsKey="cond2_eq_check_rhs"
+        formData={formData}
+        setFormData={setFormData}
       />
 
       <div className="form-actions">
