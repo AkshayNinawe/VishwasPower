@@ -154,13 +154,58 @@ export const setapproveCompanyStage = async (req, res) => {
   try {
     const { companyName, projectName, stage } = req.body;
     const stageNumber = Number(stage);
-    
+
     if (!companyName || !projectName || !stage) {
       return res.status(400).json({
         message: "Company name, project name, and stage are required."
       });
     }
 
+    // ── Guard 1: Fetch current project state before approving ──
+    const existingCompany = await AutoTransformerCompany.findOne({
+      companyName,
+      "companyProjects.name": projectName,
+    });
+
+    if (!existingCompany) {
+      return res.status(404).json({
+        message: `Company '${companyName}' or project '${projectName}' not found.`,
+      });
+    }
+
+    const project = existingCompany.companyProjects.find(
+      (p) => p.name === projectName
+    );
+
+    if (!project) {
+      return res.status(404).json({
+        message: `Project '${projectName}' not found in company '${companyName}'.`,
+      });
+    }
+
+    // ── Guard 2: Ensure the stage was actually submitted before approving ──
+    const isSubmitted = project.submittedStages?.get
+      ? project.submittedStages.get(String(stageNumber))
+      : project.submittedStages?.[String(stageNumber)];
+
+    if (!isSubmitted) {
+      return res.status(400).json({
+        message: `Stage ${stageNumber} has not been submitted yet and cannot be approved.`,
+      });
+    }
+
+    // ── Guard 3: Prevent double-approval ──
+    const isAlreadyApproved = project.stageApprovals?.get
+      ? project.stageApprovals.get(String(stageNumber))
+      : project.stageApprovals?.[String(stageNumber)];
+
+    if (isAlreadyApproved) {
+      return res.status(400).json({
+        message: `Stage ${stageNumber} has already been approved.`,
+      });
+    }
+
+    // ── Build update operation ──
     const updateOperation = {
       $set: {
         [`companyProjects.$.stageApprovals.${stageNumber}`]: true,
@@ -169,7 +214,10 @@ export const setapproveCompanyStage = async (req, res) => {
     };
 
     if (stageNumber !== 6) {
-      updateOperation.$inc = { "companyProjects.$.stage": 1 };
+      // Use $max to safely advance stage (prevents going backwards in race conditions)
+      updateOperation.$max = {
+        "companyProjects.$.stage": stageNumber + 1,
+      };
       updateOperation.$set["companyProjects.$.status"] = "in-progress";
     } else {
       updateOperation.$set["companyProjects.$.status"] = "completed";
@@ -181,14 +229,12 @@ export const setapproveCompanyStage = async (req, res) => {
         "companyProjects.name": projectName,
       },
       updateOperation,
-      {
-        new: true, // Return the updated document
-      }
+      { new: true }
     );
 
     if (!updatedCompany) {
       return res.status(404).json({
-        message: `AutoTransformerCompany with name '${companyName}' or project with name '${projectName}' not found.`,
+        message: `AutoTransformerCompany '${companyName}' or project '${projectName}' not found during update.`,
       });
     }
 
@@ -415,49 +461,67 @@ export const editCompanyName = async (req, res) => {
 
 export const setFormsCompleted = async (req, res) => {
   try {
-    // Added 'totalForms' to the destructuring to make the logic dynamic
-    const { companyName, projectName, formsCompleted, status, stage } =
-      req.body;
+    const { companyName, projectName, formsCompleted, status, stage } = req.body;
+    const stageNumber = Number(stage);
 
-    // Build the update object dynamically
+    // ── Guard: Prevent re-submission of an already-approved stage ──
+    if (stageNumber && status === "pending-approval") {
+      const existingCompany = await AutoTransformerCompany.findOne({
+        companyName,
+        "companyProjects.name": projectName,
+      });
+
+      const project = existingCompany?.companyProjects.find(
+        (p) => p.name === projectName
+      );
+
+      if (project) {
+        const isAlreadyApproved = project.stageApprovals?.get
+          ? project.stageApprovals.get(String(stageNumber))
+          : project.stageApprovals?.[String(stageNumber)];
+
+        if (isAlreadyApproved) {
+          return res.status(400).json({
+            message: `Stage ${stageNumber} is already approved and cannot be resubmitted.`,
+          });
+        }
+      }
+    }
+
+    // ── Build update operation ──
+    // Only set the specific stage flag — do NOT overwrite the entire map.
     const updateFields = {};
     const updateSets = {
       "companyProjects.$.lastActivity": new Date(),
     };
+
     updateFields["$max"] = {
       "companyProjects.$.formsCompleted": formsCompleted,
     };
+
     if (status) {
       updateSets["companyProjects.$.status"] = status;
     }
 
-    // Corrected logic: Dynamically create a Map object instead of an Array
-    if (Number(stage) && 6) {
-      const submittedStagesMap = {};
-      for (let i = 1; i <= 6; i++) {
-        submittedStagesMap[i.toString()] = i <= stage;
-      }
-      updateSets["companyProjects.$.submittedStages"] = submittedStagesMap;
+    // Set only the submitted stage flag (not the whole map)
+    if (stageNumber) {
+      updateSets[`companyProjects.$.submittedStages.${stageNumber}`] = true;
     }
 
     updateFields["$set"] = updateSets;
 
-    // Find the AutoTransformerCompany and the specific project within its array
     const updatedCompany = await AutoTransformerCompany.findOneAndUpdate(
       {
         companyName: companyName,
         "companyProjects.name": projectName,
       },
       updateFields,
-      {
-        new: true, // Return the updated document
-      }
+      { new: true }
     );
 
-    // If no AutoTransformerCompany or project was found, return an error
     if (!updatedCompany) {
       return res.status(404).json({
-        message: `AutoTransformerCompany with name '${companyName}' or project with name '${projectName}' not found.`,
+        message: `AutoTransformerCompany '${companyName}' or project '${projectName}' not found.`,
       });
     }
 

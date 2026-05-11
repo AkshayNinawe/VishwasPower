@@ -2015,6 +2015,14 @@ const ETCAdminPanel = ({
         showNotification("Authentication failed. Please log out and log in again.", "error");
         return;
       }
+      if (error.response?.status === 400) {
+        // Backend validation failed (already approved, not submitted, etc.)
+        showNotification(
+          error.response.data?.message || "Cannot approve this stage. Please check the stage status.",
+          "warning"
+        );
+        return;
+      }
       showNotification("Failed to approve stage. Please try again.", "error");
       return;
     }

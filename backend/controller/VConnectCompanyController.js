@@ -125,11 +125,57 @@ export const getAllCompanyData = async (req, res) => {
   }
 };
 
-export const setapproveCompanyStage =  async(req, res) =>{
+export const setapproveCompanyStage = async (req, res) => {
   try {
     const { companyName, projectName, stage } = req.body;
     const stageNumber = Number(stage);
-    console.log(companyName, projectName, stageNumber)
+    console.log(companyName, projectName, stageNumber);
+
+    // ── Guard 1: Fetch current project state before approving ──
+    const existingCompany = await VConnectCompany.findOne({
+      companyName,
+      "companyProjects.name": projectName,
+    });
+
+    if (!existingCompany) {
+      return res.status(404).json({
+        message: `Company '${companyName}' or project '${projectName}' not found.`,
+      });
+    }
+
+    const project = existingCompany.companyProjects.find(
+      (p) => p.name === projectName
+    );
+
+    if (!project) {
+      return res.status(404).json({
+        message: `Project '${projectName}' not found in company '${companyName}'.`,
+      });
+    }
+
+    // ── Guard 2: Ensure the stage was actually submitted before approving ──
+    const isSubmitted = project.submittedStages?.get
+      ? project.submittedStages.get(String(stageNumber))
+      : project.submittedStages?.[String(stageNumber)];
+
+    if (!isSubmitted) {
+      return res.status(400).json({
+        message: `Stage ${stageNumber} has not been submitted yet and cannot be approved.`,
+      });
+    }
+
+    // ── Guard 3: Prevent double-approval ──
+    const isAlreadyApproved = project.stageApprovals?.get
+      ? project.stageApprovals.get(String(stageNumber))
+      : project.stageApprovals?.[String(stageNumber)];
+
+    if (isAlreadyApproved) {
+      return res.status(400).json({
+        message: `Stage ${stageNumber} has already been approved.`,
+      });
+    }
+
+    // ── Build update operation ──
     const updateOperation = {
       $set: {
         [`companyProjects.$.stageApprovals.${stageNumber}`]: true,
@@ -137,35 +183,36 @@ export const setapproveCompanyStage =  async(req, res) =>{
       },
     };
 
-    // V Connect has 7 stages, so check if we're at the final stage
+    // V Connect has 7 stages
     if (stageNumber !== 7) {
-      updateOperation.$inc = { "companyProjects.$.stage": 1 };
+      // Use $max to safely advance stage (prevents going backwards in race conditions)
+      updateOperation.$max = {
+        "companyProjects.$.stage": stageNumber + 1,
+      };
       updateOperation.$set["companyProjects.$.status"] = "in-progress";
     } else {
-      console.log("Final stage completed")
+      console.log("Final stage completed");
       updateOperation.$set["companyProjects.$.status"] = "completed";
     }
-  
+
     const updatedCompany = await VConnectCompany.findOneAndUpdate(
       {
         companyName: companyName,
         "companyProjects.name": projectName,
       },
       updateOperation,
-      {
-        new: true, // Return the updated document
-      }
+      { new: true }
     );
-  
+
     if (!updatedCompany) {
       return res.status(404).json({
-        message: `Company with name '${companyName}' or project with name '${projectName}' not found.`,
+        message: `Company '${companyName}' or project '${projectName}' not found during update.`,
       });
     }
-  
+
     res.status(200).json({
       message:
-      stageNumber !== 7
+        stageNumber !== 7
           ? `Stage '${stageNumber}' for project '${projectName}' successfully approved.`
           : `Stage '${stageNumber}' for project '${projectName}' marked as completed.`,
       project: updatedCompany.companyProjects.find(
@@ -179,7 +226,7 @@ export const setapproveCompanyStage =  async(req, res) =>{
       error: error.message,
     });
   }
-}
+};
 
 export const rejectCompanyStage = async (req, res) => {
   console.log("Rejecting stage:")
@@ -383,50 +430,68 @@ export const deleteCompanyByID = async (req, res) => {
 
 export const setFormsCompleted = async (req, res) => {
   try {
-    // Added 'totalForms' to the destructuring to make the logic dynamic
     const { companyName, projectName, formsCompleted, status, stage } = req.body;
+    const stageNumber = Number(stage);
 
-    // Build the update object dynamically
+    // ── Guard: Prevent re-submission of an already-approved stage ──
+    if (stageNumber && status === "pending-approval") {
+      const existingCompany = await VConnectCompany.findOne({
+        companyName,
+        "companyProjects.name": projectName,
+      });
+
+      const project = existingCompany?.companyProjects.find(
+        (p) => p.name === projectName
+      );
+
+      if (project) {
+        const isAlreadyApproved = project.stageApprovals?.get
+          ? project.stageApprovals.get(String(stageNumber))
+          : project.stageApprovals?.[String(stageNumber)];
+
+        if (isAlreadyApproved) {
+          return res.status(400).json({
+            message: `Stage ${stageNumber} is already approved and cannot be resubmitted.`,
+          });
+        }
+      }
+    }
+
+    // ── Build update operation ──
+    // Only set the specific stage flag — do NOT overwrite the entire map.
     const updateFields = {};
     const updateSets = {
       "companyProjects.$.lastActivity": new Date(),
     };
+
     updateFields["$max"] = {
       "companyProjects.$.formsCompleted": formsCompleted,
     };
+
     if (status) {
       updateSets["companyProjects.$.status"] = status;
     }
-    
-    // Corrected logic: Dynamically create a Map object instead of an Array
-    // V Connect has 7 stages
-    if (Number(stage) && 7) {
-      const submittedStagesMap = {};
-      for (let i = 1; i <= 7; i++) {
-        submittedStagesMap[i.toString()] = i <= stage;
-      }
-      updateSets["companyProjects.$.submittedStages"] = submittedStagesMap;
-    }
-    
-    updateFields["$set"] = updateSets;
-    console.log(updateSets);
 
-    // Find the company and the specific project within its array
+    // Set only the submitted stage flag (not the whole map)
+    if (stageNumber) {
+      updateSets[`companyProjects.$.submittedStages.${stageNumber}`] = true;
+    }
+
+    updateFields["$set"] = updateSets;
+    console.log("setFormsCompleted updateSets:", updateSets);
+
     const updatedCompany = await VConnectCompany.findOneAndUpdate(
       {
         companyName: companyName,
         "companyProjects.name": projectName,
       },
       updateFields,
-      {
-        new: true, // Return the updated document
-      }
+      { new: true }
     );
 
-    // If no company or project was found, return an error
     if (!updatedCompany) {
       return res.status(404).json({
-        message: `Company with name '${companyName}' or project with name '${projectName}' not found.`,
+        message: `Company '${companyName}' or project '${projectName}' not found.`,
       });
     }
 
