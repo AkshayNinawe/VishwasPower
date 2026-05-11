@@ -2151,6 +2151,29 @@ const ETCAdminPanel = ({
     setCurrentStageReview(1);
   };
 
+  // Generate default empty form structure so "View Forms" always shows something
+  const getDefaultEmptyFormData = () => {
+    const sevenStageDepts = [
+      "V Connected 63 MVA Transformer",
+      "Testing V Connected 63 MVA Transformer",
+      "Traction Transformer",
+    ];
+    const isSeven = sevenStageDepts.includes(selectedDepartment?.name);
+
+    const stageFormCounts = isSeven
+      ? { stage1: 7, stage2: 2, stage3: 1, stage4: 4, stage5: 8, stage6: 2, stage7: 1 }
+      : { stage1: 7, stage2: 2, stage3: 1, stage4: 4, stage5: 8, stage6: 1 };
+
+    const emptyData = {};
+    Object.entries(stageFormCounts).forEach(([stageKey, formCount]) => {
+      emptyData[stageKey] = {};
+      for (let i = 1; i <= formCount; i++) {
+        emptyData[stageKey][`form${i}`] = {};
+      }
+    });
+    return emptyData;
+  };
+
   const handleViewSubmittedForms = async (Project) => {
     console.log("Fronend : handleViewSubmittedForm ");
     if (Project.status === "rejected" && Project.rejectionReason) {
@@ -2199,27 +2222,17 @@ const ETCAdminPanel = ({
       const formDataKey = formDataKeyMap[selectedDepartment?.name] || "autoTransformerData";
       let formData = response.data.data?.[formDataKey] ?? null;
 
-      // Ensure formData is not null/undefined and is an object
-      if (formData && typeof formData === 'object') {
+      // Use fetched data if valid, otherwise fall back to empty form structure
+      if (formData && typeof formData === 'object' && Object.keys(formData).length > 0) {
         setFormDataFromDB(formData);
       } else {
-        console.warn('No form data found or invalid data structure:', response.data);
-        setFormDataFromDB({});
+        console.warn('No form data found — showing empty forms:', response.data);
+        setFormDataFromDB(getDefaultEmptyFormData());
       }
     } catch (error) {
       console.error("Error loading submitted forms:", error);
-
-      if (error.response?.status === 404) {
-        // ✅ Custom message for 404
-        alert("Please fill the forms first");
-      } else {
-        alert(
-          `Failed to load submitted forms: ${
-            error.response?.data?.message || error.message
-          }`
-        );
-      }
-      return;
+      // Show empty forms instead of blocking the user
+      setFormDataFromDB(getDefaultEmptyFormData());
     }
     setSelectedProjectForReview(Project);
     setShowSubmitterReview(true);
